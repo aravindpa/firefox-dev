@@ -8,7 +8,7 @@ ExclusiveArch: i386 x86_64 ia64 ppc
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        0.10.1
-Release:        1.0PR1.9
+Release:        1.0PR1.10
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
@@ -46,7 +46,7 @@ Patch103:       firefox-PR1-alt-num-tab-switch.patch
 Patch104:       firefox-PR1-button-focus.patch
 Patch105:       firefox-PR1-tab-focus-stealing.patch
 Patch106:       firefox-PR1-tab-focus-stealing2.patch
-
+Patch107:       firefox-PR1-access-64bit-crash.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  libpng-devel, libjpeg-devel
@@ -89,6 +89,7 @@ compliance, performance and portability.
 %patch104 -p0
 %patch105 -p0
 %patch106 -p0
+%patch107 -p0
 
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE2} .mozconfig
@@ -202,6 +203,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Oct 12 2004 Christopher Aillon <caillon@redhat.com> 0:0.10.1-1.0PR1.10
+- Fix for 64 bit crash at startup (b.m.o #256603)
+
 * Fri Oct  8 2004 Christopher Aillon <caillon@redhat.com> 0:0.10.1-1.0PR1.9
 - Fix compile issues (#134914)
 - Add patch to fix button focus issues (#133507)
