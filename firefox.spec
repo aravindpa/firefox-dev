@@ -7,13 +7,13 @@ ExclusiveArch: i386 x86_64 ia64 ppc
 
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
-Version:        0.10.0
-Release:        1.0PR1.7
+Version:        0.10.1
+Release:        1.0PR1.8
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
-Source0:        http://ftp.mozilla.org/pub/mozilla.org/firefox/releases/0.10/firefox-1.0PR-source.tar.bz2
+Source0:        firefox-%{version}-source.tar.bz2
 Source1:        firefox-redhat-default-bookmarks.html
 Source2:        mozconfig-firefox
 Source3:        firefox.desktop
@@ -33,6 +33,7 @@ Patch91:        firefox-PR1-gtk-file-chooser-updates.patch
 Patch100:       firefox-PR1-js-64bit-math.patch
 Patch101:       firefox-PR1-pkgconfig.patch
 Patch102:       firefox-PR1-clipboard-access.patch
+Patch103:       firefox-PR1-alt-num-tab-switch.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  libpng-devel, libjpeg-devel
 BuildRequires:  zlib-devel, zip
@@ -69,6 +70,7 @@ compliance, performance and portability.
 %patch100 -p0
 %patch101 -p0
 %patch102 -p0
+%patch103 -p0
 
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE2} .mozconfig
@@ -182,6 +184,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Oct  1 2004 Christopher Aillon <caillon@redhat.com> 0:0.10.1-1.0PR1.8
+- Update to 0.10.1
+- Fix tab switching keybindings (#133504)
+
 * Fri Oct  1 2004 Bill Nottingham <notting@redhat.com> 0:0.10.0-1.0PR1.7
 - filter out library Provides: and internal Requires:
 
