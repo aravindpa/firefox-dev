@@ -8,7 +8,7 @@ ExclusiveArch: i386 x86_64 ia64 ppc
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        0.10.1
-Release:        1.0PR1.10
+Release:        1.0PR1.11
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
@@ -33,6 +33,7 @@ Patch2:         firefox-PR1-oji-gcc342-compile.patch
 Patch20:        firefox-redhat-homepage.patch
 Patch21:        firefox-0.7.3-default-plugin-less-annoying.patch
 Patch22:        firefox-0.7.3-psfonts.patch
+Patch23:        mozilla-1.7.3-pango-render.patch
 
 # backported patches
 Patch90:        firefox-PR1-gtk-file-chooser-trunk.patch
@@ -55,6 +56,7 @@ BuildRequires:  ORBit-devel, libIDL-devel
 BuildRequires:  desktop-file-utils
 BuildRequires:  gtk2-devel, gnome-vfs2-devel
 BuildRequires:  krb5-devel
+BuildRequires:  autoconf213
 Requires:       desktop-file-utils >= %{desktop_file_utils_version}
 Obsoletes:      phoenix, mozilla-firebird, MozillaFirebird
 Provides:       mozilla-firebird = %{epoch}:%{version}, MozillaFirebird = %{epoch}:%{version}
@@ -80,6 +82,7 @@ compliance, performance and portability.
 %patch20 -p0
 %patch21 -p1
 %patch22 -p1
+%patch23 -p1
 %patch90 -p0
 %patch91 -p1
 %patch100 -p0
@@ -101,6 +104,8 @@ compliance, performance and portability.
 #---------------------------------------------------------------------
 
 %build
+autoconf-2.13
+
 export RPM_OPT_FLAGS=`echo $RPM_OPT_FLAGS | sed s/-O2/-Os/`
 export MOZILLA_OFFICIAL=1
 export BUILD_OFFICIAL=1
@@ -203,6 +208,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Oct 13 2004 Christopher Blizzard <blizzard@redhat.com>
+- Use pango for rendering
+
 * Tue Oct 12 2004 Christopher Aillon <caillon@redhat.com> 0:0.10.1-1.0PR1.10
 - Fix for 64 bit crash at startup (b.m.o #256603)
 
