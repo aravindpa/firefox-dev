@@ -8,7 +8,7 @@ ExclusiveArch: i386 x86_64 ia64 ppc s390 s390x
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.0
-Release:        5
+Release:        6
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
@@ -44,7 +44,7 @@ Patch29:        firefox-gnomestripe-0.1-livemarks.patch
 Patch30:        mozilla-1.7.3-pango-render.patch
 Patch31:        firefox-1.0-pango-selection.patch
 Patch32:        firefox-1.0-pango-space-width.patch
-
+Patch33:        firefox-1.0-download-to-desktop.patch
 
 # local bugfixes
 Patch40:        firefox-PR1-gnome-vfs-default-app.patch
@@ -58,14 +58,16 @@ Patch101:       firefox-PR1-pkgconfig.patch
 Patch102:       mozilla-1.7.3-xptcall-s390.patch
 Patch103:       firefox-1.0-xptcall-s390.patch
 Patch104:       firefox-1.0-nspr-s390.patch
+Patch105:       firefox-1.0-useragent.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  libpng-devel, libjpeg-devel
 BuildRequires:  zlib-devel, zip
-BuildRequires:  ORBit-devel, libIDL-devel
+BuildRequires:  libIDL-devel
 BuildRequires:  desktop-file-utils
 BuildRequires:  gtk2-devel, gnome-vfs2-devel
 BuildRequires:  krb5-devel
+BuildRequires:  pango-devel
 BuildRequires:  autoconf213
 %if %{freetype_fc3}
 BuildRequires:  freetype-devel >= 2.1.9
@@ -108,6 +110,7 @@ compliance, performance and portability.
 %patch30 -p1
 %patch31 -p1
 %patch32 -p1
+%patch33 -p0
 %patch40 -p1
 %patch41 -p0
 %patch90 -p0
@@ -115,6 +118,7 @@ compliance, performance and portability.
 %patch102 -p0
 %patch103 -p1
 %patch104 -p0
+%patch105 -p0
 
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE10} .mozconfig
@@ -158,20 +162,23 @@ desktop-file-install --vendor mozilla \
   --add-category Network \
   %{SOURCE20} 
 
+# set up the firefox start script
 %{__cat} %{SOURCE21} | %{__sed} -e 's,FFDIR,%{ffdir},g' -e 's,LIBDIR,%{_libdir},g' > \
   $RPM_BUILD_ROOT%{_bindir}/firefox
-
 %{__chmod} 755 $RPM_BUILD_ROOT%{_bindir}/firefox
 
+# set up our default preferences
+%{__cat} %{SOURCE12} | %{__sed} -e 's,FIREFOX_RPM_VR,%{version}-%{release},g' > rh-default-prefs
+%{__cp} rh-default-prefs $RPM_BUILD_ROOT/%{ffdir}/greprefs/all-redhat.js
+%{__cp} rh-default-prefs $RPM_BUILD_ROOT/%{ffdir}/defaults/pref/all-redhat.js
+%{__rm} rh-default-prefs
+
+# set up our default bookmarks
 %{__install} -p -D %{SOURCE11} $RPM_BUILD_ROOT%{ffdir}/defaults/profile/US/bookmarks.html
 %{__install} -p -D %{SOURCE11} $RPM_BUILD_ROOT%{ffdir}/defaults/profile/bookmarks.html
+
 %{__cat} %{SOURCE50} | %{__sed} -e 's,FFDIR,%{ffdir},g' -e 's,LIBDIR,%{_libdir},g' > \
   $RPM_BUILD_ROOT%{ffdir}/firefox-xremote-client
-
-# set up our default preferences
-%{__cp} %{SOURCE12} $RPM_BUILD_ROOT/%{ffdir}/greprefs/all-redhat.js
-%{__cp} %{SOURCE12} $RPM_BUILD_ROOT/%{ffdir}/defaults/pref/all-redhat.js
-
 
 %{__chmod} 755 $RPM_BUILD_ROOT%{ffdir}/firefox-xremote-client
 %{__install} -p -D %{SOURCE24} $RPM_BUILD_ROOT%{_mandir}/man1/firefox.1
@@ -239,6 +246,11 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Dec 15 2004 Christopher Aillon <caillon@redhat.com> 0:1.0-6
+- Don't have downloads "disappear" when downloading to desktop (#139015)
+- Add RPM version to the useragent
+- BuildRequires pango-devel
+
 * Sat Dec 11 2004 Christopher Aillon <caillon@redhat.com> 0:1.0-5
 - Fix spacing in textareas when using pango for rendering
 - Enable pango rendering by default.
