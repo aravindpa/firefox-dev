@@ -8,7 +8,7 @@ ExclusiveArch: i386 x86_64 ia64 ppc s390 s390x
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        0.99
-Release:        1.0RC1.1
+Release:        1.0RC1.2
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
@@ -56,6 +56,12 @@ BuildRequires:  desktop-file-utils
 BuildRequires:  gtk2-devel, gnome-vfs2-devel
 BuildRequires:  krb5-devel
 BuildRequires:  autoconf213
+%if %{freetype_fc3}
+BuildRequires:  freetype-devel >= 2.1.9
+%else
+BuildRequires:  freetype-devel
+%endif
+
 Requires:       desktop-file-utils >= %{desktop_file_utils_version}
 Obsoletes:      phoenix, mozilla-firebird, MozillaFirebird
 Provides:       mozilla-firebird = %{epoch}:%{version}, MozillaFirebird = %{epoch}:%{version}
@@ -158,6 +164,9 @@ cd -
 %{__cp} %{SOURCE10} $RPM_BUILD_ROOT%{ffdir}/chrome/icons/default/default.xpm
 %{__cp} %{SOURCE10} $RPM_BUILD_ROOT%{ffdir}/icons/default.xpm
 
+# own mozilla plugin dir (#135050)
+%{__mkdir_p} $RPM_BUILD_ROOT%{_libdir}/mozilla/plugins
+
 #---------------------------------------------------------------------
 
 %clean
@@ -199,11 +208,16 @@ fi
 %{_datadir}/applications/mozilla-%{name}.desktop
 %{_datadir}/pixmaps/firefox.png
 %{ffdir}
+%{_libdir}/mozilla
 
 #---------------------------------------------------------------------
 
 %changelog
-* Sat Oct 30 2004 Christopher Aillon <caillon@redhat.com> 0:0.90-1.0RC1.1
+* Sat Oct 30 2004 Warren Togami <wtogami@redhat.com> 0:0.99-1.0RC1.2
+- #136330 BR freetype-devel with conditions
+- #135050 firefox should own mozilla plugin dir
+
+* Sat Oct 30 2004 Christopher Aillon <caillon@redhat.com> 0:0.99-1.0RC1.1
 - Update to firefox-rc1
 - Add patch for s390(x)
 
