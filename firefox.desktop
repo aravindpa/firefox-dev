@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Name=Mozilla Firefox Browser
+Comment=lightweight browser based on mozilla
+Exec=firefox
+Icon=firefox.png
+Terminal=false
+Type=Application
+Name[en_US]=Mozilla Firefox Browser

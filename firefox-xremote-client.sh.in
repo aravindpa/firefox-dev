@@ -1,0 +1,21 @@
+#!/bin/sh
+
+##
+## Set MOZILLA_FIVE_HOME
+##
+MOZILLA_FIVE_HOME="FFDIR"
+
+export MOZILLA_FIVE_HOME
+
+##
+## Set LD_LIBRARY_PATH
+##
+if [ "$LD_LIBRARY_PATH" ]
+then
+  LD_LIBRARY_PATH=$MOZILLA_FIVE_HOME:$MOZILLA_FIVE_HOME/plugins:LIBDIR/mozilla/plugins:LIBDIR:$LD_LIBRARY_PATH
+else
+  LD_LIBRARY_PATH=$MOZILLA_FIVE_HOME:$MOZILLA_FIVE_HOME/plugins:LIBDIR/mozilla/plugins:LIBDIR
+fi
+ export LD_LIBRARY_PATH
+
+$MOZILLA_FIVE_HOME/firefox-bin -remote "$1"
