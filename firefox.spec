@@ -1,15 +1,17 @@
+%define desktop_file_utils_version 0.3
+
 ExclusiveArch: i386 x86_64 ia64 ppc
 
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        0.10.0
-Release:        1.0PR1.0
+Release:        1.0PR1.1
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
 Source0:        http://ftp.mozilla.org/pub/mozilla.org/firefox/releases/0.10/firefox-1.0PR-source.tar.bz2
-Source1:        bookmarks.html
+Source1:        firefox-redhat-default-bookmarks.html
 Source2:        mozconfig-firefox
 Source3:        firefox.desktop
 Source4:        firefox.png
@@ -18,10 +20,11 @@ Source7:        firefox-xremote-client.sh.in
 Source8:        firefox.1
 Source9:        firefox-rebuild-databases.pl.in
 Source10:       firefox.xpm
-Patch1:         firefox-0.7.3-fedora-homepage.patch
+Patch1:         firefox-redhat-homepage.patch
 Patch2:         firefox-0.7.3-default-plugin-less-annoying.patch
 Patch3:         firefox-0.7.3-psfonts.patch
 Patch4:         firefox-0.7.3-freetype-compile.patch
+Patch100:       firefox-PR1-js-64bit-math.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  libpng-devel, libjpeg-devel
 BuildRequires:  zlib-devel, zip
@@ -29,7 +32,7 @@ BuildRequires:  ORBit-devel, libIDL-devel
 BuildRequires:  desktop-file-utils
 BuildRequires:  gtk2-devel, gnome-vfs2-devel
 BuildRequires:  krb5-devel
-Requires(%post): %{_bindir}/update-desktop-database
+BuildRequires:  desktop-file-utils >= %{desktop_file_utils_version}
 Obsoletes:      phoenix, mozilla-firebird, MozillaFirebird
 Provides:       mozilla-firebird = %{epoch}:%{version}, MozillaFirebird = %{epoch}:%{version}
 Provides:       webclient
@@ -43,18 +46,24 @@ compliance, performance and portability.
 
 %prep
 %setup -q -n mozilla
-%patch1 -p1
+%patch1 -p0
 %patch2 -p1
 %patch3 -p1
 %patch4 -p0
+%patch100 -p0
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE2} .mozconfig
+
+# set up our default bookmarks
+%{__cp} %{SOURCE1} $RPM_BUILD_DIR/mozilla/profile/defaults/bookmarks.html
+
 
 #---------------------------------------------------------------------
 
 %build
 export RPM_OPT_FLAGS=`echo $RPM_OPT_FLAGS | sed s/-O2/-Os/`
-export MOZ_PHOENIX=1
+export MOZILLA_OFFICIAL=1
+export BUILD_OFFICIAL=1
 MAKE="gmake %{?_smp_mflags}" make -f client.mk build
 
 #---------------------------------------------------------------------
@@ -154,8 +163,13 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
-* Thu Sep 16 2004 Jens Petersen <petersen@redhat.com>
-- require %{_bindir}/update-desktop-database for post install script
+* Fri Sep 24 2004 Christopher Aillon <caillon@redhat.com> 0:0.10.0-1.0PR1.1
+- Add a BR for desktop-file-utils
+- Update default configuration options to use the firefox mozconfig (#132916)
+- Use Red Hat bookmarks (#133262)
+- Update default homepage (#132721)
+- Fix JS math on AMD64 (#133226)
+- Build with MOZILLA_OFICIAL (#132917)
 
 * Tue Sep 14 2004 Christopher Aillon <caillon@redhat.com> 0:0.10.0-1.0PR1.0
 - Update to 1.0PR1

@@ -1,0 +1,16 @@
+Index: browser/locales/en-US/chrome/browser-region/region.properties
+===================================================================
+RCS file: /cvsroot/mozilla/browser/locales/en-US/chrome/browser-region/region.properties,v
+retrieving revision 1.1.2.3
+diff -d -u -p -0 -r1.1.2.3 region.properties
+--- browser/locales/en-US/chrome/browser-region/region.properties	29 Aug 2004 07:29:59 -0000	1.1.2.3
++++ browser/locales/en-US/chrome/browser-region/region.properties	25 Sep 2004 03:07:18 -0000
+@@ -3 +3 @@ general.useragent.contentlocale=US
+-homePageDefault=http://www.mozilla.org/products/firefox/start/
++homePageDefault=file:///usr/share/doc/HTML/index.html
+@@ -10 +10 @@ promoteURL=http://www.spreadfirefox.com/
+-browser.startup.homepage=http://www.mozilla.org/products/firefox/start/
++browser.startup.homepage=file:///usr/share/doc/HTML/index.html
+@@ -15 +15 @@ browser.search.defaulturl=http://www.goo
+-startup.homepage_override_url=http://www.mozilla.org/products/firefox/start/
++startup.homepage_override_url=file:///usr/share/doc/HTML/index.html
