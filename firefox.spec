@@ -8,7 +8,7 @@ ExclusiveArch: i386 x86_64 ia64 ppc
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        0.10.1
-Release:        1.0PR1.12
+Release:        1.0PR1.13
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
@@ -212,6 +212,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Oct 18 2004 Christopher Blizzard <blizzard@redhat.com> 0:0.10.1-1.0PR1.13
+- Actually turn on pango in the mozconfig
+
 * Sat Oct 16 2004 Christopher Aillon <caillon@redhat.com> 0:0.10.1-1.0PR1.12
 - Disable the default application checks. (#133713)
 - Disable the software update feature. (#136017)
