@@ -8,7 +8,7 @@ ExclusiveArch: i386 x86_64 ia64 ppc
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        0.10.0
-Release:        1.0PR1.1
+Release:        1.0PR1.2
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
@@ -28,6 +28,7 @@ Patch2:         firefox-0.7.3-default-plugin-less-annoying.patch
 Patch3:         firefox-0.7.3-psfonts.patch
 Patch4:         firefox-0.7.3-freetype-compile.patch
 Patch100:       firefox-PR1-js-64bit-math.patch
+Patch101:       firefox-PR1-pkgconfig.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  libpng-devel, libjpeg-devel
 BuildRequires:  zlib-devel, zip
@@ -35,7 +36,7 @@ BuildRequires:  ORBit-devel, libIDL-devel
 BuildRequires:  desktop-file-utils
 BuildRequires:  gtk2-devel, gnome-vfs2-devel
 BuildRequires:  krb5-devel
-BuildRequires:  desktop-file-utils >= %{desktop_file_utils_version}
+Requires:       desktop-file-utils >= %{desktop_file_utils_version}
 Obsoletes:      phoenix, mozilla-firebird, MozillaFirebird
 Provides:       mozilla-firebird = %{epoch}:%{version}, MozillaFirebird = %{epoch}:%{version}
 Provides:       webclient
@@ -56,6 +57,7 @@ compliance, performance and portability.
 %patch4 -p0
 %endif
 %patch100 -p0
+%patch101 -p0
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE2} .mozconfig
 
@@ -89,7 +91,7 @@ cd -
 
 %{__install} -p -D %{SOURCE4} $RPM_BUILD_ROOT%{_datadir}/pixmaps/firefox.png
 
-desktop-file-install --vendor fedora \
+desktop-file-install --vendor mozilla \
   --dir $RPM_BUILD_ROOT%{_datadir}/applications \
   --add-category X-Fedora \
   --add-category Application \
@@ -168,6 +170,11 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Sep 27 2004 Christopher Aillon <caillon@redhat.com>
+- Change the vendor to mozilla not fedora
+- Build with --disable-strip so debuginfo packages work (#133738)
+- Add pkgconfig patch (bmo #261090)
+
 * Fri Sep 24 2004 Christopher Aillon <caillon@redhat.com> 0:0.10.0-1.0PR1.1
 - Add a BR for desktop-file-utils
 - Update default configuration options to use the firefox mozconfig (#132916)
