@@ -10,7 +10,7 @@ ExclusiveArch: i386 x86_64 ia64 ppc s390 s390x
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.0.2
-Release:        2
+Release:        3
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
@@ -51,6 +51,7 @@ Patch30:        mozilla-1.7.3-pango-render.patch
 Patch31:        firefox-1.0-pango-selection.patch
 Patch32:        firefox-1.0-pango-space-width.patch
 Patch33:        firefox-1.0-pango-rounding.patch
+Patch34:        firefox-1.0-pango-direction.patch
 
 # local bugfixes
 Patch40:        firefox-PR1-gnome-vfs-default-app.patch
@@ -128,6 +129,7 @@ compliance, performance and portability.
 %patch31 -p1
 %patch32 -p1
 %patch33 -p1
+%patch34 -p1
 %patch40 -p1
 %patch41 -p0
 %patch42 -p0
@@ -328,6 +330,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Mar 28 2005 Christopher Aillon <caillon@redhat.com> 0:1.0.2-3
+- Updated firefox icon (https://bugzilla.mozilla.org/show_bug.cgi?id=261679)
+- Fix for some more cursor issues in textareas (149991, 150002, 152089)
+
 * Fri Mar 25 2005 Christopher Aillon <caillon@redhat.com> 0:1.0.2-2
 - Make the "browser.link.open_external" pref work (David Fraser)
 
