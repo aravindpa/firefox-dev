@@ -8,7 +8,7 @@ ExclusiveArch: i386 x86_64 ia64 ppc
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        0.10.1
-Release:        1.0PR1.13
+Release:        1.0PR1.14
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
@@ -205,13 +205,26 @@ fi
 %defattr(-,root,root,-)
 %{_bindir}/firefox
 %{_mandir}/man1/*
-%{ffdir}
 %{_datadir}/applications/mozilla-%{name}.desktop
 %{_datadir}/pixmaps/firefox.png
+
+%dir %{ffdir}
+
+%ghost %{ffdir}/components/compreg.dat
+%ghost %{ffdir}/components/xpti.dat
+%ghost %{ffdir}/components
+%ghost %{ffdir}/components.ini
+%ghost %{ffdir}/chrome/chrome.rdf
+%ghost %{ffdir}/chrome/overlayinfo
+%ghost %{ffdir}/extensions
+
 
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Oct 18 2004 Christopher Aillon <caillon@redhat.com> 0:0.10.1-1.0PR1.14
+- Fix RPM file ownership (#136015)
+
 * Mon Oct 18 2004 Christopher Blizzard <blizzard@redhat.com> 0:0.10.1-1.0PR1.13
 - Actually turn on pango in the mozconfig
 
