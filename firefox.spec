@@ -8,7 +8,7 @@ ExclusiveArch: i386 x86_64 ia64 ppc
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        0.10.1
-Release:        1.0PR1.20
+Release:        1.0PR1.21
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
@@ -39,6 +39,7 @@ Patch25:        firefox-PR1-software-update.patch
 
 # local bugfixes
 Patch40:        firefox-PR1-gnome-vfs-default-app.patch
+Patch41:        firefox-PR1-stack-direction.patch
 
 # backported patches
 Patch90:        firefox-PR1-gtk-file-chooser-trunk.patch
@@ -96,6 +97,7 @@ compliance, performance and portability.
 %patch24 -p0
 %patch25 -p0
 %patch40 -p1
+%patch41 -p0
 %patch90 -p0
 %patch91 -p1
 %patch92 -p0
@@ -225,6 +227,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Oct 22 2004 Christopher Aillon <caillon@redhat.com> 0:0.10.1-1.0PR1.21
+- Prevent inlining of stack direction detection (#135255)
+
 * Tue Oct 19 2004 Christopher Aillon <caillon@redhat.com> 0:0.10.1-1.0PR1.20
 - More file chooser fixes:
     Pop up a confirmation dialog before overwriting files (#134648)
