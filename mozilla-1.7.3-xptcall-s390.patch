@@ -1,0 +1,100 @@
+Index: xpcom/reflect/xptcall/src/md/unix/xptcinvoke_linux_s390.cpp
+===================================================================
+RCS file: /cvsroot/mozilla/xpcom/reflect/xptcall/src/md/unix/xptcinvoke_linux_s390.cpp,v
+retrieving revision 1.1
+diff -u -p -r1.1 xptcinvoke_linux_s390.cpp
+--- xpcom/reflect/xptcall/src/md/unix/xptcinvoke_linux_s390.cpp	27 Jan 2003 21:52:51 -0000	1.1
++++ xpcom/reflect/xptcall/src/md/unix/xptcinvoke_linux_s390.cpp	14 Oct 2004 09:14:05 -0000
+@@ -184,6 +184,8 @@ invoke_copy_to_stack(PRUint32 paramCount
+     }
+ }
+ 
++volatile register void* r14 asm("r14");
++
+ XPTC_PUBLIC_API(nsresult)
+ XPTC_InvokeByIndex(nsISupports* that, PRUint32 methodIndex,
+                    PRUint32 paramCount, nsXPTCVariant* params)
+@@ -197,6 +199,8 @@ XPTC_InvokeByIndex(nsISupports* that, PR
+     PRUint32 overflow = invoke_count_words (paramCount, params);
+     PRUint32 result;
+ 
++    volatile void* sav_r14 = r14;
++
+     __asm__ __volatile__
+     (
+         "lr    7,15\n\t"
+@@ -233,6 +237,8 @@ XPTC_InvokeByIndex(nsISupports* that, PR
+           "a" (method)
+         : "2", "3", "4", "5", "6", "7", "memory"
+     );
++
++    r14 = sav_r14;
+   
+     return result;
+ }    
+Index: xpcom/reflect/xptcall/src/md/unix/xptcinvoke_linux_s390x.cpp
+===================================================================
+RCS file: /cvsroot/mozilla/xpcom/reflect/xptcall/src/md/unix/xptcinvoke_linux_s390x.cpp,v
+retrieving revision 1.1
+diff -u -p -r1.1 xptcinvoke_linux_s390x.cpp
+--- xpcom/reflect/xptcall/src/md/unix/xptcinvoke_linux_s390x.cpp	27 Jan 2003 21:52:51 -0000	1.1
++++ xpcom/reflect/xptcall/src/md/unix/xptcinvoke_linux_s390x.cpp	14 Oct 2004 09:14:12 -0000
+@@ -178,6 +178,8 @@ invoke_copy_to_stack(PRUint32 paramCount
+     }
+ }
+ 
++volatile register void* r14 asm("r14");
++
+ XPTC_PUBLIC_API(nsresult)
+ XPTC_InvokeByIndex(nsISupports* that, PRUint32 methodIndex,
+                    PRUint32 paramCount, nsXPTCVariant* params)
+@@ -191,6 +193,8 @@ XPTC_InvokeByIndex(nsISupports* that, PR
+     PRUint64 overflow = invoke_count_words (paramCount, params);
+     PRUint64 result;
+ 
++    volatile void* sav_r14 = r14;
++
+     __asm__ __volatile__
+     (
+         "lgr    7,15\n\t"
+@@ -229,6 +233,8 @@ XPTC_InvokeByIndex(nsISupports* that, PR
+           "a" (method)
+         : "2", "3", "4", "5", "6", "7", "memory"
+     );
++
++    r14 = sav_r14;
+   
+     return result;
+ }    
+Index: xpcom/reflect/xptcall/src/md/unix/xptcstubs_linux_s390.cpp
+===================================================================
+RCS file: /cvsroot/mozilla/xpcom/reflect/xptcall/src/md/unix/xptcstubs_linux_s390.cpp,v
+retrieving revision 1.1
+diff -u -p -r1.1 xptcstubs_linux_s390.cpp
+--- xpcom/reflect/xptcall/src/md/unix/xptcstubs_linux_s390.cpp	27 Jan 2003 21:52:52 -0000	1.1
++++ xpcom/reflect/xptcall/src/md/unix/xptcstubs_linux_s390.cpp	14 Oct 2004 09:14:22 -0000
+@@ -177,7 +177,7 @@ nsresult nsXPTCStubBase::Stub##n() \
+                               \
+     __asm__ __volatile__      \
+     (                         \
+-        "l     %0,0(15)\n\t"  \
++        "lr    %0,15\n\t"     \
+         "ahi   %0,96\n\t"     \
+         "stm   3,6,0(%3)\n\t" \
+         "std   0,%1\n\t"      \
+Index: xpcom/reflect/xptcall/src/md/unix/xptcstubs_linux_s390x.cpp
+===================================================================
+RCS file: /cvsroot/mozilla/xpcom/reflect/xptcall/src/md/unix/xptcstubs_linux_s390x.cpp,v
+retrieving revision 1.1
+diff -u -p -r1.1 xptcstubs_linux_s390x.cpp
+--- xpcom/reflect/xptcall/src/md/unix/xptcstubs_linux_s390x.cpp	27 Jan 2003 21:52:52 -0000	1.1
++++ xpcom/reflect/xptcall/src/md/unix/xptcstubs_linux_s390x.cpp	14 Oct 2004 09:14:26 -0000
+@@ -177,7 +177,7 @@ nsresult nsXPTCStubBase::Stub##n() \
+                               \
+     __asm__ __volatile__      \
+     (                         \
+-        "lg     %0,0(15)\n\t" \
++        "lgr    %0,15\n\t"    \
+         "aghi   %0,160\n\t"   \
+         "stmg   3,6,0(%5)\n\t"\
+         "std    0,%1\n\t"     \

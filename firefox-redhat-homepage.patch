@@ -1,3 +1,13 @@
+Index: browser/app/profile/firefox.js
+===================================================================
+RCS file: /cvsroot/mozilla/browser/app/profile/firefox.js,v
+retrieving revision 1.7.4.38
+diff -d -u -p -U0 -r1.7.4.38 firefox.js
+--- browser/app/profile/firefox.js      26 Oct 2004 22:44:47 -0000      1.7.4.38
++++ browser/app/profile/firefox.js      30 Oct 2004 22:28:34 -0000
+@@ -144 +144 @@ pref("browser.startup.page",
+-pref("browser.startup.homepage",                 "resource:/browserconfig.properties");
++pref("browser.startup.homepage",                 "chrome://browser-region/locale/region.properties");
 Index: browser/locales/en-US/chrome/browser-region/region.properties
 ===================================================================
 RCS file: /cvsroot/mozilla/browser/locales/en-US/chrome/browser-region/region.properties,v
@@ -9,7 +19,7 @@ diff -d -u -p -0 -r1.1.2.3 region.properties
 -homePageDefault=http://www.mozilla.org/products/firefox/start/
 +homePageDefault=file:///usr/share/doc/HTML/index.html
 @@ -10 +10 @@ promoteURL=http://www.spreadfirefox.com/
--browser.startup.homepage=http://www.mozilla.org/products/firefox/start/
+-browser.startup.homepage=http://start.mozilla.org/firefox/
 +browser.startup.homepage=file:///usr/share/doc/HTML/index.html
 @@ -15 +15 @@ browser.search.defaulturl=http://www.goo
 -startup.homepage_override_url=http://www.mozilla.org/products/firefox/start/

@@ -3,17 +3,18 @@
 
 %define desktop_file_utils_version 0.9
 
-ExclusiveArch: i386 x86_64 ia64 ppc
+ExclusiveArch: i386 x86_64 ia64 ppc s390 s390x
 
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
-Version:        0.10.1
-Release:        1.0PR1.21
+Version:        0.99
+Release:        1.0RC1.1
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
-Source0:        firefox-%{version}-source.tar.bz2
+#Source0:        firefox-%{version}-source.tar.bz2
+Source0:        firefox-1.0rc1-source.tar.bz2
 Source1:        firefox-redhat-default-bookmarks.html
 Source2:        mozconfig-firefox
 Source3:        firefox.desktop
@@ -27,7 +28,6 @@ Source100:      find-external-requires
 
 # build patches
 Patch1:         firefox-0.7.3-freetype-compile.patch
-Patch2:         firefox-PR1-oji-gcc342-compile.patch
 
 # customization patches
 Patch20:        firefox-redhat-homepage.patch
@@ -42,23 +42,11 @@ Patch40:        firefox-PR1-gnome-vfs-default-app.patch
 Patch41:        firefox-PR1-stack-direction.patch
 
 # backported patches
-Patch90:        firefox-PR1-gtk-file-chooser-trunk.patch
-Patch91:        firefox-PR1-gtk-file-chooser-updates.patch
-Patch92:        firefox-PR1-gtk-file-chooser-morefixes.patch
+Patch90:        firefox-PR1-gtk-file-chooser-morefixes.patch
 
 # official upstream patches
-Patch100:       firefox-PR1-js-64bit-math.patch
 Patch101:       firefox-PR1-pkgconfig.patch
-Patch102:       firefox-PR1-clipboard-access.patch
-Patch103:       firefox-PR1-alt-num-tab-switch.patch
-Patch104:       firefox-PR1-button-focus.patch
-Patch105:       firefox-PR1-tab-focus-stealing.patch
-Patch106:       firefox-PR1-tab-focus-stealing2.patch
-Patch107:       firefox-PR1-access-64bit-crash.patch
-Patch108:       firefox-PR1-defaultHeight.patch
-Patch109:       firefox-PR1-bug262689.patch
-Patch110:       firefox-PR1-bug263263.patch
-
+Patch102:       mozilla-1.7.3-xptcall-s390.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  libpng-devel, libjpeg-devel
@@ -89,7 +77,6 @@ compliance, performance and portability.
 %if %{freetype_fc3}
 %patch1 -p0
 %endif
-%patch2 -p0
 %patch20 -p0
 %patch21 -p1
 %patch22 -p1
@@ -99,19 +86,8 @@ compliance, performance and portability.
 %patch40 -p1
 %patch41 -p0
 %patch90 -p0
-%patch91 -p1
-%patch92 -p0
-%patch100 -p0
 %patch101 -p0
 %patch102 -p0
-%patch103 -p0
-%patch104 -p0
-%patch105 -p0
-%patch106 -p0
-%patch107 -p0
-%patch108 -p1
-%patch109 -p0
-%patch110 -p0
 
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE2} .mozconfig
@@ -227,6 +203,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Sat Oct 30 2004 Christopher Aillon <caillon@redhat.com> 0:0.90-1.0RC1.1
+- Update to firefox-rc1
+- Add patch for s390(x)
+
 * Tue Oct 26 2004 Christopher Aillon <caillon@redhat.com>
 - Fix LD_LIBRARY_PATH at startup (Steve Knodle)
 
