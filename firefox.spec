@@ -1,14 +1,14 @@
 # Option: Freetype Patch (FC3+)
 %define freetype_fc3 1
 
-%define desktop_file_utils_version 0.3
+%define desktop_file_utils_version 0.9
 
 ExclusiveArch: i386 x86_64 ia64 ppc
 
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        0.10.0
-Release:        1.0PR1.5
+Release:        1.0PR1.6
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
@@ -177,6 +177,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Sep 30 2004 Christopher Aillon <caillon@redhat.com> 0:0.10.0-1.0PR1.6
+- Prereq desktop-file-utils >= 0.9
+
 * Thu Sep 30 2004 Christopher Aillon <caillon@redhat.com> 0:0.10.0-1.0PR1.5
 - Add clipboard access prevention patch.
 
