@@ -56,6 +56,7 @@ Patch106:       firefox-PR1-tab-focus-stealing2.patch
 Patch107:       firefox-PR1-access-64bit-crash.patch
 Patch108:       firefox-PR1-defaultHeight.patch
 Patch109:       firefox-PR1-bug262689.patch
+Patch110:       firefox-PR1-bug263263.patch
 
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -108,6 +109,7 @@ compliance, performance and portability.
 %patch107 -p0
 %patch108 -p1
 %patch109 -p0
+%patch110 -p0
 
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE2} .mozconfig
@@ -227,6 +229,7 @@ fi
 - More file chooser fixes:
     Pop up a confirmation dialog before overwriting files (#134648)
     Allow saving as complete once again
+- Fix for upstream 263263.
 
 * Tue Oct 19 2004 Christopher Aillon <caillon@redhat.com> 0:0.10.1-1.0PR1.18
 - Fix for upstream 262689.
