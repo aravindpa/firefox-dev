@@ -7,14 +7,13 @@ ExclusiveArch: i386 x86_64 ia64 ppc
 
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
-Version:        0.99
-Release:        1.0RC1.3
+Version:        1.0
+Release:        1
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
-#Source0:        firefox-%{version}-source.tar.bz2
-Source0:        firefox-1.0rc1-source.tar.bz2
+Source0:        firefox-%{version}-source.tar.bz2
 Source1:        firefox-redhat-default-bookmarks.html
 Source2:        mozconfig-firefox
 Source3:        firefox.desktop
@@ -221,6 +220,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Nov  8 2004 Christopher Aillon <caillon@redhat.com> 0:1.0-1
+- Firefox 1.0
+
 * Thu Nov  4 2004 Christopher Aillon <caillon@redhat.com> 0:0.99-1.0RC1.3
 - Add support for GNOME stock icons. (bmo #233461)
 
