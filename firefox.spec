@@ -9,8 +9,8 @@ ExclusiveArch: i386 x86_64 ia64 ppc s390 s390x
 
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
-Version:        1.0.1
-Release:        6
+Version:        1.0.2
+Release:        1
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
@@ -328,6 +328,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Mar 23 2005 Christopher Aillon <caillon@redhat.com> 0:1.0.2-1
+- Firefox 1.0.2
+
 * Tue Mar 22 2005 Christopher Aillon <caillon@redhat.com> 0:1.0.1-6
 - Add patch to fix italic rendering errors with certain fonts (e.g. Tahoma)
 - Re-enable jsd since there is now a venkman version that works with Firefox.
