@@ -29,6 +29,7 @@ BuildRequires:  ORBit-devel, libIDL-devel
 BuildRequires:  desktop-file-utils
 BuildRequires:  gtk2-devel, gnome-vfs2-devel
 BuildRequires:  krb5-devel
+Requires(%post): %{_bindir}/update-desktop-database
 Obsoletes:      phoenix, mozilla-firebird, MozillaFirebird
 Provides:       mozilla-firebird = %{epoch}:%{version}, MozillaFirebird = %{epoch}:%{version}
 Provides:       webclient
@@ -153,6 +154,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Sep 16 2004 Jens Petersen <petersen@redhat.com>
+- require %{_bindir}/update-desktop-database for post install script
+
 * Tue Sep 14 2004 Christopher Aillon <caillon@redhat.com> 0:0.10.0-1.0PR1.0
 - Update to 1.0PR1
 - Update man page references to say Firefox instead of Firebird
