@@ -3,12 +3,12 @@
 
 %define desktop_file_utils_version 0.9
 
-ExclusiveArch: i386 x86_64 ia64 ppc s390 s390x
+ExclusiveArch: i386 x86_64 ia64 ppc
 
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        0.99
-Release:        1.0RC1.2
+Release:        1.0RC1.3
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
@@ -24,6 +24,7 @@ Source7:        firefox-xremote-client.sh.in
 Source8:        firefox.1
 Source9:        firefox-rebuild-databases.pl.in
 Source10:       firefox.xpm
+Source20:       firefox-gnomestripe-0.1.tar.gz
 Source100:      find-external-requires
 
 # build patches
@@ -36,6 +37,9 @@ Patch22:        firefox-0.7.3-psfonts.patch
 Patch23:        mozilla-1.7.3-pango-render.patch
 Patch24:        firefox-PR1-default-applications.patch
 Patch25:        firefox-PR1-software-update.patch
+Patch26:        firefox-RC1-stock-icons-be.patch
+Patch27:        firefox-RC1-stock-icons-fe.patch
+Patch28:        firefox-RC1-stock-icons-gnomestripe.patch
 
 # local bugfixes
 Patch40:        firefox-PR1-gnome-vfs-default-app.patch
@@ -80,6 +84,7 @@ compliance, performance and portability.
 
 %prep
 %setup -q -n mozilla
+%{__tar} -xzf %{SOURCE20}
 %if %{freetype_fc3}
 %patch1 -p0
 %endif
@@ -89,6 +94,9 @@ compliance, performance and portability.
 %patch23 -p1
 %patch24 -p0
 %patch25 -p0
+%patch26 -p0
+%patch27 -p0
+%patch28 -p0
 %patch40 -p1
 %patch41 -p0
 %patch90 -p0
@@ -213,6 +221,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Nov  4 2004 Christopher Aillon <caillon@redhat.com> 0:0.99-1.0RC1.3
+- Add support for GNOME stock icons. (bmo #233461)
+
 * Sat Oct 30 2004 Warren Togami <wtogami@redhat.com> 0:0.99-1.0RC1.2
 - #136330 BR freetype-devel with conditions
 - #135050 firefox should own mozilla plugin dir

@@ -1,0 +1,784 @@
+Index: toolkit/components/filepicker/content/filepicker.js
+===================================================================
+RCS file: /cvsroot/mozilla/toolkit/components/filepicker/content/filepicker.js,v
+retrieving revision 1.5.18.1.2.1
+diff -u -r1.5.18.1.2.1 filepicker.js
+--- toolkit/components/filepicker/content/filepicker.js	10 Aug 2004 00:20:32 -0000	1.5.18.1.2.1
++++ toolkit/components/filepicker/content/filepicker.js	3 Nov 2004 13:21:22 -0000
+@@ -67,6 +67,7 @@
+     if (o.displayDirectory) {
+       const directory = o.displayDirectory.path;
+     }
++
+     const initialText = o.defaultString;
+     const filterTitles = o.filters.titles;
+     const filterTypes = o.filters.types;
+@@ -121,13 +122,18 @@
+     treeView.showOnlyDirectories = true;
+   }
+ 
++  // set up the right icon for GNOME stock icons
++  if (filePickerMode == nsIFilePicker.modeSave)
++    okButton.setAttribute("icon","save");
++  else
++    okButton.setAttribute("icon","open");
++
+   // start out with a filename sort
+   handleColumnClick("FilenameColumn");
+ 
+   document.documentElement.setAttribute("ondialogcancel", "return onCancel();");
+   try {
+-    var buttonLabel = getOKAction();
+-    okButton.setAttribute("label", buttonLabel);
++    setOKAction();
+   } catch (exception) {
+     // keep it set to "OK"
+   }
+@@ -496,8 +502,9 @@
+   onFileSelected(treeView.selectedFiles);
+ }
+ 
+-function getOKAction(file) {
++function setOKAction(file) {
+   var buttonLabel;
++  var buttonIcon = "open"; // used in all but one case
+ 
+   if (file && file.isDirectory() && filePickerMode != nsIFilePicker.modeGetFolder) {
+     document.documentElement.setAttribute("ondialogaccept", "return openOnOK();");
+@@ -515,11 +522,12 @@
+       break;
+     case nsIFilePicker.modeSave:
+       buttonLabel = gFilePickerBundle.getString("saveButtonLabel");
++      buttonIcon = "save";
+       break;
+     }
+   }
+-
+-  return buttonLabel;
++  okButton.setAttribute("label", buttonLabel);
++  okButton.setAttribute("icon", buttonIcon);
+ }
+ 
+ function onSelect(event) {
+@@ -558,8 +566,7 @@
+   }
+ 
+   if (validFileSelected) {
+-    var buttonLabel = getOKAction(file);
+-    okButton.setAttribute("label", buttonLabel);
++    setOKAction(file);
+     okButton.disabled = invalidSelection;
+   } else
+     okButton.disabled = (textInput.value == "");
+@@ -586,8 +593,7 @@
+ }
+ 
+ function onTextFieldFocus() {
+-  var buttonLabel = getOKAction(null);
+-  okButton.setAttribute("label", buttonLabel);
++  setOKAction(null);
+   doEnabling();
+ }
+ 
+Index: toolkit/components/filepicker/content/filepicker.xul
+===================================================================
+RCS file: /cvsroot/mozilla/toolkit/components/filepicker/content/filepicker.xul,v
+retrieving revision 1.4.8.1
+diff -u -r1.4.8.1 filepicker.xul
+--- toolkit/components/filepicker/content/filepicker.xul	24 Jul 2004 23:36:19 -0000	1.4.8.1
++++ toolkit/components/filepicker/content/filepicker.xul	3 Nov 2004 13:21:24 -0000
+@@ -95,7 +95,7 @@
+ <hbox class="dialog-button-box" align="center">
+   <checkbox label="&showHiddenFiles.label;" oncommand="toggleShowHidden();"
+             flex="1" align="left"  accesskey="&showHiddenFiles.accesskey;"/>
+-  <button dlgtype="cancel" class="dialog-button"/>
+-  <button dlgtype="accept" class="dialog-button"/>
++  <button dlgtype="cancel" icon="cancel" class="dialog-button"/>
++  <button dlgtype="accept" icon="accept" class="dialog-button"/>
+ </hbox>
+ </dialog>
+Index: toolkit/components/passwordmgr/resources/content/passwordManager.xul
+===================================================================
+RCS file: /cvsroot/mozilla/toolkit/components/passwordmgr/resources/content/passwordManager.xul,v
+retrieving revision 1.2.22.1
+diff -u -r1.2.22.1 passwordManager.xul
+--- toolkit/components/passwordmgr/resources/content/passwordManager.xul	16 Jul 2004 16:15:36 -0000	1.2.22.1
++++ toolkit/components/passwordmgr/resources/content/passwordManager.xul	3 Nov 2004 13:21:25 -0000
+@@ -29,6 +29,7 @@
+         title="&windowtitle.label;"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+         buttons="accept"
++        buttoniconaccept="close"
+         onload="Startup()"
+         onunload="Shutdown()"
+         persist="screenX screenY width height">
+@@ -66,9 +67,9 @@
+           </tree>
+           <separator class="thin"/>
+           <hbox>
+-            <button id="removeSignon" disabled="true"
++            <button id="removeSignon" disabled="true" icon="remove"
+                           label="&remove.label;" oncommand="DeleteSignon();"/>
+-            <button id="removeAllSignons"
++            <button id="removeAllSignons" icon="remove"
+                           label="&removeall.label;"
+                           oncommand="DeleteAllSignons();"/>
+             <spacer flex="1"/>
+@@ -91,9 +92,9 @@
+           </tree>
+           <separator class="thin"/>
+           <hbox>
+-            <button id="removeReject" disabled="true"
++            <button id="removeReject" disabled="true" icon="remove"
+                           label="&remove.label;" oncommand="DeleteReject();"/>
+-            <button id="removeAllRejects"
++            <button id="removeAllRejects" icon="remove"
+                           label="&removeall.label;"
+                           oncommand="DeleteAllRejects();"/>
+           </hbox>
+Index: toolkit/components/printing/content/printPreviewBindings.xml
+===================================================================
+RCS file: /cvsroot/mozilla/toolkit/components/printing/content/printPreviewBindings.xml,v
+retrieving revision 1.15
+diff -u -r1.15 printPreviewBindings.xml
+--- toolkit/components/printing/content/printPreviewBindings.xml	20 Nov 2003 05:13:57 -0000	1.15
++++ toolkit/components/printing/content/printPreviewBindings.xml	3 Nov 2004 13:21:27 -0000
+@@ -53,7 +53,7 @@
+ 
+     <content>
+       <xul:button label="&print.label;" accesskey="&print.accesskey;"
+-        oncommand="PrintUtils.print();"/>
++        oncommand="PrintUtils.print();" icon="print"/>
+ 
+       <xul:button label="&pageSetup.label;" accesskey="&pageSetup.accesskey;"
+         oncommand="this.parentNode.doPageSetup();"/>
+@@ -118,7 +118,7 @@
+ 
+       <xul:toolbarseparator class="toolbarseparator-primary"/>
+       <xul:button label="&close.label;" accesskey="&close.accesskey;"
+-        oncommand="PrintUtils.exitPrintPreview();"/>
++        oncommand="PrintUtils.exitPrintPreview();" icon="close"/>
+       <xul:data value="&customPrompt.title;"/>
+     </content>
+ 
+Index: toolkit/components/printing/content/printProgress.xul
+===================================================================
+RCS file: /cvsroot/mozilla/toolkit/components/printing/content/printProgress.xul,v
+retrieving revision 1.1
+diff -u -r1.1 printProgress.xul
+--- toolkit/components/printing/content/printProgress.xul	16 Aug 2003 11:39:04 -0000	1.1
++++ toolkit/components/printing/content/printProgress.xul	3 Nov 2004 13:21:28 -0000
+@@ -94,7 +94,7 @@
+     </grid>
+     <separator/>
+     <hbox id="CancelButton" pack="end">
+-      <button id="cancel" label="&dialogCancel.label;" 
++      <button id="cancel" label="&dialogCancel.label;" icon="cancel"
+         oncommand="doCancelButton()"/>
+     </hbox>
+ </window>
+Index: toolkit/components/printing/content/printdialog.xul
+===================================================================
+RCS file: /cvsroot/mozilla/toolkit/components/printing/content/printdialog.xul,v
+retrieving revision 1.1
+diff -u -r1.1 printdialog.xul
+--- toolkit/components/printing/content/printdialog.xul	16 Aug 2003 11:39:04 -0000	1.1
++++ toolkit/components/printing/content/printdialog.xul	3 Nov 2004 13:21:29 -0000
+@@ -48,6 +48,7 @@
+   onload="onLoad();"
+   ondialogaccept="return onAccept();"
+   oncancel="return onCancel();"
++  buttoniconaccept="print"
+   title="&printDialog.title;"
+   persist="screenX screenY"
+   screenX="24" screenY="24">
+@@ -82,14 +83,14 @@
+           <menulist id="printerList" flex="1" oncommand="setPrinterDefaultsForSelectedPrinter();">
+             <menupopup/>
+           </menulist>
+-          <button id="properties" label="&propertiesButton.label;" oncommand="displayPropertiesDialog();"/>
++          <button id="properties" label="&propertiesButton.label;" icon="properties" oncommand="displayPropertiesDialog();"/>
+         </row>
+         <row align="center">
+           <hbox align="center" pack="end">
+             <label id="fileLabel" control="fileInput" value="&fileInput.label;"/>
+           </hbox>
+           <textbox id="fileInput" flex="1" onblur="stripTrailingWhitespace(this)"/>
+-          <button id="chooseFile" label="&chooseButton.label;" oncommand="onChooseFile()"/>
++          <button id="chooseFile" label="&chooseButton.label;" icon="open" oncommand="onChooseFile()"/>
+         </row>
+       </rows>
+ 
+Index: toolkit/content/customizeCharset.xul
+===================================================================
+RCS file: /cvsroot/mozilla/toolkit/content/customizeCharset.xul,v
+retrieving revision 1.2
+diff -u -r1.2 customizeCharset.xul
+--- toolkit/content/customizeCharset.xul	26 Oct 2003 21:10:16 -0000	1.2
++++ toolkit/content/customizeCharset.xul	3 Nov 2004 13:21:30 -0000
+@@ -72,7 +72,7 @@
+       
+       <hbox align="center">
+         <button id="add_button" oncommand="AddAvailableCharset();"
+-                label="&add.label;" disabled="true"/>
++                label="&add.label;" icon="add" disabled="true"/>
+       </hbox>
+     </vbox>
+     
+@@ -87,7 +87,7 @@
+       <separator class="thin"/>
+       <hbox align="center">
+         <button id="remove_button" oncommand="RemoveActiveCharset();"
+-                disabled="true"
++                disabled="true" icon="remove"
+                 label="&remove.label;"/>
+       </hbox>
+     </vbox> 
+Index: toolkit/content/customizeToolbar.xul
+===================================================================
+RCS file: /cvsroot/mozilla/toolkit/content/customizeToolbar.xul,v
+retrieving revision 1.9.30.2
+diff -u -r1.9.30.2 customizeToolbar.xul
+--- toolkit/content/customizeToolbar.xul	29 Sep 2004 07:08:10 -0000	1.9.30.2
++++ toolkit/content/customizeToolbar.xul	3 Nov 2004 13:21:31 -0000
+@@ -73,14 +73,14 @@
+     
+     <checkbox id="smallicons" oncommand="updateIconSize(this.checked);" label="&useSmallIcons.label;"/>
+     
+-    <button label="&addNewToolbar.label;" oncommand="addNewToolbar();"/>
+-    <button label="&restoreDefaultSet.label;" oncommand="restoreDefaultSet();"/>
++    <button label="&addNewToolbar.label;" oncommand="addNewToolbar();" icon="add"/>
++    <button label="&restoreDefaultSet.label;" oncommand="restoreDefaultSet();" icon="refresh"/>
+   </box>
+ 
+   <separator class="groove"/>
+ 
+   <hbox align="center" pack="end">
+-    <button label="&saveChanges.label;" oncommand="onAccept();" default="true"/>
++    <button label="&saveChanges.label;" oncommand="onAccept();" default="true" icon="close"/>
+   </hbox>
+ </vbox>
+ 
+Index: toolkit/content/finddialog.xul
+===================================================================
+RCS file: /cvsroot/mozilla/toolkit/content/finddialog.xul,v
+retrieving revision 1.12
+diff -u -r1.12 finddialog.xul
+--- toolkit/content/finddialog.xul	2 Dec 2003 02:47:08 -0000	1.12
++++ toolkit/content/finddialog.xul	3 Nov 2004 13:21:31 -0000
+@@ -66,8 +66,12 @@
+     </vbox>
+     <vbox flex="1">
+       <button id="btnFind" label="&findButton.label;" accesskey="&findButton.accesskey;"
+-              dlgtype="accept"/>
++              dlgtype="accept" icon="find"/>
++#ifdef XP_UNIX
++      <button label="&closeButton.label;" icon="close" dlgtype="cancel"/>
++#else
+       <button label="&cancelButton.label;" dlgtype="cancel"/>
++#endif
+     </vbox>
+   </hbox>
+ </dialog>
+Index: toolkit/content/widgets/dialog.xml
+===================================================================
+RCS file: /cvsroot/mozilla/toolkit/content/widgets/dialog.xml,v
+retrieving revision 1.12
+diff -u -r1.12 dialog.xml
+--- toolkit/content/widgets/dialog.xml	11 Feb 2004 00:56:15 -0000	1.12
++++ toolkit/content/widgets/dialog.xml	3 Nov 2004 13:21:33 -0000
+@@ -221,6 +221,30 @@
+                   button.setAttribute("accesskey", accessKey);
+               }
+             }
++            // allow specifying alternate icons in the dialog header
++            if (!button.hasAttribute("icon")) {
++              // if there's an icon specified, use that
++              if (this.hasAttribute("buttonicon"+dlgtype))
++                button.setAttribute("icon", this.getAttribute("buttonicon"+dlgtype));
++              // otherwise set defaults
++              else
++                switch (dlgtype) {
++                  case "accept":
++                    button.setAttribute("icon","accept");
++                    break;
++                  case "cancel":
++                    button.setAttribute("icon","cancel");
++                    break;
++                  case "disclosue":
++                    button.setAttribute("icon","properties");
++                    break;
++                  case "help":
++                    button.setAttribute("icon","help");
++                    break;
++                  default:
++                    break;
++                }
++            }
+           }
+ 
+           // ensure that hitting enter triggers ondialogaccept
+Index: toolkit/content/widgets/expander.xml
+===================================================================
+RCS file: /cvsroot/mozilla/toolkit/content/widgets/expander.xml,v
+retrieving revision 1.2.24.1.2.1
+diff -u -r1.2.24.1.2.1 expander.xml
+--- toolkit/content/widgets/expander.xml	16 May 2004 18:16:40 -0000	1.2.24.1.2.1
++++ toolkit/content/widgets/expander.xml	3 Nov 2004 13:21:36 -0000
+@@ -12,7 +12,7 @@
+       <xul:hbox align="center">
+         <xul:button type="disclosure" class="expanderButton" anonid="disclosure" xbl:inherits="disabled" mousethrough="always"/>
+         <xul:label class="header expanderButton" anonid="label" xbl:inherits="value=label,disabled" mousethrough="always" flex="1"/>
+-        <xul:button anonid="clear-button" xbl:inherits="label=clearlabel,disabled=cleardisabled,hidden=clearhidden" mousethrough="always"/>
++        <xul:button anonid="clear-button" xbl:inherits="label=clearlabel,disabled=cleardisabled,hidden=clearhidden" mousethrough="always" icon="clear"/>
+       </xul:hbox>
+       <xul:vbox flex="1" anonid="settings" class="settingsContainer" collapsed="true" xbl:inherits="align">
+         <children/>
+Index: toolkit/content/widgets/wizard.xml
+===================================================================
+RCS file: /cvsroot/mozilla/toolkit/content/widgets/wizard.xml,v
+retrieving revision 1.10.6.2
+diff -u -r1.10.6.2 wizard.xml
+--- toolkit/content/widgets/wizard.xml	29 Sep 2004 18:11:19 -0000	1.10.6.2
++++ toolkit/content/widgets/wizard.xml	3 Nov 2004 13:21:38 -0000
+@@ -64,9 +64,19 @@
+           if (this.onFirstPage) {
+             this.canRewind = false;
+             this.setAttribute("firstpage", "true");
++#ifdef XP_UNIX
++#ifndef XP_MACOSX
++            this._backButton.setAttribute('hidden', 'true');
++#endif
++#endif
+           } else {
+             this.canRewind = true;
+             this.setAttribute("firstpage", "false");
++#ifdef XP_UNIX
++#ifndef XP_MACOSX
++            this._backButton.setAttribute('hidden', 'false');
++#endif
++#endif
+           }
+                     
+           if (this.onLastPage) {
+@@ -328,7 +338,11 @@
+          var btn = document.getAnonymousElementByAttribute(this._wizardButtons, "dlgtype", aName);
+          if (btn) {
+            btn.addEventListener("command", this["_"+aName+"Func"], false);
+-           btn.setAttribute("label", this._bundle.GetStringFromName("button-"+aName));
++#ifdef XP_UNIX
++#ifndef XP_MACOSX
++           btn.setAttribute("label", this._bundle.GetStringFromName("button-"+aName+"-gnome"));
++#endif
++#endif
+            this["_"+aName+"Button"] = btn;
+          }
+          return btn;
+@@ -478,16 +492,22 @@
+         <xul:separator class="wizard-buttons-separator groove"/>
+         <xul:hbox class="wizard-buttons-box-2">
+           <xul:spacer flex="1"/>
+-          <xul:button class="wizard-button" dlgtype="back"/>
++#ifdef XP_UNIX
++          <xul:button class="wizard-button" dlgtype="cancel" icon="cancel"/>
++          <xul:spacer style="width: 24px"/>
++#endif
++          <xul:button class="wizard-button" dlgtype="back" icon="go-back"/>
+           <xul:deck class="wizard-next-deck" anonid="WizardButtonDeck">
+             <xul:hbox>
+               <xul:button class="wizard-button" dlgtype="finish" default="true" flex="1"/> 
+             </xul:hbox>
+             <xul:hbox>
+-              <xul:button class="wizard-button" dlgtype="next" default="true" flex="1"/> 
++              <xul:button class="wizard-button" dlgtype="next" icon="go-forward" default="true" flex="1"/> 
+             </xul:hbox>
+           </xul:deck>
+-          <xul:button class="wizard-button" dlgtype="cancel"/> 
++#ifdef XP_WIN
++          <xul:button class="wizard-button" dlgtype="cancel" icon="cancel"/> 
++#endif
+         </xul:hbox>
+       </xul:vbox>
+     </content>
+Index: toolkit/locales/en-US/chrome/global/finddialog.dtd
+===================================================================
+RCS file: /cvsroot/mozilla/toolkit/locales/en-US/chrome/global/Attic/finddialog.dtd,v
+retrieving revision 1.1.2.2
+diff -u -r1.1.2.2 finddialog.dtd
+--- toolkit/locales/en-US/chrome/global/finddialog.dtd	23 Jul 2004 19:26:59 -0000	1.1.2.2
++++ toolkit/locales/en-US/chrome/global/finddialog.dtd	3 Nov 2004 13:21:38 -0000
+@@ -13,7 +13,7 @@
+ <!ENTITY findField.tooltip "Type one or more words to search for">
+ <!ENTITY findButton.label "Find Next">
+ <!ENTITY findButton.accesskey "F">
+-<!ENTITY cancelButton.label "Cancel">
++<!ENTITY closeButton.label "Close">
+ <!ENTITY up.label "Up">
+ <!ENTITY up.accesskey "U">
+ <!ENTITY down.label "Down">
+Index: toolkit/mozapps/downloads/content/pref-downloads.xul
+===================================================================
+RCS file: /cvsroot/mozilla/toolkit/mozapps/downloads/content/pref-downloads.xul,v
+retrieving revision 1.10.16.1
+diff -u -r1.10.16.1 pref-downloads.xul
+--- toolkit/mozapps/downloads/content/pref-downloads.xul	13 Jul 2004 03:24:41 -0000	1.10.16.1
++++ toolkit/mozapps/downloads/content/pref-downloads.xul	3 Nov 2004 13:21:43 -0000
+@@ -59,7 +59,7 @@
+       <radio id="alwaysAsk" label="&alwaysAsk.label;" value="false"/>
+       <hbox flex="1">
+         <radio id="neverAsk" label="&neverAsk.label;" value="true"/>
+-        <button id="showFolder" label="&showFolder.label;" oncommand="showFolder();"/>
++        <button id="showFolder" label="&showFolder.label;" oncommand="showFolder();" icon="open"/>
+       </hbox>
+     </radiogroup>
+   </groupbox>
+@@ -154,13 +154,13 @@
+       <separator class="thin"/>
+       <hbox>
+         <button label="&editFileHandler.label;" accesskey="&editFileHandler.accesskey;"
+-                id="editFileHandler" oncommand="editFileHandler();"/>
++                id="editFileHandler" oncommand="editFileHandler();" icon="properties"/>
+         <button label="&removeFileHandler.label;" accesskey="&removeFileHandler.accesskey;"              
+-                id="removeFileHandler" oncommand="removeFileHandler();"/>
++                id="removeFileHandler" oncommand="removeFileHandler();" icon="remove"/>
+ #ifdef MOZ_PHOENIX
+         <spring flex="1"/>
+         <button label="&plugins.label;" accesskey="&plugins.accesskey;"
+-                id="plugins" oncommand="showPlugins();"/>
++                id="plugins" oncommand="showPlugins();" icon="properties"/>
+ #endif
+       </hbox>
+     </vbox>
+Index: toolkit/themes/gnomestripe/global/button.css
+===================================================================
+RCS file: /cvsroot/mozilla/toolkit/themes/gnomestripe/global/button.css,v
+retrieving revision 1.1.2.3
+diff -u -r1.1.2.3 button.css
+--- toolkit/themes/gnomestripe/global/button.css	14 Sep 2004 20:22:51 -0000	1.1.2.3
++++ toolkit/themes/gnomestripe/global/button.css	3 Nov 2004 13:21:47 -0000
+@@ -162,3 +162,86 @@
+   list-style-image: url("chrome://global/skin/tree/twisty-open.png"); 
+ }
+ 
++/*
++ * GNOME Stock Icon Styles
++ */
++
++button[icon="accept"] .button-icon {
++  list-style-image: url("moz-icon://stock/gtk-ok?size=button");
++}
++
++button[icon="cancel"] .button-icon {
++  list-style-image: url("moz-icon://stock/gtk-cancel?size=button");
++}
++
++button[icon="help"] .button-icon {
++  list-style-image: url("moz-icon://stock/gtk-help?size=button");
++}
++
++button[icon="open"] .button-icon {
++  list-style-image: url("moz-icon://stock/gtk-open?size=button");
++}
++
++button[icon="save"] .button-icon {
++  list-style-image: url(moz-icon://stock/gtk-save?size=button);
++}
++
++button[icon="find"] .button-icon {
++  list-style-image: url("moz-icon://stock/gtk-find?size=button");
++}
++
++button[icon="clear"] .button-icon {
++  list-style-image: url("moz-icon://stock/gtk-clear?size=button");
++}
++
++button[icon="yes"] .button-icon {
++  list-style-image: url("moz-icon://stock/gtk-yes?size=button");
++}
++
++button[icon="no"] .button-icon {
++  list-style-image: url("moz-icon://stock/gtk-no?size=button");
++}
++
++button[icon="apply"] .button-icon {
++  list-style-image: url("moz-icon://stock/gtk-apply?size=button");
++}
++
++button[icon="close"] .button-icon {
++  list-style-image: url("moz-icon://stock/gtk-close?size=button");
++}
++
++button[icon="print"] .button-icon {
++  list-style-image: url("moz-icon://stock/gtk-print?size=button");
++}
++
++button[icon="add"] .button-icon {
++  list-style-image: url("moz-icon://stock/gtk-add?size=button");
++}
++
++button[icon="remove"] .button-icon {
++  list-style-image: url("moz-icon://stock/gtk-remove?size=button");
++}
++
++button[icon="refresh"] .button-icon {
++  list-style-image: url("moz-icon://stock/gtk-refresh?size=button");
++}
++
++button[icon="go-forward"] .button-icon {
++  list-style-image: url("moz-icon://stock/gtk-go-forward?size=button");
++}
++
++button[icon="go-back"] .button-icon {
++  list-style-image: url("moz-icon://stock/gtk-go-back?size=button");
++}
++
++button[icon="properties"] .button-icon {
++  list-style-image: url("moz-icon://stock/gtk-properties?size=button");
++}
++
++button[icon="select-font"] .button-icon {
++  list-style-image: url("moz-icon://stock/gtk-select-font?size=button");
++}
++
++button[icon="network"] .button-icon {
++  list-style-image: url("moz-icon://stock/gtk-network?size=button");
++}
+Index: browser/base/content/openLocation.xul
+===================================================================
+RCS file: /cvsroot/mozilla/browser/base/content/openLocation.xul,v
+retrieving revision 1.6
+diff -u -r1.6 openLocation.xul
+--- browser/base/content/openLocation.xul	20 Feb 2004 02:21:10 -0000	1.6
++++ browser/base/content/openLocation.xul	3 Nov 2004 13:22:05 -0000
+@@ -32,6 +32,7 @@
+         title="&caption.label;"
+         onload="onLoad()"
+         buttonlabelaccept="&openBtn.label;"
++        buttoniconaccept="open"
+         ondialogaccept="open()"
+         style="width: 40em;"
+         persist="screenX screenY"
+Index: browser/base/content/pageInfo.xul
+===================================================================
+RCS file: /cvsroot/mozilla/browser/base/content/pageInfo.xul,v
+retrieving revision 1.13.4.1.2.1
+diff -u -r1.13.4.1.2.1 pageInfo.xul
+--- browser/base/content/pageInfo.xul	21 Sep 2004 05:00:41 -0000	1.13.4.1.2.1
++++ browser/base/content/pageInfo.xul	3 Nov 2004 13:22:07 -0000
+@@ -297,7 +297,8 @@
+             </rows>
+           </grid>
+           <hbox>
+-            <button label="&mediaSaveAs;" accesskey="&mediaSaveAsAccesskey;" id="imagesaveasbutton" disabled="true" oncommand="saveMedia();"/>
++            <button label="&mediaSaveAs;" accesskey="&mediaSaveAsAccesskey;" id="imagesaveasbutton" 
++                    icon="save" disabled="true" oncommand="saveMedia();"/>
+           </hbox>
+           <vbox class="inset iframe" flex="1" pack="center">
+             <hbox id="theimagecontainer" pack="center">
+Index: browser/base/content/pageReport.xul
+===================================================================
+RCS file: /cvsroot/mozilla/browser/base/content/pageReport.xul,v
+retrieving revision 1.9
+diff -u -r1.9 pageReport.xul
+--- browser/base/content/pageReport.xul	29 Apr 2003 08:31:45 -0000	1.9
++++ browser/base/content/pageReport.xul	3 Nov 2004 13:22:07 -0000
+@@ -49,9 +49,9 @@
+   <separator class="thin"/>
+   <hbox>
+     <button label="&unblock.label;" id="unblockButton" oncommand="whitelistSite();"
+-      disabled="true" accesskey="&unblock.accesskey;"/>
++      disabled="true" accesskey="&unblock.accesskey;" icon="yes"/>
+     <spacer flex="1"/>
+-    <button dlgtype="accept" label="&done.label;" default="true"
++    <button dlgtype="accept" label="&done.label;" default="true" icon="close"
+       oncommand="window.close();" accesskey="&done.accesskey;"/>
+   </hbox>
+ </dialog>
+Index: browser/components/bookmarks/content/addBookmark.xul
+===================================================================
+RCS file: /cvsroot/mozilla/browser/components/bookmarks/content/addBookmark.xul,v
+retrieving revision 1.2.16.1
+diff -u -r1.2.16.1 addBookmark.xul
+--- browser/components/bookmarks/content/addBookmark.xul	11 Aug 2004 22:34:30 -0000	1.2.16.1
++++ browser/components/bookmarks/content/addBookmark.xul	3 Nov 2004 13:22:08 -0000
+@@ -93,7 +93,7 @@
+         <bookmarks-tree id="bookmarks-view" flex="1" type="folders"/>
+         <vbox>
+           <button label="&button.newfolder.label;" accesskey="&button.newfolder.accesskey;"
+-                  oncommand="createNewFolder();"/>
++                  oncommand="createNewFolder();" icon="open"/>
+           <button label="&button.defaultfolder.label;" 
+                   accesskey="&button.defaultfolder.accesskey;"
+                   oncommand="useDefaultFolder();"/>
+Index: browser/components/bookmarks/content/addBookmark2.xul
+===================================================================
+RCS file: /cvsroot/mozilla/browser/components/bookmarks/content/addBookmark2.xul,v
+retrieving revision 1.13.4.2
+diff -u -r1.13.4.2 addBookmark2.xul
+--- browser/components/bookmarks/content/addBookmark2.xul	25 Jul 2004 03:02:16 -0000	1.13.4.2
++++ browser/components/bookmarks/content/addBookmark2.xul	3 Nov 2004 13:22:08 -0000
+@@ -42,6 +42,8 @@
+         buttonlabelextra2="&newFolder.label;" buttonaccesskeyextra2="&newFolder.accesskey;"
+ #ifdef XP_UNIX
+         buttonlabelaccept="&acceptButton.label;"
++        buttoniconaccept="add"
++        buttoniconextra2="open"
+ #endif
+         title="&newBookmark.title;" title-selectFolder="&selectFolder.label;"
+         onload="Startup();"
+Index: browser/components/cookieviewer/content/CookieExceptions.xul
+===================================================================
+RCS file: /cvsroot/mozilla/browser/components/cookieviewer/content/CookieExceptions.xul,v
+retrieving revision 1.5.12.3
+diff -u -r1.5.12.3 CookieExceptions.xul
+--- browser/components/cookieviewer/content/CookieExceptions.xul	11 Aug 2004 05:17:37 -0000	1.5.12.3
++++ browser/components/cookieviewer/content/CookieExceptions.xul	3 Nov 2004 13:22:19 -0000
+@@ -47,12 +47,12 @@
+   <hbox align="start">
+     <textbox id="url" flex="1" oninput="gPermissionManager.onHostInput(event.target);"/>
+   </hbox>
+-  <hbox pack="end">
+-     <button id="btnBlock" disabled="true"
++  <hbox pack="end">
++     <button id="btnBlock" disabled="true" icon="no" 
+              label="&block.label;" oncommand="gPermissionManager.addPermission(nsIPermissionManager.DENY_ACTION);"/>
+-     <button id="btnSession" disabled="true"
++     <button id="btnSession" disabled="true"
+              label="&session.label;" oncommand="gPermissionManager.addPermission(nsICookiePermission.ACCESS_SESSION);"/>
+-     <button id="btnAllow" disabled="true"
++     <button id="btnAllow" disabled="true" icon="yes"
+              label="&allow.label;" oncommand="gPermissionManager.addPermission(nsIPermissionManager.ALLOW_ACTION);"/>
+   </hbox>
+   <separator class="thin"/>
+@@ -71,9 +71,9 @@
+   </tree>
+   <separator class="thin"/>
+   <hbox>
+-    <button id="removePermission" disabled="true" label="&removepermission.label;" 
++    <button id="removePermission" disabled="true" icon="remove" label="&removepermission.label;" 
+             oncommand="gPermissionManager.onPermissionDeleted();"/>
+-    <button id="removeAllPermissions" label="&removeallpermissions.label;" 
++    <button id="removeAllPermissions" icon="clear" label="&removeallpermissions.label;" 
+             oncommand="gPermissionManager.onAllPermissionsDeleted();"/>
+   </hbox>
+ </dialog>
+Index: browser/components/cookieviewer/content/CookieViewer.xul
+===================================================================
+RCS file: /cvsroot/mozilla/browser/components/cookieviewer/content/CookieViewer.xul,v
+retrieving revision 1.4.10.1
+diff -u -r1.4.10.1 CookieViewer.xul
+--- browser/components/cookieviewer/content/CookieViewer.xul	25 Apr 2004 20:11:57 -0000	1.4.10.1
++++ browser/components/cookieviewer/content/CookieViewer.xul	3 Nov 2004 13:22:19 -0000
+@@ -112,10 +112,10 @@
+         </grid>
+       </groupbox>
+       <hbox>
+-        <button id="removeCookie" disabled="true"
++        <button id="removeCookie" disabled="true" icon="remove"
+                       label="&button.removecookie.label;"
+                       oncommand="DeleteCookie();"/>
+-        <button id="removeAllCookies"
++        <button id="removeAllCookies" icon="clear"
+                       label="&button.removeallcookies.label;"
+                       oncommand="DeleteAllCookies();"/>
+       </hbox>
+Index: browser/components/prefwindow/content/pref-advanced.xul
+===================================================================
+RCS file: /cvsroot/mozilla/browser/components/prefwindow/content/pref-advanced.xul,v
+retrieving revision 1.21.12.11
+diff -u -r1.21.12.11 pref-advanced.xul
+--- browser/components/prefwindow/content/pref-advanced.xul	30 Oct 2004 04:27:23 -0000	1.21.12.11
++++ browser/components/prefwindow/content/pref-advanced.xul	3 Nov 2004 13:22:37 -0000
+@@ -112,7 +112,7 @@
+         <hbox align="center">
+           <button label="&managecerts.button;"
+                   oncommand="openCertManager();" 
+-                  id="openCertManagerButton"
++                  id="openCertManagerButton" icon="properties"
+                   accesskey="&managecerts.accesskey;"
+                   prefstring="security.disable_button.openCertManager"/>
+         </hbox>
+@@ -125,7 +125,7 @@
+         <hbox align="center">
+           <button label="&managedevices.button;"
+                   oncommand="openDeviceManager();"
+-                  id="openDeviceManagerButton"
++                  id="openDeviceManagerButton" icon="properties"
+                   accesskey="&managedevices.accesskey;"
+                   prefstring="security.disable_button.openDeviceManager"/>
+         </hbox>
+@@ -139,7 +139,7 @@
+         <hbox align="center">
+           <button label="&validation.managecrls.button;"
+                   oncommand="openCrlManager();"
+-                  id="managecrlbutton"
++                  id="managecrlbutton" icon="properties"
+                   accesskey="&validation.managecrls.accesskey;"
+                   prefstring="security.OCSP.disable_button.managecrl"/>
+         </hbox>
+Index: browser/components/prefwindow/content/pref-features-images.xul
+===================================================================
+RCS file: /cvsroot/mozilla/browser/components/prefwindow/content/pref-features-images.xul,v
+retrieving revision 1.3
+diff -u -r1.3 pref-features-images.xul
+--- browser/components/prefwindow/content/pref-features-images.xul	23 Aug 2003 19:03:28 -0000	1.3
++++ browser/components/prefwindow/content/pref-features-images.xul	3 Nov 2004 13:22:40 -0000
+@@ -54,11 +54,11 @@
+     <treechildren/>
+   </tree>
+   <hbox>
+-    <button id="removePermission" disabled="true" 
++    <button id="removePermission" disabled="true" icon="remove"
+                   label="&removepermission.label;" 
+                   oncommand="DeletePermission();"/>
+     <button id="removeAllPermissions"
+-                  label="&removeallpermissions.label;" 
++                  label="&removeallpermissions.label;" icon="clear"
+                   oncommand="DeleteAllPermissions();"/>
+   </hbox>
+ </dialog>
+Index: browser/components/prefwindow/content/pref-navigator.xul
+===================================================================
+RCS file: /cvsroot/mozilla/browser/components/prefwindow/content/pref-navigator.xul,v
+retrieving revision 1.23.4.3
+diff -u -r1.23.4.3 pref-navigator.xul
+--- browser/components/prefwindow/content/pref-navigator.xul	31 Aug 2004 13:38:50 -0000	1.23.4.3
++++ browser/components/prefwindow/content/pref-navigator.xul	3 Nov 2004 13:22:43 -0000
+@@ -86,7 +86,7 @@
+     <caption label="&fonts.caption;"/>
+     <hbox align="center">
+       <description flex="1">&fontsInfo.label;</description>
+-      <button label="&showFontsAndColors.label;" 
++      <button label="&showFontsAndColors.label;" icon="select-font" 
+               accesskey="&showFontsAndColors.accesskey;" 
+               oncommand="showFontsAndColors();"/>
+     </hbox>
+@@ -118,7 +118,7 @@
+     <hbox align="center">
+       <description flex="1">&proxiesInfo.label;</description>
+       <button id="catProxiesButton" label="&showConnections.label;" 
+-              accesskey="&showConnections.accesskey;" 
++              accesskey="&showConnections.accesskey;" icon="network"
+               oncommand="showConnections();"/>
+     </hbox>
+   </groupbox>
+Index: extensions/cookie/resources/content/cookieAcceptDialog.js
+===================================================================
+RCS file: /cvsroot/mozilla/extensions/cookie/resources/content/cookieAcceptDialog.js,v
+retrieving revision 1.15
+diff -u -r1.15 cookieAcceptDialog.js
+--- extensions/cookie/resources/content/cookieAcceptDialog.js	31 Mar 2004 00:38:16 -0000	1.15
++++ extensions/cookie/resources/content/cookieAcceptDialog.js	3 Nov 2004 13:23:16 -0000
+@@ -62,6 +62,12 @@
+   document.getElementById("cancel").label = dialog.getAttribute("cancelLabel");
+   document.getElementById("cancel").accessKey = dialog.getAttribute("cancelKey");
+ 
++  // hook up GNOME stock icons where implemented
++  document.getElementById("ok").setAttribute("icon","accept");
++  document.getElementById("cancel").setAttribute("icon","cancel");
++  document.getElementById("Button2").setAttribute("icon","accept");
++  document.getElementById("disclosureButton").setAttribute("icon","properties");
++
+   if (!gDateService) {
+     const nsScriptableDateFormat_CONTRACTID = "@mozilla.org/intl/scriptabledateformat;1";
+     const nsIScriptableDateFormat = Components.interfaces.nsIScriptableDateFormat;
