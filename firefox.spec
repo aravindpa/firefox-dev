@@ -8,7 +8,7 @@ ExclusiveArch: i386 x86_64 ia64 ppc
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.0
-Release:        2
+Release:        3
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
@@ -33,13 +33,16 @@ Patch1:         firefox-0.7.3-freetype-compile.patch
 Patch20:        firefox-redhat-homepage.patch
 Patch21:        firefox-0.7.3-default-plugin-less-annoying.patch
 Patch22:        firefox-0.7.3-psfonts.patch
-Patch23:        mozilla-1.7.3-pango-render.patch
 Patch24:        firefox-PR1-default-applications.patch
 Patch25:        firefox-PR1-software-update.patch
 Patch26:        firefox-RC1-stock-icons-be.patch
 Patch27:        firefox-RC1-stock-icons-fe.patch
 Patch28:        firefox-RC1-stock-icons-gnomestripe.patch
 Patch29:        firefox-gnomestripe-0.1-livemarks.patch
+
+Patch30:        mozilla-1.7.3-pango-render.patch
+Patch31:        firefox-1.0-pango-selection.patch
+
 
 # local bugfixes
 Patch40:        firefox-PR1-gnome-vfs-default-app.patch
@@ -91,13 +94,14 @@ compliance, performance and portability.
 %patch20 -p0
 %patch21 -p1
 %patch22 -p1
-%patch23 -p1
 %patch24 -p0
 %patch25 -p0
 %patch26 -p0
 %patch27 -p0
 %patch28 -p0
 %patch29 -p1
+%patch30 -p1
+%patch31 -p1
 %patch40 -p1
 %patch41 -p0
 %patch90 -p0
@@ -222,6 +226,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Sat Nov 20 2004 Christopher Blizzard <blizzard@redhat.com> 0:1.0-3
+- Add patch that uses pango for selection.
+
 * Fri Nov 12 2004 Christopher Aillon <caillon@redhat.com> 0:1.0-2
 - Fix livemarks icon issue. (#138989)
 
