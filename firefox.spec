@@ -8,7 +8,7 @@ ExclusiveArch: i386 x86_64 ia64 ppc
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        0.10.0
-Release:        1.0PR1.2
+Release:        1.0PR1.3
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
@@ -27,6 +27,8 @@ Patch1:         firefox-redhat-homepage.patch
 Patch2:         firefox-0.7.3-default-plugin-less-annoying.patch
 Patch3:         firefox-0.7.3-psfonts.patch
 Patch4:         firefox-0.7.3-freetype-compile.patch
+Patch90:        firefox-PR1-gtk-file-chooser-trunk.patch
+Patch91:        firefox-PR1-gtk-file-chooser-updates.patch
 Patch100:       firefox-PR1-js-64bit-math.patch
 Patch101:       firefox-PR1-pkgconfig.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -56,6 +58,8 @@ compliance, performance and portability.
 %if %{freetype_fc3}
 %patch4 -p0
 %endif
+%patch90 -p0
+%patch91 -p1
 %patch100 -p0
 %patch101 -p0
 %{__rm} -f .mozconfig
@@ -133,7 +137,6 @@ cd -
 #---------------------------------------------------------------------
 
 %post
-
 update-desktop-database %{_datadir}/applications
 
 umask 022
@@ -143,6 +146,7 @@ umask 022
 %{ffdir}/firefox -register
 
 %postun
+update-desktop-database %{_datadir}/applications
 umask 022
 # was this an upgrade?
 if [ $1 -gt 1 ]; then
@@ -170,7 +174,11 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
-* Mon Sep 27 2004 Christopher Aillon <caillon@redhat.com>
+* Tue Sep 28 2004 Christopher Aillon <caillon@redhat.com> 0:0.10.0-1.0PR1.3
+- Backport the GTK+ file chooser.
+- Update desktop database after uninstall.
+
+* Mon Sep 27 2004 Christopher Aillon <caillon@redhat.com> 0:0.10.0-1.0PR1.2
 - Change the vendor to mozilla not fedora
 - Build with --disable-strip so debuginfo packages work (#133738)
 - Add pkgconfig patch (bmo #261090)
