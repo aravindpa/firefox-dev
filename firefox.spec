@@ -3,7 +3,7 @@
 
 %define desktop_file_utils_version 0.9
 
-ExclusiveArch: i386 x86_64 ia64 ppc
+ExclusiveArch: i386 x86_64 ia64 ppc s390 s390x
 
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
@@ -39,9 +39,9 @@ Patch26:        firefox-RC1-stock-icons-be.patch
 Patch27:        firefox-RC1-stock-icons-fe.patch
 Patch28:        firefox-RC1-stock-icons-gnomestripe.patch
 Patch29:        firefox-gnomestripe-0.1-livemarks.patch
-
 Patch30:        mozilla-1.7.3-pango-render.patch
 Patch31:        firefox-1.0-pango-selection.patch
+Patch32:        firefox-1.0-use-system-colors.patch
 
 
 # local bugfixes
@@ -54,6 +54,8 @@ Patch90:        firefox-PR1-gtk-file-chooser-morefixes.patch
 # official upstream patches
 Patch101:       firefox-PR1-pkgconfig.patch
 Patch102:       mozilla-1.7.3-xptcall-s390.patch
+Patch103:       firefox-1.0-xptcall-s390.patch
+Patch104:       firefox-1.0-nspr-s390.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  libpng-devel, libjpeg-devel
@@ -102,11 +104,14 @@ compliance, performance and portability.
 %patch29 -p1
 %patch30 -p1
 %patch31 -p1
+%patch32 -p1
 %patch40 -p1
 %patch41 -p0
 %patch90 -p0
 %patch101 -p0
 %patch102 -p0
+%patch103 -p1
+%patch104 -p0
 
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE2} .mozconfig
@@ -226,6 +231,11 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Dec  3 2004 Christopher Aillon <caillon@redhat.com> 0:1.0-4
+- Add StartupWMClass patch from Damian Christey (#135830)
+- Use system colors by default (#137810)
+- Re-add s390(x)
+
 * Sat Nov 20 2004 Christopher Blizzard <blizzard@redhat.com> 0:1.0-3
 - Add patch that uses pango for selection.
 
