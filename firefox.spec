@@ -216,16 +216,6 @@ fi
 
 %dir %{ffdir}
 
-%ghost %config(missingok,noreplace) %verify(not md5 size mtime) %{ffdir}/components/compreg.dat
-%ghost %config(missingok,noreplace) %verify(not md5 size mtime) %{ffdir}/components/xpti.dat
-%ghost %config(missingok,noreplace) %verify(not md5 size mtime) %{ffdir}/components
-%ghost %config(missingok,noreplace) %verify(not md5 size mtime) %{ffdir}/components.ini
-%ghost %config(missingok,noreplace) %verify(not md5 size mtime) %{ffdir}/chrome/chrome.rdf
-%ghost %config(missingok,noreplace) %verify(not md5 size mtime) %{ffdir}/chrome/overlayinfo
-%ghost %config(missingok,noreplace) %verify(not md5 size mtime) %{ffdir}/extensions/*
-%ghost %config(missingok,noreplace) %verify(not md5 size mtime) %{ffdir}/extensions
-
-
 #---------------------------------------------------------------------
 
 %changelog
@@ -234,9 +224,6 @@ fi
   dialog (#136261)
 - Fix default height being larger than the available area, cherry picked
   from upstream
-
-* Mon Oct 18 2004 Christopher Aillon <caillon@redhat.com> 0:0.10.1-1.0PR1.14
-- Fix RPM file ownership (#136015)
 
 * Mon Oct 18 2004 Christopher Blizzard <blizzard@redhat.com> 0:0.10.1-1.0PR1.13
 - Actually turn on pango in the mozconfig
