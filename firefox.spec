@@ -8,7 +8,7 @@ ExclusiveArch: i386 x86_64 ia64 ppc
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        0.10.0
-Release:        1.0PR1.6
+Release:        1.0PR1.7
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
@@ -23,6 +23,7 @@ Source7:        firefox-xremote-client.sh.in
 Source8:        firefox.1
 Source9:        firefox-rebuild-databases.pl.in
 Source10:       firefox.xpm
+Source100:	find-external-requires
 Patch1:         firefox-redhat-homepage.patch
 Patch2:         firefox-0.7.3-default-plugin-less-annoying.patch
 Patch3:         firefox-0.7.3-psfonts.patch
@@ -44,6 +45,10 @@ Obsoletes:      phoenix, mozilla-firebird, MozillaFirebird
 Provides:       mozilla-firebird = %{epoch}:%{version}, MozillaFirebird = %{epoch}:%{version}
 Provides:       webclient
 %define ffdir %{_libdir}/firefox-%{version}
+
+AutoProv: 0
+%define _use_internal_dependency_generator 0
+%define __find_requires %{SOURCE100}
 
 %description
 Mozilla Firefox is an open-source web browser, designed for standards
@@ -177,6 +182,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Oct  1 2004 Bill Nottingham <notting@redhat.com> 0:0.10.0-1.0PR1.7
+- filter out library Provides: and internal Requires:
+
 * Thu Sep 30 2004 Christopher Aillon <caillon@redhat.com> 0:0.10.0-1.0PR1.6
 - Prereq desktop-file-utils >= 0.9
 
