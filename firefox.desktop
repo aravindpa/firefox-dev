@@ -8,5 +8,4 @@ Exec=firefox
 Icon=firefox.png
 Terminal=false
 Type=Application
-Name[en_US]=Mozilla Firefox Browser
 MimeType=text/html;text/xml;application/xhtml+xml;

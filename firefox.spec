@@ -2,13 +2,13 @@ ExclusiveArch: i386 x86_64 ia64 ppc
 
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
-Version:        0.9.3
-Release:        8
+Version:        0.10.0
+Release:        1.0PR1.0
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
-Source0:        http://ftp.mozilla.org/pub/firefox/releases/0.9.3/firefox-0.9.3-source.tar.bz2
+Source0:        http://ftp.mozilla.org/pub/mozilla.org/firefox/releases/0.10/firefox-1.0PR-source.tar.bz2
 Source1:        bookmarks.html
 Source2:        mozconfig-firefox
 Source3:        firefox.desktop
@@ -19,11 +19,9 @@ Source8:        firefox.1
 Source9:        firefox-rebuild-databases.pl.in
 Source10:       firefox.xpm
 Patch1:         firefox-0.7.3-fedora-homepage.patch
-Patch2:         firefox-0.7.3-gcc34.patch
-Patch3:         firefox-0.7.3-extensions.patch
-Patch4:         firefox-0.7.3-default-plugin-less-annoying.patch
-Patch5:         firefox-0.7.3-psfonts.patch
-Patch6:         firefox-0.7.3-freetype-compile.patch
+Patch2:         firefox-0.7.3-default-plugin-less-annoying.patch
+Patch3:         firefox-0.7.3-psfonts.patch
+Patch4:         firefox-0.7.3-freetype-compile.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  libpng-devel, libjpeg-devel
 BuildRequires:  zlib-devel, zip
@@ -46,10 +44,8 @@ compliance, performance and portability.
 %setup -q -n mozilla
 %patch1 -p1
 %patch2 -p1
-%patch3 -p0
-%patch4 -p1
-%patch5 -p1
-%patch6 -p0
+%patch3 -p1
+%patch4 -p0
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE2} .mozconfig
 
@@ -120,6 +116,9 @@ cd -
 #---------------------------------------------------------------------
 
 %post
+
+update-desktop-database %{_datadir}/applications
+
 umask 022
 %{ffdir}/firefox-rebuild-databases.pl || :
 
@@ -154,6 +153,13 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Sep 14 2004 Christopher Aillon <caillon@redhat.com> 0:0.10.0-1.0PR1.0
+- Update to 1.0PR1
+- Update man page references to say Firefox instead of Firebird
+- Remove gcc34 and extensions patch; they are now upstream
+- Update desktop database
+- Minor tweaks to the .desktop file
+
 * Fri Sep 03 2004 Christopher Aillon <caillon@redhat.com> 0:0.9.3-8
 - Fixup .desktop entry Name, GenericName, and Comment (#131602)
 - Add MimeType desktop entry (patch from jrb@redhat.com)
