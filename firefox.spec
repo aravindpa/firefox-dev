@@ -10,7 +10,7 @@ ExclusiveArch: i386 x86_64 ia64 ppc s390 s390x
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.0.1
-Release:        4
+Release:        5
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
@@ -35,6 +35,7 @@ Source100:      find-external-requires
 Patch1:         firefox-0.7.3-freetype-compile.patch
 Patch2:         firefox-1.0-prdtoa.patch
 Patch3:         firefox-1.0-gcc4-compile.patch
+Patch4:         firefox-1.0-recv-fortify.patch
 
 # customization patches
 Patch20:        firefox-redhat-homepage.patch
@@ -112,6 +113,7 @@ compliance, performance and portability.
 %endif
 %patch2  -p0
 %patch3  -p0
+%patch4  -p0
 %patch20 -p0
 %patch21 -p1
 %patch22 -p1
@@ -324,6 +326,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Mar  8 2005 Christopher Aillon <caillon@redhat.com> 0:1.0.1-5
+- Add patch to compile against new fortified glibc macros
+
 * Fri Mar  4 2005 Christopher Aillon <caillon@redhat.com> 0:1.0.1-4
 - Build against gcc4, add build patches to do so.
 
