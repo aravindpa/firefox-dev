@@ -1,0 +1,27 @@
+diff -ru mozilla-badicon/browser/themes/gnomestripe/browser/browser.css mozilla/browser/themes/gnomestripe/browser/browser.css
+--- mozilla-badicon/browser/themes/gnomestripe/browser/browser.css	2004-11-02 09:05:54.000000000 -0500
++++ mozilla/browser/themes/gnomestripe/browser/browser.css	2004-11-13 09:08:43.531509488 -0500
+@@ -138,6 +138,7 @@
+ /* only the folder icon has any effect for now, item icon is unused */
+ .bookmark-item[livemark="true"] { 
+   list-style-image: url("chrome://browser/skin/livemark-item.png") !important;
++  -moz-image-region: rect(0px, 16px, 16px, 0px);
+ }
+ 
+ .bookmark-item[type="menu"][livemark="true"] { 
+@@ -148,6 +149,15 @@
+   -moz-image-region: rect(16px, 48px, 32px, 32px) !important;
+ }
+ 
++.bookmark-item[livemark="true"][container="true"] {
++  -moz-image-region: rect(0px, 32px, 16px, 16px) !important;
++}
++
++.bookmark-item[livemark="true"][open="true"],
++.bookmark-item[livemark="true"][container="true"][open="true"] {
++  -moz-image-region: rect(16px, 32px, 32px, 16px) !important;
++}
++
+ /* ::::: primary toolbar buttons ::::: */
+ 
+ .toolbarbutton-1 {

@@ -8,7 +8,7 @@ ExclusiveArch: i386 x86_64 ia64 ppc
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.0
-Release:        1
+Release:        2
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
@@ -39,6 +39,7 @@ Patch25:        firefox-PR1-software-update.patch
 Patch26:        firefox-RC1-stock-icons-be.patch
 Patch27:        firefox-RC1-stock-icons-fe.patch
 Patch28:        firefox-RC1-stock-icons-gnomestripe.patch
+Patch29:        firefox-gnomestripe-0.1-livemarks.patch
 
 # local bugfixes
 Patch40:        firefox-PR1-gnome-vfs-default-app.patch
@@ -96,6 +97,7 @@ compliance, performance and portability.
 %patch26 -p0
 %patch27 -p0
 %patch28 -p0
+%patch29 -p1
 %patch40 -p1
 %patch41 -p0
 %patch90 -p0
@@ -220,6 +222,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Nov 12 2004 Christopher Aillon <caillon@redhat.com> 0:1.0-2
+- Fix livemarks icon issue. (#138989)
+
 * Tue Nov  8 2004 Christopher Aillon <caillon@redhat.com> 0:1.0-1
 - Firefox 1.0
 
