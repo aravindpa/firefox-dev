@@ -8,7 +8,7 @@ ExclusiveArch: i386 x86_64 ia64 ppc
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        0.10.1
-Release:        1.0PR1.14
+Release:        1.0PR1.15
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
@@ -37,6 +37,9 @@ Patch23:        mozilla-1.7.3-pango-render.patch
 Patch24:        firefox-PR1-default-applications.patch
 Patch25:        firefox-PR1-software-update.patch
 
+# local bugfixes
+Patch40:        firefox-PR1-gnome-vfs-default-app.patch
+
 # backported patches
 Patch90:        firefox-PR1-gtk-file-chooser-trunk.patch
 Patch91:        firefox-PR1-gtk-file-chooser-updates.patch
@@ -50,6 +53,7 @@ Patch104:       firefox-PR1-button-focus.patch
 Patch105:       firefox-PR1-tab-focus-stealing.patch
 Patch106:       firefox-PR1-tab-focus-stealing2.patch
 Patch107:       firefox-PR1-access-64bit-crash.patch
+Patch108:       firefox-PR1-defaultHeight.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  libpng-devel, libjpeg-devel
@@ -87,6 +91,7 @@ compliance, performance and portability.
 %patch23 -p1
 %patch24 -p0
 %patch25 -p0
+%patch40 -p1
 %patch90 -p0
 %patch91 -p1
 %patch100 -p0
@@ -97,6 +102,7 @@ compliance, performance and portability.
 %patch105 -p0
 %patch106 -p0
 %patch107 -p0
+%patch108 -p1
 
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE2} .mozconfig
@@ -223,6 +229,12 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Oct 18 2004 Christopher Blizzard <blizzard@redhat.com> 0:0.10.1-1.0PR1.15
+- Fix problem where default apps aren't showing up in the download
+  dialog (#136261)
+- Fix default height being larger than the available area, cherry picked
+  from upstream
+
 * Mon Oct 18 2004 Christopher Aillon <caillon@redhat.com> 0:0.10.1-1.0PR1.14
 - Fix RPM file ownership (#136015)
 
