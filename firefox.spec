@@ -8,7 +8,7 @@ ExclusiveArch: i386 x86_64 ia64 ppc s390 s390x
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.0
-Release:        6
+Release:        7
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
@@ -200,6 +200,22 @@ cd -
 # own mozilla plugin dir (#135050)
 %{__mkdir_p} $RPM_BUILD_ROOT%{_libdir}/mozilla/plugins
 
+# ghost files
+touch $RPM_BUILD_ROOT%{ffdir}/chrome/chrome.rdf
+for overlay in {"browser","communicator","inspector","messenger","navigator"}; do
+  %{__mkdir_p} $RPM_BUILD_ROOT%{ffdir}/chrome/overlayinfo/$overlay/content
+  touch $RPM_BUILD_ROOT%{ffdir}/chrome/overlayinfo/$overlay/content/overlays.rdf
+done
+touch $RPM_BUILD_ROOT%{ffdir}/components.ini
+touch $RPM_BUILD_ROOT%{ffdir}/components/compreg.dat
+touch $RPM_BUILD_ROOT%{ffdir}/components/xpti.dat
+%{__mkdir_p}  $RPM_BUILD_ROOT%{ffdir}/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}
+touch $RPM_BUILD_ROOT%{ffdir}/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}/install.rdf
+touch $RPM_BUILD_ROOT%{ffdir}/extensions/installed-extensions-processed.txt
+touch $RPM_BUILD_ROOT%{ffdir}/extensions/Extensions.rdf
+
+
+
 #---------------------------------------------------------------------
 
 %clean
@@ -243,9 +259,28 @@ fi
 %{ffdir}
 %{_libdir}/mozilla
 
+%ghost %{ffdir}/chrome/chrome.rdf
+%ghost %{ffdir}/chrome/overlayinfo/browser/content/overlays.rdf
+%ghost %{ffdir}/chrome/overlayinfo/communicator/content/overlays.rdf
+%ghost %{ffdir}/chrome/overlayinfo/inspector/content/overlays.rdf
+%ghost %{ffdir}/chrome/overlayinfo/messenger/content/overlays.rdf
+%ghost %{ffdir}/chrome/overlayinfo/navigator/content/overlays.rdf
+%ghost %{ffdir}/components.ini
+%ghost %{ffdir}/components/compreg.dat
+%ghost %{ffdir}/components/xpti.dat
+%ghost %{ffdir}/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}/install.rdf
+%ghost %{ffdir}/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}/install.rdf
+%ghost %{ffdir}/extensions/installed-extensions-processed.txt
+%ghost %{ffdir}/extensions/Extensions.rdf
+
+
 #---------------------------------------------------------------------
 
 %changelog
+* Sat Dec 25 2004 Christopher Aillon <caillon@redhat.com> 0:1.0-7
+- Make sure we get a URL passed in to firefox (#138861)
+- Mark some generated files as ghost (#136015)
+
 * Wed Dec 15 2004 Christopher Aillon <caillon@redhat.com> 0:1.0-6
 - Don't have downloads "disappear" when downloading to desktop (#139015)
 - Add RPM version to the useragent
