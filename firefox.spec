@@ -3,18 +3,22 @@
 
 %define desktop_file_utils_version 0.9
 
+%define indexhtml file:///usr/share/doc/HTML/index.html
+
 ExclusiveArch: i386 x86_64 ia64 ppc s390 s390x
 
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.0
-Release:        7
+Release:        8
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
 Source0:        firefox-%{version}-source.tar.bz2
 Source1:        firefox-gnomestripe-0.1.tar.gz
+Source2:        firefox-%{version}-langpacks-3.tar.bz2
+
 Source10:       mozconfig-firefox
 Source11:       firefox-redhat-default-bookmarks.html
 Source12:       firefox-redhat-default-prefs.js
@@ -192,6 +196,34 @@ cd $RPM_BUILD_ROOT%{ffdir}/chrome
 find . -name "*" -type d -maxdepth 1 -exec %{__rm} -rf {} \;
 cd -
 
+# Install language packs
+cd $RPM_BUILD_ROOT%{ffdir}/chrome
+  mkdir lang
+  cd $RPM_BUILD_ROOT%{ffdir}/chrome/lang
+    mv ../installed-chrome.txt ./installed-chrome.txt
+    tar xvjf %{SOURCE2}
+
+    # Extract jar, modify the homepage, repack
+    for i in `ls *.jar`; do
+      rm -rf locale
+      LANGPACK=`basename $i .jar`
+      unzip $LANGPACK.jar
+      perl -pi -e "s|browser.startup.homepage.*$|browser.startup.homepage=%{indexhtml}|g;" locale/browser-region/region.properties
+      rm -rf $LANGPACK.jar
+      zip -r -D $LANGPACK.jar locale
+      rm -rf locale
+    done
+
+    mv -v *.jar ..
+  cd -
+cd -
+
+cat > $RPM_BUILD_ROOT%{ffdir}/defaults/pref/firefox-l10n.js << EOF
+pref("general.useragent.locale", "chrome://global/locale/intl.properties");
+EOF
+chmod 644 $RPM_BUILD_ROOT%{ffdir}/defaults/pref/firefox-l10n.js
+
+
 # another bug fixed by looking at the debian package
 %{__mkdir_p} $RPM_BUILD_ROOT%{ffdir}/chrome/icons/default/
 %{__cp} %{SOURCE23} $RPM_BUILD_ROOT%{ffdir}/chrome/icons/default/default.xpm
@@ -277,6 +309,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Dec 28 2004 Christopher Aillon <caillon@redhat.com> 0:1.0-8
+- Add upstream langpacks
+
 * Sat Dec 25 2004 Christopher Aillon <caillon@redhat.com> 0:1.0-7
 - Make sure we get a URL passed in to firefox (#138861)
 - Mark some generated files as ghost (#136015)
