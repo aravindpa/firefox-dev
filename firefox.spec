@@ -8,7 +8,7 @@ ExclusiveArch: i386 x86_64 ia64 ppc
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        0.10.0
-Release:        1.0PR1.3
+Release:        1.0PR1.4
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
@@ -174,6 +174,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Sep 29 2004 Christopher Aillon <caillon@redhat.com> 0:0.10.0-1.0PR1.4
+- Add the xul mime type to the .desktop file
+
 * Tue Sep 28 2004 Christopher Aillon <caillon@redhat.com> 0:0.10.0-1.0PR1.3
 - Backport the GTK+ file chooser.
 - Update desktop database after uninstall.

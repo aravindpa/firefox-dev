@@ -8,4 +8,4 @@ Exec=firefox
 Icon=firefox.png
 Terminal=false
 Type=Application
-MimeType=text/html;text/xml;application/xhtml+xml;
+MimeType=text/html;text/xml;application/xhtml+xml;application/vnd.mozilla.xul+xml;text/mml;
