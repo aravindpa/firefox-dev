@@ -210,13 +210,14 @@ fi
 
 %dir %{ffdir}
 
-%ghost %{ffdir}/components/compreg.dat
-%ghost %{ffdir}/components/xpti.dat
-%ghost %{ffdir}/components
-%ghost %{ffdir}/components.ini
-%ghost %{ffdir}/chrome/chrome.rdf
-%ghost %{ffdir}/chrome/overlayinfo
-%ghost %{ffdir}/extensions
+%ghost %config(missingok,noreplace) %verify(not md5 size mtime) %{ffdir}/components/compreg.dat
+%ghost %config(missingok,noreplace) %verify(not md5 size mtime) %{ffdir}/components/xpti.dat
+%ghost %config(missingok,noreplace) %verify(not md5 size mtime) %{ffdir}/components
+%ghost %config(missingok,noreplace) %verify(not md5 size mtime) %{ffdir}/components.ini
+%ghost %config(missingok,noreplace) %verify(not md5 size mtime) %{ffdir}/chrome/chrome.rdf
+%ghost %config(missingok,noreplace) %verify(not md5 size mtime) %{ffdir}/chrome/overlayinfo
+%ghost %config(missingok,noreplace) %verify(not md5 size mtime) %{ffdir}/extensions/*
+%ghost %config(missingok,noreplace) %verify(not md5 size mtime) %{ffdir}/extensions
 
 
 #---------------------------------------------------------------------
