@@ -9,8 +9,8 @@ ExclusiveArch: i386 x86_64 ia64 ppc s390 s390x
 
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
-Version:        1.0
-Release:        8
+Version:        1.0.1
+Release:        1
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
@@ -63,6 +63,7 @@ Patch102:       mozilla-1.7.3-xptcall-s390.patch
 Patch103:       firefox-1.0-xptcall-s390.patch
 Patch104:       firefox-1.0-nspr-s390.patch
 Patch105:       firefox-1.0-useragent.patch
+Patch106:       firefox-1.0-gtk-system-colors.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  libpng-devel, libjpeg-devel
@@ -123,6 +124,7 @@ compliance, performance and portability.
 %patch103 -p1
 %patch104 -p0
 %patch105 -p0
+%patch106 -p0
 
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE10} .mozconfig
@@ -197,31 +199,31 @@ find . -name "*" -type d -maxdepth 1 -exec %{__rm} -rf {} \;
 cd -
 
 # Install language packs
-cd $RPM_BUILD_ROOT%{ffdir}/chrome
-  mkdir lang
-  cd $RPM_BUILD_ROOT%{ffdir}/chrome/lang
-    mv ../installed-chrome.txt ./installed-chrome.txt
-    tar xvjf %{SOURCE2}
+#cd $RPM_BUILD_ROOT%{ffdir}/chrome
+#  mkdir lang
+#  cd $RPM_BUILD_ROOT%{ffdir}/chrome/lang
+#    mv ../installed-chrome.txt ./installed-chrome.txt
+#    tar xvjf %{SOURCE2}
+#
+#    # Extract jar, modify the homepage, repack
+#    for i in `ls *.jar`; do
+#      rm -rf locale
+#      LANGPACK=`basename $i .jar`
+#      unzip $LANGPACK.jar
+#      perl -pi -e "s|browser.startup.homepage.*$|browser.startup.homepage=%{indexhtml}|g;" locale/browser-region/region.properties
+#      rm -rf $LANGPACK.jar
+#      zip -r -D $LANGPACK.jar locale
+#      rm -rf locale
+#    done
+#
+#    mv -v *.jar ..
+#  cd -
+#cd -
 
-    # Extract jar, modify the homepage, repack
-    for i in `ls *.jar`; do
-      rm -rf locale
-      LANGPACK=`basename $i .jar`
-      unzip $LANGPACK.jar
-      perl -pi -e "s|browser.startup.homepage.*$|browser.startup.homepage=%{indexhtml}|g;" locale/browser-region/region.properties
-      rm -rf $LANGPACK.jar
-      zip -r -D $LANGPACK.jar locale
-      rm -rf locale
-    done
-
-    mv -v *.jar ..
-  cd -
-cd -
-
-cat > $RPM_BUILD_ROOT%{ffdir}/defaults/pref/firefox-l10n.js << EOF
-pref("general.useragent.locale", "chrome://global/locale/intl.properties");
-EOF
-chmod 644 $RPM_BUILD_ROOT%{ffdir}/defaults/pref/firefox-l10n.js
+#cat > $RPM_BUILD_ROOT%{ffdir}/defaults/pref/firefox-l10n.js << EOF
+#pref("general.useragent.locale", "chrome://global/locale/intl.properties");
+#EOF
+#chmod 644 $RPM_BUILD_ROOT%{ffdir}/defaults/pref/firefox-l10n.js
 
 
 # another bug fixed by looking at the debian package
@@ -309,6 +311,11 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Feb 24 2005 Christopher Aillon <caillon@redhat.com> 0:1.0.1-1
+- Update to 1.0.1 fixing several security flaws.
+- Temporarily disable langpacks to workaround startup issues (#145806)
+- Request the correct system colors from gtk (#143423)
+
 * Tue Dec 28 2004 Christopher Aillon <caillon@redhat.com> 0:1.0-8
 - Add upstream langpacks
 
