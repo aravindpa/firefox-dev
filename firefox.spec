@@ -28,6 +28,7 @@ Source100:      find-external-requires
 
 # build patches
 Patch1:         firefox-0.7.3-freetype-compile.patch
+Patch2:         firefox-1.0-prdtoa.patch
 
 # customization patches
 Patch20:        firefox-redhat-homepage.patch
@@ -93,6 +94,7 @@ compliance, performance and portability.
 %if %{freetype_fc3}
 %patch1 -p0
 %endif
+%patch2  -p0
 %patch20 -p0
 %patch21 -p1
 %patch22 -p1
