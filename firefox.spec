@@ -227,6 +227,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Oct 26 2004 Christopher Aillon <caillon@redhat.com>
+- Fix LD_LIBRARY_PATH at startup (Steve Knodle)
+
 * Fri Oct 22 2004 Christopher Aillon <caillon@redhat.com> 0:0.10.1-1.0PR1.21
 - Prevent inlining of stack direction detection (#135255)
 
