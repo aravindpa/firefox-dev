@@ -10,7 +10,7 @@ ExclusiveArch: i386 x86_64 ia64 ppc s390 s390x
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.0.1
-Release:        3
+Release:        4
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
@@ -34,6 +34,7 @@ Source100:      find-external-requires
 # build patches
 Patch1:         firefox-0.7.3-freetype-compile.patch
 Patch2:         firefox-1.0-prdtoa.patch
+Patch3:         firefox-1.0-gcc4-compile.patch
 
 # customization patches
 Patch20:        firefox-redhat-homepage.patch
@@ -110,6 +111,7 @@ compliance, performance and portability.
 %patch1 -p0
 %endif
 %patch2  -p0
+%patch3  -p0
 %patch20 -p0
 %patch21 -p1
 %patch22 -p1
@@ -322,6 +324,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Mar  4 2005 Christopher Aillon <caillon@redhat.com> 0:1.0.1-4
+- Build against gcc4, add build patches to do so.
+
 * Thu Mar  3 2005 Christopher Aillon <caillon@redhat.com> 0:1.0.1-3
 - Remerge firefox-1.0-pango-selection.patch
 - Add execshield patches for ia64 and ppc
