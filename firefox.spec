@@ -8,22 +8,23 @@ ExclusiveArch: i386 x86_64 ia64 ppc s390 s390x
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.0
-Release:        4
+Release:        5
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
 Source0:        firefox-%{version}-source.tar.bz2
-Source1:        firefox-redhat-default-bookmarks.html
-Source2:        mozconfig-firefox
-Source3:        firefox.desktop
-Source4:        firefox.png
-Source6:        firefox.sh.in
-Source7:        firefox-xremote-client.sh.in
-Source8:        firefox.1
-Source9:        firefox-rebuild-databases.pl.in
-Source10:       firefox.xpm
-Source20:       firefox-gnomestripe-0.1.tar.gz
+Source1:        firefox-gnomestripe-0.1.tar.gz
+Source10:       mozconfig-firefox
+Source11:       firefox-redhat-default-bookmarks.html
+Source12:       firefox-redhat-default-prefs.js
+Source20:       firefox.desktop
+Source21:       firefox.sh.in
+Source22:       firefox.png
+Source23:       firefox.xpm
+Source24:       firefox.1
+Source50:       firefox-xremote-client.sh.in
+Source55:       firefox-rebuild-databases.pl.in
 Source100:      find-external-requires
 
 # build patches
@@ -42,7 +43,7 @@ Patch28:        firefox-RC1-stock-icons-gnomestripe.patch
 Patch29:        firefox-gnomestripe-0.1-livemarks.patch
 Patch30:        mozilla-1.7.3-pango-render.patch
 Patch31:        firefox-1.0-pango-selection.patch
-Patch32:        firefox-1.0-use-system-colors.patch
+Patch32:        firefox-1.0-pango-space-width.patch
 
 
 # local bugfixes
@@ -90,7 +91,7 @@ compliance, performance and portability.
 
 %prep
 %setup -q -n mozilla
-%{__tar} -xzf %{SOURCE20}
+%{__tar} -xzf %{SOURCE1}
 %if %{freetype_fc3}
 %patch1 -p0
 %endif
@@ -116,10 +117,10 @@ compliance, performance and portability.
 %patch104 -p0
 
 %{__rm} -f .mozconfig
-%{__cp} %{SOURCE2} .mozconfig
+%{__cp} %{SOURCE10} .mozconfig
 
 # set up our default bookmarks
-%{__cp} %{SOURCE1} $RPM_BUILD_DIR/mozilla/profile/defaults/bookmarks.html
+%{__cp} %{SOURCE11} $RPM_BUILD_DIR/mozilla/profile/defaults/bookmarks.html
 
 
 #---------------------------------------------------------------------
@@ -148,28 +149,33 @@ cd -
 
 %{__rm} -f $RPM_BUILD_ROOT%{_libdir}/firefox-*-linux-gnu.tar
 
-%{__install} -p -D %{SOURCE4} $RPM_BUILD_ROOT%{_datadir}/pixmaps/firefox.png
+%{__install} -p -D %{SOURCE22} $RPM_BUILD_ROOT%{_datadir}/pixmaps/firefox.png
 
 desktop-file-install --vendor mozilla \
   --dir $RPM_BUILD_ROOT%{_datadir}/applications \
   --add-category X-Fedora \
   --add-category Application \
   --add-category Network \
-  %{SOURCE3} 
+  %{SOURCE20} 
 
-%{__cat} %{SOURCE6} | %{__sed} -e 's,FFDIR,%{ffdir},g' -e 's,LIBDIR,%{_libdir},g' > \
+%{__cat} %{SOURCE21} | %{__sed} -e 's,FFDIR,%{ffdir},g' -e 's,LIBDIR,%{_libdir},g' > \
   $RPM_BUILD_ROOT%{_bindir}/firefox
 
 %{__chmod} 755 $RPM_BUILD_ROOT%{_bindir}/firefox
 
-%{__install} -p -D %{SOURCE1} $RPM_BUILD_ROOT%{ffdir}/defaults/profile/US/bookmarks.html
-%{__install} -p -D %{SOURCE1} $RPM_BUILD_ROOT%{ffdir}/defaults/profile/bookmarks.html
-%{__cat} %{SOURCE7} | %{__sed} -e 's,FFDIR,%{ffdir},g' -e 's,LIBDIR,%{_libdir},g' > \
+%{__install} -p -D %{SOURCE11} $RPM_BUILD_ROOT%{ffdir}/defaults/profile/US/bookmarks.html
+%{__install} -p -D %{SOURCE11} $RPM_BUILD_ROOT%{ffdir}/defaults/profile/bookmarks.html
+%{__cat} %{SOURCE50} | %{__sed} -e 's,FFDIR,%{ffdir},g' -e 's,LIBDIR,%{_libdir},g' > \
   $RPM_BUILD_ROOT%{ffdir}/firefox-xremote-client
 
+# set up our default preferences
+%{__cp} %{SOURCE12} $RPM_BUILD_ROOT/%{ffdir}/greprefs/all-redhat.js
+%{__cp} %{SOURCE12} $RPM_BUILD_ROOT/%{ffdir}/defaults/pref/all-redhat.js
+
+
 %{__chmod} 755 $RPM_BUILD_ROOT%{ffdir}/firefox-xremote-client
-%{__install} -p -D %{SOURCE8} $RPM_BUILD_ROOT%{_mandir}/man1/firefox.1
-%{__cat} %{SOURCE9} | %{__sed} -e 's,FFDIR,%{ffdir},g' > \
+%{__install} -p -D %{SOURCE24} $RPM_BUILD_ROOT%{_mandir}/man1/firefox.1
+%{__cat} %{SOURCE55} | %{__sed} -e 's,FFDIR,%{ffdir},g' > \
   $RPM_BUILD_ROOT/%{ffdir}/firefox-rebuild-databases.pl
 %{__chmod} 755 $RPM_BUILD_ROOT/%{ffdir}/firefox-rebuild-databases.pl
 
@@ -181,8 +187,8 @@ cd -
 
 # another bug fixed by looking at the debian package
 %{__mkdir_p} $RPM_BUILD_ROOT%{ffdir}/chrome/icons/default/
-%{__cp} %{SOURCE10} $RPM_BUILD_ROOT%{ffdir}/chrome/icons/default/default.xpm
-%{__cp} %{SOURCE10} $RPM_BUILD_ROOT%{ffdir}/icons/default.xpm
+%{__cp} %{SOURCE23} $RPM_BUILD_ROOT%{ffdir}/chrome/icons/default/default.xpm
+%{__cp} %{SOURCE23} $RPM_BUILD_ROOT%{ffdir}/icons/default.xpm
 
 # own mozilla plugin dir (#135050)
 %{__mkdir_p} $RPM_BUILD_ROOT%{_libdir}/mozilla/plugins
@@ -233,6 +239,11 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Sat Dec 11 2004 Christopher Aillon <caillon@redhat.com> 0:1.0-5
+- Fix spacing in textareas when using pango for rendering
+- Enable pango rendering by default.
+- Enable smooth scrolling by default
+
 * Fri Dec  3 2004 Christopher Aillon <caillon@redhat.com> 0:1.0-4
 - Add StartupWMClass patch from Damian Christey (#135830)
 - Use system colors by default (#137810)

@@ -77,6 +77,12 @@ export MOZ_PLUGIN_PATH
 FONTCONFIG_PATH="/etc/fonts:${MOZILLA_FIVE_HOME}/res/Xft"
 export FONTCONFIG_PATH
 
+##
+## Set MOZ_ENABLE_PANGO
+##
+MOZ_ENABLE_PANGO=1
+export MOZ_ENABLE_PANGO
+
 # Figure out if we need to ser LD_ASSUME_KERNEL for older versions of the JVM.
 
 function set_jvm_vars() {
