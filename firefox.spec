@@ -10,7 +10,7 @@ ExclusiveArch: i386 x86_64 ia64 ppc s390 s390x
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.0.1
-Release:        5
+Release:        6
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
@@ -50,11 +50,12 @@ Patch29:        firefox-gnomestripe-0.1-livemarks.patch
 Patch30:        mozilla-1.7.3-pango-render.patch
 Patch31:        firefox-1.0-pango-selection.patch
 Patch32:        firefox-1.0-pango-space-width.patch
-Patch33:        firefox-1.0-download-to-desktop.patch
+Patch33:        firefox-1.0-pango-rounding.patch
 
 # local bugfixes
 Patch40:        firefox-PR1-gnome-vfs-default-app.patch
 Patch41:        firefox-PR1-stack-direction.patch
+Patch42:        firefox-1.0-download-to-desktop.patch
 
 # backported patches
 Patch90:        firefox-PR1-gtk-file-chooser-morefixes.patch
@@ -129,6 +130,7 @@ compliance, performance and portability.
 %patch33 -p0
 %patch40 -p1
 %patch41 -p0
+%patch42 -p0
 %patch90 -p0
 %patch101 -p0
 %patch102 -p0
@@ -326,6 +328,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Mar 22 2005 Christopher Aillon <caillon@redhat.com> 0:1.0.1-6
+- Add patch to fix italic rendering errors with certain fonts (e.g. Tahoma)
+- Re-enable jsd since there is now a venkman version that works with Firefox.
+
 * Tue Mar  8 2005 Christopher Aillon <caillon@redhat.com> 0:1.0.1-5
 - Add patch to compile against new fortified glibc macros
 
