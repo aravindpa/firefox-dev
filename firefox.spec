@@ -24,18 +24,30 @@ Source8:        firefox.1
 Source9:        firefox-rebuild-databases.pl.in
 Source10:       firefox.xpm
 Source100:      find-external-requires
-Patch1:         firefox-redhat-homepage.patch
-Patch2:         firefox-0.7.3-default-plugin-less-annoying.patch
-Patch3:         firefox-0.7.3-psfonts.patch
-Patch4:         firefox-0.7.3-freetype-compile.patch
+
+# build patches
+Patch1:         firefox-0.7.3-freetype-compile.patch
+Patch2:         firefox-PR1-oji-gcc342-compile.patch
+
+# customization patches
+Patch20:        firefox-redhat-homepage.patch
+Patch21:        firefox-0.7.3-default-plugin-less-annoying.patch
+Patch22:        firefox-0.7.3-psfonts.patch
+
+# backported patches
 Patch90:        firefox-PR1-gtk-file-chooser-trunk.patch
 Patch91:        firefox-PR1-gtk-file-chooser-updates.patch
+
+# official upstream patches
 Patch100:       firefox-PR1-js-64bit-math.patch
 Patch101:       firefox-PR1-pkgconfig.patch
 Patch102:       firefox-PR1-clipboard-access.patch
 Patch103:       firefox-PR1-alt-num-tab-switch.patch
 Patch104:       firefox-PR1-button-focus.patch
 Patch105:       firefox-PR1-tab-focus-stealing.patch
+Patch106:       firefox-PR1-tab-focus-stealing2.patch
+
+
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  libpng-devel, libjpeg-devel
 BuildRequires:  zlib-devel, zip
@@ -61,12 +73,13 @@ compliance, performance and portability.
 
 %prep
 %setup -q -n mozilla
-%patch1 -p0
-%patch2 -p1
-%patch3 -p1
 %if %{freetype_fc3}
-%patch4 -p0
+%patch1 -p0
 %endif
+%patch2 -p0
+%patch20 -p0
+%patch21 -p1
+%patch22 -p1
 %patch90 -p0
 %patch91 -p1
 %patch100 -p0
@@ -75,6 +88,7 @@ compliance, performance and portability.
 %patch103 -p0
 %patch104 -p0
 %patch105 -p0
+%patch106 -p0
 
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE2} .mozconfig
@@ -188,9 +202,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
-* Tue Oct  5 2004 Christopher Aillon <caillon@redhat.com> 0:0.10.1.1.0PR1.9
+* Fri Oct  8 2004 Christopher Aillon <caillon@redhat.com> 0:0.10.1-1.0PR1.9
+- Fix compile issues (#134914)
 - Add patch to fix button focus issues (#133507)
-- Add patch to fix tab focus stealing issue (b.m.o #124750)
+- Add patches to fix tab focus stealing issue (b.m.o #124750)
 
 * Fri Oct  1 2004 Christopher Aillon <caillon@redhat.com> 0:0.10.1-1.0PR1.8
 - Update to 0.10.1
