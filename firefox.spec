@@ -164,7 +164,7 @@ fi
 %{_bindir}/firefox
 %{_mandir}/man1/*
 %{ffdir}
-%{_datadir}/applications/fedora-%{name}.desktop
+%{_datadir}/applications/mozilla-%{name}.desktop
 %{_datadir}/pixmaps/firefox.png
 
 #---------------------------------------------------------------------
