@@ -3,7 +3,7 @@ ExclusiveArch: i386 x86_64 ia64 ppc
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        0.9.3
-Release:        7
+Release:        8
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
@@ -154,6 +154,11 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Sep 03 2004 Christopher Aillon <caillon@redhat.com> 0:0.9.3-8
+- Fixup .desktop entry Name, GenericName, and Comment (#131602)
+- Add MimeType desktop entry (patch from jrb@redhat.com)
+- Build with --disable-xprint
+
 * Tue Aug 31 2004 Warren Togami <wtogami@redhat.com> 0:0.9.3-7
 - rawhide import
 - fedora.us #1765 NetBSD's freetype 2.1.8 compat patch
