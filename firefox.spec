@@ -8,7 +8,7 @@ ExclusiveArch: i386 x86_64 ia64 ppc
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        0.10.0
-Release:        1.0PR1.4
+Release:        1.0PR1.5
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
@@ -31,6 +31,7 @@ Patch90:        firefox-PR1-gtk-file-chooser-trunk.patch
 Patch91:        firefox-PR1-gtk-file-chooser-updates.patch
 Patch100:       firefox-PR1-js-64bit-math.patch
 Patch101:       firefox-PR1-pkgconfig.patch
+Patch102:       firefox-PR1-clipboard-access.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  libpng-devel, libjpeg-devel
 BuildRequires:  zlib-devel, zip
@@ -62,6 +63,8 @@ compliance, performance and portability.
 %patch91 -p1
 %patch100 -p0
 %patch101 -p0
+%patch102 -p0
+
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE2} .mozconfig
 
@@ -174,7 +177,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
-* Tue Sep 29 2004 Christopher Aillon <caillon@redhat.com> 0:0.10.0-1.0PR1.4
+* Thu Sep 30 2004 Christopher Aillon <caillon@redhat.com> 0:0.10.0-1.0PR1.5
+- Add clipboard access prevention patch.
+
+* Wed Sep 29 2004 Christopher Aillon <caillon@redhat.com> 0:0.10.0-1.0PR1.4
 - Add the xul mime type to the .desktop file
 
 * Tue Sep 28 2004 Christopher Aillon <caillon@redhat.com> 0:0.10.0-1.0PR1.3
