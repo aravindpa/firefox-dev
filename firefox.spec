@@ -216,7 +216,7 @@ fi
 %{_mandir}/man1/*
 %{_datadir}/applications/mozilla-%{name}.desktop
 %{_datadir}/pixmaps/firefox.png
-%dir %{ffdir}
+%{ffdir}
 
 #---------------------------------------------------------------------
 
