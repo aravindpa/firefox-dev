@@ -17,7 +17,7 @@ License:        MPL/LGPL
 Group:          Applications/Internet
 Source0:        firefox-%{version}-source.tar.bz2
 Source1:        firefox-gnomestripe-0.1.tar.gz
-Source2:        firefox-%{version}-langpacks-3.tar.bz2
+Source2:        firefox-1.0-langpacks-3.tar.bz2
 
 Source10:       mozconfig-firefox
 Source11:       firefox-redhat-default-bookmarks.html
