@@ -227,7 +227,7 @@ if [ "${USE_EXIST}" -eq "1" ] && [ "${ALREADY_RUNNING}" -eq "1" ]; then
     exec $MOZ_CLIENT_PROGRAM $MOZ_CLIENT_PROGRAM_PARAM "openurl($opt)" 2>/dev/null >/dev/null
   fi
   # just pass it off if it looks like a url
-  exec $MOZ_CLIENT_PROGRAM $MOZ_CLIENT_PROGRAM_PARAM "openurl($opt,new-window)" 2>/dev/null >/dev/null
+  exec $MOZ_CLIENT_PROGRAM $MOZ_CLIENT_PROGRAM_PARAM "openurl($opt)" 2>/dev/null >/dev/null
 fi
 
 exec $MOZ_PROGRAM $MOZARGS ${1+"$@"}
