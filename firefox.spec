@@ -10,7 +10,7 @@ ExclusiveArch: i386 x86_64 ia64 ppc s390 s390x
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.0.1
-Release:        1
+Release:        2
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
@@ -64,6 +64,8 @@ Patch103:       firefox-1.0-xptcall-s390.patch
 Patch104:       firefox-1.0-nspr-s390.patch
 Patch105:       firefox-1.0-useragent.patch
 Patch106:       firefox-1.0-gtk-system-colors.patch
+Patch107:       firefox-1.0-remote-intern-atoms.patch
+Patch108:       firefox-1.0-g-application-name.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  libpng-devel, libjpeg-devel
@@ -125,6 +127,8 @@ compliance, performance and portability.
 %patch104 -p0
 %patch105 -p0
 %patch106 -p0
+%patch107 -p0
+%patch108 -p0
 
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE10} .mozconfig
@@ -311,6 +315,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Sun Feb 27 2005 Christopher Aillon <caillon@redhat.com> 0:1.0.1-2
+- Add upstream fix to reduce round trips to xserver during remote control
+- Add upstream fix to call g_set_application_name
+
 * Thu Feb 24 2005 Christopher Aillon <caillon@redhat.com> 0:1.0.1-1
 - Update to 1.0.1 fixing several security flaws.
 - Temporarily disable langpacks to workaround startup issues (#145806)
