@@ -1,3 +1,6 @@
+# Option: Freetype Patch (FC3+)
+%define freetype_fc3 1
+
 %define desktop_file_utils_version 0.3
 
 ExclusiveArch: i386 x86_64 ia64 ppc
@@ -49,7 +52,9 @@ compliance, performance and portability.
 %patch1 -p0
 %patch2 -p1
 %patch3 -p1
+%if %{freetype_fc3}
 %patch4 -p0
+%endif
 %patch100 -p0
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE2} .mozconfig
