@@ -79,7 +79,7 @@ MAKE="gmake %{?_smp_mflags}" make -f client.mk build
 %{__rm} -rf $RPM_BUILD_ROOT
 
 cd xpinstall/packager/
-%{__make} MOZILLA_BIN="\$(DIST)/bin/firefox-bin"
+%{__make} MOZILLA_BIN="\$(DIST)/bin/firefox-bin" STRIP=/bin/true
 cd -
 
 %{__mkdir_p} $RPM_BUILD_ROOT{%{_libdir},%{_bindir},%{_datadir}/applications}
