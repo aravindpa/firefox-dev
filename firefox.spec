@@ -10,7 +10,7 @@ ExclusiveArch: i386 x86_64 ia64 ppc s390 s390x
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.0.2
-Release:        3
+Release:        4
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
@@ -36,6 +36,7 @@ Patch1:         firefox-0.7.3-freetype-compile.patch
 Patch2:         firefox-1.0-prdtoa.patch
 Patch3:         firefox-1.0-gcc4-compile.patch
 Patch4:         firefox-1.0-recv-fortify.patch
+Patch5:         firefox-1.0-nspr-config.patch
 
 # customization patches
 Patch20:        firefox-redhat-homepage.patch
@@ -116,6 +117,7 @@ compliance, performance and portability.
 %patch2  -p0
 %patch3  -p0
 %patch4  -p0
+%patch5  -p0
 %patch20 -p0
 %patch21 -p1
 %patch22 -p1
@@ -330,6 +332,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Apr 12 2005 Christopher Aillon <caillon@redhat.com> 0:1.0.2-4
+- Update useragent patch to match upstream.
+- Add nspr-config 64 bit patch from rstrode@redhat.com
+
 * Mon Mar 28 2005 Christopher Aillon <caillon@redhat.com> 0:1.0.2-3
 - Updated firefox icon (https://bugzilla.mozilla.org/show_bug.cgi?id=261679)
 - Fix for some more cursor issues in textareas (149991, 150002, 152089)
