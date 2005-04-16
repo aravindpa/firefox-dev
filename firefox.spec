@@ -72,8 +72,6 @@ Patch105:       firefox-1.0-useragent.patch
 Patch106:       firefox-1.0-gtk-system-colors.patch
 Patch107:       firefox-1.0-remote-intern-atoms.patch
 Patch108:       firefox-1.0-g-application-name.patch
-Patch109:       firefox-1.0-execshield-nspr.patch
-Patch110:       firefox-1.0-execshield-xpcom.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  libpng-devel, libjpeg-devel
@@ -146,8 +144,6 @@ compliance, performance and portability.
 %patch106 -p0
 %patch107 -p0
 %patch108 -p0
-%patch109 -p0
-%patch110 -p0
 
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE10} .mozconfig
