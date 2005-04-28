@@ -332,6 +332,7 @@ fi
 %changelog
 * Wed Apr 27 2005 Warren Togami <wtogami@redhat.com>
 - remove JVM version probing (#116445)
+- correct confusing PANGO vars in startup script
 
 * Fri Apr 15 2005 Christopher Aillon <caillon@redhat.com> 0:1.0.3-2
 - Add patch to properly link against libgfxshared_s.a
