@@ -332,6 +332,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue May  3 2005 Christopher Aillon <caillon@redhat.com>
+- Patch from Marcel Mol supporting launching with filenames
+  containing whitespace.
+
 * Tue May  3 2005 Christopher Aillon <caillon@redhat.com> 0:1.0.3-3
 - Firefox script fixes to support multilib installs.
 - Add upstream patch to fix bidi justification of pango

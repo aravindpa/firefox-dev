@@ -168,7 +168,7 @@ if [ "${USE_EXIST}" -eq "1" ] && [ "${ALREADY_RUNNING}" -eq "1" ]; then
     # if it doesn't begin with a '/' and it exists when the pwd is
     # prepended to it then append the full path
     echo $opt | grep -e '^/' 2>/dev/null > /dev/null
-    if [ "${RETURN_VAL}" -ne "0" ] && [ -e `pwd`/$opt ]; then
+    if [ "${RETURN_VAL}" -ne "0" ] && [ -e "`pwd`/$opt" ]; then
       opt="`pwd`/$opt"
     fi
     exec $MOZ_CLIENT_PROGRAM $MOZ_CLIENT_PROGRAM_PARAM "openurl($opt)" 2>/dev/null >/dev/null
