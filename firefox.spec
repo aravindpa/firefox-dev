@@ -57,7 +57,6 @@ Patch34:        firefox-1.0-pango-direction.patch
 Patch35:        firefox-1.0-pango-bidi-justify.patch
 
 # local bugfixes
-Patch40:        firefox-PR1-gnome-vfs-default-app.patch
 Patch41:        firefox-PR1-stack-direction.patch
 Patch42:        firefox-1.0-download-to-desktop.patch
 Patch43:        firefox-1.0-uriloader.patch
@@ -135,7 +134,6 @@ compliance, performance and portability.
 %patch33 -p1
 %patch34 -p1
 %patch35 -p0
-%patch40 -p1
 %patch41 -p0
 %patch42 -p0
 %patch43 -p0
