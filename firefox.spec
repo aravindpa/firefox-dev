@@ -10,7 +10,7 @@ ExclusiveArch: i386 x86_64 ia64 ppc s390 s390x
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.0.3
-Release:        2
+Release:        3
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
@@ -36,8 +36,8 @@ Patch1:         firefox-0.7.3-freetype-compile.patch
 Patch2:         firefox-1.0-prdtoa.patch
 Patch3:         firefox-1.0-gcc4-compile.patch
 Patch4:         firefox-1.0-recv-fortify.patch
-Patch5:         firefox-1.0-nspr-config.patch
-Patch6:         firefox-1.0-gfxshared_s.patch
+Patch5:         firefox-1.0-gfxshared_s.patch
+Patch6:         firefox-1.0-nss-system-nspr.patch
 
 # customization patches
 Patch20:        firefox-redhat-homepage.patch
@@ -54,11 +54,13 @@ Patch31:        firefox-1.0-pango-selection.patch
 Patch32:        firefox-1.0-pango-space-width.patch
 Patch33:        firefox-1.0-pango-rounding.patch
 Patch34:        firefox-1.0-pango-direction.patch
+Patch35:        firefox-1.0-pango-bidi-justify.patch
 
 # local bugfixes
 Patch40:        firefox-PR1-gnome-vfs-default-app.patch
 Patch41:        firefox-PR1-stack-direction.patch
 Patch42:        firefox-1.0-download-to-desktop.patch
+Patch43:        firefox-1.0-uriloader.patch
 
 # backported patches
 Patch90:        firefox-PR1-gtk-file-chooser-morefixes.patch
@@ -117,7 +119,7 @@ compliance, performance and portability.
 %patch3  -p0
 %patch4  -p0
 %patch5  -p0
-%patch6  -p0
+%patch6  -p1
 %patch20 -p0
 %patch21 -p1
 %patch22 -p1
@@ -132,9 +134,11 @@ compliance, performance and portability.
 %patch32 -p1
 %patch33 -p1
 %patch34 -p1
+%patch35 -p0
 %patch40 -p1
 %patch41 -p0
 %patch42 -p0
+%patch43 -p0
 %patch90 -p0
 %patch101 -p0
 %patch102 -p0
@@ -188,7 +192,7 @@ desktop-file-install --vendor mozilla \
   %{SOURCE20} 
 
 # set up the firefox start script
-%{__cat} %{SOURCE21} | %{__sed} -e 's,FFDIR,%{ffdir},g' -e 's,LIBDIR,%{_libdir},g' > \
+%{__cat} %{SOURCE21} | %{__sed} -e 's,FIREFOX_VERSION,%{version},g' > \
   $RPM_BUILD_ROOT%{_bindir}/firefox
 %{__chmod} 755 $RPM_BUILD_ROOT%{_bindir}/firefox
 
@@ -330,6 +334,11 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue May  3 2005 Christopher Aillon <caillon@redhat.com> 0:1.0.3-3
+- Firefox script fixes to support multilib installs.
+- Add upstream patch to fix bidi justification of pango
+- Add patch to fix launching of helper applications
+
 * Wed Apr 27 2005 Warren Togami <wtogami@redhat.com>
 - remove JVM version probing (#116445)
 - correct confusing PANGO vars in startup script

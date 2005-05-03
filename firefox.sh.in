@@ -36,7 +36,12 @@ cmdname=`basename $0`
 ##
 ## Variables
 ##
-MOZ_DIST_BIN="FFDIR"
+MOZ_LIB_DIR="/usr/lib"
+if [ -x "/usr/lib64/firefox-FIREFOX_VERSION/firefox-bin" ]
+then
+  MOZ_LIB_DIR="/usr/lib64"
+fi
+MOZ_DIST_BIN="$MOZ_LIB_DIR/firefox-FIREFOX_VERSION"
 MOZ_PROGRAM="$MOZ_DIST_BIN/firefox"
 MOZ_CLIENT_PROGRAM="$MOZ_DIST_BIN/mozilla-xremote-client"
 MOZ_CLIENT_PROGRAM_PARAM="-a firefox"
@@ -65,9 +70,9 @@ export LD_LIBRARY_PATH
 ##
 if [ "$MOZ_PLUGIN_PATH" ]
 then
-  MOZ_PLUGIN_PATH=$MOZ_PLUGIN_PATH:LIBDIR/mozilla/plugins:$MOZ_DIST_BIN/plugins
+  MOZ_PLUGIN_PATH=$MOZ_PLUGIN_PATH:$MOZ_LIB_DIR/mozilla/plugins:$MOZ_DIST_BIN/plugins
 else
-  MOZ_PLUGIN_PATH=LIBDIR/mozilla/plugins:$MOZ_DIST_BIN/plugins
+  MOZ_PLUGIN_PATH=$MOZ_LIB_DIR/mozilla/plugins:$MOZ_DIST_BIN/plugins
 fi
 export MOZ_PLUGIN_PATH
 
