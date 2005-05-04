@@ -10,7 +10,7 @@ ExclusiveArch: i386 x86_64 ia64 ppc s390 s390x
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.0.3
-Release:        3
+Release:        4
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
@@ -332,6 +332,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue May  3 2005 Christopher Aillon <caillon@redhat.com> 0:1.0.3-4
+- Rebuild
+
 * Tue May  3 2005 Christopher Aillon <caillon@redhat.com>
 - Patch from Marcel Mol supporting launching with filenames
   containing whitespace.
