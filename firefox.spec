@@ -147,7 +147,7 @@ compliance, performance and portability.
 %patch106 -p0
 %patch107 -p0
 %patch108 -p0
-%patch109 -p0
+%patch109 -p1
 
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE10} .mozconfig
