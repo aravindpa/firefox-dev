@@ -10,7 +10,7 @@ ExclusiveArch: i386 x86_64 ia64 ppc s390 s390x
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.0.3
-Release:        4
+Release:        5
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
@@ -73,6 +73,7 @@ Patch105:       firefox-1.0-useragent.patch
 Patch106:       firefox-1.0-gtk-system-colors.patch
 Patch107:       firefox-1.0-remote-intern-atoms.patch
 Patch108:       firefox-1.0-g-application-name.patch
+Patch109:       firefox-1.0-candidate-window.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  libpng-devel, libjpeg-devel
@@ -146,6 +147,7 @@ compliance, performance and portability.
 %patch106 -p0
 %patch107 -p0
 %patch108 -p0
+%patch109 -p0
 
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE10} .mozconfig
@@ -284,8 +286,10 @@ update-desktop-database %{_datadir}/applications
 umask 022
 %{ffdir}/firefox-rebuild-databases.pl || :
 
-# create extensions directory
-%{ffdir}/firefox -register
+# create list of installed chrome
+# munge HOME for now, since XPCOM creates $HOME/.mozilla
+HOME=%{_tmppath} %{ffdir}/firefox -register
+%{__rm} -rf %{_tmppath}/.mozilla
 
 %postun
 update-desktop-database %{_datadir}/applications
@@ -332,6 +336,11 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Mon May  9 2005 Christopher Aillon <caillon@redhat.com> 0:1.0.3-5
+- Correctly position the IM candidate window for most locales
+  Note: it is still incorrectly positioned for zh_TW after this fix
+- Add temporary workaround to not create files in the user's $HOME (#149664)
+
 * Tue May  3 2005 Christopher Aillon <caillon@redhat.com> 0:1.0.3-4
 - Rebuild
 
