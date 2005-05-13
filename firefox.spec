@@ -9,8 +9,8 @@ ExclusiveArch: i386 x86_64 ia64 ppc s390 s390x
 
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
-Version:        1.0.3
-Release:        5
+Version:        1.0.4
+Release:        2
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
@@ -66,14 +66,11 @@ Patch90:        firefox-PR1-gtk-file-chooser-morefixes.patch
 
 # official upstream patches
 Patch101:       firefox-PR1-pkgconfig.patch
-Patch102:       mozilla-1.7.3-xptcall-s390.patch
-Patch103:       firefox-1.0-xptcall-s390.patch
-Patch104:       firefox-1.0-nspr-s390.patch
-Patch105:       firefox-1.0-useragent.patch
-Patch106:       firefox-1.0-gtk-system-colors.patch
-Patch107:       firefox-1.0-remote-intern-atoms.patch
-Patch108:       firefox-1.0-g-application-name.patch
-Patch109:       firefox-1.0-candidate-window.patch
+Patch102:       firefox-1.0-useragent.patch
+Patch103:       firefox-1.0-gtk-system-colors.patch
+Patch104:       firefox-1.0-remote-intern-atoms.patch
+Patch105:       firefox-1.0-g-application-name.patch
+Patch106:       firefox-1.0-candidate-window.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  libpng-devel, libjpeg-devel
@@ -141,13 +138,10 @@ compliance, performance and portability.
 %patch90 -p0
 %patch101 -p0
 %patch102 -p0
-%patch103 -p1
+%patch103 -p0
 %patch104 -p0
 %patch105 -p0
-%patch106 -p0
-%patch107 -p0
-%patch108 -p0
-%patch109 -p1
+%patch106 -p1
 
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE10} .mozconfig
@@ -288,8 +282,9 @@ umask 022
 
 # create list of installed chrome
 # munge HOME for now, since XPCOM creates $HOME/.mozilla
-HOME=%{_tmppath} %{ffdir}/firefox -register
-%{__rm} -rf %{_tmppath}/.mozilla
+MOZTMP=`mktemp -d`
+HOME=$MOZTMP %{ffdir}/firefox -register
+%{__rm} -rf $MOZTMP/.mozilla
 
 %postun
 update-desktop-database %{_datadir}/applications
@@ -336,6 +331,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Wed May 11 2005 Christopher Aillon <caillon@redhat.com> 0:1.0.4-2
+- Update to 1.0.4
+
 * Mon May  9 2005 Christopher Aillon <caillon@redhat.com> 0:1.0.3-5
 - Correctly position the IM candidate window for most locales
   Note: it is still incorrectly positioned for zh_TW after this fix
