@@ -10,14 +10,14 @@ ExclusiveArch: i386 x86_64 ia64 ppc s390 s390x
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.0.4
-Release:        2
+Release:        5
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
 Source0:        firefox-%{version}-source.tar.bz2
 Source1:        firefox-gnomestripe-0.1.tar.gz
-Source2:        firefox-1.0-langpacks-3.tar.bz2
+Source2:        firefox-1.0-locales.tar.bz2
 
 Source10:       mozconfig-firefox
 Source11:       firefox-redhat-default-bookmarks.html
@@ -55,11 +55,13 @@ Patch32:        firefox-1.0-pango-space-width.patch
 Patch33:        firefox-1.0-pango-rounding.patch
 Patch34:        firefox-1.0-pango-direction.patch
 Patch35:        firefox-1.0-pango-bidi-justify.patch
+Patch36:	firefox-1.0-pango-cairo.patch
 
 # local bugfixes
 Patch41:        firefox-PR1-stack-direction.patch
 Patch42:        firefox-1.0-download-to-desktop.patch
 Patch43:        firefox-1.0-uriloader.patch
+Patch44:        firefox-1.0-locales-no-searchplugins.patch
 
 # backported patches
 Patch90:        firefox-PR1-gtk-file-chooser-morefixes.patch
@@ -109,6 +111,7 @@ compliance, performance and portability.
 %prep
 %setup -q -n mozilla
 %{__tar} -xzf %{SOURCE1}
+%{__tar} -xjf %{SOURCE2}
 %if %{freetype_fc3}
 %patch1 -p0
 %endif
@@ -132,9 +135,11 @@ compliance, performance and portability.
 %patch33 -p1
 %patch34 -p1
 %patch35 -p0
+%patch36 -p1
 %patch41 -p0
 %patch42 -p0
 %patch43 -p0
+%patch44 -p0
 %patch90 -p0
 %patch101 -p0
 %patch102 -p0
@@ -159,6 +164,18 @@ export RPM_OPT_FLAGS=`echo $RPM_OPT_FLAGS | sed s/-O2/-Os/`
 export MOZILLA_OFFICIAL=1
 export BUILD_OFFICIAL=1
 MAKE="gmake %{?_smp_mflags}" make -f client.mk build
+
+for locale in `cat browser/locales/all-locales`
+do
+  if [ -d browser/locales/$locale ] ; then
+    perl -pi -e "s|browser.startup.homepage.*$|browser.startup.homepage=%{indexhtml}|g;" \
+       browser/locales/$locale/chrome/browser-region/region.properties
+    make -C browser/locales AB_CD=$locale
+  fi
+  if [ -d toolkit/locales/$locale ] ; then
+    make -C toolkit/locales AB_CD=$locale
+  fi
+done
 
 #---------------------------------------------------------------------
 
@@ -215,33 +232,10 @@ cd $RPM_BUILD_ROOT%{ffdir}/chrome
 find . -name "*" -type d -maxdepth 1 -exec %{__rm} -rf {} \;
 cd -
 
-# Install language packs
-#cd $RPM_BUILD_ROOT%{ffdir}/chrome
-#  mkdir lang
-#  cd $RPM_BUILD_ROOT%{ffdir}/chrome/lang
-#    mv ../installed-chrome.txt ./installed-chrome.txt
-#    tar xvjf %{SOURCE2}
-#
-#    # Extract jar, modify the homepage, repack
-#    for i in `ls *.jar`; do
-#      rm -rf locale
-#      LANGPACK=`basename $i .jar`
-#      unzip $LANGPACK.jar
-#      perl -pi -e "s|browser.startup.homepage.*$|browser.startup.homepage=%{indexhtml}|g;" locale/browser-region/region.properties
-#      rm -rf $LANGPACK.jar
-#      zip -r -D $LANGPACK.jar locale
-#      rm -rf locale
-#    done
-#
-#    mv -v *.jar ..
-#  cd -
-#cd -
-
-#cat > $RPM_BUILD_ROOT%{ffdir}/defaults/pref/firefox-l10n.js << EOF
-#pref("general.useragent.locale", "chrome://global/locale/intl.properties");
-#EOF
-#chmod 644 $RPM_BUILD_ROOT%{ffdir}/defaults/pref/firefox-l10n.js
-
+cat > $RPM_BUILD_ROOT%{ffdir}/defaults/pref/firefox-l10n.js << EOF
+pref("general.useragent.locale", "chrome://global/locale/intl.properties");
+EOF
+chmod 644 $RPM_BUILD_ROOT%{ffdir}/defaults/pref/firefox-l10n.js
 
 # another bug fixed by looking at the debian package
 %{__mkdir_p} $RPM_BUILD_ROOT%{ffdir}/chrome/icons/default/
@@ -331,6 +325,23 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Jun 23 2005 Kristian Høgsberg <krh@redhat.com>  0:1.0.4-3
+- Add firefox-1.0-pango-cairo.patch to get rid of the last few Xft
+  references, fixing the "no fonts" problem.
+- Copy over changes from FC4 branch.
+
+* Tue May 24 2005 Christopher Aillon <caillon@redhat.com> 0:1.0.4-4
+- Only install searchplugins for en-US, since there isn't any way
+  to dynamically select searchplugins per locale yet.
+
+* Mon May 23 2005 Christopher Aillon <caillon@redhat.com> 0:1.0.4-3
+- Add support for locales:
+    af-ZA, ast-ES, ca-AD, cs-CZ, cy-GB, da-DK, de-DE, el-GR,
+    en-GB  es-AR, es-ES, eu-ES, fi-FI, fr-FR, ga-IE, he-IL,
+    hu-HU, it-IT, ko-KR, ja-JP, ja-JPM, mk-MK, nb-NO, nl-NL,
+    pa-IN, pl-PL, pt-BR, pt-PT, ro-RO, ru-RU, sk-SK, sl-SI,
+    sq-AL, sv-SE, tr-TR, zh-CN, zh-TW
+
 * Wed May 11 2005 Christopher Aillon <caillon@redhat.com> 0:1.0.4-2
 - Update to 1.0.4
 
