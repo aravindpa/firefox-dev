@@ -1,16 +1,17 @@
 # Option: Freetype Patch (FC3+)
 %define freetype_fc3 1
 
+%define nspr_version 4.6
 %define desktop_file_utils_version 0.9
 
 %define indexhtml file:///usr/share/doc/HTML/index.html
 
-ExclusiveArch: i386 x86_64 ia64 ppc s390 s390x
+ExcludeArch:    ppc64
 
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.0.4
-Release:        5
+Release:        6
 Epoch:          0
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
@@ -38,6 +39,7 @@ Patch3:         firefox-1.0-gcc4-compile.patch
 Patch4:         firefox-1.0-recv-fortify.patch
 Patch5:         firefox-1.0-gfxshared_s.patch
 Patch6:         firefox-1.0-nss-system-nspr.patch
+Patch7:         firefox-1.0-system-nspr-ldap.patch
 
 # customization patches
 Patch20:        firefox-redhat-homepage.patch
@@ -73,8 +75,10 @@ Patch103:       firefox-1.0-gtk-system-colors.patch
 Patch104:       firefox-1.0-remote-intern-atoms.patch
 Patch105:       firefox-1.0-g-application-name.patch
 Patch106:       firefox-1.0-candidate-window.patch
+Patch107:       firefox-1.0-imgloader-comarray.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRequires:  nspr-devel >= %{nspr_version}
 BuildRequires:  libpng-devel, libjpeg-devel
 BuildRequires:  zlib-devel, zip
 BuildRequires:  libIDL-devel
@@ -92,6 +96,7 @@ BuildRequires:  freetype-devel >= 2.1.9
 BuildRequires:  freetype-devel
 %endif
 
+Requires:       nspr >= %{nspr_version}
 Requires:       desktop-file-utils >= %{desktop_file_utils_version}
 Obsoletes:      phoenix, mozilla-firebird, MozillaFirebird
 Provides:       mozilla-firebird = %{epoch}:%{version}, MozillaFirebird = %{epoch}:%{version}
@@ -120,6 +125,7 @@ compliance, performance and portability.
 %patch4  -p0
 %patch5  -p0
 %patch6  -p1
+%patch7  -p0
 %patch20 -p0
 %patch21 -p1
 %patch22 -p1
@@ -147,6 +153,7 @@ compliance, performance and portability.
 %patch104 -p0
 %patch105 -p0
 %patch106 -p1
+%patch107 -p0
 
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE10} .mozconfig
@@ -232,7 +239,7 @@ cd $RPM_BUILD_ROOT%{ffdir}/chrome
 find . -name "*" -type d -maxdepth 1 -exec %{__rm} -rf {} \;
 cd -
 
-cat > $RPM_BUILD_ROOT%{ffdir}/defaults/pref/firefox-l10n.js << EOF
+%{__cat} > $RPM_BUILD_ROOT%{ffdir}/defaults/pref/firefox-l10n.js << EOF
 pref("general.useragent.locale", "chrome://global/locale/intl.properties");
 EOF
 chmod 644 $RPM_BUILD_ROOT%{ffdir}/defaults/pref/firefox-l10n.js
@@ -325,7 +332,11 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
-* Thu Jun 23 2005 Kristian Høgsberg <krh@redhat.com>  0:1.0.4-3
+* Sun Jul 17 2005 Christopher Aillon <caillon@redhat.com> 0:1.0.4-6
+- Avoid a crash on 64bit platforms
+- Use system NSPR
+
+* Thu Jun 23 2005 Kristian Høgsberg <krh@redhat.com>  0:1.0.45
 - Add firefox-1.0-pango-cairo.patch to get rid of the last few Xft
   references, fixing the "no fonts" problem.
 - Copy over changes from FC4 branch.
