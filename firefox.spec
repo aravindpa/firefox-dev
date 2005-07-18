@@ -10,7 +10,7 @@ ExcludeArch:    ppc64 ppc
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.1
-Release:        0.0.1.deerpark.alpha2
+Release:        0.2.1.deerpark.alpha2
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -266,7 +266,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
-* Mon Jul 18 2005 Christopher Aillon <caillon@redhat.com> 0:1.1-0.0.1.deerpark.alpha2
+* Mon Jul 18 2005 Christopher Aillon <caillon@redhat.com> 1.1-0.2.1.deerpark.alpha2
+- Rebuild
+
+* Mon Jul 18 2005 Christopher Aillon <caillon@redhat.com> 1.1-0.0.1.deerpark.alpha2
 - Update to Deer Park Alpha 2
   - STILL TODO:
     - This build is not localized yet.
