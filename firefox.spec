@@ -1,28 +1,32 @@
-# Option: Freetype Patch (FC3+)
-%define freetype_fc3 1
-
-%define nspr_version 4.6
-%define desktop_file_utils_version 0.9
+# Temporary until this works again
+ExcludeArch:    ppc64 ppc
 
 %define indexhtml file:///usr/share/doc/HTML/index.html
+%define desktop_file_utils_version 0.9
+%define nspr_version 4.6
 
-ExcludeArch:    ppc64
+%define official_branding 0
 
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
-Version:        1.0.4
-Release:        6
-Epoch:          0
+Version:        1.1
+Release:        0.0.1.deerpark.alpha2
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
-Source0:        firefox-%{version}-source.tar.bz2
+%if %{official_branding}
+%define tarball firefox-%{version}-source.tar.bz2
+%else
+%define tarball firefox-1.1a2-source.tar.bz2
+%endif
+Source0:        %{tarball}
 Source1:        firefox-gnomestripe-0.1.tar.gz
 Source2:        firefox-1.0-locales.tar.bz2
 
-Source10:       mozconfig-firefox
-Source11:       firefox-redhat-default-bookmarks.html
-Source12:       firefox-redhat-default-prefs.js
+Source10:       firefox-mozconfig
+Source11:       firefox-mozconfig-branded
+Source12:       firefox-redhat-default-bookmarks.html
+Source13:       firefox-redhat-default-prefs.js
 Source20:       firefox.desktop
 Source21:       firefox.sh.in
 Source22:       firefox.png
@@ -33,49 +37,34 @@ Source55:       firefox-rebuild-databases.pl.in
 Source100:      find-external-requires
 
 # build patches
-Patch1:         firefox-0.7.3-freetype-compile.patch
-Patch2:         firefox-1.0-prdtoa.patch
-Patch3:         firefox-1.0-gcc4-compile.patch
-Patch4:         firefox-1.0-recv-fortify.patch
-Patch5:         firefox-1.0-gfxshared_s.patch
-Patch6:         firefox-1.0-nss-system-nspr.patch
-Patch7:         firefox-1.0-system-nspr-ldap.patch
+Patch1:         firefox-1.0-prdtoa.patch
+Patch2:         firefox-1.0-gcc4-compile.patch
+Patch3:         firefox-1.1-nss-system-nspr.patch
+Patch4:         firefox-1.1-dont-package-nspr-libs.patch
+Patch5:         firefox-1.1-visibility.patch
 
 # customization patches
 Patch20:        firefox-redhat-homepage.patch
 Patch21:        firefox-0.7.3-default-plugin-less-annoying.patch
 Patch22:        firefox-0.7.3-psfonts.patch
-Patch24:        firefox-PR1-default-applications.patch
-Patch25:        firefox-PR1-software-update.patch
+Patch24:        firefox-1.1-default-applications.patch
+Patch25:        firefox-1.1-software-update.patch
 Patch26:        firefox-RC1-stock-icons-be.patch
 Patch27:        firefox-RC1-stock-icons-fe.patch
 Patch28:        firefox-RC1-stock-icons-gnomestripe.patch
 Patch29:        firefox-gnomestripe-0.1-livemarks.patch
-Patch30:        mozilla-1.7.3-pango-render.patch
-Patch31:        firefox-1.0-pango-selection.patch
-Patch32:        firefox-1.0-pango-space-width.patch
-Patch33:        firefox-1.0-pango-rounding.patch
-Patch34:        firefox-1.0-pango-direction.patch
-Patch35:        firefox-1.0-pango-bidi-justify.patch
-Patch36:	firefox-1.0-pango-cairo.patch
 
 # local bugfixes
 Patch41:        firefox-PR1-stack-direction.patch
-Patch42:        firefox-1.0-download-to-desktop.patch
-Patch43:        firefox-1.0-uriloader.patch
-Patch44:        firefox-1.0-locales-no-searchplugins.patch
+Patch42:        firefox-1.1-uriloader.patch
 
-# backported patches
-Patch90:        firefox-PR1-gtk-file-chooser-morefixes.patch
+# font system fixes
+Patch80:        firefox-1.0-pango-cairo.patch
 
-# official upstream patches
-Patch101:       firefox-PR1-pkgconfig.patch
-Patch102:       firefox-1.0-useragent.patch
-Patch103:       firefox-1.0-gtk-system-colors.patch
-Patch104:       firefox-1.0-remote-intern-atoms.patch
-Patch105:       firefox-1.0-g-application-name.patch
-Patch106:       firefox-1.0-candidate-window.patch
-Patch107:       firefox-1.0-imgloader-comarray.patch
+# patches from upstream (Patch100+)
+
+
+# ---------------------------------------------------
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  nspr-devel >= %{nspr_version}
@@ -89,12 +78,7 @@ BuildRequires:  libgnome-devel
 BuildRequires:  libgnomeui-devel
 BuildRequires:  krb5-devel
 BuildRequires:  pango-devel
-BuildRequires:  autoconf213
-%if %{freetype_fc3}
 BuildRequires:  freetype-devel >= 2.1.9
-%else
-BuildRequires:  freetype-devel
-%endif
 
 Requires:       nspr >= %{nspr_version}
 Requires:       desktop-file-utils >= %{desktop_file_utils_version}
@@ -115,72 +99,56 @@ compliance, performance and portability.
 
 %prep
 %setup -q -n mozilla
-%{__tar} -xzf %{SOURCE1}
-%{__tar} -xjf %{SOURCE2}
-%if %{freetype_fc3}
-%patch1 -p0
-%endif
+#%{__tar} -xzf %{SOURCE1}
 %patch2  -p0
-%patch3  -p0
+%patch3  -p1
 %patch4  -p0
+
+# Pragma visibility is broken on most platforms for some reason.
+# It works on i386 so leave it alone there.  Disable elsewhere.
+%ifnarch i386
 %patch5  -p0
-%patch6  -p1
-%patch7  -p0
+%endif
+
 %patch20 -p0
 %patch21 -p1
 %patch22 -p1
 %patch24 -p0
-%patch25 -p0
-%patch26 -p0
-%patch27 -p0
-%patch28 -p0
-%patch29 -p1
-%patch30 -p1
-%patch31 -p1
-%patch32 -p1
-%patch33 -p1
-%patch34 -p1
-%patch35 -p0
-%patch36 -p1
+#%patch25 -p0
+#%patch26 -p0
+#%patch27 -p0
+#%patch28 -p0
+#%patch29 -p1
 %patch41 -p0
 %patch42 -p0
-%patch43 -p0
-%patch44 -p0
-%patch90 -p0
-%patch101 -p0
-%patch102 -p0
-%patch103 -p0
-%patch104 -p0
-%patch105 -p0
-%patch106 -p1
-%patch107 -p0
+%patch80 -p1
 
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE10} .mozconfig
+%if %{official_branding}
+%{__cat} %{SOURCE11} >> .mozconfig
+%endif
 
 # set up our default bookmarks
-%{__cp} %{SOURCE11} $RPM_BUILD_DIR/mozilla/profile/defaults/bookmarks.html
+%{__cp} %{SOURCE12} $RPM_BUILD_DIR/mozilla/profile/defaults/bookmarks.html
 
 
 #---------------------------------------------------------------------
 
 %build
-autoconf-2.13
 
-export RPM_OPT_FLAGS=`echo $RPM_OPT_FLAGS | sed s/-O2/-Os/`
-export MOZILLA_OFFICIAL=1
-export BUILD_OFFICIAL=1
+export RPM_OPT_FLAGS=`echo $RPM_OPT_FLAGS | %{__sed} s/-O2/-Os/`
 MAKE="gmake %{?_smp_mflags}" make -f client.mk build
 
 for locale in `cat browser/locales/all-locales`
 do
   if [ -d browser/locales/$locale ] ; then
-    perl -pi -e "s|browser.startup.homepage.*$|browser.startup.homepage=%{indexhtml}|g;" \
+    %{__perl} -pi -e "s|browser.startup.homepage.*$|browser.startup.homepage=%{indexhtml}|g;" \
        browser/locales/$locale/chrome/browser-region/region.properties
-    make -C browser/locales AB_CD=$locale
+    %{__make} -C browser/locales AB_CD=$locale
   fi
   if [ -d toolkit/locales/$locale ] ; then
-    make -C toolkit/locales AB_CD=$locale
+    %{__make} -C toolkit/locales AB_CD=$locale
   fi
 done
 
@@ -189,16 +157,16 @@ done
 %install
 %{__rm} -rf $RPM_BUILD_ROOT
 
-cd xpinstall/packager/
-%{__make} MOZILLA_BIN="\$(DIST)/bin/firefox-bin" STRIP=/bin/true
+cd browser/installer
+%{__make} STRIP=/bin/true
 cd -
 
 %{__mkdir_p} $RPM_BUILD_ROOT{%{_libdir},%{_bindir},%{_datadir}/applications}
 
-%{__tar} -C $RPM_BUILD_ROOT%{_libdir}/ -xzf dist/firefox-*-linux-gnu.tar.gz
+%{__tar} -C $RPM_BUILD_ROOT%{_libdir}/ -xzf dist/firefox-*linux*.tar.gz
 %{__mv} $RPM_BUILD_ROOT%{_libdir}/firefox $RPM_BUILD_ROOT%{ffdir}
 
-%{__rm} -f $RPM_BUILD_ROOT%{_libdir}/firefox-*-linux-gnu.tar
+%{__rm} -f $RPM_BUILD_ROOT%{_libdir}/firefox-*-linux-gnu*.tar
 
 %{__install} -p -D %{SOURCE22} $RPM_BUILD_ROOT%{_datadir}/pixmaps/firefox.png
 
@@ -215,14 +183,13 @@ desktop-file-install --vendor mozilla \
 %{__chmod} 755 $RPM_BUILD_ROOT%{_bindir}/firefox
 
 # set up our default preferences
-%{__cat} %{SOURCE12} | %{__sed} -e 's,FIREFOX_RPM_VR,%{version}-%{release},g' > rh-default-prefs
+%{__cat} %{SOURCE13} | %{__sed} -e 's,FIREFOX_RPM_VR,%{version}-%{release},g' > rh-default-prefs
 %{__cp} rh-default-prefs $RPM_BUILD_ROOT/%{ffdir}/greprefs/all-redhat.js
 %{__cp} rh-default-prefs $RPM_BUILD_ROOT/%{ffdir}/defaults/pref/all-redhat.js
 %{__rm} rh-default-prefs
 
 # set up our default bookmarks
-%{__install} -p -D %{SOURCE11} $RPM_BUILD_ROOT%{ffdir}/defaults/profile/US/bookmarks.html
-%{__install} -p -D %{SOURCE11} $RPM_BUILD_ROOT%{ffdir}/defaults/profile/bookmarks.html
+%{__install} -p -D %{SOURCE12} $RPM_BUILD_ROOT%{ffdir}/defaults/profile/bookmarks.html
 
 %{__cat} %{SOURCE50} | %{__sed} -e 's,FFDIR,%{ffdir},g' -e 's,LIBDIR,%{_libdir},g' > \
   $RPM_BUILD_ROOT%{ffdir}/firefox-xremote-client
@@ -242,9 +209,8 @@ cd -
 %{__cat} > $RPM_BUILD_ROOT%{ffdir}/defaults/pref/firefox-l10n.js << EOF
 pref("general.useragent.locale", "chrome://global/locale/intl.properties");
 EOF
-chmod 644 $RPM_BUILD_ROOT%{ffdir}/defaults/pref/firefox-l10n.js
+%{__chmod} 644 $RPM_BUILD_ROOT%{ffdir}/defaults/pref/firefox-l10n.js
 
-# another bug fixed by looking at the debian package
 %{__mkdir_p} $RPM_BUILD_ROOT%{ffdir}/chrome/icons/default/
 %{__cp} %{SOURCE23} $RPM_BUILD_ROOT%{ffdir}/chrome/icons/default/default.xpm
 %{__cp} %{SOURCE23} $RPM_BUILD_ROOT%{ffdir}/icons/default.xpm
@@ -253,20 +219,8 @@ chmod 644 $RPM_BUILD_ROOT%{ffdir}/defaults/pref/firefox-l10n.js
 %{__mkdir_p} $RPM_BUILD_ROOT%{_libdir}/mozilla/plugins
 
 # ghost files
-touch $RPM_BUILD_ROOT%{ffdir}/chrome/chrome.rdf
-for overlay in {"browser","communicator","inspector","messenger","navigator"}; do
-  %{__mkdir_p} $RPM_BUILD_ROOT%{ffdir}/chrome/overlayinfo/$overlay/content
-  touch $RPM_BUILD_ROOT%{ffdir}/chrome/overlayinfo/$overlay/content/overlays.rdf
-done
-touch $RPM_BUILD_ROOT%{ffdir}/components.ini
 touch $RPM_BUILD_ROOT%{ffdir}/components/compreg.dat
 touch $RPM_BUILD_ROOT%{ffdir}/components/xpti.dat
-%{__mkdir_p}  $RPM_BUILD_ROOT%{ffdir}/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}
-touch $RPM_BUILD_ROOT%{ffdir}/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}/install.rdf
-touch $RPM_BUILD_ROOT%{ffdir}/extensions/installed-extensions-processed.txt
-touch $RPM_BUILD_ROOT%{ffdir}/extensions/Extensions.rdf
-
-
 
 #---------------------------------------------------------------------
 
@@ -281,12 +235,6 @@ update-desktop-database %{_datadir}/applications
 umask 022
 %{ffdir}/firefox-rebuild-databases.pl || :
 
-# create list of installed chrome
-# munge HOME for now, since XPCOM creates $HOME/.mozilla
-MOZTMP=`mktemp -d`
-HOME=$MOZTMP %{ffdir}/firefox -register
-%{__rm} -rf $MOZTMP/.mozilla
-
 %postun
 update-desktop-database %{_datadir}/applications
 umask 022
@@ -298,11 +246,8 @@ fi
 %preun
 # is it a final removal?
 if [ $1 -eq 0 ]; then
-  %{__rm} -rf %{ffdir}/chrome/overlayinfo
   %{__rm} -rf %{ffdir}/components
-  %{__rm} -f  %{ffdir}/chrome/*.rdf
   %{__rm} -rf %{ffdir}/extensions
-  %{__rm} -f %{ffdir}/components.ini
 fi
 
 %files
@@ -314,29 +259,26 @@ fi
 %{ffdir}
 %{_libdir}/mozilla
 
-%ghost %{ffdir}/chrome/chrome.rdf
-%ghost %{ffdir}/chrome/overlayinfo/browser/content/overlays.rdf
-%ghost %{ffdir}/chrome/overlayinfo/communicator/content/overlays.rdf
-%ghost %{ffdir}/chrome/overlayinfo/inspector/content/overlays.rdf
-%ghost %{ffdir}/chrome/overlayinfo/messenger/content/overlays.rdf
-%ghost %{ffdir}/chrome/overlayinfo/navigator/content/overlays.rdf
-%ghost %{ffdir}/components.ini
 %ghost %{ffdir}/components/compreg.dat
 %ghost %{ffdir}/components/xpti.dat
-%ghost %{ffdir}/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}/install.rdf
-%ghost %{ffdir}/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}/install.rdf
-%ghost %{ffdir}/extensions/installed-extensions-processed.txt
-%ghost %{ffdir}/extensions/Extensions.rdf
 
 
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Jul 18 2005 Christopher Aillon <caillon@redhat.com> 0:1.1-0.0.1.deerpark.alpha2
+- Update to Deer Park Alpha 2
+  - STILL TODO:
+    - This build is not localized yet.
+    - Theme issues not yet resolved.
+    - Building on ppc platforms is busted, disable them for now.
+    - Forward port all remaining patches.
+
 * Sun Jul 17 2005 Christopher Aillon <caillon@redhat.com> 0:1.0.4-6
 - Avoid a crash on 64bit platforms
 - Use system NSPR
 
-* Thu Jun 23 2005 Kristian Høgsberg <krh@redhat.com>  0:1.0.45
+* Thu Jun 23 2005 Kristian Høgsberg <krh@redhat.com>  0:1.0.4-5
 - Add firefox-1.0-pango-cairo.patch to get rid of the last few Xft
   references, fixing the "no fonts" problem.
 - Copy over changes from FC4 branch.
