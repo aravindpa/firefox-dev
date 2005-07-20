@@ -10,7 +10,7 @@ ExcludeArch:    ppc64 ppc
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.1
-Release:        0.2.1.deerpark.alpha2
+Release:        0.2.2.deerpark.alpha2
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -33,7 +33,6 @@ Source22:       firefox.png
 Source23:       firefox.xpm
 Source24:       firefox.1
 Source50:       firefox-xremote-client.sh.in
-Source55:       firefox-rebuild-databases.pl.in
 Source100:      find-external-requires
 
 # build patches
@@ -196,9 +195,6 @@ desktop-file-install --vendor mozilla \
 
 %{__chmod} 755 $RPM_BUILD_ROOT%{ffdir}/firefox-xremote-client
 %{__install} -p -D %{SOURCE24} $RPM_BUILD_ROOT%{_mandir}/man1/firefox.1
-%{__cat} %{SOURCE55} | %{__sed} -e 's,FFDIR,%{ffdir},g' > \
-  $RPM_BUILD_ROOT/%{ffdir}/firefox-rebuild-databases.pl
-%{__chmod} 755 $RPM_BUILD_ROOT/%{ffdir}/firefox-rebuild-databases.pl
 
 %{__rm} -f $RPM_BUILD_ROOT%{ffdir}/firefox-config
 
@@ -232,16 +228,8 @@ touch $RPM_BUILD_ROOT%{ffdir}/components/xpti.dat
 %post
 update-desktop-database %{_datadir}/applications
 
-umask 022
-%{ffdir}/firefox-rebuild-databases.pl || :
-
 %postun
 update-desktop-database %{_datadir}/applications
-umask 022
-# was this an upgrade?
-if [ $1 -gt 1 ]; then
-  %{ffdir}/firefox-rebuild-databases.pl
-fi
 
 %preun
 # is it a final removal?
@@ -266,6 +254,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Jul 19 2005 Christopher Aillon <caillon@redhat.com> 1.1-0.2.2-deerpark.alpha2
+- Do away with firefox-rebuild-databases.pl
+
 * Mon Jul 18 2005 Christopher Aillon <caillon@redhat.com> 1.1-0.2.1.deerpark.alpha2
 - Rebuild
 
