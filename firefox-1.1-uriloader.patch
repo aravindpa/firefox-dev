@@ -1,10 +1,26 @@
+Index: uriloader/exthandler/Makefile.in
+===================================================================
+RCS file: /cvsroot/mozilla/uriloader/exthandler/Makefile.in,v
+retrieving revision 1.60
+diff -d -u -p -r1.60 Makefile.in
+--- uriloader/exthandler/Makefile.in	2 May 2005 16:30:03 -0000	1.60
++++ uriloader/exthandler/Makefile.in	21 Jul 2005 03:07:39 -0000
+@@ -102,7 +102,7 @@ endif
+ LOCAL_INCLUDES = -I$(srcdir)
+ 
+ ifeq ($(MOZ_WIDGET_TOOLKIT),gtk2)
+-OSHELPER	+= nsGNOMERegistry.cpp
++OSHELPER	+= nsMIMEInfoUnix.cpp nsGNOMERegistry.cpp
+ endif
+ 
+ ifeq ($(MOZ_WIDGET_TOOLKIT),beos)
 Index: uriloader/exthandler/unix/nsGNOMERegistry.cpp
 ===================================================================
 RCS file: /cvsroot/mozilla/uriloader/exthandler/unix/nsGNOMERegistry.cpp,v
 retrieving revision 1.10
 diff -d -u -p -r1.10 nsGNOMERegistry.cpp
 --- uriloader/exthandler/unix/nsGNOMERegistry.cpp	16 Oct 2004 13:46:17 -0000	1.10
-+++ uriloader/exthandler/unix/nsGNOMERegistry.cpp	20 Jun 2005 09:48:02 -0000
++++ uriloader/exthandler/unix/nsGNOMERegistry.cpp	21 Jul 2005 03:07:40 -0000
 @@ -42,7 +42,7 @@
  #include "nsString.h"
  #include "nsIComponentManager.h"
@@ -47,7 +63,7 @@ diff -d -u -p -r1.10 nsGNOMERegistry.cpp
  nsGNOMERegistry::GetFromType(const char *aMIMEType)
  {
    if (!gconfLib)
-@@ -296,7 +296,7 @@ nsGNOMERegistry::GetFromType(const char 
+@@ -296,9 +296,11 @@ nsGNOMERegistry::GetFromType(const char 
    if (!handlerApp)
      return nsnull;
  
@@ -55,8 +71,12 @@ diff -d -u -p -r1.10 nsGNOMERegistry.cpp
 +  nsRefPtr<nsMIMEInfoUnix> mimeInfo = new nsMIMEInfoUnix(aMIMEType);
    NS_ENSURE_TRUE(mimeInfo, nsnull);
  
++  mimeInfo->SetDefaultGnomeVFSMimeApplication(handlerApp);
++
    // Get the list of extensions and append then to the mimeInfo.
-@@ -320,11 +320,21 @@ nsGNOMERegistry::GetFromType(const char 
+   GList *extensions = _gnome_vfs_mime_get_extensions_list(aMIMEType);
+   for (GList *extension = extensions; extension; extension = extension->next)
+@@ -320,11 +322,21 @@ nsGNOMERegistry::GetFromType(const char 
      return nsnull;
    }
  
@@ -79,7 +99,7 @@ diff -d -u -p -r1.10 nsGNOMERegistry.cpp
      _gnome_vfs_mime_application_free(handlerApp);
      return nsnull;
    }
-@@ -342,7 +352,7 @@ nsGNOMERegistry::GetFromType(const char 
+@@ -342,7 +354,7 @@ nsGNOMERegistry::GetFromType(const char 
  
    _gnome_vfs_mime_application_free(handlerApp);
  
@@ -94,7 +114,7 @@ RCS file: /cvsroot/mozilla/uriloader/exthandler/unix/nsGNOMERegistry.h,v
 retrieving revision 1.3
 diff -d -u -p -r1.3 nsGNOMERegistry.h
 --- uriloader/exthandler/unix/nsGNOMERegistry.h	16 Oct 2004 13:46:17 -0000	1.3
-+++ uriloader/exthandler/unix/nsGNOMERegistry.h	20 Jun 2005 09:48:02 -0000
++++ uriloader/exthandler/unix/nsGNOMERegistry.h	21 Jul 2005 03:07:40 -0000
 @@ -35,10 +35,13 @@
   *
   * ***** END LICENSE BLOCK ***** */
@@ -127,7 +147,7 @@ Index: uriloader/exthandler/unix/nsMIMEInfoUnix.cpp
 RCS file: uriloader/exthandler/unix/nsMIMEInfoUnix.cpp
 diff -N uriloader/exthandler/unix/nsMIMEInfoUnix.cpp
 --- /dev/null	1 Jan 1970 00:00:00 -0000
-+++ uriloader/exthandler/unix/nsMIMEInfoUnix.cpp	20 Jun 2005 09:48:02 -0000
++++ uriloader/exthandler/unix/nsMIMEInfoUnix.cpp	21 Jul 2005 03:07:40 -0000
 @@ -0,0 +1,196 @@
 +/* ***** BEGIN LICENSE BLOCK *****
 + * Version: MPL 1.1
@@ -330,8 +350,8 @@ Index: uriloader/exthandler/unix/nsMIMEInfoUnix.h
 RCS file: uriloader/exthandler/unix/nsMIMEInfoUnix.h
 diff -N uriloader/exthandler/unix/nsMIMEInfoUnix.h
 --- /dev/null	1 Jan 1970 00:00:00 -0000
-+++ uriloader/exthandler/unix/nsMIMEInfoUnix.h	20 Jun 2005 09:48:02 -0000
-@@ -0,0 +1,48 @@
++++ uriloader/exthandler/unix/nsMIMEInfoUnix.h	21 Jul 2005 03:07:40 -0000
+@@ -0,0 +1,50 @@
 +/* ***** BEGIN LICENSE BLOCK *****
 + * Version: MPL 1.1
 + *
@@ -371,6 +391,8 @@ diff -N uriloader/exthandler/unix/nsMIMEInfoUnix.h
 +  nsMIMEInfoUnix(const char* aType = "") : nsMIMEInfoImpl(aType), mDefaultVFSApplication(nsnull) {}
 +  nsMIMEInfoUnix(const nsACString& aMIMEType) : nsMIMEInfoImpl(aMIMEType) {};
 +
++  virtual ~nsMIMEInfoUnix();
++
 +  void SetDefaultGnomeVFSMimeApplication(GnomeVFSMimeApplication *app);
 +
 +protected:
@@ -386,7 +408,7 @@ RCS file: /cvsroot/mozilla/uriloader/exthandler/unix/nsOSHelperAppService.cpp,v
 retrieving revision 1.58
 diff -d -u -p -r1.58 nsOSHelperAppService.cpp
 --- uriloader/exthandler/unix/nsOSHelperAppService.cpp	25 Oct 2004 07:46:01 -0000	1.58
-+++ uriloader/exthandler/unix/nsOSHelperAppService.cpp	20 Jun 2005 09:48:02 -0000
++++ uriloader/exthandler/unix/nsOSHelperAppService.cpp	21 Jul 2005 03:07:40 -0000
 @@ -44,6 +44,7 @@
  #include "nsOSHelperAppService.h"
  #ifdef MOZ_WIDGET_GTK2

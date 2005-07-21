@@ -10,7 +10,7 @@ ExcludeArch:    ppc64 ppc
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.1
-Release:        0.2.2.deerpark.alpha2
+Release:        0.2.3.deerpark.alpha2
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -254,6 +254,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Jul 20 2005 Christopher Aillon <caillon@redhat.com> 1.1-0.2.3-deerpark.alpha2
+- Update firefox-1.1-uriloader.patch to fix crashes when calling into gnome-vfs2
+
 * Tue Jul 19 2005 Christopher Aillon <caillon@redhat.com> 1.1-0.2.2-deerpark.alpha2
 - Do away with firefox-rebuild-databases.pl
 
