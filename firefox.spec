@@ -4,13 +4,14 @@ ExcludeArch:    ppc64 ppc
 %define indexhtml file:///usr/share/doc/HTML/index.html
 %define desktop_file_utils_version 0.9
 %define nspr_version 4.6
+%define cairo_version 0.5
 
 %define official_branding 0
 
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.1
-Release:        0.2.3.deerpark.alpha2
+Release:        0.2.4.deerpark.alpha2
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -61,12 +62,14 @@ Patch42:        firefox-1.1-uriloader.patch
 Patch80:        firefox-1.0-pango-cairo.patch
 
 # patches from upstream (Patch100+)
+Patch100:       firefox-1.1-modal-filechooser.patch
 
 
 # ---------------------------------------------------
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  nspr-devel >= %{nspr_version}
+BuildRequires:  cairo-devel >= %{cairo_version}
 BuildRequires:  libpng-devel, libjpeg-devel
 BuildRequires:  zlib-devel, zip
 BuildRequires:  libIDL-devel
@@ -121,6 +124,7 @@ compliance, performance and portability.
 %patch41 -p0
 %patch42 -p0
 %patch80 -p1
+%patch100 -p0
 
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE10} .mozconfig
@@ -254,10 +258,18 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
-* Wed Jul 20 2005 Christopher Aillon <caillon@redhat.com> 1.1-0.2.3-deerpark.alpha2
+* Fri Jul 22 2005 Christopher Aillon <caillon@redhat.com> 1.1-0.2.4.deerpark.alpha2
+- Add patch from Christian Persch to make the file chooser modal
+- Change default behavior of opening links from external apps to: New Tab
+- New build options:
+  --enable-system-cairo
+  --enable-svg
+  --enable-canvas
+
+* Wed Jul 20 2005 Christopher Aillon <caillon@redhat.com> 1.1-0.2.3.deerpark.alpha2
 - Update firefox-1.1-uriloader.patch to fix crashes when calling into gnome-vfs2
 
-* Tue Jul 19 2005 Christopher Aillon <caillon@redhat.com> 1.1-0.2.2-deerpark.alpha2
+* Tue Jul 19 2005 Christopher Aillon <caillon@redhat.com> 1.1-0.2.2.deerpark.alpha2
 - Do away with firefox-rebuild-databases.pl
 
 * Mon Jul 18 2005 Christopher Aillon <caillon@redhat.com> 1.1-0.2.1.deerpark.alpha2
