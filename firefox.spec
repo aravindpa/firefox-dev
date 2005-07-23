@@ -262,7 +262,6 @@ fi
 - Add patch from Christian Persch to make the file chooser modal
 - Change default behavior of opening links from external apps to: New Tab
 - New build options:
-  --enable-system-cairo
   --enable-svg
   --enable-canvas
 
