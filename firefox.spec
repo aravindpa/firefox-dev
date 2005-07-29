@@ -1,5 +1,5 @@
 # Temporary until this works again
-ExcludeArch:    ppc64 ppc
+ExcludeArch:    ppc64
 
 %define indexhtml file:///usr/share/doc/HTML/index.html
 %define desktop_file_utils_version 0.9
@@ -63,6 +63,7 @@ Patch80:        firefox-1.0-pango-cairo.patch
 
 # patches from upstream (Patch100+)
 Patch100:       firefox-1.1-modal-filechooser.patch
+Patch101:       firefox-1.1-focus-on-navback.patch
 
 
 # ---------------------------------------------------
@@ -125,6 +126,7 @@ compliance, performance and portability.
 %patch42 -p0
 %patch80 -p1
 %patch100 -p0
+%patch101 -p0
 
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE10} .mozconfig
@@ -258,6 +260,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Jul 29 2005 Christopher Aillon <caillon@redhat.com> 1.1-0.2.5.deerpark.alpha2
+- Re-enable ppc now that its binutils are fixed.
+- When clicking a link and going back via history, don't keep the link focused
+
 * Fri Jul 22 2005 Christopher Aillon <caillon@redhat.com> 1.1-0.2.4.deerpark.alpha2
 - Add patch from Christian Persch to make the file chooser modal
 - Change default behavior of opening links from external apps to: New Tab
