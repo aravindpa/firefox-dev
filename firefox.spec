@@ -262,7 +262,8 @@ fi
 %changelog
 * Fri Jul 29 2005 Christopher Aillon <caillon@redhat.com> 1.1-0.2.5.deerpark.alpha2
 - Re-enable ppc now that its binutils are fixed.
-- When clicking a link and going back via history, don't keep the link focused
+- Disable SVG and canvas again.  The in-tree copy does not build against new pango.
+- When clicking a link and going back via history, don't keep the link focused.
 
 * Fri Jul 22 2005 Christopher Aillon <caillon@redhat.com> 1.1-0.2.4.deerpark.alpha2
 - Add patch from Christian Persch to make the file chooser modal
