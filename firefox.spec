@@ -11,7 +11,7 @@ ExcludeArch:    ppc64
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.1
-Release:        0.2.5.deerpark.alpha2
+Release:        0.2.6.deerpark.alpha2
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -260,6 +260,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Aug 15 2005 Christopher Aillon <caillon@redhat.com> 1.1-0.2.6.deerpark.alpha2
+- Rebuild
+
 * Fri Jul 29 2005 Christopher Aillon <caillon@redhat.com> 1.1-0.2.5.deerpark.alpha2
 - Re-enable ppc now that its binutils are fixed.
 - Disable SVG and canvas again.  The in-tree copy does not build against new pango.
