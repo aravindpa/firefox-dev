@@ -11,7 +11,7 @@ ExcludeArch:    ppc64
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.1
-Release:        0.2.6.deerpark.alpha2
+Release:        0.2.7.deerpark.alpha2.1
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -60,6 +60,7 @@ Patch42:        firefox-1.1-uriloader.patch
 
 # font system fixes
 Patch80:        firefox-1.0-pango-cairo.patch
+Patch81:        firefox-nopangoxft.patch
 
 # patches from upstream (Patch100+)
 Patch100:       firefox-1.1-modal-filechooser.patch
@@ -125,6 +126,7 @@ compliance, performance and portability.
 %patch41 -p0
 %patch42 -p0
 %patch80 -p1
+%patch81 -p1
 %patch100 -p0
 %patch101 -p0
 
@@ -260,6 +262,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Aug 18 2005 Jeremy Katz <katzj@redhat.com> - 1.1-0.2.7.deerpark.alpha2.1
+- another fix to not use pango_xft
+
 * Mon Aug 15 2005 Christopher Aillon <caillon@redhat.com> 1.1-0.2.6.deerpark.alpha2
 - Rebuild
 
