@@ -11,7 +11,7 @@ ExcludeArch:    ppc64
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.1
-Release:        0.2.7.deerpark.alpha2.1
+Release:        0.2.8.deerpark.alpha2
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -42,6 +42,7 @@ Patch2:         firefox-1.0-gcc4-compile.patch
 Patch3:         firefox-1.1-nss-system-nspr.patch
 Patch4:         firefox-1.1-dont-package-nspr-libs.patch
 Patch5:         firefox-1.1-visibility.patch
+Patch6:         firefox-1.1-canvas-system-cairo.patch
 
 # customization patches
 Patch20:        firefox-redhat-homepage.patch
@@ -65,6 +66,7 @@ Patch81:        firefox-nopangoxft.patch
 # patches from upstream (Patch100+)
 Patch100:       firefox-1.1-modal-filechooser.patch
 Patch101:       firefox-1.1-focus-on-navback.patch
+Patch102:       firefox-1.1-proxy-prefs.patch
 
 
 # ---------------------------------------------------
@@ -114,6 +116,8 @@ compliance, performance and portability.
 %patch5  -p0
 %endif
 
+%patch6  -p0
+
 %patch20 -p0
 %patch21 -p1
 %patch22 -p1
@@ -129,6 +133,7 @@ compliance, performance and portability.
 %patch81 -p1
 %patch100 -p0
 %patch101 -p0
+%patch102 -p0
 
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE10} .mozconfig
@@ -262,6 +267,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Sat Aug 27 2005 Christopher Aillon <caillon@redhat.com> - 1.1-0.2.8.deerpark.alpha2
+- Re-enable SVG, canvas, and system cairo.
+- Fix issue with typing in proxy preference panel
+
 * Thu Aug 18 2005 Jeremy Katz <katzj@redhat.com> - 1.1-0.2.7.deerpark.alpha2.1
 - another fix to not use pango_xft
 
