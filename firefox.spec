@@ -10,15 +10,15 @@ ExcludeArch:    ppc64
 
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
-Version:        1.1
-Release:        0.2.8.deerpark.alpha2
+Version:        1.5
+Release:        0.5.0.beta1
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
 %if %{official_branding}
 %define tarball firefox-%{version}-source.tar.bz2
 %else
-%define tarball firefox-1.1a2-source.tar.bz2
+%define tarball firefox-1.5b1-source.tar.bz2
 %endif
 Source0:        %{tarball}
 Source1:        firefox-gnomestripe-0.1.tar.gz
@@ -38,11 +38,8 @@ Source100:      find-external-requires
 
 # build patches
 Patch1:         firefox-1.0-prdtoa.patch
-Patch2:         firefox-1.0-gcc4-compile.patch
 Patch3:         firefox-1.1-nss-system-nspr.patch
-Patch4:         firefox-1.1-dont-package-nspr-libs.patch
 Patch5:         firefox-1.1-visibility.patch
-Patch6:         firefox-1.1-canvas-system-cairo.patch
 
 # customization patches
 Patch20:        firefox-redhat-homepage.patch
@@ -56,18 +53,13 @@ Patch28:        firefox-RC1-stock-icons-gnomestripe.patch
 Patch29:        firefox-gnomestripe-0.1-livemarks.patch
 
 # local bugfixes
-Patch41:        firefox-PR1-stack-direction.patch
 Patch42:        firefox-1.1-uriloader.patch
 
 # font system fixes
-Patch80:        firefox-1.0-pango-cairo.patch
 Patch81:        firefox-nopangoxft.patch
 
 # patches from upstream (Patch100+)
-Patch100:       firefox-1.1-modal-filechooser.patch
-Patch101:       firefox-1.1-focus-on-navback.patch
-Patch102:       firefox-1.1-proxy-prefs.patch
-
+Patch100:       firefox-1.5-cairo-show-text-behavior-change.patch
 
 # ---------------------------------------------------
 
@@ -106,17 +98,14 @@ compliance, performance and portability.
 %prep
 %setup -q -n mozilla
 #%{__tar} -xzf %{SOURCE1}
-%patch2  -p0
 %patch3  -p1
-%patch4  -p0
 
 # Pragma visibility is broken on most platforms for some reason.
 # It works on i386 so leave it alone there.  Disable elsewhere.
+# See http://gcc.gnu.org/bugzilla/show_bug.cgi?id=20297
 %ifnarch i386
 %patch5  -p0
 %endif
-
-%patch6  -p0
 
 %patch20 -p0
 %patch21 -p1
@@ -127,13 +116,11 @@ compliance, performance and portability.
 #%patch27 -p0
 #%patch28 -p0
 #%patch29 -p1
-%patch41 -p0
 %patch42 -p0
-%patch80 -p1
 %patch81 -p1
+
 %patch100 -p0
-%patch101 -p0
-%patch102 -p0
+
 
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE10} .mozconfig
@@ -175,12 +162,12 @@ cd -
 
 %{__mkdir_p} $RPM_BUILD_ROOT{%{_libdir},%{_bindir},%{_datadir}/applications}
 
-%{__tar} -C $RPM_BUILD_ROOT%{_libdir}/ -xzf dist/firefox-*linux*.tar.gz
-%{__mv} $RPM_BUILD_ROOT%{_libdir}/firefox $RPM_BUILD_ROOT%{ffdir}
+%{__tar} -C $RPM_BUILD_ROOT%{_libdir}/ -xzf dist/%{name}-*linux*.tar.gz
+%{__mv} $RPM_BUILD_ROOT%{_libdir}/%{name} $RPM_BUILD_ROOT%{ffdir}
 
-%{__rm} -f $RPM_BUILD_ROOT%{_libdir}/firefox-*-linux-gnu*.tar
+%{__rm} -f $RPM_BUILD_ROOT%{_libdir}/%{name}-*linux*.tar
 
-%{__install} -p -D %{SOURCE22} $RPM_BUILD_ROOT%{_datadir}/pixmaps/firefox.png
+%{__install} -p -D %{SOURCE22} $RPM_BUILD_ROOT%{_datadir}/pixmaps/%{name}.png
 
 desktop-file-install --vendor mozilla \
   --dir $RPM_BUILD_ROOT%{_datadir}/applications \
@@ -267,6 +254,11 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Sep 14 2005 Christopher Aillon <caillon@redhat.com> - 1.5-0.5.0.beta1
+- Update to 1.5 beta 1.
+- Add patch to svg rendering to adjust for cairo behavior.
+- Happy birthday, dad!
+
 * Sat Aug 27 2005 Christopher Aillon <caillon@redhat.com> - 1.1-0.2.8.deerpark.alpha2
 - Re-enable SVG, canvas, and system cairo.
 - Fix issue with typing in proxy preference panel
