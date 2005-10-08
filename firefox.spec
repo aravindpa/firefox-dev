@@ -11,14 +11,14 @@ ExcludeArch:    ppc64
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5
-Release:        0.5.0.beta1
+Release:        0.5.0.beta2
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
 %if %{official_branding}
 %define tarball firefox-%{version}-source.tar.bz2
 %else
-%define tarball firefox-1.5b1-source.tar.bz2
+%define tarball firefox-1.5b2-source.tar.bz2
 %endif
 Source0:        %{tarball}
 Source1:        firefox-gnomestripe-0.1.tar.gz
@@ -59,7 +59,6 @@ Patch42:        firefox-1.1-uriloader.patch
 Patch81:        firefox-nopangoxft.patch
 
 # patches from upstream (Patch100+)
-Patch100:       firefox-1.5-cairo-show-text-behavior-change.patch
 
 # ---------------------------------------------------
 
@@ -118,8 +117,6 @@ compliance, performance and portability.
 #%patch29 -p1
 %patch42 -p0
 %patch81 -p1
-
-%patch100 -p0
 
 
 %{__rm} -f .mozconfig
@@ -254,6 +251,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Sat Oct  8 2005 Christopher Aillon <caillon@redhat.com> - 1.5-0.5.0.beta2
+- Update to 1.5 beta 2
+
 * Wed Sep 14 2005 Christopher Aillon <caillon@redhat.com> - 1.5-0.5.0.beta1
 - Update to 1.5 beta 1.
 - Add patch to svg rendering to adjust for cairo behavior.
