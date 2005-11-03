@@ -11,14 +11,14 @@ ExcludeArch:    ppc64
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5
-Release:        0.5.0.beta2
+Release:        0.5.0.rc1
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
 %if %{official_branding}
 %define tarball firefox-%{version}-source.tar.bz2
 %else
-%define tarball firefox-1.5b2-source.tar.bz2
+%define tarball firefox-1.5rc1-source.tar.bz2
 %endif
 Source0:        %{tarball}
 Source1:        firefox-gnomestripe-0.1.tar.gz
@@ -251,6 +251,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Nov  3 2005 Christopher Aillon <caillon@redhat.com> - 1.5-0.5.0.rc1
+- Update to 1.5 rc1
+- Clean up the default bookmarks
+
 * Sat Oct  8 2005 Christopher Aillon <caillon@redhat.com> - 1.5-0.5.0.beta2
 - Update to 1.5 beta 2
 
