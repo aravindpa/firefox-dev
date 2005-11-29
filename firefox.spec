@@ -11,7 +11,7 @@ ExcludeArch:    ppc64
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5
-Release:        0.5.0.rc3
+Release:        0.5.1.rc3
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -59,6 +59,8 @@ Patch42:        firefox-1.1-uriloader.patch
 Patch81:        firefox-nopangoxft.patch
 
 # patches from upstream (Patch100+)
+Patch100:       firefox-bug305970.patch
+
 
 # ---------------------------------------------------
 
@@ -118,6 +120,7 @@ compliance, performance and portability.
 %patch42 -p0
 %patch81 -p1
 
+%patch100 -p0
 
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE10} .mozconfig
@@ -251,6 +254,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Nov 28 2005 Christopher Aillon <caillon@redhat.com> - 1.5-0.5.1.rc3
+- Fix issue with popup dialogs and other actions causing lockups
+
 * Fri Nov 18 2005 Christopher Aillon <caillon@redhat.com> - 1.5-0.5.0.rc3
 - Update to 1.5 rc3
 
