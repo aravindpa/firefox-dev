@@ -120,7 +120,7 @@ compliance, performance and portability.
 %patch42 -p0
 %patch81 -p1
 
-%patch100 -p0
+%patch100 -p1
 
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE10} .mozconfig
