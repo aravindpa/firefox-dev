@@ -6,12 +6,12 @@ ExcludeArch:    ppc64
 %define nspr_version 4.6
 %define cairo_version 0.5
 
-%define official_branding 0
+%define official_branding 1
 
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5
-Release:        0.5.1.rc3
+Release:        1
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -254,6 +254,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Nov 29 2005 Christopher Aillon <caillon@redhat.com> - 1.5-1
+- Update to Firefox 1.5
+
 * Mon Nov 28 2005 Christopher Aillon <caillon@redhat.com> - 1.5-0.5.1.rc3
 - Fix issue with popup dialogs and other actions causing lockups
 
