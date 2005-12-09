@@ -11,7 +11,7 @@ ExcludeArch:    ppc64
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5
-Release:        1
+Release: 1.1
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -254,6 +254,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Dec 09 2005 Jesse Keating <jkeating@redhat.com>
+- rebuilt
+
 * Tue Nov 29 2005 Christopher Aillon <caillon@redhat.com> - 1.5-1
 - Update to Firefox 1.5
 
