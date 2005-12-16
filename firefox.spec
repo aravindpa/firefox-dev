@@ -1,3 +1,6 @@
+# ppc64 still broken, see https://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=175944
+ExcludeArch: ppc64
+
 %define indexhtml file:///usr/share/doc/HTML/index.html
 %define desktop_file_utils_version 0.9
 %define nspr_version 4.6
@@ -9,7 +12,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5
-Release:        2
+Release:        3
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -256,6 +259,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Dec 16 2005 Christopher Aillon <caillon@redhat.com> - 1.5-3
+- Once again, disable ppc64 because of a new issue.
+  See https://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=175944
+
 * Thu Dec 15 2005 Christopher Aillon <caillon@redhat.com> - 1.5-2
 - Use the system NSS libraries
 - Build on ppc64
