@@ -1,9 +1,7 @@
-# Temporary until this works again
-ExcludeArch:    ppc64
-
 %define indexhtml file:///usr/share/doc/HTML/index.html
 %define desktop_file_utils_version 0.9
 %define nspr_version 4.6
+%define nss_version 3.10
 %define cairo_version 0.5
 
 %define official_branding 1
@@ -11,7 +9,7 @@ ExcludeArch:    ppc64
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5
-Release: 1.1
+Release:        2
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -39,6 +37,7 @@ Source100:      find-external-requires
 # build patches
 Patch1:         firefox-1.0-prdtoa.patch
 Patch3:         firefox-1.1-nss-system-nspr.patch
+Patch4:         firefox-1.5-with-system-nss.patch
 Patch5:         firefox-1.1-visibility.patch
 
 # customization patches
@@ -66,6 +65,7 @@ Patch100:       firefox-bug305970.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  nspr-devel >= %{nspr_version}
+BuildRequires:  nss-devel >= %{nss_version}
 BuildRequires:  cairo-devel >= %{cairo_version}
 BuildRequires:  libpng-devel, libjpeg-devel
 BuildRequires:  zlib-devel, zip
@@ -80,6 +80,7 @@ BuildRequires:  pango-devel
 BuildRequires:  freetype-devel >= 2.1.9
 
 Requires:       nspr >= %{nspr_version}
+Requires:       nss >= %{nss_version}
 Requires:       desktop-file-utils >= %{desktop_file_utils_version}
 Obsoletes:      phoenix, mozilla-firebird, MozillaFirebird
 Provides:       mozilla-firebird = %{epoch}:%{version}, MozillaFirebird = %{epoch}:%{version}
@@ -100,6 +101,7 @@ compliance, performance and portability.
 %setup -q -n mozilla
 #%{__tar} -xzf %{SOURCE1}
 %patch3  -p1
+%patch4  -p1
 
 # Pragma visibility is broken on most platforms for some reason.
 # It works on i386 so leave it alone there.  Disable elsewhere.
@@ -254,6 +256,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Dec 15 2005 Christopher Aillon <caillon@redhat.com> - 1.5-2
+- Use the system NSS libraries
+- Build on ppc64
+
 * Fri Dec 09 2005 Jesse Keating <jkeating@redhat.com>
 - rebuilt
 
