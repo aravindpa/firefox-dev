@@ -6,3 +6,4 @@ pref("browser.startup.homepage", "chrome://browser-region/locale/region.properti
 pref("general.smoothScroll",                true);
 pref("general.useragent.vendor", "Fedora");
 pref("general.useragent.vendorSub", "FIREFOX_RPM_VR");
+pref("intl.locale.matchOS", true);

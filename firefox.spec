@@ -9,7 +9,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5
-Release:        4
+Release:        5
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -20,7 +20,7 @@ Group:          Applications/Internet
 %endif
 Source0:        %{tarball}
 Source1:        firefox-gnomestripe-0.1.tar.gz
-Source2:        firefox-1.0-locales.tar.bz2
+Source2:        firefox-langpacks-20060125.tar.bz2
 
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -83,7 +83,6 @@ Requires:       nspr >= %{nspr_version}
 Requires:       nss >= %{nss_version}
 Requires:       desktop-file-utils >= %{desktop_file_utils_version}
 Obsoletes:      phoenix, mozilla-firebird, MozillaFirebird
-Provides:       mozilla-firebird = %{epoch}:%{version}, MozillaFirebird = %{epoch}:%{version}
 Provides:       webclient
 %define ffdir %{_libdir}/firefox-%{version}
 
@@ -140,18 +139,6 @@ compliance, performance and portability.
 
 export RPM_OPT_FLAGS=`echo $RPM_OPT_FLAGS | %{__sed} s/-O2/-Os/`
 MAKE="gmake %{?_smp_mflags}" make -f client.mk build
-
-for locale in `cat browser/locales/all-locales`
-do
-  if [ -d browser/locales/$locale ] ; then
-    %{__perl} -pi -e "s|browser.startup.homepage.*$|browser.startup.homepage=%{indexhtml}|g;" \
-       browser/locales/$locale/chrome/browser-region/region.properties
-    %{__make} -C browser/locales AB_CD=$locale
-  fi
-  if [ -d toolkit/locales/$locale ] ; then
-    %{__make} -C toolkit/locales AB_CD=$locale
-  fi
-done
 
 #---------------------------------------------------------------------
 
@@ -216,6 +203,26 @@ EOF
 # own mozilla plugin dir (#135050)
 %{__mkdir_p} $RPM_BUILD_ROOT%{_libdir}/mozilla/plugins
 
+# Install langpacks
+%{__mkdir_p} $RPM_BUILD_ROOT%{ffdir}/extensions
+%{__tar} xjf %{SOURCE2}
+for langpack in `ls firefox-langpacks/*.xpi`; do
+  language=`basename $langpack .xpi`
+  extensiondir=$RPM_BUILD_ROOT%{ffdir}/extensions/langpack-$language@firefox.mozilla.org
+  %{__mkdir_p} $extensiondir
+  unzip $langpack -d $extensiondir
+
+  %{__rm} -rf locale
+  jarfile=$extensiondir/chrome/$language.jar
+  unzip $jarfile
+  sed -i -e "s|browser.startup.homepage.*$|browser.startup.homepage=%{indexhtml}|g;" locale/browser-region/region.properties
+  %{__rm} -rf $jarfile
+  zip -r -D $jarfile locale
+  %{__rm} -rf locale
+
+done
+%{__rm} -rf firefox-langpacks
+
 # ghost files
 touch $RPM_BUILD_ROOT%{ffdir}/components/compreg.dat
 touch $RPM_BUILD_ROOT%{ffdir}/components/xpti.dat
@@ -256,6 +263,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Jan 26 2006 Christopher Aillon <caillon@redhat.com> - 1.5-5
+- Ship langpacks again from upstream
+- Stop providing MozillaFirebird and mozilla-firebird
+
 * Tue Jan  3 2006 Christopher Aillon <caillon@redhat.com> - 1.5-4
 - Looks like we can build ppc64 again.  Happy New Year!
 
