@@ -8,8 +8,8 @@
 
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
-Version:        1.5
-Release:        5
+Version:        1.5.0.1
+Release:        1
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -42,14 +42,13 @@ Patch5:         firefox-1.1-visibility.patch
 
 # customization patches
 Patch20:        firefox-redhat-homepage.patch
-Patch21:        firefox-0.7.3-default-plugin-less-annoying.patch
-Patch22:        firefox-0.7.3-psfonts.patch
-Patch24:        firefox-1.1-default-applications.patch
-Patch25:        firefox-1.1-software-update.patch
-Patch26:        firefox-RC1-stock-icons-be.patch
-Patch27:        firefox-RC1-stock-icons-fe.patch
-Patch28:        firefox-RC1-stock-icons-gnomestripe.patch
-Patch29:        firefox-gnomestripe-0.1-livemarks.patch
+Patch21:        firefox-0.7.3-psfonts.patch
+Patch22:        firefox-1.1-default-applications.patch
+Patch23:        firefox-1.1-software-update.patch
+Patch24:        firefox-RC1-stock-icons-be.patch
+Patch25:        firefox-RC1-stock-icons-fe.patch
+Patch26:        firefox-RC1-stock-icons-gnomestripe.patch
+Patch27:        firefox-gnomestripe-0.1-livemarks.patch
 
 # local bugfixes
 Patch42:        firefox-1.1-uriloader.patch
@@ -58,7 +57,6 @@ Patch42:        firefox-1.1-uriloader.patch
 Patch81:        firefox-nopangoxft.patch
 
 # patches from upstream (Patch100+)
-Patch100:       firefox-bug305970.patch
 
 
 # ---------------------------------------------------
@@ -111,17 +109,15 @@ compliance, performance and portability.
 
 %patch20 -p0
 %patch21 -p1
-%patch22 -p1
-%patch24 -p0
+%patch22 -p0
+#%patch23 -p0
+#%patch24 -p0
 #%patch25 -p0
 #%patch26 -p0
-#%patch27 -p0
-#%patch28 -p0
-#%patch29 -p1
+#%patch27 -p1
 %patch42 -p0
 %patch81 -p1
 
-%patch100 -p1
 
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE10} .mozconfig
@@ -263,6 +259,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Feb  1 2006 Christopher Aillon <caillon@redhat.com> - 1.5.0.1-1
+- Update to 1.5.0.1
+
 * Thu Jan 26 2006 Christopher Aillon <caillon@redhat.com> - 1.5-5
 - Ship langpacks again from upstream
 - Stop providing MozillaFirebird and mozilla-firebird
