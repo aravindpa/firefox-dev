@@ -56,7 +56,7 @@ Patch42:        firefox-1.1-uriloader.patch
 Patch81:        firefox-nopangoxft.patch
 
 # patches from upstream (Patch100+)
-
+Patch100:       firefox-1.5.0.1-dumpstack.patch
 
 # ---------------------------------------------------
 
@@ -116,7 +116,7 @@ compliance, performance and portability.
 #%patch27 -p1
 %patch42 -p0
 %patch81 -p1
-
+%patch100 -p0
 
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE10} .mozconfig
@@ -258,8 +258,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
-* Wed Feb  1 2006 Christopher Aillon <caillon@redhat.com> - 1.5.0.1-1
+* Wed Feb  1 2006 Christopher Aillon <caillon@redhat.com> - 1.5.0.1-2
 - Update language packs to 1.5.0.1
+- Add dumpstack.patch
 
 * Wed Feb  1 2006 Christopher Aillon <caillon@redhat.com> - 1.5.0.1-1
 - Update to 1.5.0.1
