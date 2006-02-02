@@ -38,6 +38,7 @@ Patch1:         firefox-1.0-prdtoa.patch
 Patch3:         firefox-1.1-nss-system-nspr.patch
 Patch4:         firefox-1.5-with-system-nss.patch
 Patch5:         firefox-1.1-visibility.patch
+Patch6:         firefox-1.5.0.1-dumpstack.patch
 
 # customization patches
 Patch20:        firefox-redhat-homepage.patch
@@ -56,7 +57,6 @@ Patch42:        firefox-1.1-uriloader.patch
 Patch81:        firefox-nopangoxft.patch
 
 # patches from upstream (Patch100+)
-Patch100:       firefox-1.5.0.1-dumpstack.patch
 
 # ---------------------------------------------------
 
@@ -105,6 +105,7 @@ compliance, performance and portability.
 %ifnarch i386
 %patch5  -p0
 %endif
+%patch6 -p1
 
 %patch20 -p0
 %patch21 -p1
@@ -116,7 +117,6 @@ compliance, performance and portability.
 #%patch27 -p1
 %patch42 -p0
 %patch81 -p1
-%patch100 -p0
 
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE10} .mozconfig
