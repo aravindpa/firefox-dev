@@ -9,7 +9,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5.0.1
-Release:        1
+Release:        2
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -20,8 +20,7 @@ Group:          Applications/Internet
 %endif
 Source0:        %{tarball}
 Source1:        firefox-gnomestripe-0.1.tar.gz
-Source2:        firefox-langpacks-20060125.tar.bz2
-
+Source2:        firefox-langpacks-%{version}-20060201.tar.bz2
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
 Source12:       firefox-redhat-default-bookmarks.html
@@ -259,6 +258,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Feb  1 2006 Christopher Aillon <caillon@redhat.com> - 1.5.0.1-1
+- Update language packs to 1.5.0.1
+
 * Wed Feb  1 2006 Christopher Aillon <caillon@redhat.com> - 1.5.0.1-1
 - Update to 1.5.0.1
 
