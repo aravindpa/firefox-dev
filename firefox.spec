@@ -9,7 +9,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5.0.1
-Release:        2
+Release:        2.1
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -258,6 +258,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Feb 07 2006 Jesse Keating <jkeating@redhat.com> - 1.5.0.1-2.1
+- rebuilt for new gcc4.1 snapshot and glibc changes
+
 * Wed Feb  1 2006 Christopher Aillon <caillon@redhat.com> - 1.5.0.1-2
 - Update language packs to 1.5.0.1
 - Add dumpstack.patch
