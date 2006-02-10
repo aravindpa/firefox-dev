@@ -9,7 +9,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5.0.1
-Release:        2.1
+Release:        3
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -105,7 +105,7 @@ compliance, performance and portability.
 %ifnarch i386
 %patch5  -p0
 %endif
-%patch6 -p1
+%patch6 -p0
 
 %patch20 -p0
 %patch21 -p1
@@ -206,15 +206,19 @@ for langpack in `ls firefox-langpacks/*.xpi`; do
   extensiondir=$RPM_BUILD_ROOT%{ffdir}/extensions/langpack-$language@firefox.mozilla.org
   %{__mkdir_p} $extensiondir
   unzip $langpack -d $extensiondir
+  find $extensiondir -type f | xargs chmod 644
 
-  %{__rm} -rf locale
+  langtmp=%{_tmpdir}/%{name}/langpack-$language
+  %{__mkdir_p} $langtmp
   jarfile=$extensiondir/chrome/$language.jar
-  unzip $jarfile
-  sed -i -e "s|browser.startup.homepage.*$|browser.startup.homepage=%{indexhtml}|g;" locale/browser-region/region.properties
+  unzip $jarfile -d $langtmp
+  sed -i -e "s|browser.startup.homepage.*$|browser.startup.homepage=%{indexhtml}|g;" $langtmp/locale/browser-region/region.properties
+  find $langtmp -type f | xargs chmod 644
   %{__rm} -rf $jarfile
+  cd $langtmp
   zip -r -D $jarfile locale
   %{__rm} -rf locale
-
+  cd -
 done
 %{__rm} -rf firefox-langpacks
 
@@ -258,7 +262,11 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
-* Tue Feb 07 2006 Jesse Keating <jkeating@redhat.com> - 1.5.0.1-2.1
+* Fri Feb 10 2006 Christopher Aillon <caillon@redhat.com> - 1.5.0.1-3
+- Improve the langpack install stuff
+- Fix up dumpstack.patch to match the finalized change
+
+* Tue Feb  7 2006 Jesse Keating <jkeating@redhat.com> - 1.5.0.1-2.1
 - rebuilt for new gcc4.1 snapshot and glibc changes
 
 * Wed Feb  1 2006 Christopher Aillon <caillon@redhat.com> - 1.5.0.1-2
