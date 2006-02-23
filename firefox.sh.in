@@ -161,6 +161,7 @@ case "$opt" in
 esac
 
 if [ "${USE_EXIST}" -eq "1" ] && [ "${ALREADY_RUNNING}" -eq "1" ]; then
+  opt=`echo -n "$opt" | sed -e 's/,/%2c/g' -e 's/ /%20/g'`
   # check to make sure that the command contains at least a :/ in it.
   echo $opt | grep -e ':/' 2>/dev/null > /dev/null
   RETURN_VAL=$?

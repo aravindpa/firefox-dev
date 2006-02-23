@@ -9,7 +9,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5.0.1
-Release:        4
+Release:        5
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -264,6 +264,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Feb 20 2006 Christopher Aillon <caillon@redhat.com> - 1.5.0.1-5
+- Rebuild
+
 * Mon Feb 20 2006 Christopher Aillon <caillon@redhat.com> - 1.5.0.1-4
 - Ensure our wrapper handles URLs with commas/spaces (Ilya Konstantinov)
 - Fix a pango typo
