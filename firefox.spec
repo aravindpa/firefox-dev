@@ -9,7 +9,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5.0.1
-Release:        3
+Release:        4
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -34,7 +34,6 @@ Source50:       firefox-xremote-client.sh.in
 Source100:      find-external-requires
 
 # build patches
-Patch1:         firefox-1.0-prdtoa.patch
 Patch3:         firefox-1.1-nss-system-nspr.patch
 Patch4:         firefox-1.5-with-system-nss.patch
 Patch5:         firefox-1.1-visibility.patch
@@ -57,6 +56,7 @@ Patch42:        firefox-1.1-uriloader.patch
 Patch81:        firefox-nopangoxft.patch
 
 # patches from upstream (Patch100+)
+Patch100:       firefox-1.5-pango-typo.patch
 
 # ---------------------------------------------------
 
@@ -117,6 +117,8 @@ compliance, performance and portability.
 #%patch27 -p1
 %patch42 -p0
 %patch81 -p1
+
+%patch100 -p0
 
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE10} .mozconfig
@@ -262,6 +264,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Feb 20 2006 Christopher Aillon <caillon@redhat.com> - 1.5.0.1-4
+- Ensure our wrapper handles URLs with commas/spaces (Ilya Konstantinov)
+- Fix a pango typo
+
 * Fri Feb 10 2006 Christopher Aillon <caillon@redhat.com> - 1.5.0.1-3
 - Improve the langpack install stuff
 - Fix up dumpstack.patch to match the finalized change
