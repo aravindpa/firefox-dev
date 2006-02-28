@@ -75,6 +75,7 @@ BuildRequires:  libgnomeui-devel
 BuildRequires:  krb5-devel
 BuildRequires:  pango-devel
 BuildRequires:  freetype-devel >= 2.1.9
+BuildRequires:  libXt-devel
 
 Requires:       nspr >= %{nspr_version}
 Requires:       nss >= %{nss_version}
@@ -264,6 +265,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Feb 28 2006 Karsten Hopp <karsten@redhat.de>
+- add buildrequires libXt-devel for X11/Intrinsic.h, X11/Shell.h
+
 * Mon Feb 20 2006 Christopher Aillon <caillon@redhat.com> - 1.5.0.1-5
 - Rebuild
 
