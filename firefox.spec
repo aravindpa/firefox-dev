@@ -9,7 +9,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5.0.1
-Release:        5
+Release:        6
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -265,6 +265,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Mar  6 2006 Ray Strode <rstrode@redhat.com> - 1.5.0.1-6
+- Add new bookmarks file from Warren (bug 182386)
+
 * Tue Feb 28 2006 Karsten Hopp <karsten@redhat.de>
 - add buildrequires libXt-devel for X11/Intrinsic.h, X11/Shell.h
 
