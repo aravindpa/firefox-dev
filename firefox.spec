@@ -9,7 +9,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5.0.1
-Release:        7
+Release:        8
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -265,6 +265,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Mar 10 2006 Christopher Aillon <caillon@redhat.com> - 1.5.0.1-8
+- Disable pango by default in non-indic locales per upstream request.
+  Users can export MOZ_ENABLE_PANGO=1 to force pango support.
+
 * Mon Mar  6 2006 Warren Togami <wtogami@redhat.com> - 1.5.0.1-7
 - make links point to the correct release
 
