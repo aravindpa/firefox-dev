@@ -78,6 +78,7 @@ BuildRequires:  krb5-devel
 BuildRequires:  pango-devel
 BuildRequires:  freetype-devel >= 2.1.9
 BuildRequires:  libXt-devel
+BuildRequires:  libXrender-devel
 
 Requires:       nspr >= %{nspr_version}
 Requires:       nss >= %{nss_version}
