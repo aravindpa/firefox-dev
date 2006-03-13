@@ -83,22 +83,17 @@ FONTCONFIG_PATH="/etc/fonts:${MOZILLA_FIVE_HOME}/res/Xft"
 export FONTCONFIG_PATH
 
 ##
-## Set MOZ_ENABLE_PANGO=1  to force enabling pango
-## Set MOZ_DISABLE_PANGO=1 to force disabling of pango
+## In order to better support certain scripts (such as Indic and some CJK 
+## scripts), Fedora builds its Firefox, with permission from the Mozilla 
+## Corporation, with the Pango system as its text renderer.  This change 
+## is known to break rendering of MathML, and may negatively impact 
+## performance on some pages.  To disable the use of Pango, set 
+## MOZ_DISABLE_PANGO=1 in your environment before launching Firefox.
 ##
-#MOZ_DISABLE_PANGO=1
-#export MOZ_DISABLE_PANGO
-
-# For now, in order to ship with firefox trademarks, we need to default to
-# disable pango on non-indic locales.  Use MOZ_ENABLE_PANGO=1 to force pango.
-tmplang=${LC_CTYPE:-${LANG:-"en_US.UTF-8"}}
-if ! echo $tmplang | grep "^..[_-]IN" > /dev/null; then
-   if [ -z "$MOZ_ENABLE_PANGO" ]; then
-     MOZ_DISABLE_PANGO=1
-     export MOZ_DISABLE_PANGO
-   fi
-fi
-
+#
+# MOZ_DISABLE_PANGO=1
+# export MOZ_DISABLE_PANGO
+#
 
 function check_running() {
     $MOZ_CLIENT_PROGRAM $MOZ_CLIENT_PROGRAM_PARAM 'ping()' 2>/dev/null >/dev/null

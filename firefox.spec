@@ -9,7 +9,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5.0.1
-Release:        8
+Release:        9
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -57,6 +57,8 @@ Patch81:        firefox-nopangoxft.patch
 
 # patches from upstream (Patch100+)
 Patch100:       firefox-1.5-pango-typo.patch
+Patch101:       firefox-1.5-pango-ua.patch
+Patch102:       firefox-1.5-pango-about.patch
 
 # ---------------------------------------------------
 
@@ -119,7 +121,9 @@ compliance, performance and portability.
 %patch42 -p0
 %patch81 -p1
 
-%patch100 -p0
+%patch100 -p0 -b .pango-typo
+%patch101 -p0 -b .pango-ua
+%patch102 -p0 -b .pango-about
 
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE10} .mozconfig
@@ -265,9 +269,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
-* Fri Mar 10 2006 Christopher Aillon <caillon@redhat.com> - 1.5.0.1-8
-- Disable pango by default in non-indic locales per upstream request.
-  Users can export MOZ_ENABLE_PANGO=1 to force pango support.
+* Sat Mar 11 2006 Christopher Aillon <caillon@redhat.com> - 1.5.0.1-9
+- Add a notice to the about dialog denoting this is a pango enabled build.
+- Tweak the user agent denoting this is a pango enabled build.
 
 * Mon Mar  6 2006 Warren Togami <wtogami@redhat.com> - 1.5.0.1-7
 - make links point to the correct release
