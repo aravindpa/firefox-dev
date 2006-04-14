@@ -55,7 +55,6 @@ Patch42:        firefox-1.1-uriloader.patch
 Patch81:        firefox-nopangoxft.patch
 
 # patches from upstream (Patch100+)
-Patch100:       firefox-1.5-pango-typo.patch
 Patch101:       firefox-1.5-pango-ua.patch
 Patch102:       firefox-1.5-pango-about.patch
 
@@ -120,7 +119,6 @@ compliance, performance and portability.
 %patch42 -p0
 %patch81 -p1
 
-%patch100 -p0 -b .pango-typo
 %patch101 -p0 -b .pango-ua
 %patch102 -p0 -b .pango-about
 
