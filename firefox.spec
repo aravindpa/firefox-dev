@@ -20,7 +20,7 @@ Group:          Applications/Internet
 %endif
 Source0:        %{tarball}
 Source1:        firefox-gnomestripe-0.1.tar.gz
-Source2:        firefox-langpacks-%{version}-20060201.tar.bz2
+Source2:        firefox-langpacks-%{version}-20060413.tar.bz2
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
 Source12:       firefox-redhat-default-bookmarks.html
