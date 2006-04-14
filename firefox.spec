@@ -8,8 +8,8 @@
 
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
-Version:        1.5.0.1
-Release:        9
+Version:        1.5.0.2
+Release:        2
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -270,6 +270,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Apr 13 2006 Christopher Aillon <caillon@redhat.com> - 1.5.0.2-2
+- Firefox 1.5.0.2
+
 * Sat Mar 11 2006 Christopher Aillon <caillon@redhat.com> - 1.5.0.1-9
 - Add a notice to the about dialog denoting this is a pango enabled build.
 - Tweak the user agent denoting this is a pango enabled build.
