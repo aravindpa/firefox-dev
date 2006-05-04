@@ -8,8 +8,8 @@
 
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
-Version:        1.5.0.2
-Release:        4
+Version:        1.5.0.3
+Release:        2
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -19,8 +19,7 @@ Group:          Applications/Internet
 %define tarball firefox-1.5rc3-source.tar.bz2
 %endif
 Source0:        %{tarball}
-Source1:        firefox-gnomestripe-0.1.tar.gz
-Source2:        firefox-langpacks-%{version}-20060418.tar.bz2
+Source2:        firefox-langpacks-%{version}-20060504.tar.bz2
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
 Source12:       firefox-redhat-default-bookmarks.html
@@ -97,7 +96,6 @@ compliance, performance and portability.
 
 %prep
 %setup -q -n mozilla
-#%{__tar} -xzf %{SOURCE1}
 %patch3  -p1
 %patch4  -p1
 
@@ -266,6 +264,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Thu May  4 2006 Christopher Aillon <caillon@redhat.com> - 1.5.0.3-2
+- Firefox 1.5.0.3
+
 * Wed Apr 19 2006 Christopher Aillon <caillon@redhat.com> - 1.5.0.2-4
 - Really drop the broken langpacks this time.
 
