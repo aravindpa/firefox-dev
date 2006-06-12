@@ -8,7 +8,7 @@
 
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
-Version:        1.5.0.3
+Version:        1.5.0.4
 Release:        2
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
@@ -19,7 +19,7 @@ Group:          Applications/Internet
 %define tarball firefox-1.5rc3-source.tar.bz2
 %endif
 Source0:        %{tarball}
-Source2:        firefox-langpacks-%{version}-20060504.tar.bz2
+Source2:        firefox-langpacks-%{version}-20060612.tar.bz2
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
 Source12:       firefox-redhat-default-bookmarks.html
@@ -264,6 +264,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Jun 12 2006 Kai Engert <kengert@redhat.com> - 1.5.0.4-2
+- Firefox 1.5.0.4
+
 * Thu May  4 2006 Christopher Aillon <caillon@redhat.com> - 1.5.0.3-2
 - Firefox 1.5.0.3
 
