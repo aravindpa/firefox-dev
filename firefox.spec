@@ -9,7 +9,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5.0.4
-Release:        2
+Release:        3
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -135,7 +135,14 @@ compliance, performance and portability.
 %build
 
 export RPM_OPT_FLAGS=`echo $RPM_OPT_FLAGS | %{__sed} s/-O2/-Os/`
-MAKE="gmake %{?_smp_mflags}" make -f client.mk build
+
+%ifarch ppc ppc64 s390 s390x
+%define moz_make_flags -j1
+%else
+%define moz_make_flags %{?_smp_mflags}
+%endif
+
+MAKE="gmake %{moz_make_flags}" make -f client.mk build
 
 #---------------------------------------------------------------------
 
@@ -264,6 +271,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Jun 15 2006 Kai Engert <kengert@redhat.com> - 1.5.0.4-3
+- Force "gmake -j1" on ppc ppc64 s390 s390x
+
 * Mon Jun 12 2006 Kai Engert <kengert@redhat.com> - 1.5.0.4-2
 - Firefox 1.5.0.4
 
