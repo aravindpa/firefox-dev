@@ -3,13 +3,14 @@
 %define nspr_version 4.6
 %define nss_version 3.10
 %define cairo_version 0.5
+%define builddir %{_builddir}/mozilla
 
 %define official_branding 1
 
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5.0.4
-Release:        3
+Release:        4
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -91,6 +92,20 @@ AutoProv: 0
 %description
 Mozilla Firefox is an open-source web browser, designed for standards
 compliance, performance and portability.
+
+%package devel
+Summary: Development files for Firefox
+Group: Development/Libraries
+Obsoletes: mozilla-devel
+Requires: firefox = %{version}-%{release}
+Requires: nspr-devel >= %{nspr_version}
+Requires: nss-devel >= %{nss_version}
+
+%description devel
+Development files for Firefox.  This package exists temporarily.
+When xulrunner has reached version 1.0, firefox-devel will be
+removed in favor of xulrunner-devel.
+
 
 #---------------------------------------------------------------------
 
@@ -231,6 +246,26 @@ for langpack in `ls firefox-langpacks/*.xpi`; do
 done
 %{__rm} -rf firefox-langpacks
 
+# Prepare our devel package
+%{__mkdir_p} $RPM_BUILD_ROOT/fftemp
+DESTDIR=$RPM_BUILD_ROOT/fftemp \
+   make install
+
+%{__rm} -f %{builddir}/firefox-devel.list
+echo %defattr\(-,root,root\) > %{builddir}/firefox-devel.list
+find $RPM_BUILD_ROOT/fftemp%{_includedir}/firefox-%{version}/ -type f | \
+  sed -e "s,$RPM_BUILD_ROOT,," >> \
+  %{builddir}/firefox-devel.list
+find $RPM_BUILD_ROOT/fftemp%{_datadir}/idl/firefox-%{version}/ -type f | \
+  sed -e "s,$RPM_BUILD_ROOT,," >> \
+  %{builddir}/firefox-devel.list
+install -c -m 755 dist/bin/xpcshell \
+  dist/bin/xpidl \
+  dist/bin/xpt_dump \
+  dist/bin/xpt_link \
+  $RPM_BUILD_ROOT/%{ffdir}
+%{__rm} -rf $RPM_BUILD_ROOT/fftemp
+
 # ghost files
 touch $RPM_BUILD_ROOT%{ffdir}/components/compreg.dat
 touch $RPM_BUILD_ROOT%{ffdir}/components/xpti.dat
@@ -261,16 +296,54 @@ fi
 %{_mandir}/man1/*
 %{_datadir}/applications/mozilla-%{name}.desktop
 %{_datadir}/pixmaps/firefox.png
-%{ffdir}
 %{_libdir}/mozilla
+
+%dir %{ffdir}
+%{ffdir}/LICENSE
+%{ffdir}/README.txt
+%{ffdir}/*.properties
+%{ffdir}/chrome
+%{ffdir}/components
+%{ffdir}/defaults
+%{ffdir}/extensions
+%{ffdir}/greprefs
+%{ffdir}/icons
+%{ffdir}/init.d
+%{ffdir}/plugins
+%{ffdir}/res
+%{ffdir}/searchplugins
+%{ffdir}/*.so
+%{ffdir}/firefox
+%{ffdir}/firefox-bin
+%{ffdir}/firefox-xremote-client
+%{ffdir}/mozilla-xremote-client
+%{ffdir}/run-mozilla.sh
+# XXX See if these are needed still
+%{ffdir}/updater*
 
 %ghost %{ffdir}/components/compreg.dat
 %ghost %{ffdir}/components/xpti.dat
 
+%files devel -f firefox-devel.list
+%defattr(-,root,root)
+%{_datadir}/idl/firefox-%{version}/*
+%{ffdir}/xpcshell
+%{ffdir}/xpicleanup
+%{ffdir}/xpidl
+%{ffdir}/xpt_dump
+%{ffdir}/xpt_link
 
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Jul 24 2006 Christopher Aillon <caillon@redhat.com> - 1.5.0.4-4
+- Ugh:
+  - Mozilla the platform is deprecated
+  - XULrunner has been promised for a while but is still not 1.0
+  - Ship a firefox-devel for now as we need a devel platform.
+  - The plan is to kill firefox-devel when xulrunner 1.0 ships. 
+- Clean up the files list a little bit.
+
 * Thu Jun 15 2006 Kai Engert <kengert@redhat.com> - 1.5.0.4-3
 - Force "gmake -j1" on ppc ppc64 s390 s390x
 
