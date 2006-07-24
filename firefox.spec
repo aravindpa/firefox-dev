@@ -117,9 +117,10 @@ removed in favor of xulrunner-devel.
 # Pragma visibility is broken on most platforms for some reason.
 # It works on i386 so leave it alone there.  Disable elsewhere.
 # See http://gcc.gnu.org/bugzilla/show_bug.cgi?id=20297
-%ifnarch i386
+# UPDATE: 2006-07-24: i386 is also broken now.
+#%ifnarch i386
 %patch5  -p0
-%endif
+#%endif
 
 %patch20 -p0
 %patch21 -p1
