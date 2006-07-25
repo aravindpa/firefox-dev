@@ -151,6 +151,7 @@ removed in favor of xulrunner-devel.
 %build
 
 export RPM_OPT_FLAGS=`echo $RPM_OPT_FLAGS | %{__sed} s/-O2/-Os/`
+export PREFIX='%{_prefix}'
 
 %ifarch ppc ppc64 s390 s390x
 %define moz_make_flags -j1
