@@ -251,9 +251,9 @@ done
 # Prepare our devel package
 %{__mkdir_p} $RPM_BUILD_ROOT/%{_includedir}/firefox-%{version}
 %{__mkdir_p} $RPM_BUILD_ROOT/%{_datadir}/idl/firefox-%{version}
-install -c -m 644 dist/include/* \
+%{__cp} -r dist/include/* \
   $RPM_BUILD_ROOT/%{_includedir}/firefox-%{version}
-install -c -m 644 dist/idl/* \
+%{__cp} -r dist/idl/* \
   $RPM_BUILD_ROOT/%{_datadir}/idl/firefox-%{version}
 install -c -m 755 dist/bin/xpcshell \
   dist/bin/xpidl \
