@@ -261,6 +261,7 @@ find $RPM_BUILD_ROOT/fftemp%{_includedir}/firefox-%{version}/ -type f | \
 find $RPM_BUILD_ROOT/fftemp%{_datadir}/idl/firefox-%{version}/ -type f | \
   sed -e "s,$RPM_BUILD_ROOT,," >> \
   %{builddir}/firefox-devel.list
+sed -i -e 's,^%{_prefix}/local,%{_prefix},' %{builddir}/firefox-devel.list
 install -c -m 755 dist/bin/xpcshell \
   dist/bin/xpidl \
   dist/bin/xpt_dump \
