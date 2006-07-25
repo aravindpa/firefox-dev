@@ -249,27 +249,17 @@ done
 %{__rm} -rf firefox-langpacks
 
 # Prepare our devel package
-%{__mkdir_p} $RPM_BUILD_ROOT/fftemp
-DESTDIR=$RPM_BUILD_ROOT/fftemp \
-   make install
-
-%{__rm} -f %{builddir}/firefox-devel.list
-echo %defattr\(-,root,root\) > %{builddir}/firefox-devel.list
-find $RPM_BUILD_ROOT/fftemp%{_includedir}/firefox-%{version}/ -type f | \
-  sed -e "s,$RPM_BUILD_ROOT,," >> \
-  %{builddir}/firefox-devel.list
-find $RPM_BUILD_ROOT/fftemp%{_datadir}/idl/firefox-%{version}/ -type f | \
-  sed -e "s,$RPM_BUILD_ROOT,," >> \
-  %{builddir}/firefox-devel.list
-sed -i -e 's,fftemp/,,' \
-       -e 's,^%{_prefix}/local,%{_prefix},' \
-       %{builddir}/firefox-devel.list
+%{__mkdir_p} $RPM_BUILD_ROOT/%{_includedir}/firefox-%{version}
+%{__mkdir_p} $RPM_BUILD_ROOT/%{_datadir}/idl/firefox-%{version}
+install -c -m 644 dist/include/* \
+  $RPM_BUILD_ROOT/%{_includedir}/firefox-%{version}
+install -c -m 644 dist/idl/* \
+  $RPM_BUILD_ROOT/%{_datadir}/idl/firefox-%{version}
 install -c -m 755 dist/bin/xpcshell \
   dist/bin/xpidl \
   dist/bin/xpt_dump \
   dist/bin/xpt_link \
   $RPM_BUILD_ROOT/%{ffdir}
-%{__rm} -rf $RPM_BUILD_ROOT/fftemp
 
 # ghost files
 touch $RPM_BUILD_ROOT%{ffdir}/components/compreg.dat
@@ -329,9 +319,10 @@ fi
 %ghost %{ffdir}/components/compreg.dat
 %ghost %{ffdir}/components/xpti.dat
 
-%files devel -f firefox-devel.list
+%files devel
 %defattr(-,root,root)
-%{_datadir}/idl/firefox-%{version}/*
+%{_datadir}/idl/firefox-%{version}
+%{_includedir}/firefox-%{version}
 %{ffdir}/xpcshell
 %{ffdir}/xpicleanup
 %{ffdir}/xpidl
