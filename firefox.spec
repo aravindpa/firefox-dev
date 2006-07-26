@@ -298,7 +298,12 @@ fi
 %{ffdir}/README.txt
 %{ffdir}/*.properties
 %{ffdir}/chrome
-%{ffdir}/components
+%dir %{ffdir}/components
+%ghost %{ffdir}/components/compreg.dat
+%ghost %{ffdir}/components/xpti.dat
+%{ffdir}/components/*.so
+%{ffdir}/components/*.xpt
+%{ffdir}/components/*.js
 %{ffdir}/defaults
 %{ffdir}/extensions
 %{ffdir}/greprefs
@@ -314,10 +319,9 @@ fi
 %{ffdir}/mozilla-xremote-client
 %{ffdir}/run-mozilla.sh
 # XXX See if these are needed still
+%{ffdir}/dependentlibs.list
 %{ffdir}/updater*
-
-%ghost %{ffdir}/components/compreg.dat
-%ghost %{ffdir}/components/xpti.dat
+%{ffdir}/removed-files
 
 %files devel
 %defattr(-,root,root)
