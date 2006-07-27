@@ -9,8 +9,8 @@
 
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
-Version:        1.5.0.4
-Release:        5
+Version:        1.5.0.5
+Release:        2
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -20,7 +20,7 @@ Group:          Applications/Internet
 %define tarball firefox-1.5rc3-source.tar.bz2
 %endif
 Source0:        %{tarball}
-Source2:        firefox-langpacks-%{version}-20060612.tar.bz2
+Source2:        firefox-langpacks-%{version}-20060726.tar.bz2
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
 Source12:       firefox-redhat-default-bookmarks.html
@@ -336,6 +336,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Jul 26 2006 Christopher Aillon <caillon@redhat.com> - 1.5.0.5-2
+- Update to 1.5.0.5
+
 * Mon Jul 24 2006 Christopher Aillon <caillon@redhat.com> - 1.5.0.4-4
 - Ugh:
   - Mozilla the platform is deprecated
