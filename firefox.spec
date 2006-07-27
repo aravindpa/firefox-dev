@@ -86,7 +86,7 @@ Obsoletes:      phoenix, mozilla-firebird, MozillaFirebird
 Provides:       webclient
 %define ffdir %{_libdir}/firefox-%{version}
 
-%if %{build_devel_package}
+%if ! %{build_devel_package}
 AutoProv: 0
 %define _use_internal_dependency_generator 0
 %define __find_requires %{SOURCE100}
