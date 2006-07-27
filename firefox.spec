@@ -4,13 +4,14 @@
 %define nss_version 3.10
 %define cairo_version 0.5
 %define builddir %{_builddir}/mozilla
+%define build_devel_package 1
 
 %define official_branding 1
 
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5.0.5
-Release:        2
+Release:        3
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -85,14 +86,17 @@ Obsoletes:      phoenix, mozilla-firebird, MozillaFirebird
 Provides:       webclient
 %define ffdir %{_libdir}/firefox-%{version}
 
+%if %{build_devel_package}
 AutoProv: 0
 %define _use_internal_dependency_generator 0
 %define __find_requires %{SOURCE100}
+%endif
 
 %description
 Mozilla Firefox is an open-source web browser, designed for standards
 compliance, performance and portability.
 
+%if %{build_devel_package}
 %package devel
 Summary: Development files for Firefox
 Group: Development/Libraries
@@ -105,7 +109,7 @@ Requires: nss-devel >= %{nss_version}
 Development files for Firefox.  This package exists temporarily.
 When xulrunner has reached version 1.0, firefox-devel will be
 removed in favor of xulrunner-devel.
-
+%endif
 
 #---------------------------------------------------------------------
 
@@ -249,6 +253,7 @@ done
 %{__rm} -rf firefox-langpacks
 
 # Prepare our devel package
+%if %{build_devel_package}
 %{__mkdir_p} $RPM_BUILD_ROOT/%{_includedir}/firefox-%{version}
 %{__mkdir_p} $RPM_BUILD_ROOT/%{_datadir}/idl/firefox-%{version}
 %{__cp} -r dist/include/* \
@@ -260,6 +265,7 @@ install -c -m 755 dist/bin/xpcshell \
   dist/bin/xpt_dump \
   dist/bin/xpt_link \
   $RPM_BUILD_ROOT/%{ffdir}
+%endif
 
 # ghost files
 touch $RPM_BUILD_ROOT%{ffdir}/components/compreg.dat
@@ -323,6 +329,7 @@ fi
 %{ffdir}/updater*
 %{ffdir}/removed-files
 
+%if %{build_devel_package}
 %files devel
 %defattr(-,root,root)
 %{_datadir}/idl/firefox-%{version}
@@ -332,10 +339,14 @@ fi
 %{ffdir}/xpidl
 %{ffdir}/xpt_dump
 %{ffdir}/xpt_link
+%endif
 
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Jul 27 2006 Christopher Aillon <caillon@redhat.com> - 1.5.0.5-3
+- Don't strip provides when building the devel package
+
 * Wed Jul 26 2006 Christopher Aillon <caillon@redhat.com> - 1.5.0.5-2
 - Update to 1.5.0.5
 
