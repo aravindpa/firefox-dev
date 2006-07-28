@@ -11,7 +11,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5.0.5
-Release:        3
+Release:        4
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -256,6 +256,7 @@ done
 %if %{build_devel_package}
 %{__mkdir_p} $RPM_BUILD_ROOT/%{_includedir}/firefox-%{version}
 %{__mkdir_p} $RPM_BUILD_ROOT/%{_datadir}/idl/firefox-%{version}
+%{__mkdir_p} $RPM_BUILD_ROOT/%{_libdir}/pkgconfig
 %{__cp} -r dist/include/* \
   $RPM_BUILD_ROOT/%{_includedir}/firefox-%{version}
 %{__cp} -r dist/idl/* \
@@ -265,6 +266,8 @@ install -c -m 755 dist/bin/xpcshell \
   dist/bin/xpt_dump \
   dist/bin/xpt_link \
   $RPM_BUILD_ROOT/%{ffdir}
+install -c -m 644 build/unix/*.pc \
+  $RPM_BUILD_ROOT/%{_libdir}/pkgconfig
 %endif
 
 # ghost files
@@ -339,11 +342,18 @@ fi
 %{ffdir}/xpidl
 %{ffdir}/xpt_dump
 %{ffdir}/xpt_link
+%{ffdir}/firefox-xpcom.pc
+%{ffdir}/firefox-plugin.pc
+%{ffdir}/firefox-jscom.pc
+%{ffdir}/firefox-gtkmozembed.pc
 %endif
 
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Jul 27 2006 Christopher Aillon <caillon@redhat.com> - 1.5.0.5-4
+- Add pkgconfig files
+
 * Thu Jul 27 2006 Christopher Aillon <caillon@redhat.com> - 1.5.0.5-3
 - Don't strip provides when building the devel package
 
