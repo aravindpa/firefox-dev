@@ -11,7 +11,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5.0.5
-Release:        6
+Release:        7
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -257,9 +257,9 @@ done
 %{__mkdir_p} $RPM_BUILD_ROOT/%{_includedir}/firefox-%{version}
 %{__mkdir_p} $RPM_BUILD_ROOT/%{_datadir}/idl/firefox-%{version}
 %{__mkdir_p} $RPM_BUILD_ROOT/%{_libdir}/pkgconfig
-%{__cp} -r dist/include/* \
+%{__cp} -rL dist/include/* \
   $RPM_BUILD_ROOT/%{_includedir}/firefox-%{version}
-%{__cp} -r dist/idl/* \
+%{__cp} -rL dist/idl/* \
   $RPM_BUILD_ROOT/%{_datadir}/idl/firefox-%{version}
 install -c -m 755 dist/bin/xpcshell \
   dist/bin/xpidl \
@@ -353,6 +353,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Jul 28 2006 Christopher Aillon <caillon@redhat.com> - 1.5.0.5-7
+- Dereference links in %%install so the files get put in the
+  right place.
+
 * Fri Jul 28 2006 Christopher Aillon <caillon@redhat.com> - 1.5.0.5-6
 - Actually, those pkgconfig files really shouldn't be here as we use
   system nss and nspr.
