@@ -342,10 +342,10 @@ fi
 %{ffdir}/xpidl
 %{ffdir}/xpt_dump
 %{ffdir}/xpt_link
-%{ffdir}/firefox-xpcom.pc
-%{ffdir}/firefox-plugin.pc
-%{ffdir}/firefox-jscom.pc
-%{ffdir}/firefox-gtkmozembed.pc
+%{_libdir}/pkgconfig/firefox-xpcom.pc
+%{_libdir}/pkgconfig/firefox-plugin.pc
+%{_libdir}/pkgconfig/firefox-js.pc
+%{_libdir}/pkgconfig/firefox-gtkmozembed.pc
 %endif
 
 #---------------------------------------------------------------------
