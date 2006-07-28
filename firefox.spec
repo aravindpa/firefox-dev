@@ -11,7 +11,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5.0.5
-Release:        4
+Release:        5
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -346,11 +346,16 @@ fi
 %{_libdir}/pkgconfig/firefox-plugin.pc
 %{_libdir}/pkgconfig/firefox-js.pc
 %{_libdir}/pkgconfig/firefox-gtkmozembed.pc
+%{_libdir}/pkgconfig/firefox-nspr.pc
+%{_libdir}/pkgconfig/firefox-nss.pc
 %endif
 
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Jul 28 2006 Matthias Clasen <mclasen@redhat.com> - 1.5.0.4-5
+- Add more pkgconfig files
+
 * Thu Jul 27 2006 Christopher Aillon <caillon@redhat.com> - 1.5.0.5-4
 - Add pkgconfig files
 
