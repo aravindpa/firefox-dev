@@ -11,7 +11,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5.0.5
-Release:        7
+Release:        8
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -156,6 +156,7 @@ removed in favor of xulrunner-devel.
 
 export RPM_OPT_FLAGS=`echo $RPM_OPT_FLAGS | %{__sed} s/-O2/-Os/`
 export PREFIX='%{_prefix}'
+export LIBDIR='%{_libdir}'
 
 %ifarch ppc ppc64 s390 s390x
 %define moz_make_flags -j1
@@ -353,6 +354,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Sun Jul 30 2006 Matthias Clasen <mclasen@redhat.com> - 1.5.0.5-8
+- Pass --libdir to configure
+
 * Fri Jul 28 2006 Christopher Aillon <caillon@redhat.com> - 1.5.0.5-7
 - Dereference links in %%install so the files get put in the
   right place.
