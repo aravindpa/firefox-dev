@@ -11,7 +11,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5.0.6
-Release:        2
+Release:        3
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -354,6 +354,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Aug 08 2006 Kai Engert <kengert@redhat.com> - 1.5.0.6-3
+- Rebuild
+
 * Thu Aug 03 2006 Kai Engert <kengert@redhat.com> - 1.5.0.6-2
 - Update to 1.5.0.6
 
