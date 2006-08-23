@@ -1,7 +1,7 @@
 %define indexhtml file:///usr/share/doc/HTML/index.html
 %define desktop_file_utils_version 0.9
 %define nspr_version 4.6
-%define nss_version 3.10
+%define nss_version 3.11.1
 %define cairo_version 0.5
 %define builddir %{_builddir}/mozilla
 %define build_devel_package 1
@@ -356,7 +356,12 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
-* Tue Aug 22 2006 Behdad Esfahbod <besfahbo@redhat.com> - 1.5.0.6-4
+* Tue Aug 22 2006 Christopher Aillon <caillon@redhat.com> 1.5.0.6-4
+- Update NSS requires to workaround a bug introduced by NSS changes.
+  https://bugzilla.mozilla.org/show_bug.cgi?id=294542
+  https://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=201922
+
+* Tue Aug 22 2006 Behdad Esfahbod <besfahbo@redhat.com>
 - Add a better nopangoxft patch that doesn't depend on pangocairo
 - Add firefox-1.5-pango-mathml.patch (bug 150393)
 
