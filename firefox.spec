@@ -11,7 +11,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5.0.6
-Release:        4
+Release:        5
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -124,7 +124,7 @@ removed in favor of xulrunner-devel.
 # See http://gcc.gnu.org/bugzilla/show_bug.cgi?id=20297
 # UPDATE: 2006-07-24: i386 is also broken now.
 #%ifnarch i386
-%patch5  -p0
+#%patch5  -p0
 #%endif
 
 %patch20 -p0
@@ -356,6 +356,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Aug 23 2006 Christopher Aillon <caillon@redhat.com> 1.5.0.6-5
+- Attempt to turn visibility back on since the GCC issues should have
+  been fixed.
+
 * Tue Aug 22 2006 Christopher Aillon <caillon@redhat.com> 1.5.0.6-4
 - Update NSS requires to workaround a bug introduced by NSS changes.
   https://bugzilla.mozilla.org/show_bug.cgi?id=294542
