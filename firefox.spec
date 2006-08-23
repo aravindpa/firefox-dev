@@ -11,7 +11,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5.0.6
-Release:        3
+Release:        4
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -53,7 +53,8 @@ Patch27:        firefox-gnomestripe-0.1-livemarks.patch
 Patch42:        firefox-1.1-uriloader.patch
 
 # font system fixes
-Patch81:        firefox-nopangoxft.patch
+Patch81:        firefox-1.5-nopangoxft.patch
+Patch82:        firefox-1.5-pango-mathml.patch
 
 # patches from upstream (Patch100+)
 Patch101:       firefox-1.5-pango-ua.patch
@@ -136,6 +137,7 @@ removed in favor of xulrunner-devel.
 #%patch27 -p1
 %patch42 -p0
 %patch81 -p1
+%patch82 -p1
 
 %patch101 -p0 -b .pango-ua
 %patch102 -p0 -b .pango-about
@@ -354,6 +356,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Aug 22 2006 Behdad Esfahbod <besfahbo@redhat.com> - 1.5.0.6-4
+- Add a better nopangoxft patch that doesn't depend on pangocairo
+- Add firefox-1.5-pango-mathml.patch (bug 150393)
+
 * Tue Aug 08 2006 Kai Engert <kengert@redhat.com> - 1.5.0.6-3
 - Rebuild
 
