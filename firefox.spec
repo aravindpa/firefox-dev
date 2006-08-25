@@ -11,7 +11,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5.0.6
-Release:        5
+Release:        6
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -356,6 +356,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Aug 24 2006 Behdad Esfahbod <besfahbo@redhat.com> 1.5.0.6-6
+- Remove debugging statement from firefox-1.5-pango-mathml.patch
+
 * Wed Aug 23 2006 Christopher Aillon <caillon@redhat.com> 1.5.0.6-5
 - Attempt to turn visibility back on since the GCC issues should have
   been fixed.
