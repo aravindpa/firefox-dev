@@ -11,7 +11,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5.0.6
-Release:        7
+Release:        8
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -124,7 +124,7 @@ removed in favor of xulrunner-devel.
 # See http://gcc.gnu.org/bugzilla/show_bug.cgi?id=20297
 # UPDATE: 2006-07-24: i386 is also broken now.
 #%ifnarch i386
-#%patch5  -p0
+%patch5  -p0
 #%endif
 
 %patch20 -p0
@@ -356,6 +356,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Aug 28 2006 Christopher Aillon <caillon@redhat.com> 1.5.0.6-8
+- Turn visibility back off again for now, as it still breaks the build.
+
 * Sat Aug 26 2006 Behdad Esfahbod <besfahbo@redhat.com> 1.5.0.6-7
 - Remove "Pango breaks MathML" from firefox-1.5-pango-about.patch
 
