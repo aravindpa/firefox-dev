@@ -86,9 +86,9 @@ export FONTCONFIG_PATH
 ## In order to better support certain scripts (such as Indic and some CJK 
 ## scripts), Fedora builds its Firefox, with permission from the Mozilla 
 ## Corporation, with the Pango system as its text renderer.  This change 
-## is known to break rendering of MathML, and may negatively impact 
-## performance on some pages.  To disable the use of Pango, set 
-## MOZ_DISABLE_PANGO=1 in your environment before launching Firefox.
+## may negatively impact performance on some pages.  To disable the use of
+## Pango, set MOZ_DISABLE_PANGO=1 in your environment before launching
+## Firefox.
 ##
 #
 # MOZ_DISABLE_PANGO=1

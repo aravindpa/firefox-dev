@@ -11,7 +11,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5.0.6
-Release:        8
+Release:        9
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -356,6 +356,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Aug 28 2006 Behdad Esfahbod <besfahbo@redhat.com> 1.5.0.6-9
+- Remove "Pango breaks MathML" from firefox.sh.in
+
 * Mon Aug 28 2006 Christopher Aillon <caillon@redhat.com> 1.5.0.6-8
 - Turn visibility back off again for now, as it still breaks the build.
 
