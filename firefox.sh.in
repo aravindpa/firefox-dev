@@ -53,20 +53,9 @@ MOZILLA_FIVE_HOME="$MOZ_DIST_BIN"
 
 export MOZILLA_FIVE_HOME
 
-##
-## Set LD_LIBRARY_PATH
-##
-if [ "$LD_LIBRARY_PATH" ]
-then
-  LD_LIBRARY_PATH=$MOZ_DIST_BIN:$MOZ_DIST_BIN/plugins:$LD_LIBRARY_PATH
-else
-  LD_LIBRARY_PATH=$MOZ_DIST_BIN:$MOZ_DIST_BIN/plugins
-fi
-
-export LD_LIBRARY_PATH
 
 ##
-## Make sure that we set the plugin path for backwards compatibility
+## Make sure that we set the plugin path
 ##
 if [ "$MOZ_PLUGIN_PATH" ]
 then

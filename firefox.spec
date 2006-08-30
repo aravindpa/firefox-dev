@@ -166,7 +166,7 @@ export LIBDIR='%{_libdir}'
 %define moz_make_flags %{?_smp_mflags}
 %endif
 
-MAKE="gmake %{moz_make_flags}" make -f client.mk build
+LDFLAGS="-Wl,-rpath,%{ffdir}" MAKE="gmake %{moz_make_flags}" make -f client.mk build
 
 #---------------------------------------------------------------------
 
@@ -356,7 +356,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
-* Mon Aug 28 2006 Behdad Esfahbod <besfahbo@redhat.com> 1.5.0.6-9
+* Tue Aug 29 2006 Christopher Aillon <caillon@redhat.com> 1.5.0.6-9
+- Build with -rpath (#161958)
+
+* Mon Aug 28 2006 Behdad Esfahbod <besfahbo@redhat.com> 
 - Remove "Pango breaks MathML" from firefox.sh.in
 
 * Mon Aug 28 2006 Christopher Aillon <caillon@redhat.com> 1.5.0.6-8
