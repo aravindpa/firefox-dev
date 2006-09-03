@@ -11,7 +11,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5.0.6
-Release:        9
+Release:        10
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -37,7 +37,7 @@ Source100:      find-external-requires
 # build patches
 Patch3:         firefox-1.1-nss-system-nspr.patch
 Patch4:         firefox-1.5-with-system-nss.patch
-Patch5:         firefox-1.1-visibility.patch
+Patch5:         firefox-1.5-visibility.patch
 
 # customization patches
 Patch20:        firefox-redhat-homepage.patch
@@ -118,14 +118,7 @@ removed in favor of xulrunner-devel.
 %setup -q -n mozilla
 %patch3  -p1
 %patch4  -p1
-
-# Pragma visibility is broken on most platforms for some reason.
-# It works on i386 so leave it alone there.  Disable elsewhere.
-# See http://gcc.gnu.org/bugzilla/show_bug.cgi?id=20297
-# UPDATE: 2006-07-24: i386 is also broken now.
-#%ifnarch i386
-%patch5  -p0
-#%endif
+%patch5  -p1 -b .visibility
 
 %patch20 -p0
 %patch21 -p1
@@ -356,6 +349,11 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Sun Sep  3 2006 Christopher Aillon <caillon@redhat.com> 1.5.0.6-10
+- Enable GCC visibility
+- export XLIB_SKIP_ARGB_VISUALS=1 as a temporary workaround to prevent
+  a broken Adobe/Macromedia Flash Player plugin taking the X server.
+
 * Tue Aug 29 2006 Christopher Aillon <caillon@redhat.com> 1.5.0.6-9
 - Build with -rpath (#161958)
 
