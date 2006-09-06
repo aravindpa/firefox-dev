@@ -11,7 +11,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5.0.6
-Release:        10
+Release:        11
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -55,6 +55,7 @@ Patch42:        firefox-1.1-uriloader.patch
 # font system fixes
 Patch81:        firefox-1.5-nopangoxft.patch
 Patch82:        firefox-1.5-pango-mathml.patch
+Patch83:        firefox-1.5-pango-cursor-position.patch
 
 # patches from upstream (Patch100+)
 Patch101:       firefox-1.5-pango-ua.patch
@@ -131,6 +132,7 @@ removed in favor of xulrunner-devel.
 %patch42 -p0
 %patch81 -p1
 %patch82 -p1
+%patch83 -p1
 
 %patch101 -p0 -b .pango-ua
 %patch102 -p0 -b .pango-about
@@ -349,6 +351,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Sep  6 2006 Christopher Aillon <caillon@redhat.com> 1.5.0.6-11
+- Fix for cursor position in editor widgets by tagoh and behdad (#198759)
+
 * Sun Sep  3 2006 Christopher Aillon <caillon@redhat.com> 1.5.0.6-10
 - Enable GCC visibility
 - export XLIB_SKIP_ARGB_VISUALS=1 as a temporary workaround to prevent
