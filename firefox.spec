@@ -11,7 +11,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5.0.6
-Release:        11
+Release:        12
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -29,8 +29,7 @@ Source13:       firefox-redhat-default-prefs.js
 Source20:       firefox.desktop
 Source21:       firefox.sh.in
 Source22:       firefox.png
-Source23:       firefox.xpm
-Source24:       firefox.1
+Source23:       firefox.1
 Source50:       firefox-xremote-client.sh.in
 Source100:      find-external-requires
 
@@ -86,7 +85,7 @@ Requires:       nss >= %{nss_version}
 Requires:       desktop-file-utils >= %{desktop_file_utils_version}
 Obsoletes:      phoenix, mozilla-firebird, MozillaFirebird
 Provides:       webclient
-%define ffdir %{_libdir}/firefox-%{version}
+%define mozappdir %{_libdir}/firefox-%{version}
 
 %if ! %{build_devel_package}
 AutoProv: 0
@@ -161,7 +160,9 @@ export LIBDIR='%{_libdir}'
 %define moz_make_flags %{?_smp_mflags}
 %endif
 
-LDFLAGS="-Wl,-rpath,%{ffdir}" MAKE="gmake %{moz_make_flags}" make -f client.mk build
+export LDFLAGS="-Wl,-rpath,%{mozappdir}"
+export MAKE="gmake %{moz_make_flags}"
+make -f client.mk build
 
 #---------------------------------------------------------------------
 
@@ -175,7 +176,7 @@ cd -
 %{__mkdir_p} $RPM_BUILD_ROOT{%{_libdir},%{_bindir},%{_datadir}/applications}
 
 %{__tar} -C $RPM_BUILD_ROOT%{_libdir}/ -xzf dist/%{name}-*linux*.tar.gz
-%{__mv} $RPM_BUILD_ROOT%{_libdir}/%{name} $RPM_BUILD_ROOT%{ffdir}
+%{__mv} $RPM_BUILD_ROOT%{_libdir}/%{name} $RPM_BUILD_ROOT%{mozappdir}
 
 %{__rm} -f $RPM_BUILD_ROOT%{_libdir}/%{name}-*linux*.tar
 
@@ -195,43 +196,45 @@ desktop-file-install --vendor mozilla \
 
 # set up our default preferences
 %{__cat} %{SOURCE13} | %{__sed} -e 's,FIREFOX_RPM_VR,%{version}-%{release},g' > rh-default-prefs
-%{__cp} rh-default-prefs $RPM_BUILD_ROOT/%{ffdir}/greprefs/all-redhat.js
-%{__cp} rh-default-prefs $RPM_BUILD_ROOT/%{ffdir}/defaults/pref/all-redhat.js
+%{__cp} rh-default-prefs $RPM_BUILD_ROOT/%{mozappdir}/greprefs/all-redhat.js
+%{__cp} rh-default-prefs $RPM_BUILD_ROOT/%{mozappdir}/defaults/pref/all-redhat.js
 %{__rm} rh-default-prefs
 
 # set up our default bookmarks
-%{__install} -p -D %{SOURCE12} $RPM_BUILD_ROOT%{ffdir}/defaults/profile/bookmarks.html
+%{__install} -p -D %{SOURCE12} $RPM_BUILD_ROOT%{mozappdir}/defaults/profile/bookmarks.html
 
-%{__cat} %{SOURCE50} | %{__sed} -e 's,FFDIR,%{ffdir},g' -e 's,LIBDIR,%{_libdir},g' > \
-  $RPM_BUILD_ROOT%{ffdir}/firefox-xremote-client
+%{__cat} %{SOURCE50} | %{__sed} -e 's,FFDIR,%{mozappdir},g' -e 's,LIBDIR,%{_libdir},g' > \
+  $RPM_BUILD_ROOT%{mozappdir}/firefox-xremote-client
 
-%{__chmod} 755 $RPM_BUILD_ROOT%{ffdir}/firefox-xremote-client
-%{__install} -p -D %{SOURCE24} $RPM_BUILD_ROOT%{_mandir}/man1/firefox.1
+%{__chmod} 755 $RPM_BUILD_ROOT%{mozappdir}/firefox-xremote-client
+%{__install} -p -D %{SOURCE23} $RPM_BUILD_ROOT%{_mandir}/man1/firefox.1
 
-%{__rm} -f $RPM_BUILD_ROOT%{ffdir}/firefox-config
+%{__rm} -f $RPM_BUILD_ROOT%{mozappdir}/firefox-config
 
-cd $RPM_BUILD_ROOT%{ffdir}/chrome
+cd $RPM_BUILD_ROOT%{mozappdir}/chrome
 find . -name "*" -type d -maxdepth 1 -exec %{__rm} -rf {} \;
 cd -
 
-%{__cat} > $RPM_BUILD_ROOT%{ffdir}/defaults/pref/firefox-l10n.js << EOF
+%{__cat} > $RPM_BUILD_ROOT%{mozappdir}/defaults/pref/firefox-l10n.js << EOF
 pref("general.useragent.locale", "chrome://global/locale/intl.properties");
 EOF
-%{__chmod} 644 $RPM_BUILD_ROOT%{ffdir}/defaults/pref/firefox-l10n.js
+%{__chmod} 644 $RPM_BUILD_ROOT%{mozappdir}/defaults/pref/firefox-l10n.js
 
-%{__mkdir_p} $RPM_BUILD_ROOT%{ffdir}/chrome/icons/default/
-%{__cp} %{SOURCE23} $RPM_BUILD_ROOT%{ffdir}/chrome/icons/default/default.xpm
-%{__cp} %{SOURCE23} $RPM_BUILD_ROOT%{ffdir}/icons/default.xpm
+%{__mkdir_p} $RPM_BUILD_ROOT%{mozappdir}/chrome/icons/default/
+%{__cp} other-licenses/branding/%{name}/default.xpm \
+        $RPM_BUILD_ROOT%{mozappdir}/chrome/icons/default/ 
+%{__cp} other-licenses/branding/%{name}/default.xpm \
+        $RPM_BUILD_ROOT%{mozappdir}/icons/
 
 # own mozilla plugin dir (#135050)
 %{__mkdir_p} $RPM_BUILD_ROOT%{_libdir}/mozilla/plugins
 
 # Install langpacks
-%{__mkdir_p} $RPM_BUILD_ROOT%{ffdir}/extensions
+%{__mkdir_p} $RPM_BUILD_ROOT%{mozappdir}/extensions
 %{__tar} xjf %{SOURCE2}
 for langpack in `ls firefox-langpacks/*.xpi`; do
   language=`basename $langpack .xpi`
-  extensiondir=$RPM_BUILD_ROOT%{ffdir}/extensions/langpack-$language@firefox.mozilla.org
+  extensiondir=$RPM_BUILD_ROOT%{mozappdir}/extensions/langpack-$language@firefox.mozilla.org
   %{__mkdir_p} $extensiondir
   unzip $langpack -d $extensiondir
   find $extensiondir -type f | xargs chmod 644
@@ -263,14 +266,14 @@ install -c -m 755 dist/bin/xpcshell \
   dist/bin/xpidl \
   dist/bin/xpt_dump \
   dist/bin/xpt_link \
-  $RPM_BUILD_ROOT/%{ffdir}
+  $RPM_BUILD_ROOT/%{mozappdir}
 install -c -m 644 build/unix/*.pc \
   $RPM_BUILD_ROOT/%{_libdir}/pkgconfig
 %endif
 
 # ghost files
-touch $RPM_BUILD_ROOT%{ffdir}/components/compreg.dat
-touch $RPM_BUILD_ROOT%{ffdir}/components/xpti.dat
+touch $RPM_BUILD_ROOT%{mozappdir}/components/compreg.dat
+touch $RPM_BUILD_ROOT%{mozappdir}/components/xpti.dat
 
 #---------------------------------------------------------------------
 
@@ -288,8 +291,8 @@ update-desktop-database %{_datadir}/applications
 %preun
 # is it a final removal?
 if [ $1 -eq 0 ]; then
-  %{__rm} -rf %{ffdir}/components
-  %{__rm} -rf %{ffdir}/extensions
+  %{__rm} -rf %{mozappdir}/components
+  %{__rm} -rf %{mozappdir}/extensions
 fi
 
 %files
@@ -300,46 +303,46 @@ fi
 %{_datadir}/pixmaps/firefox.png
 %{_libdir}/mozilla
 
-%dir %{ffdir}
-%{ffdir}/LICENSE
-%{ffdir}/README.txt
-%{ffdir}/*.properties
-%{ffdir}/chrome
-%dir %{ffdir}/components
-%ghost %{ffdir}/components/compreg.dat
-%ghost %{ffdir}/components/xpti.dat
-%{ffdir}/components/*.so
-%{ffdir}/components/*.xpt
-%{ffdir}/components/*.js
-%{ffdir}/defaults
-%{ffdir}/extensions
-%{ffdir}/greprefs
-%{ffdir}/icons
-%{ffdir}/init.d
-%{ffdir}/plugins
-%{ffdir}/res
-%{ffdir}/searchplugins
-%{ffdir}/*.so
-%{ffdir}/firefox
-%{ffdir}/firefox-bin
-%{ffdir}/firefox-xremote-client
-%{ffdir}/mozilla-xremote-client
-%{ffdir}/run-mozilla.sh
+%dir %{mozappdir}
+%{mozappdir}/LICENSE
+%{mozappdir}/README.txt
+%{mozappdir}/*.properties
+%{mozappdir}/chrome
+%dir %{mozappdir}/components
+%ghost %{mozappdir}/components/compreg.dat
+%ghost %{mozappdir}/components/xpti.dat
+%{mozappdir}/components/*.so
+%{mozappdir}/components/*.xpt
+%{mozappdir}/components/*.js
+%{mozappdir}/defaults
+%{mozappdir}/extensions
+%{mozappdir}/greprefs
+%{mozappdir}/icons
+%{mozappdir}/init.d
+%{mozappdir}/plugins
+%{mozappdir}/res
+%{mozappdir}/searchplugins
+%{mozappdir}/*.so
+%{mozappdir}/firefox
+%{mozappdir}/firefox-bin
+%{mozappdir}/firefox-xremote-client
+%{mozappdir}/mozilla-xremote-client
+%{mozappdir}/run-mozilla.sh
 # XXX See if these are needed still
-%{ffdir}/dependentlibs.list
-%{ffdir}/updater*
-%{ffdir}/removed-files
+%{mozappdir}/dependentlibs.list
+%{mozappdir}/updater*
+%{mozappdir}/removed-files
 
 %if %{build_devel_package}
 %files devel
 %defattr(-,root,root)
 %{_datadir}/idl/firefox-%{version}
 %{_includedir}/firefox-%{version}
-%{ffdir}/xpcshell
-%{ffdir}/xpicleanup
-%{ffdir}/xpidl
-%{ffdir}/xpt_dump
-%{ffdir}/xpt_link
+%{mozappdir}/xpcshell
+%{mozappdir}/xpicleanup
+%{mozappdir}/xpidl
+%{mozappdir}/xpt_dump
+%{mozappdir}/xpt_link
 %{_libdir}/pkgconfig/firefox-xpcom.pc
 %{_libdir}/pkgconfig/firefox-plugin.pc
 %{_libdir}/pkgconfig/firefox-js.pc
@@ -351,6 +354,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Sep  7 2006 Christopher Aillon <caillon@redhat.com> 1.5.0.6-12
+- Icon tweaks and minor spec-file variable cleanup: s/ffdir/mozappdir/g
+
 * Wed Sep  6 2006 Christopher Aillon <caillon@redhat.com> 1.5.0.6-11
 - Fix for cursor position in editor widgets by tagoh and behdad (#198759)
 
