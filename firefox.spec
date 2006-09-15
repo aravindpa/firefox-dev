@@ -11,7 +11,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5.0.7
-Release:        1%{?dist}
+Release:        2%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -354,6 +354,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Sep 14 2006 Christopher Aillon <caillon@redhat.com> 1.5.0.7-2
+- Update default bookmarks for FC6
+
 * Wed Sep 13 2006 Christopher Aillon <caillon@redhat.com> 1.5.0.7-1
 - Update to 1.5.0.7
 
