@@ -11,7 +11,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5.0.7
-Release:        2%{?dist}
+Release:        3%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -271,6 +271,20 @@ install -c -m 644 build/unix/*.pc \
   $RPM_BUILD_ROOT/%{_libdir}/pkgconfig
 %endif
 
+# GRE stuff
+%ifarch x86_64 ia64 ppc64 s390x
+%define gre_conf_file gre64.conf
+%else
+%define gre_conf_file gre.conf
+%endif
+
+%{__mkdir_p} $RPM_BUILD_ROOT/etc/gre.d/
+cat > $RPM_BUILD_ROOT/etc/gre.d/%{gre_conf_file} << EOF
+[%{version}]
+GRE_PATH=%{mozappdir}
+EOF
+
+
 # ghost files
 touch $RPM_BUILD_ROOT%{mozappdir}/components/compreg.dat
 touch $RPM_BUILD_ROOT%{mozappdir}/components/xpti.dat
@@ -302,6 +316,8 @@ fi
 %{_datadir}/applications/mozilla-%{name}.desktop
 %{_datadir}/pixmaps/firefox.png
 %{_libdir}/mozilla
+%dir /etc/gre.d
+/etc/gre.d/%{gre_conf_file}
 
 %dir %{mozappdir}
 %{mozappdir}/LICENSE
@@ -354,6 +370,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Sep 18 2006 Christopher Aillon <cailon@redhat.com> 1.5.0.7-3
+- Bring back the gre files for embeddors
+
 * Thu Sep 14 2006 Christopher Aillon <caillon@redhat.com> 1.5.0.7-2
 - Update default bookmarks for FC6
 
