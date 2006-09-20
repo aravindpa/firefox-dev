@@ -11,7 +11,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5.0.7
-Release:        3%{?dist}
+Release:        4%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -84,6 +84,7 @@ Requires:       nspr >= %{nspr_version}
 Requires:       nss >= %{nss_version}
 Requires:       desktop-file-utils >= %{desktop_file_utils_version}
 Obsoletes:      phoenix, mozilla-firebird, MozillaFirebird
+Obsoletes:      mozilla <= 37:1.7.13
 Provides:       webclient
 %define mozappdir %{_libdir}/firefox-%{version}
 
@@ -370,8 +371,11 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
-* Mon Sep 18 2006 Christopher Aillon <cailon@redhat.com> 1.5.0.7-3
-- Bring back the gre files for embeddors
+* Tue Sep 19 2006 Christopher Aillon <caillon@redhat/com> 1.5.0.7-4
+- Arrrr! Add Obsoletes: mozilla to avoid GRE conflicts, me hearties!
+
+* Mon Sep 18 2006 Christopher Aillon <caillon@redhat.com> 1.5.0.7-3
+- Bring back the GRE files for embeddors
 
 * Thu Sep 14 2006 Christopher Aillon <caillon@redhat.com> 1.5.0.7-2
 - Update default bookmarks for FC6
