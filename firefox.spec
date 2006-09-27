@@ -11,7 +11,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5.0.7
-Release:        4%{?dist}
+Release:        5%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -56,9 +56,20 @@ Patch81:        firefox-1.5-nopangoxft.patch
 Patch82:        firefox-1.5-pango-mathml.patch
 Patch83:        firefox-1.5-pango-cursor-position.patch
 
-# patches from upstream (Patch100+)
-Patch101:       firefox-1.5-pango-ua.patch
-Patch102:       firefox-1.5-pango-about.patch
+# Other
+Patch100:       firefox-1.5-gtk-key-theme-crash.patch
+Patch101:       firefox-1.5-embedwindow-visibility.patch
+Patch102:       firefox-1.5-theme-change.patch
+
+%if %{official_branding}
+# Required by Mozilla Corporation
+
+
+%else
+# Not yet approved by Mozillla Corporation
+
+
+%endif
 
 # ---------------------------------------------------
 
@@ -134,8 +145,21 @@ removed in favor of xulrunner-devel.
 %patch82 -p1
 %patch83 -p1
 
-%patch101 -p0 -b .pango-ua
-%patch102 -p0 -b .pango-about
+%patch100 -p0 -b .gtk-key-theme-crash
+%patch101 -p0 -b .embedwindow-visibility
+%patch102 -p0 -b .theme-change
+
+# For branding specific patches.
+
+%if %{official_branding}
+# Required by Mozilla Corporation
+
+
+%else
+# Not yet approved by Mozilla Corporation
+
+
+%endif
 
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE10} .mozconfig
@@ -280,7 +304,7 @@ install -c -m 644 build/unix/*.pc \
 %endif
 
 %{__mkdir_p} $RPM_BUILD_ROOT/etc/gre.d/
-cat > $RPM_BUILD_ROOT/etc/gre.d/%{gre_conf_file} << EOF
+%{__cat} > $RPM_BUILD_ROOT/etc/gre.d/%{gre_conf_file} << EOF
 [%{version}]
 GRE_PATH=%{mozappdir}
 EOF
@@ -371,6 +395,12 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Sep 26 2006 Christopher Aillon <caillon@redhat.com> 1.5.0.7-5
+- Fix crash when changing gtk key theme
+- Fix gtkmozembed window visibility
+- Prevent UI freezes while changing GNOME theme
+- Remove verbiage about pango; no longer required by upstream.
+
 * Tue Sep 19 2006 Christopher Aillon <caillon@redhat/com> 1.5.0.7-4
 - Arrrr! Add Obsoletes: mozilla to avoid GRE conflicts, me hearties!
 
