@@ -11,7 +11,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5.0.7
-Release:        5%{?dist}
+Release:        6%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -49,6 +49,7 @@ Patch26:        firefox-RC1-stock-icons-gnomestripe.patch
 Patch27:        firefox-gnomestripe-0.1-livemarks.patch
 
 # local bugfixes
+Patch40:        firefox-1.5-bullet-bill.patch
 Patch42:        firefox-1.1-uriloader.patch
 
 # font system fixes
@@ -140,6 +141,7 @@ removed in favor of xulrunner-devel.
 #%patch25 -p0
 #%patch26 -p0
 #%patch27 -p1
+%patch40 -p1
 %patch42 -p0
 %patch81 -p1
 %patch82 -p1
@@ -395,6 +397,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Oct  4 2006 Christopher Aillon <caillon@redhat.com> 1.5.0.7-6
+- Bring the invisible character to parity with GTK+
+
 * Tue Sep 26 2006 Christopher Aillon <caillon@redhat.com> 1.5.0.7-5
 - Fix crash when changing gtk key theme
 - Fix gtkmozembed window visibility
