@@ -11,7 +11,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        1.5.0.7
-Release:        6%{?dist}
+Release:        7%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -32,6 +32,7 @@ Source22:       firefox.png
 Source23:       firefox.1
 Source50:       firefox-xremote-client.sh.in
 Source100:      find-external-requires
+Source101:      add-gecko-provides.in
 
 # build patches
 Patch3:         firefox-1.1-nss-system-nspr.patch
@@ -100,9 +101,11 @@ Obsoletes:      mozilla <= 37:1.7.13
 Provides:       webclient
 %define mozappdir %{_libdir}/firefox-%{version}
 
-%if ! %{build_devel_package}
-AutoProv: 0
 %define _use_internal_dependency_generator 0
+
+%if %{build_devel_package}
+%define __find_provides %{_builddir}/add-gecko-provides
+%else
 %define __find_requires %{SOURCE100}
 %endif
 
@@ -311,6 +314,10 @@ install -c -m 644 build/unix/*.pc \
 GRE_PATH=%{mozappdir}
 EOF
 
+GECKO_VERSION=$(./config/milestone.pl --topsrcdir='.')
+%{__cat} %{SOURCE101} | %{__sed} -e "s/@GECKO_VERSION@/$GECKO_VERSION/g" > \
+                        %{_builddir}/add-gecko-provides
+chmod +x %{_builddir}/add-gecko-provides
 
 # ghost files
 touch $RPM_BUILD_ROOT%{mozappdir}/components/compreg.dat
@@ -397,6 +404,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Oct 11 2006 Christopher Aillon <caillon@redhat.com> 1.5.0.7-7
+- Add virtual provides for gecko applications.
+
 * Wed Oct  4 2006 Christopher Aillon <caillon@redhat.com> 1.5.0.7-6
 - Bring the invisible character to parity with GTK+
 

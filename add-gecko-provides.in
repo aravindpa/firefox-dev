@@ -1,0 +1,18 @@
+#!/bin/sh
+#
+# Use the internal provides generator"
+#
+filelist=`sed "s/[]['\"*?{}]/\\\\\&/g"`
+provides=`echo $filelist | /usr/lib/rpm/find-provides`
+echo $provides
+
+#
+# Now output the stuff we want to add
+#
+core_files=`echo $filelist | grep "libxpcom.so" | wc -l`
+devel_files=`echo $filelist | grep "nsISupports" | wc -l`
+if [ $devel_files -gt 0 ]; then
+  echo "gecko-devel = @GECKO_VERSION@"
+elif [ $core_files -gt 0 ]; then
+  echo "gecko-libs = @GECKO_VERSION@"
+fi
