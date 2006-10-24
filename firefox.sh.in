@@ -42,7 +42,7 @@ then
   MOZ_LIB_DIR="/usr/lib64"
 fi
 MOZ_DIST_BIN="$MOZ_LIB_DIR/firefox-FIREFOX_VERSION"
-MOZ_PROGRAM="$MOZ_DIST_BIN/firefox"
+MOZ_PROGRAM="$MOZ_DIST_BIN/firefox-bin"
 MOZ_CLIENT_PROGRAM="$MOZ_DIST_BIN/mozilla-xremote-client"
 MOZ_CLIENT_PROGRAM_PARAM="-a firefox"
 

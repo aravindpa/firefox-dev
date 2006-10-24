@@ -14,19 +14,19 @@ diff -d -u -p -r1.2.4.1 nsGNOMEShellService.h
  
    NS_DECL_ISUPPORTS
    NS_DECL_NSISHELLSERVICE
-Index: browser/components/preferences/general.xul
+Index: browser/components/preferences/main.xul
 ===================================================================
-RCS file: /cvsroot/mozilla/browser/components/preferences/general.xul,v
-retrieving revision 1.5
-diff -d -u -p -r1.5 general.xul
---- browser/components/preferences/general.xul	10 Mar 2005 18:43:57 -0000	1.5
-+++ browser/components/preferences/general.xul	17 Jun 2005 14:25:12 -0000
-@@ -62,7 +62,7 @@
-       </hbox>
+RCS file: /cvsroot/mozilla/browser/components/preferences/main.xul,v
+retrieving revision 1.3.2.6
+diff -d -u -p -r1.3.2.6 main.xul
+--- browser/components/preferences/main.xul	13 Sep 2006 03:01:38 -0000	1.3.2.6
++++ browser/components/preferences/main.xul	7 Oct 2006 19:58:16 -0000
+@@ -193,7 +193,7 @@
+       </radiogroup>
      </groupbox>
  
 -#ifdef HAVE_SHELL_SERVICE
 +#if 0
-     <groupbox orient="horizontal">
-       <caption label="&defaultBrowserGroup.label;"/>
-       <hbox align="center" flex="1">      
+     <!-- System Defaults -->
+     <groupbox id="systemDefaultsGroup" orient="horizontal">
+       <caption label="&systemDefaults.label;"/>

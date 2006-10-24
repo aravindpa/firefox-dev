@@ -10,18 +10,18 @@
 
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
-Version:        1.5.0.7
-Release:        7%{?dist}
+Version:        2.0
+Release:        1%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
 %if %{official_branding}
 %define tarball firefox-%{version}-source.tar.bz2
 %else
-%define tarball firefox-1.5rc3-source.tar.bz2
+%define tarball firefox-2.0rc3-source.tar.bz2
 %endif
 Source0:        %{tarball}
-Source2:        firefox-langpacks-%{version}-20060911.tar.bz2
+Source2:        firefox-langpacks-%{version}-20061024.tar.bz2
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
 Source12:       firefox-redhat-default-bookmarks.html
@@ -35,6 +35,7 @@ Source100:      find-external-requires
 Source101:      add-gecko-provides.in
 
 # build patches
+Patch1:         firefox-2.0-link-layout.patch
 Patch3:         firefox-1.1-nss-system-nspr.patch
 Patch4:         firefox-1.5-with-system-nss.patch
 Patch5:         firefox-1.5-visibility.patch
@@ -57,6 +58,7 @@ Patch42:        firefox-1.1-uriloader.patch
 Patch81:        firefox-1.5-nopangoxft.patch
 Patch82:        firefox-1.5-pango-mathml.patch
 Patch83:        firefox-1.5-pango-cursor-position.patch
+Patch84:        firefox-2.0-pango-printing.patch
 
 # Other
 Patch100:       firefox-1.5-gtk-key-theme-crash.patch
@@ -132,11 +134,12 @@ removed in favor of xulrunner-devel.
 
 %prep
 %setup -q -n mozilla
-%patch3  -p1
-%patch4  -p1
+%patch1   -p1 -b .link-layout
+#%patch3  -p1
+#%patch4  -p1
 %patch5  -p1 -b .visibility
 
-%patch20 -p0
+#%patch20 -p0
 %patch21 -p1
 %patch22 -p0
 #%patch23 -p0
@@ -147,10 +150,11 @@ removed in favor of xulrunner-devel.
 %patch40 -p1
 %patch42 -p0
 %patch81 -p1
-%patch82 -p1
+#%patch82 -p1
 %patch83 -p1
+%patch84 -p0
 
-%patch100 -p0 -b .gtk-key-theme-crash
+#%patch100 -p0 -b .gtk-key-theme-crash
 %patch101 -p0 -b .embedwindow-visibility
 %patch102 -p0 -b .theme-change
 
@@ -199,16 +203,9 @@ make -f client.mk build
 %install
 %{__rm} -rf $RPM_BUILD_ROOT
 
-cd browser/installer
-%{__make} STRIP=/bin/true
-cd -
+DESTDIR=$RPM_BUILD_ROOT make install
 
 %{__mkdir_p} $RPM_BUILD_ROOT{%{_libdir},%{_bindir},%{_datadir}/applications}
-
-%{__tar} -C $RPM_BUILD_ROOT%{_libdir}/ -xzf dist/%{name}-*linux*.tar.gz
-%{__mv} $RPM_BUILD_ROOT%{_libdir}/%{name} $RPM_BUILD_ROOT%{mozappdir}
-
-%{__rm} -f $RPM_BUILD_ROOT%{_libdir}/%{name}-*linux*.tar
 
 %{__install} -p -D %{SOURCE22} $RPM_BUILD_ROOT%{_datadir}/pixmaps/%{name}.png
 
@@ -317,7 +314,10 @@ EOF
 GECKO_VERSION=$(./config/milestone.pl --topsrcdir='.')
 %{__cat} %{SOURCE101} | %{__sed} -e "s/@GECKO_VERSION@/$GECKO_VERSION/g" > \
                         %{_builddir}/add-gecko-provides
-chmod +x %{_builddir}/add-gecko-provides
+chmod 700 %{_builddir}/add-gecko-provides
+
+# Copy over the LICENSE
+install -c -m 644 LICENSE $RPM_BUILD_ROOT%{mozappdir}
 
 # ghost files
 touch $RPM_BUILD_ROOT%{mozappdir}/components/compreg.dat
@@ -346,6 +346,7 @@ fi
 %files
 %defattr(-,root,root,-)
 %{_bindir}/firefox
+%exclude %{_bindir}/firefox-config
 %{_mandir}/man1/*
 %{_datadir}/applications/mozilla-%{name}.desktop
 %{_datadir}/pixmaps/firefox.png
@@ -355,9 +356,10 @@ fi
 
 %dir %{mozappdir}
 %{mozappdir}/LICENSE
-%{mozappdir}/README.txt
 %{mozappdir}/*.properties
 %{mozappdir}/chrome
+%{mozappdir}/chrome.manifest
+%{mozappdir}/dictionaries
 %dir %{mozappdir}/components
 %ghost %{mozappdir}/components/compreg.dat
 %ghost %{mozappdir}/components/xpti.dat
@@ -373,21 +375,20 @@ fi
 %{mozappdir}/res
 %{mozappdir}/searchplugins
 %{mozappdir}/*.so
-%{mozappdir}/firefox
 %{mozappdir}/firefox-bin
 %{mozappdir}/firefox-xremote-client
 %{mozappdir}/mozilla-xremote-client
 %{mozappdir}/run-mozilla.sh
+%{mozappdir}/regxpcom
 # XXX See if these are needed still
-%{mozappdir}/dependentlibs.list
 %{mozappdir}/updater*
-%{mozappdir}/removed-files
 
 %if %{build_devel_package}
 %files devel
 %defattr(-,root,root)
 %{_datadir}/idl/firefox-%{version}
 %{_includedir}/firefox-%{version}
+%{mozappdir}/TestGtkEmbed
 %{mozappdir}/xpcshell
 %{mozappdir}/xpicleanup
 %{mozappdir}/xpidl
@@ -404,6 +405,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Oct 24 2006 Christopher Aillon <caillon@redhat.com> 2.0-1
+- Update to 2.0
+- Add patch from Behdad to fix pango printing.
+
 * Wed Oct 11 2006 Christopher Aillon <caillon@redhat.com> 1.5.0.7-7
 - Add virtual provides for gecko applications.
 
