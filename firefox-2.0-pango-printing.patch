@@ -4574,3 +4574,23 @@ diff -u -p -d -r1.5 nsType1.h
                                 int aWmode,  FILE *aFile);
  nsresult FT2ToType1FontName(FT_Face aFace, int aWmode,
                              nsCString& aFontName);
+Index: config/system-headers
+===================================================================
+--- config/system-headers	2006-10-26 12:21:39.000000000 -0400
++++ config/system-headers	2006-10-26 12:23:29.000000000 -0400
+@@ -180,6 +180,7 @@
+ freetype/ftoutln.h
+ freetype/ttnameid.h
+ freetype/tttables.h
++freetype/t1tables.h
+ fribidi/fribidi.h
+ FSp_fopen.h
+ fstream.h
+@@ -484,6 +485,7 @@
+ pango/pangofc-fontmap.h
+ pango/pango-fontmap.h
+ pango/pango.h
++pango/pangoft2.h
+ pango/pangoxft.h
+ pango/pangox.h
+ pango-types.h
