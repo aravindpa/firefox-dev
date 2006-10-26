@@ -38,7 +38,7 @@ Source101:      add-gecko-provides.in
 Patch1:         firefox-2.0-link-layout.patch
 Patch3:         firefox-1.1-nss-system-nspr.patch
 Patch4:         firefox-1.5-with-system-nss.patch
-Patch5:         firefox-1.5-visibility.patch
+Patch5:         firefox-2.0-visibility.patch
 
 # customization patches
 Patch20:        firefox-redhat-homepage.patch
