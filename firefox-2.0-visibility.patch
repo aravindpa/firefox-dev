@@ -5,7 +5,7 @@
  byteswap.h
  cairo.h
 +cairo-xlib.h
-+cairo-xlib-render.h
++cairo-xlib-xrender.h
  callconv.h
  Carbon/Carbon.h
  CarbonEvents.h
