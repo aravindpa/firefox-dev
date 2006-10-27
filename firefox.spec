@@ -11,7 +11,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        2.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -211,8 +211,7 @@ DESTDIR=$RPM_BUILD_ROOT make install
 
 desktop-file-install --vendor mozilla \
   --dir $RPM_BUILD_ROOT%{_datadir}/applications \
-  --add-category X-Fedora \
-  --add-category Application \
+  --add-category WebBrowser \
   --add-category Network \
   %{SOURCE20} 
 
@@ -405,6 +404,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Oct 27 2006 Christopher Aillon <caillon@redhat.com> 2.0-2
+- Tweak the .desktop file
+
 * Tue Oct 24 2006 Christopher Aillon <caillon@redhat.com> 2.0-1
 - Update to 2.0
 - Add patch from Behdad to fix pango printing.
