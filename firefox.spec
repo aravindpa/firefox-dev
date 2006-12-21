@@ -10,8 +10,8 @@
 
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
-Version:        2.0
-Release:        2%{?dist}
+Version:        2.0.0.1
+Release:        1%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -21,7 +21,7 @@ Group:          Applications/Internet
 %define tarball firefox-2.0rc3-source.tar.bz2
 %endif
 Source0:        %{tarball}
-Source2:        firefox-langpacks-%{version}-20061024.tar.bz2
+Source2:        firefox-langpacks-%{version}-20061220.tar.bz2
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
 Source12:       firefox-redhat-default-bookmarks.html
@@ -404,6 +404,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Dec 21 2006 Christopher Aillon <caillon@redhat.com> 2.0.0.1-1
+- Update to 2001
+
 * Fri Oct 27 2006 Christopher Aillon <caillon@redhat.com> 2.0-2
 - Tweak the .desktop file
 
