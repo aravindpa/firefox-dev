@@ -1026,17 +1026,6 @@ diff -u -p -d -r1.57.16.2 nsFontMetricsPS.cpp
  }
  
  #ifdef MOZ_ENABLE_XFT
-@@ -2332,8 +2588,8 @@ nsXftType1Generator::Init(nsXftEntry* aE
- 
- nsXftType1Generator::~nsXftType1Generator()
- {
--  if (mEntry->mFace) 
--    FT_Done_Face(mEntry->mFace);
-+ if (mEntry->mFace) 
-+   FT_Done_Face(mEntry->mFace);
- 
-   if (FT_Done_FreeType(mFreeTypeLibrary))
-     return;
 @@ -2353,8 +2609,8 @@ void nsXftType1Generator::GeneratePSFont
    }
  
