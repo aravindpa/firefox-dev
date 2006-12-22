@@ -11,7 +11,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        2.0.0.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -184,7 +184,11 @@ removed in favor of xulrunner-devel.
 
 %build
 
-export RPM_OPT_FLAGS=`echo $RPM_OPT_FLAGS | %{__sed} s/-O2/-Os/`
+# Build with -Os as it helps the browser; also, don't override mozilla's warning
+# level; they use -Wall but disable a few warnings that show up _everywhere_
+MOZ_OPT_FLAGS=$(echo $RPM_OPT_FLAGS | %{__sed} -e 's/-O2/-Os/' -e 's/-Wall//')
+
+export RPM_OPT_FLAGS=$MOZ_OPT_FLAGS
 export PREFIX='%{_prefix}'
 export LIBDIR='%{_libdir}'
 
@@ -404,6 +408,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Dec 22 2006 Christopher Aillon <caillon@redhat.com> 2.0.0.1-2
+- Strip out some frequent warnings; they muddy up the build output
+
 * Thu Dec 21 2006 Christopher Aillon <caillon@redhat.com> 2.0.0.1-1
 - Update to 2001
 
