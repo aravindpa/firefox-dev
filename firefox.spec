@@ -137,7 +137,7 @@ removed in favor of xulrunner-devel.
 %patch1   -p1 -b .link-layout
 #%patch3  -p1
 #%patch4  -p1
-%patch5  -p1 -b .visibility
+#%patch5  -p1 -b .visibility
 
 #%patch20 -p0
 %patch21 -p1
