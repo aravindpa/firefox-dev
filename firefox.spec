@@ -140,19 +140,19 @@ removed in favor of xulrunner-devel.
 #%patch5  -p1 -b .visibility
 
 #%patch20 -p0
-%patch21 -p1
-%patch22 -p0
+%patch21 -p1 -b .psfonts
+%patch22 -p0 -b .default-applications
 #%patch23 -p0
 #%patch24 -p0
 #%patch25 -p0
 #%patch26 -p0
 #%patch27 -p1
-%patch40 -p1
-%patch42 -p0
-%patch81 -p1
-#%patch82 -p1
-%patch83 -p1
-%patch84 -p0
+%patch40 -p1 -b .bullet-bill
+%patch42 -p0 -b .uriloader
+%patch81 -p1 -b .nopangoxft
+#%patch82 -p1 -b .pango-mathml
+%patch83 -p1 -b .pango-cursor-position
+%patch84 -p0 -b .pango-printing
 
 #%patch100 -p0 -b .gtk-key-theme-crash
 %patch101 -p0 -b .embedwindow-visibility
