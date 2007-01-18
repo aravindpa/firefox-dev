@@ -67,15 +67,6 @@ export MOZ_PLUGIN_PATH
 
 
 ##
-## XXX: UGLY HACK
-## The Adobe/Macromedia Flash Player plugin is horribly broken and will
-## cause the entire X server to lock up.  This is just a temporary workaround.
-##
-XLIB_SKIP_ARGB_VISUALS=1
-export XLIB_SKIP_ARGB_VISUALS
-
-
-##
 ## Set FONTCONFIG_PATH for Xft/fontconfig
 ##
 FONTCONFIG_PATH="/etc/fonts:${MOZILLA_FIVE_HOME}/res/Xft"

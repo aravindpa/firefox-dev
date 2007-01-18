@@ -408,6 +408,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Jan 18 2007 Christopher Aillon <caillon@redhat.com> 2.0.0.1-3
+- Remove the XLIB_SKIP_ARGB_VISUALS=1 workaround; the plugin got fixed.
+
 * Fri Dec 22 2006 Christopher Aillon <caillon@redhat.com> 2.0.0.1-2
 - Strip out some frequent warnings; they muddy up the build output
 
