@@ -11,7 +11,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        2.0.0.1
-Release:        3%{?dist}
+Release:        4%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -64,6 +64,7 @@ Patch84:        firefox-2.0-pango-printing.patch
 Patch100:       firefox-1.5-gtk-key-theme-crash.patch
 Patch101:       firefox-1.5-embedwindow-visibility.patch
 Patch102:       firefox-1.5-theme-change.patch
+Patch103:       firefox-1.5-dnd-nograb.patch
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -157,6 +158,7 @@ removed in favor of xulrunner-devel.
 #%patch100 -p0 -b .gtk-key-theme-crash
 %patch101 -p0 -b .embedwindow-visibility
 %patch102 -p0 -b .theme-change
+%patch103 -p1 -b .dnd-nograb
 
 # For branding specific patches.
 
@@ -408,6 +410,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Jan 30 2007 Christopher Aillon <caillon@redhat.com> 2.0.0.1-4
+- Fix the DND implementation to not grab, so it works with new GTK+.
+
 * Thu Jan 18 2007 Christopher Aillon <caillon@redhat.com> 2.0.0.1-3
 - Remove the XLIB_SKIP_ARGB_VISUALS=1 workaround; the plugin got fixed.
 
