@@ -410,6 +410,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Feb  9 2007 Christopher Aillon <caillon@redhat.com> 2.0.0.1-5
+- Start using the specified locale
+
 * Tue Jan 30 2007 Christopher Aillon <caillon@redhat.com> 2.0.0.1-4
 - Fix the DND implementation to not grab, so it works with new GTK+.
 
