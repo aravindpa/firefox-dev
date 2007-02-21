@@ -36,10 +36,29 @@ cmdname=`basename $0`
 ##
 ## Variables
 ##
-MOZ_LIB_DIR="/usr/lib"
-if [ -x "/usr/lib64/firefox-FIREFOX_VERSION/firefox-bin" ]
-then
-  MOZ_LIB_DIR="/usr/lib64"
+MOZ_ARCH=$(uname -m)
+case $MOZ_ARCH in
+	x86_64 | ia64 | s390 )
+		MOZ_LIB_DIR="/usr/lib64"
+		SECONDARY_LIB_DIR="/usr/lib"
+		;;
+	* )
+		MOZ_LIB_DIR="/usr/lib"
+		SECONDARY_LIB_DIR="/usr/lib64"
+		;;
+esac
+
+#[ -r /etc/sysconfig/firefox-arch ] && . /etc/sysconfig/firefox-arch
+
+if [ ! -x $MOZ_LIB_DIR/firefox-FIREFOX_VERSION/firefox-bin ]; then
+    if [ ! -x $SECONDARY_LIB_DIR/firefox-FIREFOX_VERSION/firefox-bin ]; then
+	echo "Error: $MOZ_LIB_DIR/firefox-FIREFOX_VERSION/firefox-bin not found"
+	if [ -d $SECONDARY_LIB_DIR ]; then
+	    echo "       $SECONDARY_LIB_DIR/firefox-FIREFOX_VERSION/firefox-bin not found"
+	fi
+	exit 1
+    fi
+    MOZ_LIB_DIR="$SECONDARY_LIB_DIR"
 fi
 MOZ_DIST_BIN="$MOZ_LIB_DIR/firefox-FIREFOX_VERSION"
 MOZ_PROGRAM="$MOZ_DIST_BIN/firefox-bin"
