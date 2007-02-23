@@ -10,8 +10,8 @@
 
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
-Version:        2.0.0.1
-Release:        6%{?dist}
+Version:        2.0.0.2
+Release:        1%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -21,7 +21,7 @@ Group:          Applications/Internet
 %define tarball firefox-2.0rc3-source.tar.bz2
 %endif
 Source0:        %{tarball}
-Source2:        firefox-langpacks-%{version}-20061220.tar.bz2
+Source2:        firefox-langpacks-%{version}-20070223.tar.bz2
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
 Source12:       firefox-redhat-default-bookmarks.html
@@ -159,7 +159,7 @@ removed in favor of xulrunner-devel.
 #%patch100 -p0 -b .gtk-key-theme-crash
 %patch101 -p0 -b .embedwindow-visibility
 %patch102 -p0 -b .theme-change
-%patch103 -p1 -b .dnd-nograb
+#%patch103 -p1 -b .dnd-nograb
 %patch104 -p1 -b .ppc64
 
 # For branding specific patches.
@@ -412,6 +412,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Feb 23 2007 Martin Stransky <stransky@redhat.com> 2.0.0.2-1
+- Update to 2002
+
 * Wed Feb 21 2007 David Woodhouse <dwmw2@redhat.com> 2.0.0.1-6
 - Fix PPC64 runtime
 - Fix firefox script to use 32-bit browser by default on PPC64 hardware
