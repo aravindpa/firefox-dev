@@ -11,7 +11,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        2.0.0.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -412,6 +412,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Mar 12 2007 Christopher Aillon <caillon@redhat.com> 2.0.0.2-2
+- Oops, define the variables I expect to use.
+
 * Fri Feb 23 2007 Martin Stransky <stransky@redhat.com> 2.0.0.2-1
 - Update to 2002
 

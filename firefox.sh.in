@@ -48,8 +48,6 @@ case $MOZ_ARCH in
 		;;
 esac
 
-#[ -r /etc/sysconfig/firefox-arch ] && . /etc/sysconfig/firefox-arch
-
 if [ ! -x $MOZ_LIB_DIR/firefox-FIREFOX_VERSION/firefox-bin ]; then
     if [ ! -x $SECONDARY_LIB_DIR/firefox-FIREFOX_VERSION/firefox-bin ]; then
 	echo "Error: $MOZ_LIB_DIR/firefox-FIREFOX_VERSION/firefox-bin not found"
@@ -61,6 +59,7 @@ if [ ! -x $MOZ_LIB_DIR/firefox-FIREFOX_VERSION/firefox-bin ]; then
     MOZ_LIB_DIR="$SECONDARY_LIB_DIR"
 fi
 MOZ_DIST_BIN="$MOZ_LIB_DIR/firefox-FIREFOX_VERSION"
+MOZ_EXTENSIONS_DIR="$MOZ_DIST_BIN/extensions"
 MOZ_PROGRAM="$MOZ_DIST_BIN/firefox-bin"
 MOZ_CLIENT_PROGRAM="$MOZ_DIST_BIN/mozilla-xremote-client"
 MOZ_CLIENT_PROGRAM_PARAM="-a firefox"
