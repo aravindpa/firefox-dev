@@ -96,6 +96,7 @@ BuildRequires:  pango-devel
 BuildRequires:  freetype-devel >= 2.1.9
 BuildRequires:  libXt-devel
 BuildRequires:  libXrender-devel
+BuildRequires:  system-bookmarks
 
 Requires:       nspr >= %{nspr_version}
 Requires:       nss >= %{nss_version}
@@ -182,8 +183,7 @@ removed in favor of xulrunner-devel.
 %endif
 
 # set up our default bookmarks
-%{__rm} -f $RPM_BUILD_DIR/mozilla/profile/defaults/bookmarks.html
-ln -s %{default_bookmarks_file} $RPM_BUILD_DIR/mozilla/profile/defaults/bookmarks.html
+cp %{default_bookmarks_file} $RPM_BUILD_DIR/mozilla/profile/defaults/bookmarks.html
 
 
 #---------------------------------------------------------------------
