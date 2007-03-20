@@ -1,4 +1,5 @@
 %define indexhtml file:///usr/share/doc/HTML/index.html
+%define default_bookmarks_file %{_datadir}/bookmarks/default-bookmarks.html
 %define desktop_file_utils_version 0.9
 %define nspr_version 4.6
 %define nss_version 3.11.1
@@ -11,7 +12,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        2.0.0.2
-Release:        2%{?dist}
+Release:        3%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -24,8 +25,7 @@ Source0:        %{tarball}
 Source2:        firefox-langpacks-%{version}-20070223.tar.bz2
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
-Source12:       firefox-redhat-default-bookmarks.html
-Source13:       firefox-redhat-default-prefs.js
+Source12:       firefox-redhat-default-prefs.js
 Source20:       firefox.desktop
 Source21:       firefox.sh.in
 Source22:       firefox.png
@@ -100,6 +100,7 @@ BuildRequires:  libXrender-devel
 Requires:       nspr >= %{nspr_version}
 Requires:       nss >= %{nss_version}
 Requires:       desktop-file-utils >= %{desktop_file_utils_version}
+Requires:       system-bookmarks
 Obsoletes:      phoenix, mozilla-firebird, MozillaFirebird
 Obsoletes:      mozilla <= 37:1.7.13
 Provides:       webclient
@@ -181,7 +182,8 @@ removed in favor of xulrunner-devel.
 %endif
 
 # set up our default bookmarks
-%{__cp} %{SOURCE12} $RPM_BUILD_DIR/mozilla/profile/defaults/bookmarks.html
+%{__rm} -f $RPM_BUILD_DIR/mozilla/profile/defaults/bookmarks.html
+ln -s %{default_bookmarks_file} $RPM_BUILD_DIR/mozilla/profile/defaults/bookmarks.html
 
 
 #---------------------------------------------------------------------
@@ -229,13 +231,14 @@ desktop-file-install --vendor mozilla \
 %{__chmod} 755 $RPM_BUILD_ROOT%{_bindir}/firefox
 
 # set up our default preferences
-%{__cat} %{SOURCE13} | %{__sed} -e 's,FIREFOX_RPM_VR,%{version}-%{release},g' > rh-default-prefs
+%{__cat} %{SOURCE12} | %{__sed} -e 's,FIREFOX_RPM_VR,%{version}-%{release},g' > rh-default-prefs
 %{__cp} rh-default-prefs $RPM_BUILD_ROOT/%{mozappdir}/greprefs/all-redhat.js
 %{__cp} rh-default-prefs $RPM_BUILD_ROOT/%{mozappdir}/defaults/pref/all-redhat.js
 %{__rm} rh-default-prefs
 
 # set up our default bookmarks
-%{__install} -p -D %{SOURCE12} $RPM_BUILD_ROOT%{mozappdir}/defaults/profile/bookmarks.html
+%{__rm} -f $RPM_BUILD_DIR/mozilla/profile/defaults/bookmarks.html
+ln -s %{default_bookmarks_file} $RPM_BUILD_DIR/mozilla/profile/defaults/bookmarks.html
 
 %{__cat} %{SOURCE50} | %{__sed} -e 's,FFDIR,%{mozappdir},g' -e 's,LIBDIR,%{_libdir},g' > \
   $RPM_BUILD_ROOT%{mozappdir}/firefox-xremote-client
@@ -412,6 +415,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Mar 20 2007 Christopher Aillon <caillon@redhat.com> 2.0.0.2-3
+- Default bookmarks no longer live here; use system-bookmarks
+
 * Mon Mar 12 2007 Christopher Aillon <caillon@redhat.com> 2.0.0.2-2
 - Oops, define the variables I expect to use.
 
