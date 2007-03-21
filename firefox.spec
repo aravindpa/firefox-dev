@@ -11,8 +11,8 @@
 
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
-Version:        2.0.0.2
-Release:        3%{?dist}
+Version:        2.0.0.3
+Release:        1%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -415,6 +415,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Mar 20 2007 Christopher Aillon <caillon@redhat.com> 2.0.0.3-1
+- Update to 2.0.0.3
+
 * Tue Mar 20 2007 Christopher Aillon <caillon@redhat.com> 2.0.0.2-3
 - Default bookmarks no longer live here; use system-bookmarks
 
