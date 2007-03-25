@@ -12,7 +12,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        2.0.0.3
-Release:        1%{?dist}
+Release:        2%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -237,8 +237,8 @@ desktop-file-install --vendor mozilla \
 %{__rm} rh-default-prefs
 
 # set up our default bookmarks
-%{__rm} -f $RPM_BUILD_DIR/mozilla/profile/defaults/bookmarks.html
-ln -s %{default_bookmarks_file} $RPM_BUILD_DIR/mozilla/profile/defaults/bookmarks.html
+%{__rm} -f $RPM_BUILD_ROOT%{mozappdir}/defaults/profile/bookmarks.html
+ln -s %{default_bookmarks_file} $RPM_BUILD_ROOT%{mozappdir}/defaults/profile/bookmarks.html
 
 %{__cat} %{SOURCE50} | %{__sed} -e 's,FFDIR,%{mozappdir},g' -e 's,LIBDIR,%{_libdir},g' > \
   $RPM_BUILD_ROOT%{mozappdir}/firefox-xremote-client
@@ -276,7 +276,8 @@ for langpack in `ls firefox-langpacks/*.xpi`; do
   unzip $langpack -d $extensiondir
   find $extensiondir -type f | xargs chmod 644
 
-  langtmp=%{_tmpdir}/%{name}/langpack-$language
+  tmpdir=`mktemp -d %{name}.XXXXXXXX`
+  langtmp=$tmpdir/%{name}/langpack-$language
   %{__mkdir_p} $langtmp
   jarfile=$extensiondir/chrome/$language.jar
   unzip $jarfile -d $langtmp
@@ -285,8 +286,8 @@ for langpack in `ls firefox-langpacks/*.xpi`; do
   %{__rm} -rf $jarfile
   cd $langtmp
   zip -r -D $jarfile locale
-  %{__rm} -rf locale
   cd -
+  %{__rm} -rf $tmpdir
 done
 %{__rm} -rf firefox-langpacks
 
@@ -415,6 +416,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Sun Mar 25 2007 Christopher Aillon <caillon@redhat.com> 2.0.0.3-2
+- Fix the symlink to default bookmarks
+- Use mktemp for temp dirs
+
 * Tue Mar 20 2007 Christopher Aillon <caillon@redhat.com> 2.0.0.3-1
 - Update to 2.0.0.3
 
