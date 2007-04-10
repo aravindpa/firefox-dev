@@ -284,7 +284,7 @@ for langpack in `ls firefox-langpacks/*.xpi`; do
 
   sed -i -e "s|browser.startup.homepage.*$|browser.startup.homepage=%{indexhtml}|g;" \
          -e "s|startup.homepage_override_url.*$|startup.homepage_override_url=%{indexhtml}|g;" \
-       > $langtmp/locale/browser-region/region.properties
+         $langtmp/locale/browser-region/region.properties
 
   find $langtmp -type f | xargs chmod 644
   %{__rm} -rf $jarfile
