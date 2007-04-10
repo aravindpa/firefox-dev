@@ -12,7 +12,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        2.0.0.3
-Release:        2%{?dist}
+Release:        3%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -281,7 +281,11 @@ for langpack in `ls firefox-langpacks/*.xpi`; do
   %{__mkdir_p} $langtmp
   jarfile=$extensiondir/chrome/$language.jar
   unzip $jarfile -d $langtmp
-  sed -i -e "s|browser.startup.homepage.*$|browser.startup.homepage=%{indexhtml}|g;" $langtmp/locale/browser-region/region.properties
+
+  sed -i -e "s|browser.startup.homepage.*$|browser.startup.homepage=%{indexhtml}|g;" \
+         -e "s|startup.homepage_override_url.*$|startup.homepage_override_url=%{indexhtml}|g;" \
+       > $langtmp/locale/browser-region/region.properties
+
   find $langtmp -type f | xargs chmod 644
   %{__rm} -rf $jarfile
   cd $langtmp
@@ -416,6 +420,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Apr 10 2007 Christopher Aillon <caillon@redhat.com> 2.0.0.3-3
+- Ensure initial homepage on all locales is our proper default
+
 * Sun Mar 25 2007 Christopher Aillon <caillon@redhat.com> 2.0.0.3-2
 - Fix the symlink to default bookmarks
 - Use mktemp for temp dirs
