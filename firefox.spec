@@ -12,7 +12,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        2.0.0.3
-Release:        3%{?dist}
+Release:        4%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -244,7 +244,7 @@ ln -s %{default_bookmarks_file} $RPM_BUILD_ROOT%{mozappdir}/defaults/profile/boo
   $RPM_BUILD_ROOT%{mozappdir}/firefox-xremote-client
 
 %{__chmod} 755 $RPM_BUILD_ROOT%{mozappdir}/firefox-xremote-client
-%{__install} -p -D %{SOURCE23} $RPM_BUILD_ROOT%{_mandir}/man1/firefox.1
+%{__install} -p -D -m 644 %{SOURCE23} $RPM_BUILD_ROOT%{_mandir}/man1/firefox.1
 
 %{__rm} -f $RPM_BUILD_ROOT%{mozappdir}/firefox-config
 
@@ -420,6 +420,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Apr 17 2007 Christopher Aillon <caillon@redhat.com> 2.0.0.3-4
+- Fix permissions of the man page
+
 * Tue Apr 10 2007 Christopher Aillon <caillon@redhat.com> 2.0.0.3-3
 - Ensure initial homepage on all locales is our proper default
 
