@@ -11,8 +11,8 @@
 
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
-Version:        2.0.0.3
-Release:        4%{?dist}
+Version:        2.0.0.4
+Release:        0.rc3%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -22,7 +22,7 @@ Group:          Applications/Internet
 %define tarball firefox-2.0rc3-source.tar.bz2
 %endif
 Source0:        %{tarball}
-Source2:        firefox-langpacks-%{version}-20070320.tar.bz2
+Source2:        firefox-langpacks-%{version}-20070523.tar.bz2
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
 Source12:       firefox-redhat-default-prefs.js
@@ -52,6 +52,7 @@ Patch27:        firefox-gnomestripe-0.1-livemarks.patch
 
 # local bugfixes
 Patch40:        firefox-1.5-bullet-bill.patch
+Patch41:        firefox-2.0.0.4-undo-uriloader.patch
 Patch42:        firefox-1.1-uriloader.patch
 
 # font system fixes
@@ -61,10 +62,7 @@ Patch83:        firefox-1.5-pango-cursor-position.patch
 Patch84:        firefox-2.0-pango-printing.patch
 
 # Other
-Patch100:       firefox-1.5-gtk-key-theme-crash.patch
-Patch101:       firefox-1.5-embedwindow-visibility.patch
 Patch102:       firefox-1.5-theme-change.patch
-Patch103:       firefox-1.5-dnd-nograb.patch
 Patch104:       firefox-1.5-ppc64.patch
 
 %if %{official_branding}
@@ -152,16 +150,14 @@ removed in favor of xulrunner-devel.
 #%patch26 -p0
 #%patch27 -p1
 %patch40 -p1 -b .bullet-bill
+%patch41 -p1 -b .undo-uriloader
 %patch42 -p0 -b .uriloader
 %patch81 -p1 -b .nopangoxft
 #%patch82 -p1 -b .pango-mathml
 %patch83 -p1 -b .pango-cursor-position
 %patch84 -p0 -b .pango-printing
 
-#%patch100 -p0 -b .gtk-key-theme-crash
-%patch101 -p0 -b .embedwindow-visibility
 %patch102 -p0 -b .theme-change
-#%patch103 -p1 -b .dnd-nograb
 %patch104 -p1 -b .ppc64
 
 # For branding specific patches.
@@ -420,6 +416,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Wed May 23 2007 Christopher Aillon <caillon@redhat.com> 2.0.0.4-0.rc3
+- Update to 2.0.0.4 RC3
+
 * Tue Apr 17 2007 Christopher Aillon <caillon@redhat.com> 2.0.0.3-4
 - Fix permissions of the man page
 
