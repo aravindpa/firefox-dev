@@ -12,7 +12,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        2.0.0.4
-Release:        1%{?dist}
+Release:        2%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -62,6 +62,7 @@ Patch83:        firefox-1.5-pango-cursor-position.patch
 Patch84:        firefox-2.0-pango-printing.patch
 
 # Other
+Patch100:       firefox-1.5-thread-cleanup.patch
 Patch102:       firefox-1.5-theme-change.patch
 Patch104:       firefox-1.5-ppc64.patch
 
@@ -157,6 +158,7 @@ removed in favor of xulrunner-devel.
 %patch83 -p1 -b .pango-cursor-position
 %patch84 -p0 -b .pango-printing
 
+%patch100 -p1 -b .thread-cleanup
 %patch102 -p0 -b .theme-change
 %patch104 -p1 -b .ppc64
 
@@ -416,6 +418,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Sun Jun  3 2007 Christopher Aillon <caillon@redhat.com> 2.0.0.4-2
+- Properly clean up threads with newer NSPR
+
 * Wed May 30 2007 Christopher Aillon <caillon@redhat.com> 2.0.0.4-1
 - Final version
 
