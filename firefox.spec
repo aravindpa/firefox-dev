@@ -12,7 +12,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        2.0.0.4
-Release:        2%{?dist}
+Release:        3%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -60,6 +60,12 @@ Patch81:        firefox-1.5-nopangoxft.patch
 Patch82:        firefox-1.5-pango-mathml.patch
 Patch83:        firefox-1.5-pango-cursor-position.patch
 Patch84:        firefox-2.0-pango-printing.patch
+Patch85:        firefox-2.0-pango-ligatures.patch
+Patch86:        firefox-1.5-pango-cursor-position-more.patch
+Patch87:        firefox-1.5-pango-justified-range.patch
+Patch88:        firefox-1.5-pango-underline.patch
+Patch89:        firefox-1.5-xft-rangewidth.patch
+
 
 # Other
 Patch100:       firefox-1.5-thread-cleanup.patch
@@ -157,6 +163,11 @@ removed in favor of xulrunner-devel.
 #%patch82 -p1 -b .pango-mathml
 %patch83 -p1 -b .pango-cursor-position
 %patch84 -p0 -b .pango-printing
+%patch85 -p1 -b .pango-ligatures
+%patch86 -p1 -b .pango-cursor-position-more
+%patch87 -p1 -b .pango-justified-range
+%patch88 -p1 -b .pango-underline
+%patch89 -p1 -b .nopangoxft2
 
 %patch100 -p1 -b .thread-cleanup
 %patch102 -p0 -b .theme-change
@@ -418,6 +429,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Jun 29 2007 Martin Stransky <stransky@redhat.com> 2.0.0.4-3
+- backported pango patches from FC6 (1.5.0.12)
+
 * Sun Jun  3 2007 Christopher Aillon <caillon@redhat.com> 2.0.0.4-2
 - Properly clean up threads with newer NSPR
 
