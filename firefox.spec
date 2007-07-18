@@ -11,8 +11,8 @@
 
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
-Version:        2.0.0.4
-Release:        3%{?dist}
+Version:        2.0.0.5
+Release:        2%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -22,7 +22,7 @@ Group:          Applications/Internet
 %define tarball firefox-2.0rc3-source.tar.bz2
 %endif
 Source0:        %{tarball}
-Source2:        firefox-langpacks-%{version}-20070523.tar.bz2
+Source2:        firefox-langpacks-%{version}-20070718.tar.bz2
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
 Source12:       firefox-redhat-default-prefs.js
@@ -68,7 +68,6 @@ Patch89:        firefox-1.5-xft-rangewidth.patch
 
 
 # Other
-Patch100:       firefox-1.5-thread-cleanup.patch
 Patch102:       firefox-1.5-theme-change.patch
 Patch104:       firefox-1.5-ppc64.patch
 
@@ -169,7 +168,6 @@ removed in favor of xulrunner-devel.
 %patch88 -p1 -b .pango-underline
 %patch89 -p1 -b .nopangoxft2
 
-%patch100 -p1 -b .thread-cleanup
 %patch102 -p0 -b .theme-change
 %patch104 -p1 -b .ppc64
 
@@ -429,6 +427,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Jul 18 2007 Kai Engert <kengert@redhat.com> - 2.0.0.5-2
+- Update to 2.0.0.5
+
 * Fri Jun 29 2007 Martin Stransky <stransky@redhat.com> 2.0.0.4-3
 - backported pango patches from FC6 (1.5.0.12)
 
