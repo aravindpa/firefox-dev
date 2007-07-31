@@ -77,9 +77,9 @@ export MOZILLA_FIVE_HOME
 ##
 if [ "$MOZ_PLUGIN_PATH" ]
 then
-  MOZ_PLUGIN_PATH=$MOZ_PLUGIN_PATH:$MOZ_LIB_DIR/mozilla/plugins:$MOZ_DIST_BIN/plugins
+  MOZ_PLUGIN_PATH=$MOZ_PLUGIN_PATH:$MOZ_LIB_DIR/mozilla/plugins-wrapped:$MOZ_DIST_BIN/plugins-wrapped
 else
-  MOZ_PLUGIN_PATH=$MOZ_LIB_DIR/mozilla/plugins:$MOZ_DIST_BIN/plugins
+  MOZ_PLUGIN_PATH=$MOZ_LIB_DIR/mozilla/plugins-wrapped:$MOZ_DIST_BIN/plugins-wrapped
 fi
 export MOZ_PLUGIN_PATH
 
@@ -134,6 +134,9 @@ function open_compose() {
 }
 
 # OK, here's where all the real work gets done
+
+# configure plug-ins
+/usr/bin/firefox-plugin-config
 
 # check to see if there's an already running instance or not
 ALREADY_RUNNING=`check_running`
