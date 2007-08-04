@@ -14,8 +14,8 @@
 
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
-Version:        2.0.0.5
-Release:        3%{?dist}
+Version:        2.0.0.6
+Release:        1%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -26,7 +26,7 @@ Group:          Applications/Internet
 %endif
 Source0:        %{tarball}
 Source1:        %{plugin_config_name}.tar.gz
-Source2:        firefox-langpacks-%{version}-20070718.tar.bz2
+Source2:        firefox-langpacks-%{version}-20070731.tar.bz2
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
 Source12:       firefox-redhat-default-prefs.js
@@ -75,6 +75,7 @@ Patch89:        firefox-1.5-xft-rangewidth.patch
 # Other
 Patch102:       firefox-1.5-theme-change.patch
 Patch104:       firefox-1.5-ppc64.patch
+Patch105:       firefox-2.0-dnd.patch
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -175,6 +176,7 @@ removed in favor of xulrunner-devel.
 
 %patch102 -p0 -b .theme-change
 %patch104 -p1 -b .ppc64
+%patch105 -p0 -b .dnd
 
 # For branding specific patches.
 
@@ -236,7 +238,7 @@ DESTDIR=$RPM_BUILD_ROOT make install
 
 %{__mkdir_p} $RPM_BUILD_ROOT{%{_libdir},%{_bindir},%{_datadir}/applications}
 
-%{__install} -p -D %{SOURCE22} $RPM_BUILD_ROOT%{_datadir}/pixmaps/%{name}.png
+%{__install} -p -D -m 644 %{SOURCE22} $RPM_BUILD_ROOT%{_datadir}/pixmaps/%{name}.png
 
 desktop-file-install --vendor mozilla \
   --dir $RPM_BUILD_ROOT%{_datadir}/applications \
@@ -462,6 +464,11 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Sat Aug  4 2007 Christopher Aillon <caillon@redhat.com> 2.0.0.6-1
+- Update to 2.0.0.6
+- Fix dnd support to/from gtk2 apps
+- Fix installed permissions of *.png
+
 * Mon Jul 23 2007 Martin Stransky <stransky@redhat.com> 2.0.0.5-3
 - added nspluginwrapper support
 
