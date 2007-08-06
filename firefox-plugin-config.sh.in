@@ -56,8 +56,10 @@ if [ ! -x $MOZ_LIB_DIR/firefox-FIREFOX_VERSION/firefox-bin ]; then
     fi
     MOZ_LIB_DIR="$SECONDARY_LIB_DIR"
 fi
-MOZ_DIST_BIN="$MOZ_LIB_DIR/firefox-FIREFOX_VERSION"
+
+export LD_LIBRARY_PATH="$MOZ_LIB_DIR/firefox-FIREFOX_VERSION"
 
 # Set-up installed plugins
+
 $MOZ_DIST_BIN/plugin-configuration -c -f -q > /dev/null 2>&1
 

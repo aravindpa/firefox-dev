@@ -71,18 +71,27 @@ MOZILLA_FIVE_HOME="$MOZ_DIST_BIN"
 
 export MOZILLA_FIVE_HOME
 
+##
+## Select the propper plugin dir
+## Wrapped plug-ins are located in /lib/mozilla/plugins-wrapped
+##
+if [ -x "$MOZ_LIB_DIR/nspluginwrapper/npviewer" ]
+then
+  MOZ_PLUGIN_DIR="plugins-wrapped"
+else
+  MOZ_PLUGIN_DIR="plugins"
+fi
 
 ##
 ## Make sure that we set the plugin path
 ##
 if [ "$MOZ_PLUGIN_PATH" ]
 then
-  MOZ_PLUGIN_PATH=$MOZ_PLUGIN_PATH:$MOZ_LIB_DIR/mozilla/plugins-wrapped:$MOZ_DIST_BIN/plugins-wrapped
+  MOZ_PLUGIN_PATH=$MOZ_PLUGIN_PATH:$MOZ_LIB_DIR/mozilla/$MOZ_PLUGIN_DIR:$MOZ_DIST_BIN/$MOZ_PLUGIN_DIR
 else
-  MOZ_PLUGIN_PATH=$MOZ_LIB_DIR/mozilla/plugins-wrapped:$MOZ_DIST_BIN/plugins-wrapped
+  MOZ_PLUGIN_PATH=$MOZ_LIB_DIR/mozilla/$MOZ_PLUGIN_DIR:$MOZ_DIST_BIN/$MOZ_PLUGIN_DIR
 fi
 export MOZ_PLUGIN_PATH
-
 
 ##
 ## Set FONTCONFIG_PATH for Xft/fontconfig
@@ -135,8 +144,13 @@ function open_compose() {
 
 # OK, here's where all the real work gets done
 
-# configure plug-ins
-/usr/bin/firefox-plugin-config
+##
+## If plugins are wrapped, check them
+##
+if [ -x "$MOZ_LIB_DIR/nspluginwrapper/npviewer" ]
+then
+  /usr/bin/firefox-plugin-config
+fi
 
 # check to see if there's an already running instance or not
 ALREADY_RUNNING=`check_running`

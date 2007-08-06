@@ -15,7 +15,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        2.0.0.6
-Release:        1%{?dist}
+Release:        2%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPL/LGPL
 Group:          Applications/Internet
@@ -464,6 +464,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Aug 6 2007 Martin Stransky <stransky@redhat.com> 2.0.0.6-2
+- unwrapped plugins moved to the old location
+
 * Sat Aug  4 2007 Christopher Aillon <caillon@redhat.com> 2.0.0.6-1
 - Update to 2.0.0.6
 - Fix dnd support to/from gtk2 apps
