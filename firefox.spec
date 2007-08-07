@@ -6,9 +6,6 @@
 %define cairo_version 0.5
 %define builddir %{_builddir}/mozilla
 %define build_devel_package 1
-%define plugin_config_version 1.1
-%define plugin_config_name plugin-config-%{plugin_config_version}
-%define plugin_config_binary plugin-configuration
 
 %define official_branding 1
 
@@ -25,7 +22,6 @@ Group:          Applications/Internet
 %define tarball firefox-2.0rc3-source.tar.bz2
 %endif
 Source0:        %{tarball}
-Source1:        %{plugin_config_name}.tar.gz
 Source2:        firefox-langpacks-%{version}-20070731.tar.bz2
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -34,7 +30,6 @@ Source20:       firefox.desktop
 Source21:       firefox.sh.in
 Source22:       firefox.png
 Source23:       firefox.1
-Source24:       firefox-plugin-config.sh.in
 Source50:       firefox-xremote-client.sh.in
 Source100:      find-external-requires
 Source101:      add-gecko-provides.in
@@ -147,7 +142,7 @@ removed in favor of xulrunner-devel.
 #---------------------------------------------------------------------
 
 %prep
-%setup -q -n mozilla -a 1
+%setup -q -n mozilla
 %patch1   -p1 -b .link-layout
 #%patch3  -p1
 #%patch4  -p1
@@ -222,12 +217,6 @@ export LDFLAGS="-Wl,-rpath,%{mozappdir}"
 export MAKE="gmake %{moz_make_flags}"
 make -f client.mk build
 
-#Build plugin configuration utility
-pushd %{plugin_config_name}
-./configure --prefix=/usr CFLAGS="$RPM_OPT_FLAGS"
-make
-popd
-
 #---------------------------------------------------------------------
 
 %install
@@ -286,7 +275,6 @@ EOF
 
 # own mozilla plugin dir (#135050)
 %{__mkdir_p} $RPM_BUILD_ROOT%{_libdir}/mozilla/plugins
-%{__mkdir_p} $RPM_BUILD_ROOT%{_libdir}/mozilla/plugins-wrapped
 
 # Install langpacks
 %{__mkdir_p} $RPM_BUILD_ROOT%{mozappdir}/extensions
@@ -360,23 +348,6 @@ install -c -m 644 LICENSE $RPM_BUILD_ROOT%{mozappdir}
 touch $RPM_BUILD_ROOT%{mozappdir}/components/compreg.dat
 touch $RPM_BUILD_ROOT%{mozappdir}/components/xpti.dat
 
-# Install plugin-config utility
-pushd %{plugin_config_name}
-DESTDIR=$RPM_BUILD_ROOT make install
-
-cd $RPM_BUILD_ROOT/usr/bin
-mv %{plugin_config_binary} $RPM_BUILD_ROOT%{mozappdir}
-
-cd $RPM_BUILD_ROOT/usr/doc
-mv plugin-config $RPM_BUILD_ROOT%{mozappdir}
-popd
-
-# set up the firefox plugin configuration script
-%{__cat} %{SOURCE24} | %{__sed} -e 's,FIREFOX_VERSION,%{version},g' > \
-  $RPM_BUILD_ROOT%{_bindir}/firefox-plugin-config
-%{__chmod} 755 $RPM_BUILD_ROOT%{_bindir}/firefox-plugin-config
-
-
 #---------------------------------------------------------------------
 
 %clean
@@ -386,7 +357,6 @@ popd
 
 %post
 update-desktop-database %{_datadir}/applications
-%{mozappdir}/%{plugin_config_binary} -i -f -q > /dev/null 2>&1
 
 %postun
 update-desktop-database %{_datadir}/applications
@@ -402,7 +372,6 @@ fi
 %files
 %defattr(-,root,root,-)
 %{_bindir}/firefox
-%{_bindir}/firefox-plugin-config
 %exclude %{_bindir}/firefox-config
 %{_mandir}/man1/*
 %{_datadir}/applications/mozilla-%{name}.desktop
@@ -437,8 +406,6 @@ fi
 %{mozappdir}/mozilla-xremote-client
 %{mozappdir}/run-mozilla.sh
 %{mozappdir}/regxpcom
-%{mozappdir}/%{plugin_config_binary}
-%{mozappdir}/plugin-config/*
 # XXX See if these are needed still
 %{mozappdir}/updater*
 
@@ -466,6 +433,7 @@ fi
 %changelog
 * Mon Aug 6 2007 Martin Stransky <stransky@redhat.com> 2.0.0.6-2
 - unwrapped plugins moved to the old location
+- removed plugin configuration utility
 
 * Sat Aug  4 2007 Christopher Aillon <caillon@redhat.com> 2.0.0.6-1
 - Update to 2.0.0.6
