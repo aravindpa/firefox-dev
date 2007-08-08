@@ -841,7 +841,7 @@ diff -u -r1.1.1.1 nsDragService.cpp
 +
 +    target->target = g_strdup(aFlavorStr);
 +    target->flags = 0;
-+    target->info = (guint)atom;
++    target->info = GPOINTER_TO_UINT(atom);
 +
 +    return target;
 +}
