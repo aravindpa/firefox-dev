@@ -12,9 +12,9 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        2.0.0.6
-Release:        2%{?dist}
+Release:        3%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
-License:        MPL/LGPL
+License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 %if %{official_branding}
 %define tarball firefox-%{version}-source.tar.bz2
@@ -431,7 +431,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
-* Mon Aug 6 2007 Martin Stransky <stransky@redhat.com> 2.0.0.6-2
+* Mon Aug 13 2007 Christopher Aillon <caillon@redhat.com> 2.0.0.6-3
+- Update the license tag
+
+* Mon Aug  6 2007 Martin Stransky <stransky@redhat.com> 2.0.0.6-2
 - unwrapped plugins moved to the old location
 - removed plugin configuration utility
 
