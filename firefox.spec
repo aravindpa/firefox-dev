@@ -12,7 +12,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        2.0.0.6
-Release:        3%{?dist}
+Release:        4%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -431,6 +431,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Aug 24 2007 Adam Jackson <ajax@redhat.com> - 2.0.0.6-4
+- Rebuild for build ID
+
 * Mon Aug 13 2007 Christopher Aillon <caillon@redhat.com> 2.0.0.6-3
 - Update the license tag
 
