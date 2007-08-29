@@ -1,4 +1,4 @@
-%define indexhtml file:///usr/share/doc/HTML/index.html
+%define homepage http://start.fedoraproject.org/
 %define default_bookmarks_file %{_datadir}/bookmarks/default-bookmarks.html
 %define desktop_file_utils_version 0.9
 %define nspr_version 4.6
@@ -12,7 +12,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        2.0.0.6
-Release:        4%{?dist}
+Release:        5%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -292,8 +292,8 @@ for langpack in `ls firefox-langpacks/*.xpi`; do
   jarfile=$extensiondir/chrome/$language.jar
   unzip $jarfile -d $langtmp
 
-  sed -i -e "s|browser.startup.homepage.*$|browser.startup.homepage=%{indexhtml}|g;" \
-         -e "s|startup.homepage_override_url.*$|startup.homepage_override_url=%{indexhtml}|g;" \
+  sed -i -e "s|browser.startup.homepage.*$|browser.startup.homepage=%{homepage}|g;" \
+         -e "s|startup.homepage_override_url.*$|startup.homepage_override_url=%{homepage}|g;" \
          $langtmp/locale/browser-region/region.properties
 
   find $langtmp -type f | xargs chmod 644
@@ -431,6 +431,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Aug 29 2007 Christopher Aillon <caillon@redhat.com> - 2.0.0.6-5
+- Tweak the default home page
+
 * Fri Aug 24 2007 Adam Jackson <ajax@redhat.com> - 2.0.0.6-4
 - Rebuild for build ID
 
