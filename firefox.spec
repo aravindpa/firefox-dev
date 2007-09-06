@@ -12,7 +12,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        2.0.0.6
-Release:        5%{?dist}
+Release:        6%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -192,7 +192,14 @@ removed in favor of xulrunner-devel.
 %endif
 
 # set up our default bookmarks
-cp %{default_bookmarks_file} $RPM_BUILD_DIR/mozilla/profile/defaults/bookmarks.html
+%{__cp} %{default_bookmarks_file} $RPM_BUILD_DIR/mozilla/profile/defaults/bookmarks.html
+
+# set up our default homepage
+%{__cat} >> %{SOURCE12} << EOF
+pref("browser.startup.homepage", "%{homepage}");
+pref("startup.homepage_override_url", "%{homepage}");
+pref("startup.homepage_welcome_url", "%{homepage}");
+EOF
 
 
 #---------------------------------------------------------------------
@@ -431,6 +438,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Sep  6 2007 Christopher Aillon <caillon@redhat.com> - 2.0.0.6-6
+- Fix default page for all locales
+
 * Wed Aug 29 2007 Christopher Aillon <caillon@redhat.com> - 2.0.0.6-5
 - Tweak the default home page
 
