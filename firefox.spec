@@ -12,7 +12,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        2.0.0.6
-Release:        6%{?dist}
+Release:        7%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -438,6 +438,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Sep 10 2007 Martin Stransky <stransky@redhat.com> 2.0.0.6-7
+- added fix for #246248 - firefox crashes when searching for word "do"
+
 * Thu Sep  6 2007 Christopher Aillon <caillon@redhat.com> - 2.0.0.6-6
 - Fix default page for all locales
 
