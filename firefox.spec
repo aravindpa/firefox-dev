@@ -104,6 +104,7 @@ BuildRequires:  freetype-devel >= 2.1.9
 BuildRequires:  libXt-devel
 BuildRequires:  libXrender-devel
 BuildRequires:  system-bookmarks
+BuildRequires:  startup-notification-devel
 
 Requires:       nspr >= %{nspr_version}
 Requires:       nss >= %{nss_version}
