@@ -6,3 +6,6 @@ pref("general.smoothScroll",                true);
 pref("general.useragent.vendor", "Fedora");
 pref("general.useragent.vendorSub", "FIREFOX_RPM_VR");
 pref("intl.locale.matchOS", true);
+pref("browser.startup.homepage", "http://start.fedoraproject.org/");
+pref("startup.homepage_override_url", "http://start.fedoraproject.org/");
+pref("startup.homepage_welcome_url", "http://start.fedoraproject.org/");
