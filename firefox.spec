@@ -36,19 +36,12 @@ Source101:      add-gecko-provides.in
 
 # build patches
 Patch1:         firefox-2.0-link-layout.patch
-Patch3:         firefox-1.1-nss-system-nspr.patch
-Patch4:         firefox-1.5-with-system-nss.patch
-Patch5:         firefox-2.0-visibility.patch
 
 # customization patches
 Patch20:        firefox-redhat-homepage.patch
 Patch21:        firefox-0.7.3-psfonts.patch
 Patch22:        firefox-1.1-default-applications.patch
 Patch23:        firefox-1.1-software-update.patch
-Patch24:        firefox-RC1-stock-icons-be.patch
-Patch25:        firefox-RC1-stock-icons-fe.patch
-Patch26:        firefox-RC1-stock-icons-gnomestripe.patch
-Patch27:        firefox-gnomestripe-0.1-livemarks.patch
 
 # local bugfixes
 Patch40:        firefox-1.5-bullet-bill.patch
@@ -147,18 +140,11 @@ removed in favor of xulrunner-devel.
 %prep
 %setup -q -n mozilla
 %patch1   -p1 -b .link-layout
-#%patch3  -p1
-#%patch4  -p1
-#%patch5  -p1 -b .visibility
 
 #%patch20 -p0
 %patch21 -p1 -b .psfonts
 %patch22 -p0 -b .default-applications
 #%patch23 -p0
-#%patch24 -p0
-#%patch25 -p0
-#%patch26 -p0
-#%patch27 -p1
 %patch40 -p1 -b .bullet-bill
 %patch41 -p1 -b .undo-uriloader
 %patch42 -p0 -b .uriloader
