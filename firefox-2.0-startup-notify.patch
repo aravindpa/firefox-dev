@@ -1,5 +1,178 @@
 https://bugzilla.mozilla.org/show_bug.cgi?id=223492
 
+
+Index: configure
+===================================================================
+RCS file: /cvsroot/mozilla/configure,v
+retrieving revision 1.1492.2.121
+diff -d -u -p -r1.1492.2.121 configure
+--- configure	11 Jul 2007 16:44:47 -0000	1.1492.2.121
++++ configure	25 Sep 2007 05:12:51 -0000
+@@ -83,6 +83,8 @@ ac_help="$ac_help
+ ac_help="$ac_help
+   --with-qtdir=\$dir       Specify Qt directory "
+ ac_help="$ac_help
++  --enable-startup-notification       Enable startup-notification support (default: disabled) "
++ac_help="$ac_help
+   --enable-application=APP
+                           Options include:
+                             suite
+@@ -1067,6 +1069,7 @@ GNOMEVFS_VERSION=2.0
+ GNOMEUI_VERSION=2.2.0
+ GCONF_VERSION=1.2.1
+ LIBGNOME_VERSION=2.0
++STARTUP_NOTIFICATION_VERSION=0.8
+ 
+ MISSING_X=
+ for ac_prog in gawk mawk nawk awk
+@@ -12906,6 +12909,137 @@ fi # COMPILE_ENVIRONMENT
+ 
+ 
+ 
++if test "$MOZ_ENABLE_GTK2"
++then
++    MOZ_ENABLE_STARTUP_NOTIFICATION=
++
++    # Check whether --enable-startup-notification or --disable-startup-notification was given.
++if test "${enable_startup_notification+set}" = set; then
++  enableval="$enable_startup_notification"
++  if test "$enableval" = "yes"; then
++    MOZ_ENABLE_STARTUP_NOTIFICATION=force
++  elif test "$enableval" = "no"; then
++    MOZ_ENABLE_STARTUP_NOTIFICATION=
++  else
++    { echo "configure: error: Option, startup-notification, does not take an argument ($enableval)." 1>&2; exit 1; }
++  fi
++fi
++
++    if test "$MOZ_ENABLE_STARTUP_NOTIFICATION"
++    then
++        
++  succeeded=no
++
++  if test -z "$PKG_CONFIG"; then
++    # Extract the first word of "pkg-config", so it can be a program name with args.
++set dummy pkg-config; ac_word=$2
++echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
++echo "configure:12938: checking for $ac_word" >&5
++if eval "test \"`echo '$''{'ac_cv_path_PKG_CONFIG'+set}'`\" = set"; then
++  echo $ac_n "(cached) $ac_c" 1>&6
++else
++  case "$PKG_CONFIG" in
++  /*)
++  ac_cv_path_PKG_CONFIG="$PKG_CONFIG" # Let the user override the test with a path.
++  ;;
++  ?:/*)			 
++  ac_cv_path_PKG_CONFIG="$PKG_CONFIG" # Let the user override the test with a dos path.
++  ;;
++  *)
++  IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS=":"
++  ac_dummy="$PATH"
++  for ac_dir in $ac_dummy; do 
++    test -z "$ac_dir" && ac_dir=.
++    if test -f $ac_dir/$ac_word; then
++      ac_cv_path_PKG_CONFIG="$ac_dir/$ac_word"
++      break
++    fi
++  done
++  IFS="$ac_save_ifs"
++  test -z "$ac_cv_path_PKG_CONFIG" && ac_cv_path_PKG_CONFIG="no"
++  ;;
++esac
++fi
++PKG_CONFIG="$ac_cv_path_PKG_CONFIG"
++if test -n "$PKG_CONFIG"; then
++  echo "$ac_t""$PKG_CONFIG" 1>&6
++else
++  echo "$ac_t""no" 1>&6
++fi
++
++  fi
++
++  if test "$PKG_CONFIG" = "no" ; then
++     echo "*** The pkg-config script could not be found. Make sure it is"
++     echo "*** in your path, or set the PKG_CONFIG environment variable"
++     echo "*** to the full path to pkg-config."
++     echo "*** Or see http://www.freedesktop.org/software/pkgconfig to get pkg-config."
++  else
++     PKG_CONFIG_MIN_VERSION=0.9.0
++     if $PKG_CONFIG --atleast-pkgconfig-version $PKG_CONFIG_MIN_VERSION; then
++        echo $ac_n "checking for libstartup-notification-1.0 >= $STARTUP_NOTIFICATION_VERSION""... $ac_c" 1>&6
++echo "configure:12982: checking for libstartup-notification-1.0 >= $STARTUP_NOTIFICATION_VERSION" >&5
++
++        if $PKG_CONFIG --exists "libstartup-notification-1.0 >= $STARTUP_NOTIFICATION_VERSION" ; then
++            echo "$ac_t""yes" 1>&6
++            succeeded=yes
++
++            echo $ac_n "checking MOZ_STARTUP_NOTIFICATION_CFLAGS""... $ac_c" 1>&6
++echo "configure:12989: checking MOZ_STARTUP_NOTIFICATION_CFLAGS" >&5
++            MOZ_STARTUP_NOTIFICATION_CFLAGS=`$PKG_CONFIG --cflags "libstartup-notification-1.0 >= $STARTUP_NOTIFICATION_VERSION"`
++            echo "$ac_t""$MOZ_STARTUP_NOTIFICATION_CFLAGS" 1>&6
++
++            echo $ac_n "checking MOZ_STARTUP_NOTIFICATION_LIBS""... $ac_c" 1>&6
++echo "configure:12994: checking MOZ_STARTUP_NOTIFICATION_LIBS" >&5
++            ## don't use --libs since that can do evil things like add
++            ## -Wl,--export-dynamic
++            MOZ_STARTUP_NOTIFICATION_LIBS="`$PKG_CONFIG --libs-only-L \"libstartup-notification-1.0 >= $STARTUP_NOTIFICATION_VERSION\"` `$PKG_CONFIG --libs-only-l \"libstartup-notification-1.0 >= $STARTUP_NOTIFICATION_VERSION\"`"
++            echo "$ac_t""$MOZ_STARTUP_NOTIFICATION_LIBS" 1>&6
++        else
++            MOZ_STARTUP_NOTIFICATION_CFLAGS=""
++            MOZ_STARTUP_NOTIFICATION_LIBS=""
++            ## If we have a custom action on failure, don't print errors, but 
++            ## do set a variable so people can do so.
++            MOZ_STARTUP_NOTIFICATION_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "libstartup-notification-1.0 >= $STARTUP_NOTIFICATION_VERSION"`
++            
++        fi
++
++        
++        
++     else
++        echo "*** Your version of pkg-config is too old. You need version $PKG_CONFIG_MIN_VERSION or newer."
++        echo "*** See http://www.freedesktop.org/software/pkgconfig"
++     fi
++  fi
++
++  if test $succeeded = yes; then
++     MOZ_ENABLE_STARTUP_NOTIFICATION=1
++  else
++     
++            if test "$MOZ_ENABLE_STARTUP_NOTIFICATION" = "force"
++            then
++                { echo "configure: error: * * * Could not find startup-notification >= $STARTUP_NOTIFICATION_VERSION" 1>&2; exit 1; }
++            fi
++            MOZ_ENABLE_STARTUP_NOTIFICATION=
++        
++  fi
++
++    fi
++
++    if test "$MOZ_ENABLE_STARTUP_NOTIFICATION"; then
++        cat >> confdefs.h <<\EOF
++#define MOZ_ENABLE_STARTUP_NOTIFICATION 1
++EOF
++
++    fi
++
++    TK_LIBS="$TK_LIBS $MOZ_STARTUP_NOTIFICATION_LIBS"
++fi
++
++
++
++
++
+ 
+ 
+ 
+@@ -20426,6 +20560,9 @@ s%@MOZ_GTK2_CFLAGS@%$MOZ_GTK2_CFLAGS%g
+ s%@MOZ_GTK2_LIBS@%$MOZ_GTK2_LIBS%g
+ s%@HOST_MOC@%$HOST_MOC%g
+ s%@MOZ_DEFAULT_TOOLKIT@%$MOZ_DEFAULT_TOOLKIT%g
++s%@MOZ_STARTUP_NOTIFICATION_CFLAGS@%$MOZ_STARTUP_NOTIFICATION_CFLAGS%g
++s%@MOZ_STARTUP_NOTIFICATION_LIBS@%$MOZ_STARTUP_NOTIFICATION_LIBS%g
++s%@MOZ_ENABLE_STARTUP_NOTIFICATION@%$MOZ_ENABLE_STARTUP_NOTIFICATION%g
+ s%@TK_CFLAGS@%$TK_CFLAGS%g
+ s%@TK_LIBS@%$TK_LIBS%g
+ s%@MOZ_ENABLE_GTK@%$MOZ_ENABLE_GTK%g
 --- config/autoconf.mk.in	2006-09-14 14:07:03.000000000 -0400
 +++ config/autoconf.mk.in	2007-07-03 18:01:36.000000000 -0400
 @@ -223,6 +223,10 @@
