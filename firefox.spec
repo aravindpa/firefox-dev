@@ -12,7 +12,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        2.0.0.6
-Release:        10%{?dist}
+Release:        11%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -67,6 +67,7 @@ Patch105:       firefox-2.0-dnd.patch
 Patch106:       firefox-2.0-indicator-crash.patch
 Patch110:       firefox-2.0-startup-notify.patch
 Patch111:       firefox-path.patch
+Patch112:       firefox-2.0-enable-debug.patch
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -165,6 +166,7 @@ removed in favor of xulrunner-devel.
 %patch106 -p1 -b .indicator-crash
 %patch110 -p0 -b .startup-notify
 %patch111 -p1 -b .path
+%patch112 -p1 -b .debug
 
 # For branding specific patches.
 
@@ -401,6 +403,7 @@ fi
 %{mozappdir}/res
 %{mozappdir}/searchplugins
 %{mozappdir}/*.so
+%{mozappdir}/firefox
 %{mozappdir}/firefox-bin
 %{mozappdir}/firefox-xremote-client
 %{mozappdir}/mozilla-xremote-client
@@ -431,6 +434,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Sep 26 2007 Martin Stransky <stransky@redhat.com> 2.0.0.6-11
+- Fixed #242657 - firefox -g doesn't work
+
 * Mon Sep 25 2007 Martin Stransky <stransky@redhat.com> 2.0.0.6-10
 - Removed hardcoded MAX_PATH, PATH_MAX and MAXPATHLEN macros
 

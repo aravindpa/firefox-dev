@@ -1,0 +1,12 @@
+diff -up mozilla/browser/app/Makefile.in.old mozilla/browser/app/Makefile.in
+--- mozilla/browser/app/Makefile.in.old	2006-08-29 04:03:07.000000000 +0200
++++ mozilla/browser/app/Makefile.in	2007-09-26 15:08:35.000000000 +0200
+@@ -238,7 +238,7 @@ libs:: firefox
+ 	$(INSTALL) $< $(DIST)/bin
+ 
+ install:: firefox
+-	$(SYSINSTALL) $< $(DESTDIR)$(bindir)
++	$(SYSINSTALL) $< $(DESTDIR)$(mozappdir)
+ 
+ GARBAGE += firefox
+ GARBAGE += $(addprefix $(DIST)/bin/defaults/pref/, firefox.js)
