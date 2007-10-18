@@ -12,7 +12,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        2.0.0.6
-Release:        11%{?dist}
+Release:        12%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -65,7 +65,7 @@ Patch102:       firefox-1.5-theme-change.patch
 Patch104:       firefox-1.5-ppc64.patch
 Patch105:       firefox-2.0-dnd.patch
 Patch106:       firefox-2.0-indicator-crash.patch
-Patch110:       firefox-2.0-startup-notify.patch
+#Patch110:       firefox-2.0-startup-notify.patch
 Patch111:       firefox-path.patch
 Patch112:       firefox-2.0-enable-debug.patch
 
@@ -164,7 +164,7 @@ removed in favor of xulrunner-devel.
 %patch104 -p1 -b .ppc64
 %patch105 -p0 -b .dnd
 %patch106 -p1 -b .indicator-crash
-%patch110 -p0 -b .startup-notify
+#%patch110 -p0 -b .startup-notify
 %patch111 -p1 -b .path
 %patch112 -p1 -b .debug
 
@@ -434,6 +434,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Oct 18 2007 Jesse Keating <jkeating@redhat.com> - 2.0.0.6-12
+- Disable the Firefox startup notification support for now.
+
 * Mon Sep 26 2007 Martin Stransky <stransky@redhat.com> 2.0.0.6-11
 - Fixed #242657 - firefox -g doesn't work
 
