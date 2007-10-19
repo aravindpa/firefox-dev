@@ -768,13 +768,15 @@ diff -d -u -p -r1.1492.2.121 configure
  #include "nsIRenderingContext.h"
  #include "nsIRegion.h"
  #include "nsIRollupListener.h"
-@@ -58,6 +58,11 @@
+@@ -58,6 +58,13 @@
  #include <gdk/gdkx.h>
  #include <gdk/gdkkeysyms.h>
  
 +#ifdef MOZ_ENABLE_STARTUP_NOTIFICATION
 +#define SN_API_NOT_YET_FROZEN
++#pragma GCC visibility push(default)
 +#include <startup-notification-1.0/libsn/sn.h>
++#pragma GCC visibility pop
 +#endif
 +
  #include "gtk2xtbin.h"
