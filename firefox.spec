@@ -11,8 +11,8 @@
 
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
-Version:        2.0.0.6
-Release:        12%{?dist}
+Version:        2.0.0.8
+Release:        1%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -22,7 +22,7 @@ Group:          Applications/Internet
 %define tarball firefox-2.0rc3-source.tar.bz2
 %endif
 Source0:        %{tarball}
-Source2:        firefox-langpacks-%{version}-20070731.tar.bz2
+Source2:        firefox-langpacks-%{version}-20071019.tar.bz2
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
 Source12:       firefox-redhat-default-prefs.js
@@ -150,7 +150,7 @@ removed in favor of xulrunner-devel.
 %patch40 -p1 -b .bullet-bill
 %patch41 -p1 -b .undo-uriloader
 %patch42 -p0 -b .uriloader
-%patch81 -p1 -b .nopangoxft
+#%patch81 -p1 -b .nopangoxft
 #%patch82 -p1 -b .pango-mathml
 %patch83 -p1 -b .pango-cursor-position
 %patch84 -p0 -b .pango-printing
@@ -163,7 +163,7 @@ removed in favor of xulrunner-devel.
 %patch102 -p0 -b .theme-change
 %patch104 -p1 -b .ppc64
 %patch105 -p0 -b .dnd
-%patch106 -p1 -b .indicator-crash
+#%patch106 -p1 -b .indicator-crash
 #%patch110 -p0 -b .startup-notify
 %patch111 -p1 -b .path
 %patch112 -p1 -b .debug
@@ -180,6 +180,11 @@ removed in favor of xulrunner-devel.
 
 %endif
 
+
+#---------------------------------------------------------------------
+
+%build
+
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE10} .mozconfig
 %if %{official_branding}
@@ -195,11 +200,6 @@ pref("browser.startup.homepage", "%{homepage}");
 pref("startup.homepage_override_url", "%{homepage}");
 pref("startup.homepage_welcome_url", "%{homepage}");
 EOF
-
-
-#---------------------------------------------------------------------
-
-%build
 
 # Build with -Os as it helps the browser; also, don't override mozilla's warning
 # level; they use -Wall but disable a few warnings that show up _everywhere_
@@ -434,6 +434,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Oct 23 2007 Martin Stransky <stransky@redhat.com> 2.0.0.8-1
+- updated to the latest upstream
+- moved preference updates to build section
+
 * Thu Oct 18 2007 Jesse Keating <jkeating@redhat.com> - 2.0.0.6-12
 - Disable the Firefox startup notification support for now.
 
