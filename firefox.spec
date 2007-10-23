@@ -194,13 +194,6 @@ removed in favor of xulrunner-devel.
 
 %build
 
-# set up our default homepage
-%{__cat} >> %{SOURCE12} << EOF
-pref("browser.startup.homepage", "%{homepage}");
-pref("startup.homepage_override_url", "%{homepage}");
-pref("startup.homepage_welcome_url", "%{homepage}");
-EOF
-
 # Build with -Os as it helps the browser; also, don't override mozilla's warning
 # level; they use -Wall but disable a few warnings that show up _everywhere_
 MOZ_OPT_FLAGS=$(echo $RPM_OPT_FLAGS | %{__sed} -e 's/-O2/-Os/' -e 's/-Wall//')
@@ -244,6 +237,15 @@ desktop-file-install --vendor mozilla \
 
 # set up our default preferences
 %{__cat} %{SOURCE12} | %{__sed} -e 's,FIREFOX_RPM_VR,%{version}-%{release},g' > rh-default-prefs
+
+# set up our default homepage
+%{__cat} >> rh-default-prefs << EOF
+pref("browser.startup.homepage", "%{homepage}");
+pref("startup.homepage_override_url", "%{homepage}");
+pref("startup.homepage_welcome_url", "%{homepage}");
+EOF
+
+# place the preferences
 %{__cp} rh-default-prefs $RPM_BUILD_ROOT/%{mozappdir}/greprefs/all-redhat.js
 %{__cp} rh-default-prefs $RPM_BUILD_ROOT/%{mozappdir}/defaults/pref/all-redhat.js
 %{__rm} rh-default-prefs
