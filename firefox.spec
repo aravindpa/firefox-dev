@@ -181,10 +181,6 @@ removed in favor of xulrunner-devel.
 %endif
 
 
-#---------------------------------------------------------------------
-
-%build
-
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE10} .mozconfig
 %if %{official_branding}
@@ -193,6 +189,10 @@ removed in favor of xulrunner-devel.
 
 # set up our default bookmarks
 %{__cp} %{default_bookmarks_file} $RPM_BUILD_DIR/mozilla/profile/defaults/bookmarks.html
+
+#---------------------------------------------------------------------
+
+%build
 
 # set up our default homepage
 %{__cat} >> %{SOURCE12} << EOF
