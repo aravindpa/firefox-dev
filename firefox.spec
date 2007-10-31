@@ -12,7 +12,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        2.0.0.8
-Release:        1%{?dist}
+Release:        2%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -436,6 +436,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Oct 30 2007 Christopher Aillon <caillon@redhat.com> 2.0.0.8-2
+- Tweak the default backspace behavior to be more in line with
+  GNOME convention, Mozilla upstream, and other distros
+
 * Tue Oct 23 2007 Martin Stransky <stransky@redhat.com> 2.0.0.8-1
 - updated to the latest upstream
 - moved preference updates to build section
