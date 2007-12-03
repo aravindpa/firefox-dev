@@ -12,7 +12,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        2.0.0.10
-Release:        1%{?dist}
+Release:        2%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -328,17 +328,17 @@ install -c -m 644 build/unix/*.pc \
 %endif
 
 # GRE stuff
-%ifarch x86_64 ia64 ppc64 s390x
-%define gre_conf_file gre64.conf
-%else
-%define gre_conf_file gre.conf
-%endif
-
-%{__mkdir_p} $RPM_BUILD_ROOT/etc/gre.d/
-%{__cat} > $RPM_BUILD_ROOT/etc/gre.d/%{gre_conf_file} << EOF
-[%{version}]
-GRE_PATH=%{mozappdir}
-EOF
+#%ifarch x86_64 ia64 ppc64 s390x
+#%define gre_conf_file gre64.conf
+#%else
+#%define gre_conf_file gre.conf
+#%endif
+#
+#%{__mkdir_p} $RPM_BUILD_ROOT/etc/gre.d/
+#%{__cat} > $RPM_BUILD_ROOT/etc/gre.d/%{gre_conf_file} << EOF
+#[%{version}]
+#GRE_PATH=%{mozappdir}
+#EOF
 
 GECKO_VERSION=$(./config/milestone.pl --topsrcdir='.')
 %{__cat} %{SOURCE101} | %{__sed} -e "s/@GECKO_VERSION@/$GECKO_VERSION/g" > \
@@ -381,8 +381,8 @@ fi
 %{_datadir}/applications/mozilla-%{name}.desktop
 %{_datadir}/pixmaps/firefox.png
 %{_libdir}/mozilla
-%dir /etc/gre.d
-/etc/gre.d/%{gre_conf_file}
+#%dir /etc/gre.d
+#/etc/gre.d/%{gre_conf_file}
 
 %dir %{mozappdir}
 %{mozappdir}/LICENSE
@@ -436,6 +436,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Dec 3 2007 Martin Stransky <stransky@redhat.com> 2.0.0.10-2
+- removed gre.conf file (most of the gtkmozembed applications
+  run with xulrunner now)
+
 * Mon Nov 26 2007 Christopher Aillon <caillon@redhat.com> 2.0.0.10-1
 - Update to 2.0.0.10
 
