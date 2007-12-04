@@ -12,7 +12,7 @@
 Summary:        Mozilla Firefox Web browser.
 Name:           firefox
 Version:        2.0.0.10
-Release:        2%{?dist}
+Release:        3%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -220,9 +220,9 @@ make -f client.mk build
 
 DESTDIR=$RPM_BUILD_ROOT make install
 
-%{__mkdir_p} $RPM_BUILD_ROOT{%{_libdir},%{_bindir},%{_datadir}/applications}
+%{__mkdir_p} $RPM_BUILD_ROOT{%{_libdir},%{_bindir},%{_datadir}/applications,%{_datadir}/icons/hicolor/48x48/apps},
 
-%{__install} -p -D -m 644 %{SOURCE22} $RPM_BUILD_ROOT%{_datadir}/pixmaps/%{name}.png
+%{__install} -p -D -m 644 %{SOURCE22} $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/48x48/apps/%{name}.png
 
 desktop-file-install --vendor mozilla \
   --dir $RPM_BUILD_ROOT%{_datadir}/applications \
@@ -361,9 +361,17 @@ touch $RPM_BUILD_ROOT%{mozappdir}/components/xpti.dat
 
 %post
 update-desktop-database %{_datadir}/applications
+touch --no-create %{_datadir}/icons/hicolor
+if [ -x %{_bindir}/gtk-update-icon-cache ]; then
+  %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
+fi
 
 %postun
 update-desktop-database %{_datadir}/applications
+touch --no-create %{_datadir}/icons/hicolor
+if [ -x %{_bindir}/gtk-update-icon-cache ]; then
+  %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
+fi
 
 %preun
 # is it a final removal?
@@ -379,7 +387,7 @@ fi
 %exclude %{_bindir}/firefox-config
 %{_mandir}/man1/*
 %{_datadir}/applications/mozilla-%{name}.desktop
-%{_datadir}/pixmaps/firefox.png
+%{_datadir}/icons/hicolor/48x48/apps/firefox.png
 %{_libdir}/mozilla
 #%dir /etc/gre.d
 #/etc/gre.d/%{gre_conf_file}
@@ -436,6 +444,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Dec 4 2007 Martin Stransky <stransky@redhat.com> 2.0.0.10-3
+- fixed an icon location
+
 * Mon Dec 3 2007 Martin Stransky <stransky@redhat.com> 2.0.0.10-2
 - removed gre.conf file (most of the gtkmozembed applications
   run with xulrunner now)
