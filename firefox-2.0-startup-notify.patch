@@ -533,7 +533,7 @@ diff -d -u -p -r1.1492.2.121 configure
 @@ -1163,7 +1172,7 @@
  }
  
- static PRBool
+ static RemoteResult
 -RemoteCommandLine()
 +RemoteCommandLine(const char* aDesktopStartupID)
  {
@@ -654,11 +654,11 @@ diff -d -u -p -r1.1492.2.121 configure
  
    if (!PR_GetEnv("MOZ_NO_REMOTE")) {
      // Try to remote the entire command line. If this fails, start up normally.
--    if (RemoteCommandLine())
-+    if (RemoteCommandLine(desktopStartupIDPtr))
+-    RemoteResult rr = RemoteCommandLine();
++    RemoteResult rr = RemoteCommandLine(desktopStartupIDPtr);
+     if (rr == REMOTE_FOUND)
        return 0;
-   }
- #endif
+     else if (rr == REMOTE_ARG_BAD)
 @@ -2533,6 +2601,13 @@
        NS_TIMELINE_LEAVE("appStartup->CreateHiddenWindow");
        NS_ENSURE_SUCCESS(rv, 1);
