@@ -9,10 +9,10 @@
 
 %define official_branding 1
 
-Summary:        Mozilla Firefox Web browser.
+Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        2.0.0.10
-Release:        3%{?dist}
+Release:        4%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -38,10 +38,8 @@ Source101:      add-gecko-provides.in
 Patch1:         firefox-2.0-link-layout.patch
 
 # customization patches
-Patch20:        firefox-redhat-homepage.patch
 Patch21:        firefox-0.7.3-psfonts.patch
 Patch22:        firefox-1.1-default-applications.patch
-Patch23:        firefox-1.1-software-update.patch
 
 # local bugfixes
 Patch40:        firefox-1.5-bullet-bill.patch
@@ -49,8 +47,6 @@ Patch41:        firefox-2.0.0.4-undo-uriloader.patch
 Patch42:        firefox-1.1-uriloader.patch
 
 # font system fixes
-Patch81:        firefox-1.5-nopangoxft.patch
-Patch82:        firefox-1.5-pango-mathml.patch
 Patch83:        firefox-1.5-pango-cursor-position.patch
 Patch84:        firefox-2.0-pango-printing.patch
 Patch85:        firefox-2.0-pango-ligatures.patch
@@ -64,8 +60,8 @@ Patch89:        firefox-1.5-xft-rangewidth.patch
 Patch102:       firefox-1.5-theme-change.patch
 Patch104:       firefox-1.5-ppc64.patch
 Patch105:       firefox-2.0-dnd.patch
-Patch106:       firefox-2.0-indicator-crash.patch
-#Patch110:       firefox-2.0-startup-notify.patch
+
+Patch110:       firefox-2.0-startup-notify.patch
 Patch111:       firefox-path.patch
 Patch112:       firefox-2.0-enable-debug.patch
 
@@ -105,7 +101,6 @@ Requires:       nspr >= %{nspr_version}
 Requires:       nss >= %{nss_version}
 Requires:       desktop-file-utils >= %{desktop_file_utils_version}
 Requires:       system-bookmarks
-Obsoletes:      phoenix, mozilla-firebird, MozillaFirebird
 Obsoletes:      mozilla <= 37:1.7.13
 Provides:       webclient
 %define mozappdir %{_libdir}/firefox-%{version}
@@ -143,15 +138,13 @@ removed in favor of xulrunner-devel.
 %setup -q -n mozilla
 %patch1   -p1 -b .link-layout
 
-#%patch20 -p0
 %patch21 -p1 -b .psfonts
 %patch22 -p0 -b .default-applications
-#%patch23 -p0
+
 %patch40 -p1 -b .bullet-bill
 %patch41 -p1 -b .undo-uriloader
 %patch42 -p0 -b .uriloader
-#%patch81 -p1 -b .nopangoxft
-#%patch82 -p1 -b .pango-mathml
+
 %patch83 -p1 -b .pango-cursor-position
 %patch84 -p0 -b .pango-printing
 %patch85 -p1 -b .pango-ligatures
@@ -163,7 +156,6 @@ removed in favor of xulrunner-devel.
 %patch102 -p0 -b .theme-change
 %patch104 -p1 -b .ppc64
 %patch105 -p0 -b .dnd
-#%patch106 -p1 -b .indicator-crash
 #%patch110 -p0 -b .startup-notify
 %patch111 -p1 -b .path
 %patch112 -p1 -b .debug
@@ -241,8 +233,10 @@ desktop-file-install --vendor mozilla \
 # set up our default homepage
 %{__cat} >> rh-default-prefs << EOF
 pref("browser.startup.homepage", "%{homepage}");
+/*
 pref("startup.homepage_override_url", "%{homepage}");
 pref("startup.homepage_welcome_url", "%{homepage}");
+*/
 EOF
 
 # place the preferences
@@ -403,7 +397,7 @@ fi
 %ghost %{mozappdir}/components/xpti.dat
 %{mozappdir}/components/*.so
 %{mozappdir}/components/*.xpt
-%{mozappdir}/components/*.js
+%attr(644, root, root) %{mozappdir}/components/*.js
 %{mozappdir}/defaults
 %{mozappdir}/extensions
 %{mozappdir}/greprefs
@@ -444,6 +438,11 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Sun Dec  9 2007 Christopher Aillon <caillon@redhat.com> 2.0.0.10-4
+- Fix up some rpmlint warnings
+- Use only one pref for the homepage for now
+- Drop some old patches and some obsolote Obsoletes
+
 * Tue Dec 4 2007 Martin Stransky <stransky@redhat.com> 2.0.0.10-3
 - fixed an icon location
 
