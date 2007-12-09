@@ -387,7 +387,7 @@ fi
 #/etc/gre.d/%{gre_conf_file}
 
 %dir %{mozappdir}
-%{mozappdir}/LICENSE
+%doc %{mozappdir}/LICENSE
 %{mozappdir}/*.properties
 %{mozappdir}/chrome
 %{mozappdir}/chrome.manifest
