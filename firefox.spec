@@ -235,10 +235,8 @@ desktop-file-install --vendor mozilla \
 # set up our default homepage
 %{__cat} >> rh-default-prefs << EOF
 pref("browser.startup.homepage", "%{homepage}");
-/*
 pref("startup.homepage_override_url", "%{homepage}");
 pref("startup.homepage_welcome_url", "%{homepage}");
-*/
 EOF
 
 # place the preferences
