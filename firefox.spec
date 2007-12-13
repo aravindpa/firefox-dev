@@ -12,7 +12,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        2.0.0.10
-Release:        4%{?dist}
+Release:        5%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -45,6 +45,7 @@ Patch22:        firefox-1.1-default-applications.patch
 Patch40:        firefox-1.5-bullet-bill.patch
 Patch41:        firefox-2.0.0.4-undo-uriloader.patch
 Patch42:        firefox-1.1-uriloader.patch
+Patch43:        firefox-2.0-getstartpage.patch
 
 # font system fixes
 Patch83:        firefox-1.5-pango-cursor-position.patch
@@ -144,6 +145,7 @@ removed in favor of xulrunner-devel.
 %patch40 -p1 -b .bullet-bill
 %patch41 -p1 -b .undo-uriloader
 %patch42 -p0 -b .uriloader
+%patch43 -p1 -b .getstartpage
 
 %patch83 -p1 -b .pango-cursor-position
 %patch84 -p0 -b .pango-printing
@@ -372,6 +374,7 @@ fi
 if [ $1 -eq 0 ]; then
   %{__rm} -rf %{mozappdir}/components
   %{__rm} -rf %{mozappdir}/extensions
+  %{__rm} -rf %{mozappdir}/plugins
 fi
 
 
@@ -438,6 +441,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Dec 13 2007 Christopher Aillon <caillon@redhat.com> 2.0.0.10-5
+- Fix the getStartPage method to not return blank.
+  Patch by pspencer@fields.utoronto.ca
+
 * Sun Dec  9 2007 Christopher Aillon <caillon@redhat.com> 2.0.0.10-4
 - Fix up some rpmlint warnings
 - Use only one pref for the homepage for now
