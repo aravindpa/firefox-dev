@@ -1,28 +1,25 @@
 %define homepage http://start.fedoraproject.org/
 %define default_bookmarks_file %{_datadir}/bookmarks/default-bookmarks.html
 %define desktop_file_utils_version 0.9
-%define nspr_version 4.6
-%define nss_version 3.11.1
-%define cairo_version 0.5
 %define builddir %{_builddir}/mozilla
-%define build_devel_package 1
+%define mozappdir %{_libdir}/%{name}-3.0b3pre
 
-%define official_branding 1
+%define official_branding 0
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        2.0.0.10
-Release:        5%{?dist}
+Version:        3.0
+Release:        0.beta2.1%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 %if %{official_branding}
 %define tarball firefox-%{version}-source.tar.bz2
 %else
-%define tarball firefox-2.0rc3-source.tar.bz2
+%define tarball firefox-20071215.tar.bz2
 %endif
 Source0:        %{tarball}
-Source2:        firefox-langpacks-%{version}-20071123.tar.bz2
+Source2:        firefox-langpacks-2.0.0.10-20071123.tar.bz2
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
 Source12:       firefox-redhat-default-prefs.js
@@ -36,35 +33,9 @@ Source101:      add-gecko-provides.in
 
 # build patches
 Patch1:         firefox-2.0-link-layout.patch
-
-# customization patches
-Patch21:        firefox-0.7.3-psfonts.patch
-Patch22:        firefox-1.1-default-applications.patch
-
-# local bugfixes
-Patch40:        firefox-1.5-bullet-bill.patch
-Patch41:        firefox-2.0.0.4-undo-uriloader.patch
-Patch42:        firefox-1.1-uriloader.patch
 Patch43:        firefox-2.0-getstartpage.patch
-
-# font system fixes
-Patch83:        firefox-1.5-pango-cursor-position.patch
-Patch84:        firefox-2.0-pango-printing.patch
-Patch85:        firefox-2.0-pango-ligatures.patch
-Patch86:        firefox-1.5-pango-cursor-position-more.patch
-Patch87:        firefox-1.5-pango-justified-range.patch
-Patch88:        firefox-1.5-pango-underline.patch
-Patch89:        firefox-1.5-xft-rangewidth.patch
-
-
-# Other
-Patch102:       firefox-1.5-theme-change.patch
 Patch104:       firefox-1.5-ppc64.patch
-Patch105:       firefox-2.0-dnd.patch
 
-Patch110:       firefox-2.0-startup-notify.patch
-Patch111:       firefox-path.patch
-Patch112:       firefox-2.0-enable-debug.patch
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -79,11 +50,6 @@ Patch112:       firefox-2.0-enable-debug.patch
 # ---------------------------------------------------
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildRequires:  nspr-devel >= %{nspr_version}
-BuildRequires:  nss-devel >= %{nss_version}
-BuildRequires:  cairo-devel >= %{cairo_version}
-BuildRequires:  libpng-devel, libjpeg-devel
-BuildRequires:  zlib-devel, zip
 BuildRequires:  libIDL-devel
 BuildRequires:  desktop-file-utils
 BuildRequires:  gtk2-devel
@@ -97,41 +63,20 @@ BuildRequires:  libXt-devel
 BuildRequires:  libXrender-devel
 BuildRequires:  system-bookmarks
 BuildRequires:  startup-notification-devel
+BuildRequires:  xulrunner-devel >= 1.9-0.beta2
 
-Requires:       nspr >= %{nspr_version}
-Requires:       nss >= %{nss_version}
 Requires:       desktop-file-utils >= %{desktop_file_utils_version}
-Requires:       system-bookmarks
+Requires:       xulrunner, system-bookmarks
 Obsoletes:      mozilla <= 37:1.7.13
 Provides:       webclient
-%define mozappdir %{_libdir}/firefox-%{version}
+
 
 %define _use_internal_dependency_generator 0
-
-%if %{build_devel_package}
-%define __find_provides %{_builddir}/add-gecko-provides
-%else
 %define __find_requires %{SOURCE100}
-%endif
 
 %description
 Mozilla Firefox is an open-source web browser, designed for standards
 compliance, performance and portability.
-
-%if %{build_devel_package}
-%package devel
-Summary: Development files for Firefox
-Group: Development/Libraries
-Obsoletes: mozilla-devel
-Requires: firefox = %{version}-%{release}
-Requires: nspr-devel >= %{nspr_version}
-Requires: nss-devel >= %{nss_version}
-
-%description devel
-Development files for Firefox.  This package exists temporarily.
-When xulrunner has reached version 1.0, firefox-devel will be
-removed in favor of xulrunner-devel.
-%endif
 
 #---------------------------------------------------------------------
 
@@ -139,28 +84,9 @@ removed in favor of xulrunner-devel.
 %setup -q -n mozilla
 %patch1   -p1 -b .link-layout
 
-%patch21 -p1 -b .psfonts
-%patch22 -p0 -b .default-applications
+%patch43  -p1 -b .getstartpage
 
-%patch40 -p1 -b .bullet-bill
-%patch41 -p1 -b .undo-uriloader
-%patch42 -p0 -b .uriloader
-%patch43 -p1 -b .getstartpage
-
-%patch83 -p1 -b .pango-cursor-position
-%patch84 -p0 -b .pango-printing
-%patch85 -p1 -b .pango-ligatures
-%patch86 -p1 -b .pango-cursor-position-more
-%patch87 -p1 -b .pango-justified-range
-%patch88 -p1 -b .pango-underline
-%patch89 -p1 -b .nopangoxft2
-
-%patch102 -p0 -b .theme-change
 %patch104 -p1 -b .ppc64
-%patch105 -p0 -b .dnd
-#%patch110 -p0 -b .startup-notify
-%patch111 -p1 -b .path
-%patch112 -p1 -b .debug
 
 # For branding specific patches.
 
@@ -182,7 +108,7 @@ removed in favor of xulrunner-devel.
 %endif
 
 # set up our default bookmarks
-%{__cp} %{default_bookmarks_file} $RPM_BUILD_DIR/mozilla/profile/defaults/bookmarks.html
+#%{__cp} %{default_bookmarks_file} $RPM_BUILD_DIR/mozilla/profile/defaults/bookmarks.html
 
 #---------------------------------------------------------------------
 
@@ -202,7 +128,10 @@ export LIBDIR='%{_libdir}'
 %define moz_make_flags %{?_smp_mflags}
 %endif
 
-export LDFLAGS="-Wl,-rpath,%{mozappdir}"
+INTERNAL_GECKO="3.0b3pre"
+MOZ_APP_DIR=%{_libdir}/%{name}-${INTERNAL_GECKO}
+
+export LDFLAGS="-Wl,-rpath,$MOZ_APP_DIR"
 export MAKE="gmake %{moz_make_flags}"
 make -f client.mk build
 
@@ -210,7 +139,6 @@ make -f client.mk build
 
 %install
 %{__rm} -rf $RPM_BUILD_ROOT
-
 
 DESTDIR=$RPM_BUILD_ROOT make install
 
@@ -225,6 +153,7 @@ desktop-file-install --vendor mozilla \
   %{SOURCE20} 
 
 # set up the firefox start script
+%{__rm} -rf $RPM_BUILD_ROOT%{_bindir}/firefox
 %{__cat} %{SOURCE21} | %{__sed} -e 's,FIREFOX_VERSION,%{version},g' > \
   $RPM_BUILD_ROOT%{_bindir}/firefox
 %{__chmod} 755 $RPM_BUILD_ROOT%{_bindir}/firefox
@@ -240,46 +169,43 @@ pref("startup.homepage_welcome_url", "%{homepage}");
 EOF
 
 # place the preferences
-%{__cp} rh-default-prefs $RPM_BUILD_ROOT/%{mozappdir}/greprefs/all-redhat.js
-%{__cp} rh-default-prefs $RPM_BUILD_ROOT/%{mozappdir}/defaults/pref/all-redhat.js
-%{__rm} rh-default-prefs
+#%{__cp} rh-default-prefs $RPM_BUILD_ROOT/%{mozappdir}/greprefs/all-redhat.js
+#%{__cp} rh-default-prefs $RPM_BUILD_ROOT/%{mozappdir}/defaults/pref/all-redhat.js
+#%{__rm} rh-default-prefs
 
 # set up our default bookmarks
-%{__rm} -f $RPM_BUILD_ROOT%{mozappdir}/defaults/profile/bookmarks.html
-ln -s %{default_bookmarks_file} $RPM_BUILD_ROOT%{mozappdir}/defaults/profile/bookmarks.html
+%{__rm} -f $RPM_BUILD_ROOT/%{mozappdir}/defaults/profile/bookmarks.html
+ln -s %{default_bookmarks_file} $RPM_BUILD_ROOT/%{mozappdir}/defaults/profile/bookmarks.html
 
 %{__cat} %{SOURCE50} | %{__sed} -e 's,FFDIR,%{mozappdir},g' -e 's,LIBDIR,%{_libdir},g' > \
-  $RPM_BUILD_ROOT%{mozappdir}/firefox-xremote-client
+  $RPM_BUILD_ROOT/%{mozappdir}/firefox-xremote-client
 
-%{__chmod} 755 $RPM_BUILD_ROOT%{mozappdir}/firefox-xremote-client
+%{__chmod} 755 $RPM_BUILD_ROOT/%{mozappdir}/firefox-xremote-client
 %{__install} -p -D -m 644 %{SOURCE23} $RPM_BUILD_ROOT%{_mandir}/man1/firefox.1
 
-%{__rm} -f $RPM_BUILD_ROOT%{mozappdir}/firefox-config
+%{__rm} -f $RPM_BUILD_ROOT/%{mozappdir}/firefox-config
 
-cd $RPM_BUILD_ROOT%{mozappdir}/chrome
-find . -name "*" -type d -maxdepth 1 -exec %{__rm} -rf {} \;
-cd -
+#cd $RPM_BUILD_ROOT/%{mozappdir}/chrome
+#find . -name "*" -type d -maxdepth 1 -exec %{__rm} -rf {} \;
+#cd -
 
-%{__cat} > $RPM_BUILD_ROOT%{mozappdir}/defaults/pref/firefox-l10n.js << EOF
-pref("general.useragent.locale", "chrome://global/locale/intl.properties");
-EOF
-%{__chmod} 644 $RPM_BUILD_ROOT%{mozappdir}/defaults/pref/firefox-l10n.js
+#%{__cat} > $RPM_BUILD_ROOT/%{mozappdir}/defaults/pref/firefox-l10n.js << EOF
+#pref("general.useragent.locale", "chrome://global/locale/intl.properties");
+#EOF
+#%{__chmod} 644 $RPM_BUILD_ROOT/%{mozappdir}/defaults/pref/firefox-l10n.js
 
-%{__mkdir_p} $RPM_BUILD_ROOT%{mozappdir}/chrome/icons/default/
+%{__mkdir_p} $RPM_BUILD_ROOT/%{mozappdir}/chrome/icons/default/
 %{__cp} other-licenses/branding/%{name}/default.xpm \
-        $RPM_BUILD_ROOT%{mozappdir}/chrome/icons/default/ 
+        $RPM_BUILD_ROOT/%{mozappdir}/chrome/icons/default/ 
 %{__cp} other-licenses/branding/%{name}/default.xpm \
-        $RPM_BUILD_ROOT%{mozappdir}/icons/
-
-# own mozilla plugin dir (#135050)
-%{__mkdir_p} $RPM_BUILD_ROOT%{_libdir}/mozilla/plugins
+        $RPM_BUILD_ROOT/%{mozappdir}/icons/
 
 # Install langpacks
-%{__mkdir_p} $RPM_BUILD_ROOT%{mozappdir}/extensions
+%{__mkdir_p} $RPM_BUILD_ROOT/%{mozappdir}/extensions
 %{__tar} xjf %{SOURCE2}
 for langpack in `ls firefox-langpacks/*.xpi`; do
   language=`basename $langpack .xpi`
-  extensiondir=$RPM_BUILD_ROOT%{mozappdir}/extensions/langpack-$language@firefox.mozilla.org
+  extensiondir=$RPM_BUILD_ROOT/%{mozappdir}/extensions/langpack-$language@firefox.mozilla.org
   %{__mkdir_p} $extensiondir
   unzip $langpack -d $extensiondir
   find $extensiondir -type f | xargs chmod 644
@@ -303,48 +229,17 @@ for langpack in `ls firefox-langpacks/*.xpi`; do
 done
 %{__rm} -rf firefox-langpacks
 
-# Prepare our devel package
-%if %{build_devel_package}
-%{__mkdir_p} $RPM_BUILD_ROOT/%{_includedir}/firefox-%{version}
-%{__mkdir_p} $RPM_BUILD_ROOT/%{_datadir}/idl/firefox-%{version}
-%{__mkdir_p} $RPM_BUILD_ROOT/%{_libdir}/pkgconfig
-%{__cp} -rL dist/include/* \
-  $RPM_BUILD_ROOT/%{_includedir}/firefox-%{version}
-%{__cp} -rL dist/idl/* \
-  $RPM_BUILD_ROOT/%{_datadir}/idl/firefox-%{version}
-install -c -m 755 dist/bin/xpcshell \
-  dist/bin/xpidl \
-  dist/bin/xpt_dump \
-  dist/bin/xpt_link \
-  $RPM_BUILD_ROOT/%{mozappdir}
-install -c -m 644 build/unix/*.pc \
-  $RPM_BUILD_ROOT/%{_libdir}/pkgconfig
-%endif
-
-# GRE stuff
-#%ifarch x86_64 ia64 ppc64 s390x
-#%define gre_conf_file gre64.conf
-#%else
-#%define gre_conf_file gre.conf
-#%endif
-#
-#%{__mkdir_p} $RPM_BUILD_ROOT/etc/gre.d/
-#%{__cat} > $RPM_BUILD_ROOT/etc/gre.d/%{gre_conf_file} << EOF
-#[%{version}]
-#GRE_PATH=%{mozappdir}
-#EOF
-
 GECKO_VERSION=$(./config/milestone.pl --topsrcdir='.')
 %{__cat} %{SOURCE101} | %{__sed} -e "s/@GECKO_VERSION@/$GECKO_VERSION/g" > \
                         %{_builddir}/add-gecko-provides
 chmod 700 %{_builddir}/add-gecko-provides
 
 # Copy over the LICENSE
-install -c -m 644 LICENSE $RPM_BUILD_ROOT%{mozappdir}
+install -c -m 644 LICENSE $RPM_BUILD_ROOT/%{mozappdir}
 
 # ghost files
-touch $RPM_BUILD_ROOT%{mozappdir}/components/compreg.dat
-touch $RPM_BUILD_ROOT%{mozappdir}/components/xpti.dat
+touch $RPM_BUILD_ROOT/%{mozappdir}/components/compreg.dat
+touch $RPM_BUILD_ROOT/%{mozappdir}/components/xpti.dat
 
 #---------------------------------------------------------------------
 
@@ -379,20 +274,14 @@ fi
 %files
 %defattr(-,root,root,-)
 %{_bindir}/firefox
-%exclude %{_bindir}/firefox-config
+#%exclude %{_bindir}/firefox-config
 %{_mandir}/man1/*
 %{_datadir}/applications/mozilla-%{name}.desktop
 %{_datadir}/icons/hicolor/48x48/apps/firefox.png
-%{_libdir}/mozilla
-#%dir /etc/gre.d
-#/etc/gre.d/%{gre_conf_file}
-
 %dir %{mozappdir}
 %doc %{mozappdir}/LICENSE
 %{mozappdir}/*.properties
 %{mozappdir}/chrome
-%{mozappdir}/chrome.manifest
-%{mozappdir}/dictionaries
 %dir %{mozappdir}/components
 %ghost %{mozappdir}/components/compreg.dat
 %ghost %{mozappdir}/components/xpti.dat
@@ -401,44 +290,26 @@ fi
 %attr(644, root, root) %{mozappdir}/components/*.js
 %{mozappdir}/defaults
 %{mozappdir}/extensions
-%{mozappdir}/greprefs
 %{mozappdir}/icons
-%{mozappdir}/init.d
-%{mozappdir}/plugins
-%{mozappdir}/res
 %{mozappdir}/searchplugins
-%{mozappdir}/*.so
 %{mozappdir}/firefox
-%{mozappdir}/firefox-bin
 %{mozappdir}/firefox-xremote-client
-%{mozappdir}/mozilla-xremote-client
 %{mozappdir}/run-mozilla.sh
-%{mozappdir}/regxpcom
+%{mozappdir}/application.ini
+%{mozappdir}/modules/distribution.js
+%{mozappdir}/removed-files
+%{mozappdir}/.autoreg
 # XXX See if these are needed still
 %{mozappdir}/updater*
-
-%if %{build_devel_package}
-%files devel
-%defattr(-,root,root)
-%{_datadir}/idl/firefox-%{version}
-%{_includedir}/firefox-%{version}
-%{mozappdir}/TestGtkEmbed
-%{mozappdir}/xpcshell
-%{mozappdir}/xpicleanup
-%{mozappdir}/xpidl
-%{mozappdir}/xpt_dump
-%{mozappdir}/xpt_link
-%{_libdir}/pkgconfig/firefox-xpcom.pc
-%{_libdir}/pkgconfig/firefox-plugin.pc
-%{_libdir}/pkgconfig/firefox-js.pc
-%{_libdir}/pkgconfig/firefox-gtkmozembed.pc
-%exclude %{_libdir}/pkgconfig/firefox-nspr.pc
-%exclude %{_libdir}/pkgconfig/firefox-nss.pc
-%endif
 
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Dec 18 2007 Martin Stransky <stransky@redhat.com> 3.0-0.beta2.1
+- moved to XUL Runner and updated to 3.0b3pre
+- removed firefox-devel package, gecko-libs is provided 
+  by xulrunner-devel now.
+
 * Thu Dec 13 2007 Christopher Aillon <caillon@redhat.com> 2.0.0.10-5
 - Fix the getStartPage method to not return blank.
   Patch by pspencer@fields.utoronto.ca
