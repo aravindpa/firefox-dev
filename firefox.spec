@@ -107,6 +107,11 @@ compliance, performance and portability.
 %if %{official_branding}
 %{__cat} %{SOURCE11} >> .mozconfig
 %endif
+%{__cat} %{SOURCE11} >> .mozconfig
+
+# Set up SDK path
+echo "ac_add_options --with-libxul-sdk=\
+`pkg-config --variable=sdkdir xulrunner-xpcom`" >> .mozconfig
 
 # set up our default bookmarks
 #%{__cp} %{default_bookmarks_file} $RPM_BUILD_DIR/mozilla/profile/defaults/bookmarks.html
