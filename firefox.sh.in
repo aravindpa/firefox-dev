@@ -48,11 +48,11 @@ case $MOZ_ARCH in
 		;;
 esac
 
-if [ ! -x $MOZ_LIB_DIR/firefox-FIREFOX_VERSION/firefox-bin ]; then
-    if [ ! -x $SECONDARY_LIB_DIR/firefox-FIREFOX_VERSION/firefox-bin ]; then
-	echo "Error: $MOZ_LIB_DIR/firefox-FIREFOX_VERSION/firefox-bin not found"
+if [ ! -x $MOZ_LIB_DIR/firefox-FIREFOX_VERSION/firefox ]; then
+    if [ ! -x $SECONDARY_LIB_DIR/firefox-FIREFOX_VERSION/firefox ]; then
+	echo "Error: $MOZ_LIB_DIR/firefox-FIREFOX_VERSION/firefox not found"
 	if [ -d $SECONDARY_LIB_DIR ]; then
-	    echo "       $SECONDARY_LIB_DIR/firefox-FIREFOX_VERSION/firefox-bin not found"
+	    echo "       $SECONDARY_LIB_DIR/firefox-FIREFOX_VERSION/firefox not found"
 	fi
 	exit 1
     fi
@@ -61,7 +61,7 @@ fi
 MOZ_DIST_BIN="$MOZ_LIB_DIR/firefox-FIREFOX_VERSION"
 MOZ_EXTENSIONS_DIR="$MOZ_DIST_BIN/extensions"
 MOZ_PROGRAM="$MOZ_DIST_BIN/firefox"
-MOZ_CLIENT_PROGRAM="$MOZ_DIST_BIN/mozilla-xremote-client"
+MOZ_CLIENT_PROGRAM="$MOZ_DIST_BIN/firefox-xremote-client"
 MOZ_CLIENT_PROGRAM_PARAM="-a firefox"
 
 ##

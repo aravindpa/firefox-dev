@@ -1,10 +1,11 @@
 %define homepage http://start.fedoraproject.org/
 %define default_bookmarks_file %{_datadir}/bookmarks/default-bookmarks.html
 %define desktop_file_utils_version 0.9
-%define builddir %{_builddir}/mozilla
-%define mozappdir %{_libdir}/%{name}-3.0b3pre
 
-%define official_branding 0
+%define internal_version	3.0b3pre
+%define mozappdir 		%{_libdir}/%{name}-%{internal_version}
+
+%define official_branding 	0
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
@@ -128,7 +129,7 @@ export LIBDIR='%{_libdir}'
 %define moz_make_flags %{?_smp_mflags}
 %endif
 
-INTERNAL_GECKO="3.0b3pre"
+INTERNAL_GECKO=%{internal_version}
 MOZ_APP_DIR=%{_libdir}/%{name}-${INTERNAL_GECKO}
 
 export LDFLAGS="-Wl,-rpath,$MOZ_APP_DIR"
@@ -154,12 +155,12 @@ desktop-file-install --vendor mozilla \
 
 # set up the firefox start script
 %{__rm} -rf $RPM_BUILD_ROOT%{_bindir}/firefox
-%{__cat} %{SOURCE21} | %{__sed} -e 's,FIREFOX_VERSION,%{version},g' > \
+%{__cat} %{SOURCE21} | %{__sed} -e 's,FIREFOX_VERSION,%{internal_version},g' > \
   $RPM_BUILD_ROOT%{_bindir}/firefox
 %{__chmod} 755 $RPM_BUILD_ROOT%{_bindir}/firefox
 
 # set up our default preferences
-%{__cat} %{SOURCE12} | %{__sed} -e 's,FIREFOX_RPM_VR,%{version}-%{release},g' > rh-default-prefs
+%{__cat} %{SOURCE12} | %{__sed} -e 's,FIREFOX_RPM_VR,%{internal_version}-%{release},g' > rh-default-prefs
 
 # set up our default homepage
 %{__cat} >> rh-default-prefs << EOF

@@ -29,4 +29,4 @@ else
 fi
  export LD_LIBRARY_PATH
 
-$MOZILLA_FIVE_HOME/firefox-bin -remote "$1"
+$MOZILLA_FIVE_HOME/firefox -remote "$1"
