@@ -2,8 +2,8 @@
 %define default_bookmarks_file %{_datadir}/bookmarks/default-bookmarks.html
 %define desktop_file_utils_version 0.9
 
-%define internal_version	3.0b3pre
-%define mozappdir 		%{_libdir}/%{name}-%{internal_version}
+%define version_internal	3.0b3pre
+%define mozappdir 		%{_libdir}/%{name}-%{version_internal}
 
 %define official_branding 	0
 
@@ -129,7 +129,7 @@ export LIBDIR='%{_libdir}'
 %define moz_make_flags %{?_smp_mflags}
 %endif
 
-INTERNAL_GECKO=%{internal_version}
+INTERNAL_GECKO=%{version_internal}
 MOZ_APP_DIR=%{_libdir}/%{name}-${INTERNAL_GECKO}
 
 export LDFLAGS="-Wl,-rpath,$MOZ_APP_DIR"
@@ -155,12 +155,12 @@ desktop-file-install --vendor mozilla \
 
 # set up the firefox start script
 %{__rm} -rf $RPM_BUILD_ROOT%{_bindir}/firefox
-%{__cat} %{SOURCE21} | %{__sed} -e 's,FIREFOX_VERSION,%{internal_version},g' > \
+%{__cat} %{SOURCE21} | %{__sed} -e 's,FIREFOX_VERSION,%{version_internal},g' > \
   $RPM_BUILD_ROOT%{_bindir}/firefox
 %{__chmod} 755 $RPM_BUILD_ROOT%{_bindir}/firefox
 
 # set up our default preferences
-%{__cat} %{SOURCE12} | %{__sed} -e 's,FIREFOX_RPM_VR,%{internal_version}-%{release},g' > rh-default-prefs
+%{__cat} %{SOURCE12} | %{__sed} -e 's,FIREFOX_RPM_VR,%{version_internal}-%{release},g' > rh-default-prefs
 
 # set up our default homepage
 %{__cat} >> rh-default-prefs << EOF
