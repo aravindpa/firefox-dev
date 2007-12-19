@@ -152,7 +152,8 @@ then
 fi
 
 # check to see if there's an already running instance or not
-ALREADY_RUNNING=`check_running`
+#ALREADY_RUNNING=`check_running`
+ALREADY_RUNNING="0"
 
 # If there is no command line argument at all then try to open a new
 # window in an already running instance.
