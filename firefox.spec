@@ -10,7 +10,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.0
-Release:        0.beta2.1%{?dist}
+Release:        0.beta2.2%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -67,7 +67,8 @@ BuildRequires:  startup-notification-devel
 BuildRequires:  xulrunner-devel >= 1.9-0.beta2
 
 Requires:       desktop-file-utils >= %{desktop_file_utils_version}
-Requires:       xulrunner, system-bookmarks
+Requires:       xulrunner >= 1.9-0.beta2
+Requires:       system-bookmarks
 Obsoletes:      mozilla <= 37:1.7.13
 Provides:       webclient
 
@@ -310,6 +311,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Dec 20 2007 Martin Stransky <stransky@redhat.com> 3.0-0.beta2.2
+- fixed xulrunner dependency
+
 * Tue Dec 18 2007 Martin Stransky <stransky@redhat.com> 3.0-0.beta2.1
 - moved to XUL Runner and updated to 3.0b3pre
 - removed firefox-devel package, gecko-libs is provided 
