@@ -10,7 +10,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.0
-Release:        0.beta2.2%{?dist}
+Release:        0.beta2.3%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -311,6 +311,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Sat Dec 22 2007 Christopher Aillon <caillon@redhat.com> 3.0-0.beta2.3
+- When there are both 32- and 64-bit versions of XPCOM installed on disk
+  make sure to load the correct one.
+
 * Tue Dec 20 2007 Martin Stransky <stransky@redhat.com> 3.0-0.beta2.2
 - fixed xulrunner dependency
 

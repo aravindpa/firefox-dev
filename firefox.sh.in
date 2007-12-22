@@ -65,6 +65,15 @@ MOZ_CLIENT_PROGRAM="$MOZ_DIST_BIN/firefox-xremote-client"
 MOZ_CLIENT_PROGRAM_PARAM="-a firefox"
 
 ##
+## Set MOZ_GRE_CONF
+##
+MOZ_GRE_CONF=/etc/gre.d/gre.conf
+if [ "$MOZ_LIB_DIR" == "/usr/lib64" ]; then
+  MOZ_GRE_CONF=/etc/gre.d/gre64.conf
+fi
+export MOZ_GRE_CONF
+
+##
 ## Set MOZILLA_FIVE_HOME
 ##
 MOZILLA_FIVE_HOME="$MOZ_DIST_BIN"
