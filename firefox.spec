@@ -235,7 +235,7 @@ done
 %{__rm} -rf firefox-langpacks
 
 # Default profile dir for /etc/skel
-%{__mkdir_p} RPM_BUILD_ROOT/%{_sysconfdir}/skel/.mozilla
+%{__mkdir_p} $RPM_BUILD_ROOT/%{_sysconfdir}/skel/.mozilla
 
 # Copy over the LICENSE
 install -c -m 644 LICENSE $RPM_BUILD_ROOT/%{mozappdir}
