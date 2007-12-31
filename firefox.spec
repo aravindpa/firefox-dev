@@ -10,7 +10,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.0
-Release:        0.beta2.3%{?dist}
+Release:        0.beta2.4%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -30,7 +30,6 @@ Source22:       firefox.png
 Source23:       firefox.1
 Source50:       firefox-xremote-client.sh.in
 Source100:      find-external-requires
-Source101:      add-gecko-provides.in
 
 # build patches
 Patch1:         firefox-2.0-link-layout.patch
@@ -235,10 +234,8 @@ for langpack in `ls firefox-langpacks/*.xpi`; do
 done
 %{__rm} -rf firefox-langpacks
 
-GECKO_VERSION=$(./config/milestone.pl --topsrcdir='.')
-%{__cat} %{SOURCE101} | %{__sed} -e "s/@GECKO_VERSION@/$GECKO_VERSION/g" > \
-                        %{_builddir}/add-gecko-provides
-chmod 700 %{_builddir}/add-gecko-provides
+# Default profile dir for /etc/skel
+%{__mkdir_p} RPM_BUILD_ROOT/%{_sysconfdir}/skel/.mozilla
 
 # Copy over the LICENSE
 install -c -m 644 LICENSE $RPM_BUILD_ROOT/%{mozappdir}
@@ -280,10 +277,10 @@ fi
 %files
 %defattr(-,root,root,-)
 %{_bindir}/firefox
-#%exclude %{_bindir}/firefox-config
 %{_mandir}/man1/*
 %{_datadir}/applications/mozilla-%{name}.desktop
 %{_datadir}/icons/hicolor/48x48/apps/firefox.png
+%{_sysconfdir}/skel/.mozilla
 %dir %{mozappdir}
 %doc %{mozappdir}/LICENSE
 %{mozappdir}/*.properties
@@ -311,6 +308,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Dec 31 2007 Christopher Aillon <caillon@redhat.com> 3.0-0.beta2.4
+- Create and own /etc/skel/.mozilla
+- No longer need add-gecko-provides
+
 * Sat Dec 22 2007 Christopher Aillon <caillon@redhat.com> 3.0-0.beta2.3
 - When there are both 32- and 64-bit versions of XPCOM installed on disk
   make sure to load the correct one.
