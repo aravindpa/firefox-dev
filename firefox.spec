@@ -10,7 +10,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.0
-Release:        0.beta2.4%{?dist}
+Release:        0.beta2.5%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -36,6 +36,8 @@ Patch1:         firefox-2.0-link-layout.patch
 Patch43:        firefox-2.0-getstartpage.patch
 Patch104:       firefox-1.5-ppc64.patch
 
+# homepage patch
+Patch200:	firefox-redhat-homepage.patch
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -83,11 +85,12 @@ compliance, performance and portability.
 
 %prep
 %setup -q -n mozilla
+
 %patch1   -p1 -b .link-layout
-
 %patch43  -p1 -b .getstartpage
-
 %patch104 -p1 -b .ppc64
+
+%patch200 -p1 -b .home
 
 # For branding specific patches.
 
@@ -308,6 +311,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Jan 2 2007 Martin Stransky <stransky@redhat.com> 3.0-0.beta2.5
+- added default fedora homepage
+
 * Mon Dec 31 2007 Christopher Aillon <caillon@redhat.com> 3.0-0.beta2.4
 - Create and own /etc/skel/.mozilla
 - No longer need add-gecko-provides
