@@ -20,7 +20,7 @@ Group:          Applications/Internet
 %define tarball firefox-20071215.tar.bz2
 %endif
 Source0:        %{tarball}
-Source2:        firefox-langpacks-2.0.0.10-20071123.tar.bz2
+Source2:        firefox-langpacks-trunk-20080102.tar.bz2
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
 Source12:       firefox-redhat-default-prefs.js
@@ -311,8 +311,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
-* Wed Jan 2 2007 Martin Stransky <stransky@redhat.com> 3.0-0.beta2.5
+* Wed Jan 2 2008 Martin Stransky <stransky@redhat.com> 3.0-0.beta2.5
 - added default fedora homepage
+- updated a language pack (#427182)
 
 * Mon Dec 31 2007 Christopher Aillon <caillon@redhat.com> 3.0-0.beta2.4
 - Create and own /etc/skel/.mozilla
