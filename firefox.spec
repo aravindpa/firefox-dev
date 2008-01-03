@@ -10,17 +10,17 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.0
-Release:        0.beta2.5%{?dist}
+Release:        0.beta2.6%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 %if %{official_branding}
 %define tarball firefox-%{version}-source.tar.bz2
 %else
-%define tarball firefox-20071215.tar.bz2
+%define tarball firefox-20080103.tar.bz2
 %endif
 Source0:        %{tarball}
-Source2:        firefox-langpacks-trunk-20080102.tar.bz2
+Source2:        firefox-langpacks-20080103.tar.bz2
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
 Source12:       firefox-redhat-default-prefs.js
@@ -311,6 +311,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Jan 3 2008 Martin Stransky <stransky@redhat.com> 3.0-0.beta2.6
+- updated to the latest trunk (20080103)
+
 * Wed Jan 2 2008 Martin Stransky <stransky@redhat.com> 3.0-0.beta2.5
 - added default fedora homepage
 - updated a language pack (#427182)
