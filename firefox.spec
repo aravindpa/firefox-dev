@@ -255,14 +255,14 @@ touch $RPM_BUILD_ROOT/%{mozappdir}/components/xpti.dat
 #---------------------------------------------------------------------
 
 %post
-update-desktop-database %{_datadir}/applications
+update-desktop-database &> /dev/null || :
 touch --no-create %{_datadir}/icons/hicolor
 if [ -x %{_bindir}/gtk-update-icon-cache ]; then
   %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
 fi
 
 %postun
-update-desktop-database %{_datadir}/applications
+update-desktop-database &> /dev/null || :
 touch --no-create %{_datadir}/icons/hicolor
 if [ -x %{_bindir}/gtk-update-icon-cache ]; then
   %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
