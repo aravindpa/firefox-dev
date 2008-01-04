@@ -34,9 +34,6 @@ Source100:      find-external-requires
 # build patches
 Patch43:        firefox-2.0-getstartpage.patch
 
-# homepage patch
-Patch200:	firefox-redhat-homepage.patch
-
 %if %{official_branding}
 # Required by Mozilla Corporation
 
@@ -85,8 +82,6 @@ compliance, performance and portability.
 %setup -q -n mozilla
 
 %patch43  -p1 -b .getstartpage
-
-%patch200 -p1 -b .home
 
 # For branding specific patches.
 
