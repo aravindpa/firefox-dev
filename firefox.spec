@@ -32,9 +32,7 @@ Source50:       firefox-xremote-client.sh.in
 Source100:      find-external-requires
 
 # build patches
-Patch1:         firefox-2.0-link-layout.patch
 Patch43:        firefox-2.0-getstartpage.patch
-Patch104:       firefox-1.5-ppc64.patch
 
 # homepage patch
 Patch200:	firefox-redhat-homepage.patch
@@ -86,9 +84,7 @@ compliance, performance and portability.
 %prep
 %setup -q -n mozilla
 
-%patch1   -p1 -b .link-layout
 %patch43  -p1 -b .getstartpage
-%patch104 -p1 -b .ppc64
 
 %patch200 -p1 -b .home
 
