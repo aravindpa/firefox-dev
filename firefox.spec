@@ -10,7 +10,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.0
-Release:        0.beta2.6%{?dist}
+Release:        0.beta2.7%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -20,7 +20,7 @@ Group:          Applications/Internet
 %define tarball firefox-20080103.tar.bz2
 %endif
 Source0:        %{tarball}
-Source2:        firefox-langpacks-20080103.tar.bz2
+Source2:        firefox-langpacks-20080104.tar.bz2
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
 Source12:       firefox-redhat-default-prefs.js
@@ -109,7 +109,7 @@ compliance, performance and portability.
 
 # Set up SDK path
 echo "ac_add_options --with-libxul-sdk=\
-`pkg-config --variable=sdkdir xulrunner-xpcom`" >> .mozconfig
+`pkg-config --variable=sdkdir libxul`" >> .mozconfig
 
 # set up our default bookmarks
 #%{__cp} %{default_bookmarks_file} $RPM_BUILD_DIR/mozilla/profile/defaults/bookmarks.html
@@ -307,6 +307,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Jan 4 2008 Martin Stransky <stransky@redhat.com> 3.0-0.beta2.7
+- removed broken langpack
+- built against libxul
+
 * Thu Jan 3 2008 Martin Stransky <stransky@redhat.com> 3.0-0.beta2.6
 - updated to the latest trunk (20080103)
 
