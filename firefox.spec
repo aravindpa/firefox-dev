@@ -5,12 +5,14 @@
 %define version_internal	3.0b3pre
 %define mozappdir 		%{_libdir}/%{name}-%{version_internal}
 
+%define xulrunner_version	1.9-0.beta2.7
+
 %define official_branding 	0
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.0
-Release:        0.beta2.7%{?dist}
+Release:        0.beta2.8%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -60,10 +62,10 @@ BuildRequires:  libXt-devel
 BuildRequires:  libXrender-devel
 BuildRequires:  system-bookmarks
 BuildRequires:  startup-notification-devel
-BuildRequires:  xulrunner-devel >= 1.9-0.beta2
+BuildRequires:  xulrunner-devel >= %{xulrunner_version}
 
 Requires:       desktop-file-utils >= %{desktop_file_utils_version}
-Requires:       xulrunner >= 1.9-0.beta2
+Requires:       xulrunner >= %{xulrunner_version}
 Requires:       system-bookmarks
 Obsoletes:      mozilla <= 37:1.7.13
 Provides:       webclient
@@ -302,6 +304,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Jan 7 2008 Martin Stransky <stransky@redhat.com> 3.0-0.beta2.8
+- added ssl exception patch (mozbz #411037)
+
 * Fri Jan 4 2008 Martin Stransky <stransky@redhat.com> 3.0-0.beta2.7
 - removed broken langpack
 - built against libxul
