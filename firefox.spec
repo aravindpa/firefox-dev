@@ -36,6 +36,8 @@ Source100:      find-external-requires
 # build patches
 Patch43:        firefox-2.0-getstartpage.patch
 
+Patch100:       firefox-ssl-exception.patch
+
 %if %{official_branding}
 # Required by Mozilla Corporation
 
@@ -84,6 +86,8 @@ compliance, performance and portability.
 %setup -q -n mozilla
 
 %patch43  -p1 -b .getstartpage
+
+%patch100 -p0 -b .ssl
 
 # For branding specific patches.
 
