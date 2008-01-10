@@ -64,7 +64,6 @@ BuildRequires:  libXt-devel
 BuildRequires:  libXrender-devel
 BuildRequires:  system-bookmarks
 BuildRequires:  startup-notification-devel
-BuildRequires:  xulrunner-devel >= %{xulrunner_version}
 BuildRequires:  xulrunner-devel-unstable >= %{xulrunner_version}
 
 Requires:       desktop-file-utils >= %{desktop_file_utils_version}
