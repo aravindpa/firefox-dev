@@ -5,21 +5,21 @@
 %define version_internal	3.0b3pre
 %define mozappdir 		%{_libdir}/%{name}-%{version_internal}
 
-%define xulrunner_version	1.9-0.beta2.8
+%define gecko_version	1.9-0.beta2.10
 
 %define official_branding 	0
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.0
-Release:        0.beta2.9%{?dist}
+Release:        0.beta2.10.nightly20080113%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 %if %{official_branding}
 %define tarball firefox-%{version}-source.tar.bz2
 %else
-%define tarball firefox-20080103.tar.bz2
+%define tarball firefox-20080113.tar.bz2
 %endif
 Source0:        %{tarball}
 Source2:        firefox-langpacks-20080104.tar.bz2
@@ -33,10 +33,9 @@ Source23:       firefox.1
 Source50:       firefox-xremote-client.sh.in
 Source100:      find-external-requires
 
-# build patches
-Patch43:        firefox-2.0-getstartpage.patch
 
-Patch100:       firefox-ssl-exception.patch
+# other patches
+Patch43:        firefox-2.0-getstartpage.patch
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -55,7 +54,6 @@ BuildRequires:  libIDL-devel
 BuildRequires:  desktop-file-utils
 BuildRequires:  gtk2-devel
 BuildRequires:  gnome-vfs2-devel
-BuildRequires:  libgnome-devel
 BuildRequires:  libgnomeui-devel
 BuildRequires:  krb5-devel
 BuildRequires:  pango-devel
@@ -64,10 +62,10 @@ BuildRequires:  libXt-devel
 BuildRequires:  libXrender-devel
 BuildRequires:  system-bookmarks
 BuildRequires:  startup-notification-devel
-BuildRequires:  xulrunner-devel-unstable >= %{xulrunner_version}
+BuildRequires:  gecko-devel-unstable >= %{gecko_version}
 
 Requires:       desktop-file-utils >= %{desktop_file_utils_version}
-Requires:       xulrunner >= %{xulrunner_version}
+Requires:       gecko-libs >= %{gecko_version}
 Requires:       system-bookmarks
 Obsoletes:      mozilla <= 37:1.7.13
 Provides:       webclient
@@ -87,7 +85,6 @@ compliance, performance and portability.
 
 %patch43  -p1 -b .getstartpage
 
-%patch100 -p0 -b .ssl
 
 # For branding specific patches.
 
@@ -147,9 +144,9 @@ make -f client.mk build
 
 DESTDIR=$RPM_BUILD_ROOT make install
 
-%{__mkdir_p} $RPM_BUILD_ROOT{%{_libdir},%{_bindir},%{_datadir}/applications,%{_datadir}/icons/hicolor/48x48/apps},
+%{__mkdir_p} $RPM_BUILD_ROOT{%{_libdir},%{_bindir},%{_datadir}/applications,%{_datadir}/pixmaps},
 
-%{__install} -p -D -m 644 %{SOURCE22} $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/48x48/apps/%{name}.png
+%{__install} -p -D -m 644 %{SOURCE22} $RPM_BUILD_ROOT%{_datadir}/pixmaps/%{name}.png
 
 desktop-file-install --vendor mozilla \
   --dir $RPM_BUILD_ROOT%{_datadir}/applications \
@@ -174,9 +171,8 @@ pref("startup.homepage_welcome_url", "%{homepage}");
 EOF
 
 # place the preferences
-#%{__cp} rh-default-prefs $RPM_BUILD_ROOT/%{mozappdir}/greprefs/all-redhat.js
-#%{__cp} rh-default-prefs $RPM_BUILD_ROOT/%{mozappdir}/defaults/pref/all-redhat.js
-#%{__rm} rh-default-prefs
+%{__cp} rh-default-prefs $RPM_BUILD_ROOT/%{mozappdir}/defaults/preferences/all-redhat.js
+%{__rm} rh-default-prefs
 
 # set up our default bookmarks
 %{__rm} -f $RPM_BUILD_ROOT/%{mozappdir}/defaults/profile/bookmarks.html
@@ -308,6 +304,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Sun Jan 13 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.beta2.10
+- Update to latest trunk (20080113)
+- Fix the default prefs, homepage, and useragent string
+
 * Thu Jan 10 2008 Martin Stransky <stransky@redhat.com> 3.0-0.beta2.9
 - rebuilt agains xulrunner-devel-unstable
 
