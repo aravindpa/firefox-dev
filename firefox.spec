@@ -5,7 +5,8 @@
 %define version_internal	3.0b3pre
 %define mozappdir 		%{_libdir}/%{name}-%{version_internal}
 
-%define gecko_version	1.9-0.beta2.10
+%define gecko_version	1.9
+%define xulrunner_version 1.9-0.beta2.10
 
 %define official_branding 	0
 
@@ -65,7 +66,7 @@ BuildRequires:  startup-notification-devel
 BuildRequires:  gecko-devel-unstable >= %{gecko_version}
 
 Requires:       desktop-file-utils >= %{desktop_file_utils_version}
-Requires:       gecko-libs >= %{gecko_version}
+Requires:       xulrunner >= %{xulrunner_version}
 Requires:       system-bookmarks
 Obsoletes:      mozilla <= 37:1.7.13
 Provides:       webclient
