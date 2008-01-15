@@ -276,7 +276,7 @@ fi
 %{_bindir}/firefox
 %{_mandir}/man1/*
 %{_datadir}/applications/mozilla-%{name}.desktop
-%{_datadir}/icons/hicolor/48x48/apps/firefox.png
+%{_datadir}/pixmaps/firefox.png
 %{_sysconfdir}/skel/.mozilla
 %dir %{mozappdir}
 %doc %{mozappdir}/LICENSE
