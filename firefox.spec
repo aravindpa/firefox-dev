@@ -1,6 +1,7 @@
 %define homepage http://start.fedoraproject.org/
 %define default_bookmarks_file %{_datadir}/bookmarks/default-bookmarks.html
 %define desktop_file_utils_version 0.9
+%define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
 %define version_internal	3.0b3pre
 %define mozappdir 		%{_libdir}/%{name}-%{version_internal}
@@ -8,19 +9,20 @@
 %define gecko_version	1.9
 %define xulrunner_version 1.9-0.beta2.10
 
-%define official_branding 	0
+%define official_branding    0
+%define build_langpacks      0
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.0
-Release:        0.beta2.10.nightly20080113%{?dist}
+Release:        0.beta2.11.nightly20080115%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 %if %{official_branding}
 %define tarball firefox-%{version}-source.tar.bz2
 %else
-%define tarball firefox-20080113.tar.bz2
+%define tarball mozilla-20080115.tar.bz2
 %endif
 Source0:        %{tarball}
 Source2:        firefox-langpacks-20080104.tar.bz2
@@ -202,6 +204,7 @@ ln -s %{default_bookmarks_file} $RPM_BUILD_ROOT/%{mozappdir}/defaults/profile/bo
 %{__cp} other-licenses/branding/%{name}/default.xpm \
         $RPM_BUILD_ROOT/%{mozappdir}/icons/
 
+%if %{build_langpacks}
 # Install langpacks
 %{__mkdir_p} $RPM_BUILD_ROOT/%{mozappdir}/extensions
 %{__tar} xjf %{SOURCE2}
@@ -230,9 +233,11 @@ for langpack in `ls firefox-langpacks/*.xpi`; do
   %{__rm} -rf $tmpdir
 done
 %{__rm} -rf firefox-langpacks
+%endif # build_langpacks
 
-# Default profile dir for /etc/skel
-%{__mkdir_p} $RPM_BUILD_ROOT/%{_sysconfdir}/skel/.mozilla
+# System extensions
+%{__mkdir_p} $RPM_BUILD_ROOT%{_datadir}/mozilla/extensions/%{firefox_app_id}
+%{__mkdir_p} $RPM_BUILD_ROOT%{_libdir}/mozilla/extensions/%{firefox_app_id}
 
 # Copy over the LICENSE
 install -c -m 644 LICENSE $RPM_BUILD_ROOT/%{mozappdir}
@@ -275,9 +280,10 @@ fi
 %defattr(-,root,root,-)
 %{_bindir}/firefox
 %{_mandir}/man1/*
+%dir %{_datadir}/mozilla/extensions/%{firefox_app_id}
+%dir %{_libdir}/mozilla/extensions/%{firefox_app_id}
 %{_datadir}/applications/mozilla-%{name}.desktop
 %{_datadir}/pixmaps/firefox.png
-%{_sysconfdir}/skel/.mozilla
 %dir %{mozappdir}
 %doc %{mozappdir}/LICENSE
 %{mozappdir}/*.properties
@@ -305,6 +311,12 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Jan 15 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.beta2.11
+- Update to latest trunk (2008-01-15)
+- Now with system extensions directory support
+- Temporarily disable langpacks while we're on the bleeding edge
+- Remove skeleton files; they are in xulrunner now
+
 * Sun Jan 13 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.beta2.10
 - Update to latest trunk (20080113)
 - Fix the default prefs, homepage, and useragent string
