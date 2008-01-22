@@ -199,9 +199,9 @@ ln -s %{default_bookmarks_file} $RPM_BUILD_ROOT/%{mozappdir}/defaults/profile/bo
 #%{__chmod} 644 $RPM_BUILD_ROOT/%{mozappdir}/defaults/pref/firefox-l10n.js
 
 %{__mkdir_p} $RPM_BUILD_ROOT/%{mozappdir}/chrome/icons/default/
-%{__cp} other-licenses/branding/%{name}/default.xpm \
+%{__cp} other-licenses/branding/%{name}/default16.png \
         $RPM_BUILD_ROOT/%{mozappdir}/chrome/icons/default/ 
-%{__cp} other-licenses/branding/%{name}/default.xpm \
+%{__cp} other-licenses/branding/%{name}/default16.png \
         $RPM_BUILD_ROOT/%{mozappdir}/icons/
 
 %if %{build_langpacks}
