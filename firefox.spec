@@ -15,7 +15,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.0
-Release:        0.beta2.11.nightly20080115%{?dist}
+Release:        0.beta2.12.nightly20080121%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -311,6 +311,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Jan 21 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.beta2.12
+- Update to latest trunk (2008-01-21)
+
 * Tue Jan 15 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.beta2.11
 - Update to latest trunk (2008-01-15)
 - Now with system extensions directory support
