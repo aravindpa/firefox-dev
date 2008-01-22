@@ -22,7 +22,7 @@ Group:          Applications/Internet
 %if %{official_branding}
 %define tarball firefox-%{version}-source.tar.bz2
 %else
-%define tarball mozilla-20080115.tar.bz2
+%define tarball mozilla-20080121.tar.bz2
 %endif
 Source0:        %{tarball}
 Source2:        firefox-langpacks-20080104.tar.bz2
