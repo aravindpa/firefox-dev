@@ -61,8 +61,6 @@ fi
 MOZ_DIST_BIN="$MOZ_LIB_DIR/firefox-FIREFOX_VERSION"
 MOZ_EXTENSIONS_DIR="$MOZ_DIST_BIN/extensions"
 MOZ_PROGRAM="$MOZ_DIST_BIN/firefox"
-MOZ_CLIENT_PROGRAM="$MOZ_DIST_BIN/firefox-xremote-client"
-MOZ_CLIENT_PROGRAM_PARAM="-a firefox"
 
 ##
 ## Set MOZ_GRE_CONF
@@ -103,6 +101,14 @@ fi
 export MOZ_PLUGIN_PATH
 
 ##
+## If plugins are wrapped, check them
+##
+if [ -x "/usr/bin/mozilla-plugin-config" ]
+then
+  /usr/bin/mozilla-plugin-config
+fi
+
+##
 ## Set FONTCONFIG_PATH for Xft/fontconfig
 ##
 FONTCONFIG_PATH="/etc/fonts:${MOZILLA_FIVE_HOME}/res/Xft"
@@ -121,54 +127,7 @@ export FONTCONFIG_PATH
 # export MOZ_DISABLE_PANGO
 #
 
-function check_running() {
-    $MOZ_CLIENT_PROGRAM $MOZ_CLIENT_PROGRAM_PARAM 'ping()' 2>/dev/null >/dev/null
-    RETURN_VAL=$?
-    if [ "$RETURN_VAL" -eq "2" ]; then
-      echo 0
-      return 0
-    else
-      echo 1
-      return 1
-    fi
-}
-
-function open_mail() {
-    if [ "${ALREADY_RUNNING}" -eq "1" ]; then
-      exec $MOZ_CLIENT_PROGRAM $MOZ_CLIENT_PROGRAM_PARAM 'xfeDoCommand(openInbox)' \
-        2>/dev/null >/dev/null
-    else
-      exec $MOZ_PROGRAM $*
-    fi
-}
-
-function open_compose() {
-    if [ "${ALREADY_RUNNING}" -eq "1" ]; then
-      exec $MOZ_CLIENT_PROGRAM $MOZ_CLIENT_PROGRAM_PARAM 'xfeDoCommand(composeMessage)' \
-        2>/dev/null >/dev/null
-    else
-      exec $MOZ_PROGRAM $*
-    fi
-}
-
 # OK, here's where all the real work gets done
-##
-## If plugins are wrapped, check them
-##
-if [ -x "/usr/bin/mozilla-plugin-config" ]
-then
-  /usr/bin/mozilla-plugin-config
-fi
-
-# check to see if there's an already running instance or not
-#ALREADY_RUNNING=`check_running`
-ALREADY_RUNNING="0"
-
-# If there is no command line argument at all then try to open a new
-# window in an already running instance.
-if [ "${ALREADY_RUNNING}" -eq "1" ] && [ -z "$1" ]; then
-  exec $MOZ_CLIENT_PROGRAM $MOZ_CLIENT_PROGRAM_PARAM "xfeDoCommand(openBrowser)" 2>/dev/null>/dev/null
-fi
 
 # check system locale
 MOZARGS=
@@ -180,47 +139,5 @@ SHORTMOZLOCALE=`echo $LANG | sed "s|_\([^.]*\).*||g"`
 MOZLOCALE=`echo $LANG | sed "s|_\([^.]*\).*|-\1|g"`
 [ -f $MOZ_EXTENSIONS_DIR/langpack-${MOZLOCALE}@firefox.mozilla.org/chrome/$MOZLOCALE.jar ] && MOZARGS="-UILocale $MOZLOCALE"
 
-
-# if there's no command line argument and there's not a running
-# instance then just fire up a new copy of the browser
-if [ -z "$1" ]; then
-  exec $MOZ_PROGRAM $MOZARGS 2>/dev/null >/dev/null
-fi
-
-unset RETURN_VAL
-
-# If there's a command line argument but it doesn't begin with a -
-# it's probably a url.  Try to send it to a running instance.
-
-USE_EXIST=0
-opt="$1"
-case "$opt" in
-  -mail)
-      open_mail ${1+"$@"}
-      ;;
-  -compose)
-      open_compose ${1+"$@"}
-      ;;
-  -*) ;;
-  *) USE_EXIST=1 ;;
-esac
-
-if [ "${USE_EXIST}" -eq "1" ] && [ "${ALREADY_RUNNING}" -eq "1" ]; then
-  opt=`echo -n "$opt" | sed -e 's/,/%2c/g' -e 's/ /%20/g'`
-  # check to make sure that the command contains at least a :/ in it.
-  echo $opt | grep -e ':/' 2>/dev/null > /dev/null
-  RETURN_VAL=$?
-  if [ "$RETURN_VAL" -eq "1" ]; then
-    # if it doesn't begin with a '/' and it exists when the pwd is
-    # prepended to it then append the full path
-    echo $opt | grep -e '^/' 2>/dev/null > /dev/null
-    if [ "${RETURN_VAL}" -ne "0" ] && [ -e "`pwd`/$opt" ]; then
-      opt="`pwd`/$opt"
-    fi
-    exec $MOZ_CLIENT_PROGRAM $MOZ_CLIENT_PROGRAM_PARAM "openurl($opt)" 2>/dev/null >/dev/null
-  fi
-  # just pass it off if it looks like a url
-  exec $MOZ_CLIENT_PROGRAM $MOZ_CLIENT_PROGRAM_PARAM "openurl($opt)" 2>/dev/null >/dev/null
-fi
-
+# Run the browser
 exec $MOZ_PROGRAM $MOZARGS ${1+"$@"}

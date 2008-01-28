@@ -15,7 +15,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.0
-Release:        0.beta2.12.nightly20080121%{?dist}
+Release:        0.beta2.13.nightly20080121%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -33,7 +33,6 @@ Source20:       firefox.desktop
 Source21:       firefox.sh.in
 Source22:       firefox.png
 Source23:       firefox.1
-Source50:       firefox-xremote-client.sh.in
 Source100:      find-external-requires
 
 
@@ -181,10 +180,6 @@ EOF
 %{__rm} -f $RPM_BUILD_ROOT/%{mozappdir}/defaults/profile/bookmarks.html
 ln -s %{default_bookmarks_file} $RPM_BUILD_ROOT/%{mozappdir}/defaults/profile/bookmarks.html
 
-%{__cat} %{SOURCE50} | %{__sed} -e 's,FFDIR,%{mozappdir},g' -e 's,LIBDIR,%{_libdir},g' > \
-  $RPM_BUILD_ROOT/%{mozappdir}/firefox-xremote-client
-
-%{__chmod} 755 $RPM_BUILD_ROOT/%{mozappdir}/firefox-xremote-client
 %{__install} -p -D -m 644 %{SOURCE23} $RPM_BUILD_ROOT%{_mandir}/man1/firefox.1
 
 %{__rm} -f $RPM_BUILD_ROOT/%{mozappdir}/firefox-config
@@ -299,7 +294,6 @@ fi
 %{mozappdir}/icons
 %{mozappdir}/searchplugins
 %{mozappdir}/firefox
-%{mozappdir}/firefox-xremote-client
 %{mozappdir}/run-mozilla.sh
 %{mozappdir}/application.ini
 %{mozappdir}/modules/distribution.js
@@ -311,6 +305,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Jan 28 2008 Martin Stransky <stransky@redhat.com> 3.0-0.beta2.13
+- cleared starting scripts, removed useless parts
+
 * Mon Jan 21 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.beta2.12
 - Update to latest trunk (2008-01-21)
 
