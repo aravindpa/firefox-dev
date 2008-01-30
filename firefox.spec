@@ -308,6 +308,7 @@ fi
 %changelog
 * Wed Jan 30 2008 Martin Stransky <stransky@redhat.com> 3.0-0.beta2.14
 - Update to latest trunk (2008-01-30)
+- Backported an old laucher
 
 * Mon Jan 28 2008 Martin Stransky <stransky@redhat.com> 3.0-0.beta2.13
 - cleared starting scripts, removed useless parts

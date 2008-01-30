@@ -61,7 +61,8 @@ fi
 MOZ_DIST_BIN="$MOZ_LIB_DIR/firefox-FIREFOX_VERSION"
 MOZ_EXTENSIONS_DIR="$MOZ_DIST_BIN/extensions"
 MOZ_PROGRAM="$MOZ_DIST_BIN/firefox"
-
+MOZ_LAUCHER="$MOZ_DIST_BIN/run-mozilla.sh"
+ 
 ##
 ## Set MOZ_GRE_CONF
 ##
@@ -139,5 +140,36 @@ SHORTMOZLOCALE=`echo $LANG | sed "s|_\([^.]*\).*||g"`
 MOZLOCALE=`echo $LANG | sed "s|_\([^.]*\).*|-\1|g"`
 [ -f $MOZ_EXTENSIONS_DIR/langpack-${MOZLOCALE}@firefox.mozilla.org/chrome/$MOZLOCALE.jar ] && MOZARGS="-UILocale $MOZLOCALE"
 
+# Prepare command line arguments
+script_args=""
+pass_arg_count=0
+while [ $# -gt $pass_arg_count ]
+do
+  case "$1" in
+    -g | --debug)
+      script_args="$script_args -g"
+      debugging=1
+      shift
+      ;;
+    -d | --debugger)
+      script_args="$script_args -d $2"
+      shift 2
+      ;;
+    *)
+      # Move the unrecognized argument to the end of the list.
+      arg="$1"
+      shift
+      set -- "$@" "$arg"
+      pass_arg_count=`expr $pass_arg_count + 1`
+      ;;
+  esac
+done
+
 # Run the browser
-exec $MOZ_PROGRAM $MOZARGS ${1+"$@"}
+debugging=0
+if [ $debugging = 1 ]
+then
+  echo $MOZ_LAUCHER $script_args $MOZ_PROGRAM $MOZARGS "$@"
+fi
+
+exec $MOZ_LAUCHER $script_args $MOZ_PROGRAM $MOZARGS "$@"
