@@ -7,7 +7,7 @@
 %define mozappdir 		%{_libdir}/%{name}-%{version_internal}
 
 %define gecko_version	1.9
-%define xulrunner_version 1.9-0.beta2.10
+%define xulrunner_version 1.9-0.beta2.15
 
 %define official_branding    0
 %define build_langpacks      0
