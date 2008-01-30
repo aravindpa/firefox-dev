@@ -15,7 +15,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.0
-Release:        0.beta2.14.nightly20080130%{?dist}
+Release:        0.beta2.15.nightly20080130%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -306,7 +306,7 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
-* Wed Jan 30 2008 Martin Stransky <stransky@redhat.com> 3.0-0.beta2.14
+* Wed Jan 30 2008 Martin Stransky <stransky@redhat.com> 3.0-0.beta2.15
 - Update to latest trunk (2008-01-30)
 - Backported an old laucher
 
