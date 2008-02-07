@@ -15,14 +15,14 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.0
-Release:        0.beta2.15.nightly20080130%{?dist}
+Release:        0.beta2.16.nightly20080206%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 %if %{official_branding}
 %define tarball firefox-%{version}-source.tar.bz2
 %else
-%define tarball mozilla-20080130.tar.bz2
+%define tarball mozilla-20080206.tar.bz2
 %endif
 Source0:        %{tarball}
 Source2:        firefox-langpacks-20080104.tar.bz2
@@ -306,6 +306,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Feb  6 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.beta2.16
+- Update to latest trunk (2008-02-06)
+
 * Wed Jan 30 2008 Martin Stransky <stransky@redhat.com> 3.0-0.beta2.15
 - Update to latest trunk (2008-01-30)
 - Backported an old laucher
