@@ -13,14 +13,14 @@
 %define build_langpacks      0
 
 %if ! %{official_branding}
-%define cvsdate 20080210
+%define cvsdate 20080211
 %define nightly .nightly%{cvsdate}
 %endif
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.0
-Release:        0.beta2.18%{?nightly}%{?dist}
+Release:        0.beta2.19%{?nightly}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -142,7 +142,7 @@ MOZ_APP_DIR=%{_libdir}/%{name}-${INTERNAL_GECKO}
 
 export LDFLAGS="-Wl,-rpath,$MOZ_APP_DIR"
 export MAKE="gmake %{moz_make_flags}"
-make -f client.mk build
+make -f client.mk build STRIP="/bin/true"
 
 #---------------------------------------------------------------------
 
@@ -311,6 +311,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Feb 11 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.beta2.19
+- Update to latest trunk (2008-02-11)
+
 * Sun Feb 10 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.beta2.18
 - Update to latest trunk (2008-02-10)
 
