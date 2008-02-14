@@ -13,7 +13,7 @@
 %define build_langpacks      0
 
 %if ! %{official_branding}
-%define cvsdate 20080212
+%define cvsdate 20080213
 %define nightly .nightly%{cvsdate}
 %endif
 
@@ -312,8 +312,8 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
-* Tue Feb 12 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.beta3.20
-- Update to latest trunk (2008-02-12)
+* Tue Feb 13 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.beta3.20
+- Update to latest trunk (2008-02-13)
 
 * Mon Feb 11 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.beta2.19
 - Update to latest trunk (2008-02-11)
