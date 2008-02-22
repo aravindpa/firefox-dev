@@ -7,20 +7,20 @@
 %define mozappdir 		%{_libdir}/%{name}-%{version_internal}
 
 %define gecko_version	1.9
-%define xulrunner_version 1.9-0.beta3.24
+%define xulrunner_version 1.9-0.beta3.25
 
 %define official_branding    0
 %define build_langpacks      0
 
 %if ! %{official_branding}
-%define cvsdate 20080220
+%define cvsdate 20080221
 %define nightly .nightly%{cvsdate}
 %endif
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.0
-Release:        0.beta3.24%{?nightly}%{?dist}
+Release:        0.beta3.25%{?nightly}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -131,11 +131,13 @@ export RPM_OPT_FLAGS=$MOZ_OPT_FLAGS
 export PREFIX='%{_prefix}'
 export LIBDIR='%{_libdir}'
 
-%ifarch ppc ppc64 s390 s390x
-%define moz_make_flags -j1
-%else
-%define moz_make_flags %{?_smp_mflags}
+MOZ_SMP_FLAGS=-j1
+%ifnarch ppc ppc64 s390 s390x
+[ -z "$RPM_BUILD_NCPUS" ] && \
+     RPM_BUILD_NCPUS="`/usr/bin/getconf _NPROCESSORS_ONLN`"
+[ "$RPM_BUILD_NCPUS" -gt 1 ] && MOZ_SMP_FLAGS=-j2
 %endif
+%define moz_make_flags $MOZ_SMP_FLAGS
 
 INTERNAL_GECKO=%{version_internal}
 MOZ_APP_DIR=%{_libdir}/%{name}-${INTERNAL_GECKO}
@@ -313,8 +315,8 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
-* Wed Feb 20 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.beta3.24
-- Update to latest trunk (2008-02-20)
+* Thu Feb 21 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.beta3.25
+- Update to latest trunk (2008-02-21)
 
 * Sun Feb 17 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.beta3.23
 - Update to latest trunk (2008-02-17)
