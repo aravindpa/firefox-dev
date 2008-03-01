@@ -7,20 +7,20 @@
 %define mozappdir 		%{_libdir}/%{name}-%{version_internal}
 
 %define gecko_version	1.9
-%define xulrunner_version 1.9-0.beta3.30
+%define xulrunner_version 1.9-0.beta3.31
 
 %define official_branding    0
 %define build_langpacks      0
 
 %if ! %{official_branding}
-%define cvsdate 20080228
+%define cvsdate 20080229
 %define nightly .nightly%{cvsdate}
 %endif
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.0
-Release:        0.beta3.30%{?nightly}%{?dist}
+Release:        0.beta3.31%{?nightly}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -30,7 +30,7 @@ Group:          Applications/Internet
 %define tarball mozilla-%{cvsdate}.tar.bz2
 %endif
 Source0:        %{tarball}
-Source2:        firefox-langpacks-20080104.tar.bz2
+#Source2:        firefox-langpacks-20080104.tar.bz2
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
 Source12:       firefox-redhat-default-prefs.js
@@ -315,6 +315,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Feb 29 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.beta3.31
+- Update to latest trunk (2008-02-29)
+
 * Thu Feb 28 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.beta3.30
 - Update to latest trunk (2008-02-28)
 
