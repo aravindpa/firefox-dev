@@ -7,20 +7,20 @@
 %define mozappdir 		%{_libdir}/%{name}-%{version_internal}
 
 %define gecko_version	1.9
-%define xulrunner_version 1.9-0.beta4.34
+%define xulrunner_version 1.9-0.beta4.35
 
 %define official_branding    0
 %define build_langpacks      0
 
 %if ! %{official_branding}
-%define cvsdate 20080304
+%define cvsdate 20080306
 %define nightly .nightly%{cvsdate}
 %endif
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.0
-Release:        0.beta4.34%{?nightly}%{?dist}
+Release:        0.beta4.35%{?nightly}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -315,6 +315,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Mar  6 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.beta3.35
+- Update to latest trunk (2008-03-06)
+
 * Tue Mar  4 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.beta3.34
 - Update to latest trunk (2008-03-04)
 
