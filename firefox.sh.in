@@ -128,6 +128,12 @@ export FONTCONFIG_PATH
 # export MOZ_DISABLE_PANGO
 #
 
+##
+## Disable the GNOME crash dialog, Moz has it's own
+##
+GNOME_DISABLE_CRASH_DIALOG=1
+export GNOME_DISABLE_CRASH_DIALOG
+
 # OK, here's where all the real work gets done
 
 # check system locale
