@@ -7,20 +7,19 @@
 %define mozappdir 		%{_libdir}/%{name}-%{version_internal}
 
 %define gecko_version	1.9
-%define xulrunner_version 1.9-0.beta4.36
 
 %define official_branding    0
 %define build_langpacks      0
 
 %if ! %{official_branding}
-%define cvsdate 20080307
-%define nightly .nightly%{cvsdate}
+%define cvsdate 20080309
+%define nightly .cvs%{cvsdate}
 %endif
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.0
-Release:        0.beta4.36%{?nightly}%{?dist}
+Release:        0.37%{?nightly}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -72,7 +71,7 @@ BuildRequires:  startup-notification-devel
 BuildRequires:  gecko-devel-unstable >= %{gecko_version}
 
 Requires:       desktop-file-utils >= %{desktop_file_utils_version}
-Requires:       xulrunner >= %{xulrunner_version}
+Requires:       xulrunner >= %{gecko_version}-%{release}
 Requires:       system-bookmarks
 Obsoletes:      mozilla <= 37:1.7.13
 Provides:       webclient
@@ -315,6 +314,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Sun Mar  9 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.37
+- Update to latest trunk (2008-03-09)
+
 * Fri Mar  7 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.beta4.36
 - Update to latest trunk (2008-03-07)
 
