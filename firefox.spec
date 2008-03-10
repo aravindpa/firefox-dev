@@ -169,7 +169,7 @@ desktop-file-install --vendor mozilla \
 %{__chmod} 755 $RPM_BUILD_ROOT%{_bindir}/firefox
 
 # set up our default preferences
-%{__cat} %{SOURCE12} | %{__sed} -e 's,FIREFOX_RPM_VR,%{version_internal}-%{release},g' > rh-default-prefs
+%{__cat} %{SOURCE12} | %{__sed} -e 's,FIREFOX_RPM_VR,%{version}-%{release},g' > rh-default-prefs
 
 # set up our default homepage
 %{__cat} >> rh-default-prefs << EOF
