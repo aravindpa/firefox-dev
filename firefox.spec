@@ -116,9 +116,6 @@ cd mozilla
 echo "ac_add_options --with-libxul-sdk=\
 `pkg-config --variable=sdkdir libxul`" >> .mozconfig
 
-# set up our default bookmarks
-#%{__cp} %{default_bookmarks_file} $RPM_BUILD_DIR/mozilla/profile/defaults/bookmarks.html
-
 #---------------------------------------------------------------------
 
 %build
