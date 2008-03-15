@@ -19,7 +19,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.0
-Release:        0.40%{?nightly}%{?dist}
+Release:        0.41%{?nightly}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -87,7 +87,8 @@ compliance, performance and portability.
 #---------------------------------------------------------------------
 
 %prep
-%setup -q -n mozilla
+%setup -q -c
+cd mozilla
 
 %patch43  -p1 -b .getstartpage
 
@@ -121,6 +122,7 @@ echo "ac_add_options --with-libxul-sdk=\
 #---------------------------------------------------------------------
 
 %build
+cd mozilla
 
 # Build with -Os as it helps the browser; also, don't override mozilla's warning
 # level; they use -Wall but disable a few warnings that show up _everywhere_
@@ -149,6 +151,7 @@ make -f client.mk build STRIP="/bin/true"
 
 %install
 %{__rm} -rf $RPM_BUILD_ROOT
+cd mozilla
 
 DESTDIR=$RPM_BUILD_ROOT make install
 
@@ -314,6 +317,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Sat Mar 15 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.41
+- Avoid conflicts between gecko debuginfo packages
+
 * Wed Mar 12 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.40
 - Update to latest trunk (2008-03-12)
 
