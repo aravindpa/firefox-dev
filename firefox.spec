@@ -296,7 +296,6 @@ fi
 %{mozappdir}/components/*.so
 %{mozappdir}/components/*.xpt
 %attr(644, root, root) %{mozappdir}/components/*.js
-%{mozappdir}/libjemalloc.so
 %{mozappdir}/defaults
 %{mozappdir}/extensions
 %{mozappdir}/icons
