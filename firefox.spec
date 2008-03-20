@@ -12,14 +12,14 @@
 %define build_langpacks      0
 
 %if ! %{official_branding}
-%define cvsdate 20080317
+%define cvsdate 20080320
 %define nightly .cvs%{cvsdate}
 %endif
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.0
-Release:        0.45%{?nightly}%{?dist}
+Release:        0.46%{?nightly}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -121,11 +121,12 @@ echo "ac_add_options --with-libxul-sdk=\
 %build
 cd mozilla
 
-# Build with -Os as it helps the browser; also, don't override mozilla's warning
-# level; they use -Wall but disable a few warnings that show up _everywhere_
-MOZ_OPT_FLAGS=$(echo $RPM_OPT_FLAGS | %{__sed} -e 's/-O2/-Os/' -e 's/-Wall//')
+# Mozilla builds with -Wall with exception of a few warnings which show up
+# everywhere in the code; so, don't override that.
+MOZ_OPT_FLAGS=$(echo $RPM_OPT_FLAGS | %{__sed} -e 's/-Wall//')
+export CFLAGS=$MOZ_OPT_FLAGS
+export CXXFLAGS=$MOZ_OPT_FLAGS
 
-export RPM_OPT_FLAGS=$MOZ_OPT_FLAGS
 export PREFIX='%{_prefix}'
 export LIBDIR='%{_libdir}'
 
@@ -135,14 +136,12 @@ MOZ_SMP_FLAGS=-j1
      RPM_BUILD_NCPUS="`/usr/bin/getconf _NPROCESSORS_ONLN`"
 [ "$RPM_BUILD_NCPUS" -gt 1 ] && MOZ_SMP_FLAGS=-j2
 %endif
-%define moz_make_flags $MOZ_SMP_FLAGS
 
 INTERNAL_GECKO=%{version_internal}
 MOZ_APP_DIR=%{_libdir}/%{name}-${INTERNAL_GECKO}
 
-export LDFLAGS="-Wl,-rpath,$MOZ_APP_DIR"
-export MAKE="gmake %{moz_make_flags}"
-make -f client.mk build STRIP="/bin/true"
+export LDFLAGS="-Wl,-rpath,${MOZ_APP_DIR}"
+make -f client.mk build STRIP="/bin/true" MOZ_MAKE_FLAGS="$MOZ_SMP_FLAGS"
 
 #---------------------------------------------------------------------
 
@@ -313,6 +312,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Mar 20 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.46
+- Update to latest trunk (2008-03-20)
+
 * Mon Mar 17 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.45
 - Update to latest trunk (2008-03-17)
 
