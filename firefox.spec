@@ -313,7 +313,7 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
-* Fru Apr  4 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.55
+* Fri Apr  4 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.55
 - Update to latest trunk (2008-04-04)
 
 * Thu Apr  3 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.54
