@@ -240,6 +240,10 @@ done
 %{__rm} -rf firefox-langpacks
 %endif # build_langpacks
 
+%if ! %{build_langpacks}
+touch ../%{name}.lang
+%endif
+
 # System extensions
 %{__mkdir_p} $RPM_BUILD_ROOT%{_datadir}/mozilla/extensions/%{firefox_app_id}
 %{__mkdir_p} $RPM_BUILD_ROOT%{_libdir}/mozilla/extensions/%{firefox_app_id}
