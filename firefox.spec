@@ -206,6 +206,7 @@ ln -s %{default_bookmarks_file} $RPM_BUILD_ROOT/%{mozappdir}/defaults/profile/bo
 
 %if %{build_langpacks}
 # Install langpacks
+touch ../%{name}.lang
 %{__mkdir_p} $RPM_BUILD_ROOT/%{mozappdir}/extensions
 %{__tar} xjf %{SOURCE2}
 for langpack in `ls firefox-langpacks/*.xpi`; do
@@ -231,6 +232,10 @@ for langpack in `ls firefox-langpacks/*.xpi`; do
   zip -r -D $jarfile locale
   cd -
   %{__rm} -rf $tmpdir
+
+  language=`echo $language | sed -e 's/-/_/g'`
+  extensiondir=`echo $extensiondir | sed -e "s,^$RPM_BUILD_ROOT,,"`
+  echo "%%lang($language) $extensiondir" >> ../%{name}.lang
 done
 %{__rm} -rf firefox-langpacks
 %endif # build_langpacks
@@ -276,7 +281,7 @@ if [ $1 -eq 0 ]; then
 fi
 
 
-%files
+%files -f %{name}.lang
 %defattr(-,root,root,-)
 %{_bindir}/firefox
 %{_mandir}/man1/*
@@ -297,7 +302,8 @@ fi
 %attr(644, root, root) %{mozappdir}/blocklist.xml
 %attr(644, root, root) %{mozappdir}/components/*.js
 %{mozappdir}/defaults
-%{mozappdir}/extensions
+%dir %{mozappdir}/extensions
+%{mozappdir}/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}
 %{mozappdir}/icons
 %{mozappdir}/searchplugins
 %{mozappdir}/firefox
