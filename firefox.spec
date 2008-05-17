@@ -320,7 +320,7 @@ fi
 # XXX See if these are needed still
 %{mozappdir}/updater*
 # provided by XULRunner
-%exclude %{mozappdir}/jemalloc.so
+%exclude %{mozappdir}/libjemalloc.so
 
 #---------------------------------------------------------------------
 
