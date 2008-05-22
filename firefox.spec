@@ -12,14 +12,14 @@
 %define build_langpacks      0
 
 %if ! %{official_branding}
-%define cvsdate 20080516
+%define cvsdate 20080416
 %define nightly .cvs%{cvsdate}
 %endif
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.0
-Release:        0.63%{?nightly}%{?dist}
+Release:        0.65%{?nightly}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -325,6 +325,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Thu May 22 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.65
+- Revert to 2008-04-16 trunk
+
 * Fri Apr 16 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.63
 - Update to latest trunk (2008-05-16)
 
