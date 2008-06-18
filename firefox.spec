@@ -1,25 +1,26 @@
 %define homepage http://start.fedoraproject.org/
+%define firstrun http://fedoraproject.org/static/firefox/
 %define default_bookmarks_file %{_datadir}/bookmarks/default-bookmarks.html
 %define desktop_file_utils_version 0.9
 %define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
-%define version_internal	3.0pre
-%define mozappdir 		%{_libdir}/%{name}-%{version_internal}
+%define version_internal     3.0
+%define mozappdir            %{_libdir}/%{name}-%{version_internal}
 
-%define gecko_version	1.9
+%define gecko_version 1.9
 
-%define official_branding    0
-%define build_langpacks      0
+%define official_branding    1
+%define build_langpacks      1
 
 %if ! %{official_branding}
-%define cvsdate 20080416
+%define cvsdate 20080327
 %define nightly .cvs%{cvsdate}
 %endif
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.0
-Release:        0.65%{?nightly}%{?dist}
+Release:        1%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -29,7 +30,9 @@ Group:          Applications/Internet
 %define tarball mozilla-%{cvsdate}.tar.bz2
 %endif
 Source0:        %{tarball}
-#Source2:        firefox-langpacks-20080104.tar.bz2
+%if %{build_langpacks}
+Source2:        firefox-langpacks-%{version}-20080617.tar.bz2
+%endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
 Source12:       firefox-redhat-default-prefs.js
@@ -40,11 +43,13 @@ Source23:       firefox.1
 Source100:      find-external-requires
 
 
-# other patches
-Patch43:        firefox-2.0-getstartpage.patch
+Patch1:         firefox-2.0-getstartpage.patch
+
+# Upstream patches
 
 %if %{official_branding}
 # Required by Mozilla Corporation
+Patch10:        mozilla-firstrun.patch
 
 
 %else
@@ -90,14 +95,13 @@ compliance, performance and portability.
 %setup -q -c
 cd mozilla
 
-%patch43  -p1 -b .getstartpage
-
+%patch1 -p1 -b .getstartpage
 
 # For branding specific patches.
 
 %if %{official_branding}
 # Required by Mozilla Corporation
-
+%patch10 -p1 -b .firstrun
 
 %else
 # Not yet approved by Mozilla Corporation
@@ -173,8 +177,8 @@ desktop-file-install --vendor mozilla \
 # set up our default homepage
 %{__cat} >> rh-default-prefs << EOF
 pref("browser.startup.homepage", "%{homepage}");
-pref("startup.homepage_override_url", "%{homepage}");
-pref("startup.homepage_welcome_url", "%{homepage}");
+pref("startup.homepage_override_url", "%{firstrun}");
+pref("startup.homepage_welcome_url", "%{firstrun}");
 EOF
 
 # place the preferences
@@ -204,9 +208,9 @@ ln -s %{default_bookmarks_file} $RPM_BUILD_ROOT/%{mozappdir}/defaults/profile/bo
 %{__cp} other-licenses/branding/%{name}/default16.png \
         $RPM_BUILD_ROOT/%{mozappdir}/icons/
 
+echo > ../%{name}.lang
 %if %{build_langpacks}
 # Install langpacks
-touch ../%{name}.lang
 %{__mkdir_p} $RPM_BUILD_ROOT/%{mozappdir}/extensions
 %{__tar} xjf %{SOURCE2}
 for langpack in `ls firefox-langpacks/*.xpi`; do
@@ -223,7 +227,8 @@ for langpack in `ls firefox-langpacks/*.xpi`; do
   unzip $jarfile -d $langtmp
 
   sed -i -e "s|browser.startup.homepage.*$|browser.startup.homepage=%{homepage}|g;" \
-         -e "s|startup.homepage_override_url.*$|startup.homepage_override_url=%{homepage}|g;" \
+         -e "s|startup.homepage_override_url.*$|startup.homepage_override_url=%{firstrun}|g;" \
+         -e "s|startup.homepage_welcome_url.*$|startup.homepage_welcome_url=%{firstrun}|g;" \
          $langtmp/locale/browser-region/region.properties
 
   find $langtmp -type f | xargs chmod 644
@@ -240,20 +245,19 @@ done
 %{__rm} -rf firefox-langpacks
 %endif # build_langpacks
 
-%if ! %{build_langpacks}
-touch ../%{name}.lang
-%endif
-
 # System extensions
 %{__mkdir_p} $RPM_BUILD_ROOT%{_datadir}/mozilla/extensions/%{firefox_app_id}
 %{__mkdir_p} $RPM_BUILD_ROOT%{_libdir}/mozilla/extensions/%{firefox_app_id}
 
 # Copy over the LICENSE
-install -c -m 644 LICENSE $RPM_BUILD_ROOT/%{mozappdir}
+%{__install} -p -c -m 644 LICENSE $RPM_BUILD_ROOT/%{mozappdir}
 
 # ghost files
 touch $RPM_BUILD_ROOT/%{mozappdir}/components/compreg.dat
 touch $RPM_BUILD_ROOT/%{mozappdir}/components/xpti.dat
+
+# jemalloc shows up sometimes, but it's not needed here, it's in XR
+%{__rm} -f $RPM_BUILD_ROOT/%{mozappdir}/libjemalloc.so
 
 #---------------------------------------------------------------------
 
@@ -288,7 +292,7 @@ fi
 %files -f %{name}.lang
 %defattr(-,root,root,-)
 %{_bindir}/firefox
-%{_mandir}/man1/*
+%doc %{_mandir}/man1/*
 %dir %{_datadir}/mozilla/extensions/%{firefox_app_id}
 %dir %{_libdir}/mozilla/extensions/%{firefox_app_id}
 %{_datadir}/applications/mozilla-%{name}.desktop
@@ -315,52 +319,48 @@ fi
 %{mozappdir}/application.ini
 %dir %{mozappdir}/modules
 %{mozappdir}/modules/distribution.js
-%{mozappdir}/removed-files
 %{mozappdir}/.autoreg
 # XXX See if these are needed still
 %{mozappdir}/updater*
+%exclude %{mozappdir}/removed-files
 
 #---------------------------------------------------------------------
 
 %changelog
-* Thu May 22 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.65
-- Revert to 2008-04-16 trunk
+* Tue Jun 17 2008 Christopher Aillon <caillon@redhat.com> 3.0-1
+- Firefox 3 Final
 
-* Fri Apr 16 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.63
-- Update to latest trunk (2008-05-16)
+* Thu May 08 2008 Colin Walters <walters@redhat.com> 3.0-0.61
+- Rebuild to pick up new xulrunner (bug #445543)
 
-* Wed Apr 16 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.61
-- Update to latest trunk (2008-04-16)
+* Wed Apr 30 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.60
+- Rebuild
 
-* Mon Apr 14 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.60
-- Update to latest trunk (2008-04-14)
+* Mon Apr 28 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.59
+- Zero out the lang file we generate during builds
 
-* Tue Apr  8 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.59
-- Update to latest trunk (2008-04-08)
+* Mon Apr 28 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.58
+- Bounce a few unneeded items from the spec and clean up some tabs
 
-* Mon Apr  7 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.58
-- Update to latest trunk (2008-04-07)
+* Fri Apr 25 2008 Martin Stransky <stransky@redhat.com> 3.0-0.57
+- Enable anti-pishing protection (#443403)
 
-* Sun Apr  6 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.57
-- Update to latest trunk (2008-04-06)
+* Fri Apr 18 2008 Martin Stransky <stransky@redhat.com> 3.0-0.55
+- Don't show an welcome page during first browser start (#437065)
 
-* Sat Apr  5 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.56
-- Update to latest trunk (2008-04-05)
+* Sat Apr 12 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.54
+- Remove the broken Macedonian (mk) langpack
+- Download to Download/
 
-* Fri Apr  4 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.55
-- Update to latest trunk (2008-04-04)
+* Mon Apr  7 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.53
+- Add langpacks, marked with %%lang
+- Translate the .desktop file
 
-* Thu Apr  3 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.54
-- Update to latest trunk (2008-04-03)
-
-* Wed Apr  2 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.53
-- Update to latest trunk (2008-04-02)
-
-* Tue Apr  1 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.52
-- Update to latest trunk (2008-04-01)
+* Wed Apr  2 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.52
+- Beta 5
 
 * Mon Mar 31 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.51
-- Update to latest trunk (2008-03-31)
+- Beta 5 RC2
 
 * Thu Mar 27 2008 Christopher Aillon <caillon@redhat.com> 3.0-0.50
 - Update to latest trunk (2008-03-27)
