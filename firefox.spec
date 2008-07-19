@@ -4,10 +4,9 @@
 %define desktop_file_utils_version 0.9
 %define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
-%define version_internal     3.0
-%define mozappdir            %{_libdir}/%{name}-%{version_internal}
+%define mozappdir            %{_libdir}/%{name}-%{version}
 
-%define gecko_version 1.9
+%define gecko_version 1.9.0.1
 
 %define official_branding    1
 %define build_langpacks      1
@@ -19,7 +18,7 @@
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        3.0
+Version:        3.0.1
 Release:        1%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
@@ -31,7 +30,7 @@ Group:          Applications/Internet
 %endif
 Source0:        %{tarball}
 %if %{build_langpacks}
-Source2:        firefox-langpacks-%{version}-20080617.tar.bz2
+Source2:        firefox-langpacks-%{version}-20080716.tar.bz2
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -73,10 +72,10 @@ BuildRequires:  libXt-devel
 BuildRequires:  libXrender-devel
 BuildRequires:  system-bookmarks
 BuildRequires:  startup-notification-devel
-BuildRequires:  gecko-devel-unstable >= %{gecko_version}
+BuildRequires:  gecko-devel-unstable = %{gecko_version}
 
 Requires:       desktop-file-utils >= %{desktop_file_utils_version}
-Requires:       xulrunner >= %{gecko_version}-%{release}
+Requires:       gecko-libs = %{gecko_version}
 Requires:       system-bookmarks
 Obsoletes:      mozilla <= 37:1.7.13
 Provides:       webclient
@@ -141,7 +140,7 @@ MOZ_SMP_FLAGS=-j1
 [ "$RPM_BUILD_NCPUS" -gt 1 ] && MOZ_SMP_FLAGS=-j2
 %endif
 
-INTERNAL_GECKO=%{version_internal}
+INTERNAL_GECKO=%{version}
 MOZ_APP_DIR=%{_libdir}/%{name}-${INTERNAL_GECKO}
 
 export LDFLAGS="-Wl,-rpath,${MOZ_APP_DIR}"
@@ -167,7 +166,7 @@ desktop-file-install --vendor mozilla \
 
 # set up the firefox start script
 %{__rm} -rf $RPM_BUILD_ROOT%{_bindir}/firefox
-%{__cat} %{SOURCE21} | %{__sed} -e 's,FIREFOX_VERSION,%{version_internal},g' > \
+%{__cat} %{SOURCE21} | %{__sed} -e 's,FIREFOX_VERSION,%{version},g' > \
   $RPM_BUILD_ROOT%{_bindir}/firefox
 %{__chmod} 755 $RPM_BUILD_ROOT%{_bindir}/firefox
 
@@ -327,6 +326,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Jul 16 2008 Christopher Aillon <caillon@redhat.com> 3.0.1-1
+- Update to 3.0.1
+
 * Tue Jun 17 2008 Christopher Aillon <caillon@redhat.com> 3.0-1
 - Firefox 3 Final
 
