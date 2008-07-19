@@ -60,6 +60,7 @@ Patch10:        mozilla-firstrun.patch
 # ---------------------------------------------------
 
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
+BuildRequires:  zip
 BuildRequires:  libIDL-devel
 BuildRequires:  desktop-file-utils
 BuildRequires:  gtk2-devel
