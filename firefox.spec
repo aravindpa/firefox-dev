@@ -181,6 +181,12 @@ pref("startup.homepage_override_url", "%{firstrun}");
 pref("startup.homepage_welcome_url", "%{firstrun}");
 EOF
 
+# Export correct locale
+%{__cat} > $RPM_BUILD_ROOT/%{mozappdir}/defaults/preferences/firefox-l10n.js << EOF
+pref("general.useragent.locale", "chrome://global/locale/intl.properties");
+EOF
+%{__chmod} 644 $RPM_BUILD_ROOT/%{mozappdir}/defaults/preferences/firefox-l10n.js
+
 # place the preferences
 %{__cp} rh-default-prefs $RPM_BUILD_ROOT/%{mozappdir}/defaults/preferences/all-redhat.js
 %{__rm} rh-default-prefs
