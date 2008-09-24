@@ -14,16 +14,15 @@ diff -up mozilla/browser/base/jar.mn.firstrun mozilla/browser/base/jar.mn
 diff -up mozilla/browser/components/nsBrowserGlue.js.firstrun mozilla/browser/components/nsBrowserGlue.js
 --- mozilla/browser/components/nsBrowserGlue.js.firstrun	2008-06-15 11:28:29.000000000 -0700
 +++ mozilla/browser/components/nsBrowserGlue.js	2008-06-15 11:28:36.000000000 -0700
-@@ -175,34 +175,6 @@ BrowserGlue.prototype = {
+@@ -175,33 +175,6 @@ BrowserGlue.prototype = {
    // profile startup handler (contains profile initialization routines)
    _onProfileStartup: function() 
    {
 -    // Check to see if the EULA must be shown on startup
 -
--    // Global override for tinderbox machines
 -    var prefBranch = Cc["@mozilla.org/preferences-service;1"].
 -                     getService(Ci.nsIPrefBranch);
--    var mustDisplayEULA = true;
+-    var mustDisplayEULA = false;
 -    try {
 -      mustDisplayEULA = !prefBranch.getBoolPref("browser.EULA.override");
 -    } catch (e) {
