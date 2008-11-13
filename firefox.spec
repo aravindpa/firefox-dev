@@ -19,7 +19,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.0.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -42,7 +42,6 @@ Source23:       firefox.1
 Source100:      find-external-requires
 
 
-Patch1:         firefox-2.0-getstartpage.patch
 
 # Upstream patches
 
@@ -94,8 +93,6 @@ compliance, performance and portability.
 %prep
 %setup -q -c
 cd mozilla
-
-%patch1 -p1 -b .getstartpage
 
 # For branding specific patches.
 
@@ -176,9 +173,13 @@ desktop-file-install --vendor mozilla \
 
 # set up our default homepage
 %{__cat} >> rh-default-prefs << EOF
-pref("browser.startup.homepage", "%{homepage}");
 pref("startup.homepage_override_url", "%{firstrun}");
 pref("startup.homepage_welcome_url", "%{firstrun}");
+EOF
+
+# resolves bug #461880
+%{__cat} > $RPM_BUILD_ROOT/%{mozappdir}/browserconfig.properties << EOF
+browser.startup.homepage=%{homepage}
 EOF
 
 # Export correct locale
@@ -333,6 +334,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Nov 11 2008 Jan Horak <jhorak@redhat.com> 3.0.2-2
+- Removed firefox-2.0-getstartpage.patch patch 
+- Start page is set by different way
+
 * Tue Sep 23 2008 Christopher Aillon <caillon@redhat.com> 3.0.2-1
 - Update to 3.0.2
 
