@@ -4,12 +4,13 @@
 %define desktop_file_utils_version 0.9
 %define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
-%define mozappdir            %{_libdir}/%{name}-%{version}
+%define mozappdir            %{_libdir}/%{name}-%{internal_version}
 
-%define gecko_version 1.9.0.2
+%define gecko_version 1.9.1
+%define internal_version 3.1b1
 
-%define official_branding    1
-%define build_langpacks      1
+%define official_branding    0
+%define build_langpacks      0
 
 %if ! %{official_branding}
 %define cvsdate 20080327
@@ -18,15 +19,15 @@
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        3.0.2
-Release:        2%{?dist}
+Version:        3.1
+Release:        0.1.beta1%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 %if %{official_branding}
 %define tarball firefox-%{version}-source.tar.bz2
 %else
-%define tarball mozilla-%{cvsdate}.tar.bz2
+%define tarball firefox-3.1b1-source.tar.bz2
 %endif
 Source0:        %{tarball}
 %if %{build_langpacks}
@@ -92,7 +93,7 @@ compliance, performance and portability.
 
 %prep
 %setup -q -c
-cd mozilla
+cd mozilla-central
 
 # For branding specific patches.
 
@@ -120,7 +121,7 @@ echo "ac_add_options --with-libxul-sdk=\
 #---------------------------------------------------------------------
 
 %build
-cd mozilla
+cd mozilla-central
 
 # Mozilla builds with -Wall with exception of a few warnings which show up
 # everywhere in the code; so, don't override that.
@@ -138,7 +139,7 @@ MOZ_SMP_FLAGS=-j1
 [ "$RPM_BUILD_NCPUS" -gt 1 ] && MOZ_SMP_FLAGS=-j2
 %endif
 
-INTERNAL_GECKO=%{version}
+INTERNAL_GECKO=%{internal_version}
 MOZ_APP_DIR=%{_libdir}/%{name}-${INTERNAL_GECKO}
 
 export LDFLAGS="-Wl,-rpath,${MOZ_APP_DIR}"
@@ -148,11 +149,11 @@ make -f client.mk build STRIP="/bin/true" MOZ_MAKE_FLAGS="$MOZ_SMP_FLAGS"
 
 %install
 %{__rm} -rf $RPM_BUILD_ROOT
-cd mozilla
+cd mozilla-central
 
 DESTDIR=$RPM_BUILD_ROOT make install
 
-%{__mkdir_p} $RPM_BUILD_ROOT{%{_libdir},%{_bindir},%{_datadir}/applications,%{_datadir}/pixmaps},
+%{__mkdir_p} $RPM_BUILD_ROOT{%{_libdir},%{_bindir},%{_datadir}/applications,%{_datadir}/pixmaps}
 
 %{__install} -p -D -m 644 %{SOURCE22} $RPM_BUILD_ROOT%{_datadir}/pixmaps/%{name}.png
 
@@ -164,7 +165,7 @@ desktop-file-install --vendor mozilla \
 
 # set up the firefox start script
 %{__rm} -rf $RPM_BUILD_ROOT%{_bindir}/firefox
-%{__cat} %{SOURCE21} | %{__sed} -e 's,FIREFOX_VERSION,%{version},g' > \
+%{__cat} %{SOURCE21} | %{__sed} -e 's,FIREFOX_VERSION,%{internal_version},g' > \
   $RPM_BUILD_ROOT%{_bindir}/firefox
 %{__chmod} 755 $RPM_BUILD_ROOT%{_bindir}/firefox
 
@@ -334,6 +335,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Dec  4 2008 Christopher Aillon <caillon@redhat.com> 3.1-0.1
+- Update to 3.1 beta 1
+
 * Tue Nov 11 2008 Jan Horak <jhorak@redhat.com> 3.0.2-2
 - Removed firefox-2.0-getstartpage.patch patch 
 - Start page is set by different way
