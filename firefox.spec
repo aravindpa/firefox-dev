@@ -133,10 +133,12 @@ export PREFIX='%{_prefix}'
 export LIBDIR='%{_libdir}'
 
 MOZ_SMP_FLAGS=-j1
+%if 0
 %ifnarch ppc ppc64 s390 s390x
 [ -z "$RPM_BUILD_NCPUS" ] && \
      RPM_BUILD_NCPUS="`/usr/bin/getconf _NPROCESSORS_ONLN`"
 [ "$RPM_BUILD_NCPUS" -gt 1 ] && MOZ_SMP_FLAGS=-j2
+%endif
 %endif
 
 INTERNAL_GECKO=%{internal_version}
