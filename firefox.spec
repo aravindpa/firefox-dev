@@ -104,8 +104,6 @@ cd mozilla-central
 
 %else
 # Not yet approved by Mozilla Corporation
-
-
 %endif
 
 
@@ -114,6 +112,9 @@ cd mozilla-central
 %if %{official_branding}
 %{__cat} %{SOURCE11} >> .mozconfig
 %endif
+
+# Manually generate configure if it's not in the tarball...
+autoconf-2.13
 
 # Set up SDK path
 echo "ac_add_options --with-libxul-sdk=\
