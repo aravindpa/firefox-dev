@@ -20,7 +20,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.1
-Release:        0.1.beta1%{?dist}
+Release:        0.3.beta1%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -337,7 +337,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
-* Tue Dec  4 2008 Christopher Aillon <caillon@redhat.com> 3.1-0.1
+* Tue Dec  9 2008 Christopher Aillon <caillon@redhat.com> 3.1-0.3
+- Rebuild
+
+* Thu Dec  4 2008 Christopher Aillon <caillon@redhat.com> 3.1-0.1
 - Update to 3.1 beta 1
 
 * Tue Nov 11 2008 Jan Horak <jhorak@redhat.com> 3.0.2-2
