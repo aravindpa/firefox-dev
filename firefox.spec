@@ -1,5 +1,4 @@
 %define homepage http://start.fedoraproject.org/
-%define firstrun http://fedoraproject.org/static/firefox/
 %define default_bookmarks_file %{_datadir}/bookmarks/default-bookmarks.html
 %define desktop_file_utils_version 0.9
 %define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
@@ -7,7 +6,7 @@
 %define mozappdir            %{_libdir}/%{name}-%{internal_version}
 
 %define gecko_version 1.9.1
-%define internal_version 3.1b1
+%define internal_version 3.1b2
 
 %define official_branding    0
 %define build_langpacks      0
@@ -20,14 +19,14 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.1
-Release:        0.3.beta1%{?dist}
+Release:        0.4.beta2%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 %if %{official_branding}
 %define tarball firefox-%{version}-source.tar.bz2
 %else
-%define tarball firefox-3.1b1-source.tar.bz2
+%define tarball firefox-3.1b2-source.tar.bz2
 %endif
 Source0:        %{tarball}
 %if %{build_langpacks}
@@ -48,7 +47,6 @@ Source100:      find-external-requires
 
 %if %{official_branding}
 # Required by Mozilla Corporation
-Patch10:        mozilla-firstrun.patch
 
 
 %else
@@ -100,7 +98,6 @@ cd mozilla-central
 
 %if %{official_branding}
 # Required by Mozilla Corporation
-%patch10 -p1 -b .firstrun
 
 %else
 # Not yet approved by Mozilla Corporation
@@ -174,12 +171,6 @@ desktop-file-install --vendor mozilla \
 # set up our default preferences
 %{__cat} %{SOURCE12} | %{__sed} -e 's,FIREFOX_RPM_VR,%{version}-%{release},g' > rh-default-prefs
 
-# set up our default homepage
-%{__cat} >> rh-default-prefs << EOF
-pref("startup.homepage_override_url", "%{firstrun}");
-pref("startup.homepage_welcome_url", "%{firstrun}");
-EOF
-
 # resolves bug #461880
 %{__cat} > $RPM_BUILD_ROOT/%{mozappdir}/browserconfig.properties << EOF
 browser.startup.homepage=%{homepage}
@@ -237,8 +228,6 @@ for langpack in `ls firefox-langpacks/*.xpi`; do
   unzip $jarfile -d $langtmp
 
   sed -i -e "s|browser.startup.homepage.*$|browser.startup.homepage=%{homepage}|g;" \
-         -e "s|startup.homepage_override_url.*$|startup.homepage_override_url=%{firstrun}|g;" \
-         -e "s|startup.homepage_welcome_url.*$|startup.homepage_welcome_url=%{firstrun}|g;" \
          $langtmp/locale/browser-region/region.properties
 
   find $langtmp -type f | xargs chmod 644
@@ -337,6 +326,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Sat Dec 20 2008 Christopher Aillon <caillon@redhat.com> 3.1-0.4
+- 3.1 beta 2
+
 * Tue Dec  9 2008 Christopher Aillon <caillon@redhat.com> 3.1-0.3
 - Rebuild
 
