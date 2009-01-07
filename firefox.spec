@@ -19,7 +19,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.1
-Release:        0.4.beta2%{?dist}
+Release:        0.5.beta2%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -326,6 +326,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Jan  7 2009 Jan Horak <jhorak@redhat.com> - 3.1-0.5
+- Fixed wrong LANG and LC_MESSAGES variables interpretation (#441973) 
+  in startup script.
+
 * Sat Dec 20 2008 Christopher Aillon <caillon@redhat.com> 3.1-0.4
 - 3.1 beta 2
 

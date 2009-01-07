@@ -140,10 +140,10 @@ export GNOME_DISABLE_CRASH_DIALOG
 MOZARGS=
 # Try without a local variant first, then with a local variant
 # So that pt-BR doesn't try to use pt for example
-SHORTMOZLOCALE=`echo $LANG | sed "s|_\([^.]*\).*||g"`
+SHORTMOZLOCALE=`echo $LC_MESSAGES | sed "s|_\([^.]*\).*||g"`
 [ -f $MOZ_EXTENSIONS_DIR/langpack-${SHORTMOZLOCALE}@firefox.mozilla.org/chrome/$SHORTMOZLOCALE.jar ] && MOZARGS="-UILocale $SHORTMOZLOCALE"
 
-MOZLOCALE=`echo $LANG | sed "s|_\([^.]*\).*|-\1|g"`
+MOZLOCALE=`echo $LC_MESSAGES | sed "s|_\([^.]*\).*|-\1|g"`
 [ -f $MOZ_EXTENSIONS_DIR/langpack-${MOZLOCALE}@firefox.mozilla.org/chrome/$MOZLOCALE.jar ] && MOZARGS="-UILocale $MOZLOCALE"
 
 # Prepare command line arguments
