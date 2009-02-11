@@ -1,6 +1,5 @@
 %define homepage http://start.fedoraproject.org/
 %define default_bookmarks_file %{_datadir}/bookmarks/default-bookmarks.html
-%define desktop_file_utils_version 0.9
 %define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
 %define mozappdir            %{_libdir}/%{name}-%{internal_version}
@@ -19,7 +18,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.1
-Release:        0.5.beta2%{?dist}
+Release:        0.6.beta2%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -74,7 +73,6 @@ BuildRequires:  startup-notification-devel
 BuildRequires:  gecko-devel-unstable = %{gecko_version}
 BuildRequires:  autoconf213
 
-Requires:       desktop-file-utils >= %{desktop_file_utils_version}
 Requires:       gecko-libs = %{gecko_version}
 Requires:       system-bookmarks
 Obsoletes:      mozilla <= 37:1.7.13
@@ -326,6 +324,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Feb 11 2009 Christopher Aillon <caillon@redhat.com> - 3.1-0.6
+- Drop explicit requirement on desktop-file-utils
+
 * Wed Jan  7 2009 Jan Horak <jhorak@redhat.com> - 3.1-0.5
 - Fixed wrong LANG and LC_MESSAGES variables interpretation (#441973) 
   in startup script.
