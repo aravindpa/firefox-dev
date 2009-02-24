@@ -18,7 +18,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.1
-Release:        0.6.beta2%{?dist}
+Release:        0.7.beta2%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -324,6 +324,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Feb 24 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.1-0.7.beta2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_11_Mass_Rebuild
+
 * Wed Feb 11 2009 Christopher Aillon <caillon@redhat.com> - 3.1-0.6
 - Drop explicit requirement on desktop-file-utils
 
