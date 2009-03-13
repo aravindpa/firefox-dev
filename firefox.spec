@@ -3,9 +3,10 @@
 %define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
 %define mozappdir            %{_libdir}/%{name}-%{internal_version}
+%define tarballdir mozilla-1.9.1
 
 %define gecko_version 1.9.1
-%define internal_version 3.1b2
+%define internal_version 3.1b3
 
 %define official_branding    0
 %define build_langpacks      0
@@ -18,14 +19,14 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.1
-Release:        0.7.beta2%{?dist}
+Release:        0.10.beta3%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 %if %{official_branding}
 %define tarball firefox-%{version}-source.tar.bz2
 %else
-%define tarball firefox-3.1b2-source.tar.bz2
+%define tarball firefox-3.1b3-source.tar.bz2
 %endif
 Source0:        %{tarball}
 %if %{build_langpacks}
@@ -71,7 +72,6 @@ BuildRequires:  libXrender-devel
 BuildRequires:  system-bookmarks
 BuildRequires:  startup-notification-devel
 BuildRequires:  gecko-devel-unstable = %{gecko_version}
-BuildRequires:  autoconf213
 
 Requires:       gecko-libs = %{gecko_version}
 Requires:       system-bookmarks
@@ -90,7 +90,7 @@ compliance, performance and portability.
 
 %prep
 %setup -q -c
-cd mozilla-central
+cd %{tarballdir}
 
 # For branding specific patches.
 
@@ -108,9 +108,6 @@ cd mozilla-central
 %{__cat} %{SOURCE11} >> .mozconfig
 %endif
 
-# Manually generate configure if it's not in the tarball...
-autoconf-2.13
-
 # Set up SDK path
 echo "ac_add_options --with-libxul-sdk=\
 `pkg-config --variable=sdkdir libxul`" >> .mozconfig
@@ -118,7 +115,7 @@ echo "ac_add_options --with-libxul-sdk=\
 #---------------------------------------------------------------------
 
 %build
-cd mozilla-central
+cd %{tarballdir}
 
 # Mozilla builds with -Wall with exception of a few warnings which show up
 # everywhere in the code; so, don't override that.
@@ -146,7 +143,7 @@ make -f client.mk build STRIP="/bin/true" MOZ_MAKE_FLAGS="$MOZ_SMP_FLAGS"
 
 %install
 %{__rm} -rf $RPM_BUILD_ROOT
-cd mozilla-central
+cd %{tarballdir}
 
 DESTDIR=$RPM_BUILD_ROOT make install
 
@@ -324,6 +321,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Mar 13 2009 Christopher Aillon <caillon@redhat.com> - 3.1-0.10
+- 3.1 beta 3
+
 * Tue Feb 24 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.1-0.7.beta2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_11_Mass_Rebuild
 
