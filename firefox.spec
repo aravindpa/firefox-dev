@@ -5,10 +5,10 @@
 %define mozappdir            %{_libdir}/%{name}-%{internal_version}
 %define tarballdir mozilla-1.9.1
 
-%define gecko_version 1.9.1
+%define gecko_version 1.9.1-0.11
 %define internal_version 3.1b3
 
-%define official_branding    0
+%define official_branding    1
 %define build_langpacks      0
 
 %if ! %{official_branding}
@@ -19,7 +19,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.1
-Release:        0.10.beta3%{?dist}
+Release:        0.11.beta3%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -321,6 +321,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Mar 27 2009 Christopher Aillon <caillon@redhat.com> - 3.1-0.11
+- Rebuild against newer gecko
+
 * Fri Mar 13 2009 Christopher Aillon <caillon@redhat.com> - 3.1-0.10
 - 3.1 beta 3
 
