@@ -5,7 +5,7 @@
 %define mozappdir            %{_libdir}/%{name}-%{internal_version}
 %define tarballdir mozilla-1.9.1
 
-%define gecko_version 1.9.1-0.20
+%define xulrunner_version 1.9.1-0.20.beta4
 %define internal_version 3.5b4
 
 %define official_branding    1
@@ -19,7 +19,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.5
-Release:        0.20.beta4%{?dist}
+Release:        0.21.beta4%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -71,9 +71,9 @@ BuildRequires:  libXt-devel
 BuildRequires:  libXrender-devel
 BuildRequires:  system-bookmarks
 BuildRequires:  startup-notification-devel
-BuildRequires:  gecko-devel-unstable = %{gecko_version}
+BuildRequires:  xulrunner-devel-unstable >= %{xulrunner_version}
 
-Requires:       gecko-libs = %{gecko_version}
+Requires:       xulrunner >= %{xulrunner_version}
 Requires:       system-bookmarks
 Obsoletes:      mozilla <= 37:1.7.13
 Provides:       webclient
@@ -321,6 +321,10 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue May 26 2009 Martin Stransky <stransky@redhat.com> - 3.5-0.21
+- fix for #502541 - Firefox version should depend 
+  on Xulrunner but does not
+
 * Mon Apr 27 2009 Christopher Aillon <caillon@redhat.com> - 3.5-0.20
 - 3.5 beta 4
 
