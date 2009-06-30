@@ -5,8 +5,8 @@
 %define mozappdir            %{_libdir}/%{name}-%{internal_version}
 %define tarballdir mozilla-1.9.1
 
-%define xulrunner_version 1.9.1-0.20.beta4
-%define internal_version 3.5b4
+%define xulrunner_version 1.9.1-1
+%define internal_version %{version}
 
 %define official_branding    1
 %define build_langpacks      1
@@ -19,7 +19,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.5
-Release:        0.21.beta4%{?dist}
+Release:        1%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -30,7 +30,7 @@ Group:          Applications/Internet
 %endif
 Source0:        %{tarball}
 %if %{build_langpacks}
-Source2:        firefox-langpacks-%{version}-20090427.tar.bz2
+Source2:        firefox-langpacks-%{version}-20090630.tar.bz2
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -321,6 +321,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Jun 30 2009 Christopher Aillon <caillon@redhat.com> - 3.5-1
+- Firefox 3.5 final release
+
 * Tue May 26 2009 Martin Stransky <stransky@redhat.com> - 3.5-0.21
 - fix for #502541 - Firefox version should depend 
   on Xulrunner but does not
