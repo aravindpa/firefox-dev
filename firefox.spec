@@ -19,7 +19,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.5
-Release:        1%{?dist}
+Release:        2%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -321,6 +321,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Jul 13 2009 Jan Horak <jhorak@redhat.com> - 3.5-2
+- Updated icon
+
 * Tue Jun 30 2009 Christopher Aillon <caillon@redhat.com> - 3.5-1
 - Firefox 3.5 final release
 
