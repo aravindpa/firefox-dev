@@ -19,7 +19,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.5.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -37,7 +37,6 @@ Source11:       firefox-mozconfig-branded
 Source12:       firefox-redhat-default-prefs.js
 Source20:       firefox.desktop
 Source21:       firefox.sh.in
-Source22:       firefox.png
 Source23:       firefox.1
 Source100:      find-external-requires
 
@@ -147,9 +146,7 @@ cd %{tarballdir}
 
 DESTDIR=$RPM_BUILD_ROOT make install
 
-%{__mkdir_p} $RPM_BUILD_ROOT{%{_libdir},%{_bindir},%{_datadir}/applications,%{_datadir}/pixmaps}
-
-%{__install} -p -D -m 644 %{SOURCE22} $RPM_BUILD_ROOT%{_datadir}/pixmaps/%{name}.png
+%{__mkdir_p} $RPM_BUILD_ROOT{%{_libdir},%{_bindir},%{_datadir}/applications}
 
 desktop-file-install --vendor mozilla \
   --dir $RPM_BUILD_ROOT%{_datadir}/applications \
@@ -198,11 +195,26 @@ ln -s %{default_bookmarks_file} $RPM_BUILD_ROOT/%{mozappdir}/defaults/profile/bo
 #EOF
 #%{__chmod} 644 $RPM_BUILD_ROOT/%{mozappdir}/defaults/pref/firefox-l10n.js
 
-%{__mkdir_p} $RPM_BUILD_ROOT/%{mozappdir}/chrome/icons/default/
-%{__cp} other-licenses/branding/%{name}/default16.png \
-        $RPM_BUILD_ROOT/%{mozappdir}/chrome/icons/default/ 
 %{__cp} other-licenses/branding/%{name}/default16.png \
         $RPM_BUILD_ROOT/%{mozappdir}/icons/
+%{__mkdir_p} $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/16x16/apps
+%{__cp} other-licenses/branding/%{name}/default16.png \
+        $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/16x16/apps/firefox.png
+%{__mkdir_p} $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/22x22/apps
+%{__cp} other-licenses/branding/%{name}/default22.png \
+        $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/22x22/apps/firefox.png
+%{__mkdir_p} $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/24x24/apps
+%{__cp} other-licenses/branding/%{name}/default24.png \
+        $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/24x24/apps/firefox.png
+%{__mkdir_p} $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/32x32/apps
+%{__cp} other-licenses/branding/%{name}/default32.png \
+        $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/32x32/apps/firefox.png
+%{__mkdir_p} $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/48x48/apps
+%{__cp} other-licenses/branding/%{name}/default48.png \
+        $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/48x48/apps/firefox.png
+%{__mkdir_p} $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/256x256/apps
+%{__cp} other-licenses/branding/%{name}/default256.png \
+        $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/256x256/apps/firefox.png
 
 echo > ../%{name}.lang
 %if %{build_langpacks}
@@ -290,7 +302,6 @@ fi
 %dir %{_datadir}/mozilla/extensions/%{firefox_app_id}
 %dir %{_libdir}/mozilla/extensions/%{firefox_app_id}
 %{_datadir}/applications/mozilla-%{name}.desktop
-%{_datadir}/pixmaps/firefox.png
 %dir %{mozappdir}
 %doc %{mozappdir}/LICENSE
 %doc %{mozappdir}/README.txt
@@ -317,10 +328,19 @@ fi
 # XXX See if these are needed still
 %{mozappdir}/updater*
 %exclude %{mozappdir}/removed-files
+%{_datadir}/icons/hicolor/16x16/apps/firefox.png
+%{_datadir}/icons/hicolor/22x22/apps/firefox.png
+%{_datadir}/icons/hicolor/24x24/apps/firefox.png
+%{_datadir}/icons/hicolor/256x256/apps/firefox.png
+%{_datadir}/icons/hicolor/32x32/apps/firefox.png
+%{_datadir}/icons/hicolor/48x48/apps/firefox.png
 
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Jul 22 2009 Jan Horak <jhorak@redhat.com> - 3.5.1-2
+- New icons fixed
+
 * Fri Jul 17 2009 Christopher Aillon <caillon@redhat.com> - 3.5.1-1
 - Update to 3.5.1
 
