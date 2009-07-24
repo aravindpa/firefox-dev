@@ -19,7 +19,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.5.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -274,17 +274,17 @@ touch $RPM_BUILD_ROOT/%{mozappdir}/components/xpti.dat
 
 %post
 update-desktop-database &> /dev/null || :
-touch --no-create %{_datadir}/icons/hicolor
+touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 if [ -x %{_bindir}/gtk-update-icon-cache ]; then
   %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
 fi
 
 %postun
-update-desktop-database &> /dev/null || :
-touch --no-create %{_datadir}/icons/hicolor
-if [ -x %{_bindir}/gtk-update-icon-cache ]; then
-  %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
+if [ $1 -eq 0 ] ; then
+    touch --no-create %{_datadir}/icons/hicolor &>/dev/null
+    gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 fi
+update-desktop-database &> /dev/null || :
 
 %preun
 # is it a final removal?
@@ -294,6 +294,8 @@ if [ $1 -eq 0 ]; then
   %{__rm} -rf %{mozappdir}/plugins
 fi
 
+%posttrans
+gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files -f %{name}.lang
 %defattr(-,root,root,-)
@@ -338,6 +340,9 @@ fi
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Jul 24 2009 Jan Horak <jhorak@redhat.com> - 3.5.1-3
+- Adjust icons cache update according to template
+
 * Wed Jul 22 2009 Jan Horak <jhorak@redhat.com> - 3.5.1-2
 - New icons fixed
 
