@@ -19,7 +19,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.5.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -329,6 +329,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Aug 6 2009 Martin Stransky <stransky@redhat.com> - 3.5.2-2
+- Fix for #437596 - Firefox needs to register proper name
+  for session restore.
+
 * Mon Aug  3 2009 Christopher Aillon <caillon@redhat.com> - 3.5.2-1
 - Update to 3.5.2
 
