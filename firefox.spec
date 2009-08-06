@@ -57,19 +57,8 @@ Source100:      find-external-requires
 # ---------------------------------------------------
 
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
-BuildRequires:  zip
-BuildRequires:  libIDL-devel
 BuildRequires:  desktop-file-utils
-BuildRequires:  gtk2-devel
-BuildRequires:  gnome-vfs2-devel
-BuildRequires:  libgnomeui-devel
-BuildRequires:  krb5-devel
-BuildRequires:  pango-devel
-BuildRequires:  freetype-devel >= 2.1.9
-BuildRequires:  libXt-devel
-BuildRequires:  libXrender-devel
 BuildRequires:  system-bookmarks
-BuildRequires:  startup-notification-devel
 BuildRequires:  xulrunner-devel-unstable >= %{xulrunner_version}
 
 Requires:       xulrunner >= %{xulrunner_version}
