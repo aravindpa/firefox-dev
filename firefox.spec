@@ -5,7 +5,7 @@
 %define mozappdir  	  %{_libdir}/%{name}-%{internal_version}
 %define tarballdir 	  mozilla-1.9.2
 
-%define xulrunner_version 1.9.2.1
+%define xulrunner_version 1.9.2.1-0.2.b3
 %define internal_version  3.6
 
 %define official_branding 0
@@ -14,13 +14,13 @@
 %if ! %{official_branding}
 %define cvsdate 20080327
 %define nightly .cvs%{cvsdate}
-%define prever  b2
+%define prever  b3
 %endif
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.6.1
-Release:        0.1.%{?prever}%{?dist}
+Release:        0.2.%{?prever}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -339,6 +339,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Nov 18 2009 Martin Stransky <stransky@redhat.com> - 3.6.1-0.2.b3
+- Rebase to 3.6.1 Beta 3
+
 * Fri Nov 13 2009 Martin Stransky <stransky@redhat.com> - 3.6.1-0.1.b2
 - Rebase to 3.6.1 Beta 2
 
