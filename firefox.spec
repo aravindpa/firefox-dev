@@ -58,6 +58,7 @@ BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildRequires:  desktop-file-utils
 BuildRequires:  system-bookmarks
 BuildRequires:  xulrunner-devel >= %{xulrunner_version}
+BuildRequires:  wireless-tools-devel
 
 Requires:       xulrunner >= %{xulrunner_version}
 Requires:       system-bookmarks
