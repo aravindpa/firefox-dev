@@ -325,10 +325,12 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %dir %{mozappdir}/modules
 %{mozappdir}/modules/distribution.js
 %{mozappdir}/modules/openLocationLastURL.jsm
+%{mozappdir}/modules/NetworkPrioritizer.jsm
 %{mozappdir}/.autoreg
 # XXX See if these are needed still
 %{mozappdir}/updater*
 %exclude %{mozappdir}/removed-files
+%exclude %{mozappdir}/components/components.list
 %{_datadir}/icons/hicolor/16x16/apps/firefox.png
 %{_datadir}/icons/hicolor/22x22/apps/firefox.png
 %{_datadir}/icons/hicolor/24x24/apps/firefox.png
