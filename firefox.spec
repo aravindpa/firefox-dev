@@ -5,7 +5,7 @@
 %define mozappdir  	  %{_libdir}/%{name}-%{internal_version}
 %define tarballdir 	  mozilla-1.9.2
 
-%define xulrunner_version 1.9.2.1-0.2.b3
+%define xulrunner_version 1.9.2.1-0.3.b3
 %define internal_version  3.6
 
 %define official_branding 0
@@ -20,10 +20,11 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.6.1
-Release:        0.2.%{?prever}%{?dist}
+Release:        0.3.%{?prever}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
+# From ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pretag}/source
 Source0:        firefox-%{internal_version}%{?prever}.source.tar.bz2
 %if %{build_langpacks}
 Source2:        firefox-langpacks-%{version}-20091118.tar.bz2
@@ -58,7 +59,6 @@ BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildRequires:  desktop-file-utils
 BuildRequires:  system-bookmarks
 BuildRequires:  xulrunner-devel >= %{xulrunner_version}
-BuildRequires:  wireless-tools-devel
 
 Requires:       xulrunner >= %{xulrunner_version}
 Requires:       system-bookmarks
@@ -341,6 +341,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Nov 20 2009 Martin Stransky <stransky@redhat.com> - 3.6.1-0.3.b3
+- Necko wifi monitor disabled
+- Added source URL (#521704)
+
 * Wed Nov 18 2009 Martin Stransky <stransky@redhat.com> - 3.6.1-0.2.b3
 - Rebase to 3.6.1 Beta 3
 
