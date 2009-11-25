@@ -23,7 +23,7 @@
 ## 
 ## Usage:
 ##
-## $ mozilla
+## $ firefox
 ##
 ## This script is meant to run a mozilla program from the mozilla
 ## rpm installation.
@@ -59,7 +59,9 @@ if [ ! -x $MOZ_LIB_DIR/firefox-FIREFOX_VERSION/firefox ]; then
     MOZ_LIB_DIR="$SECONDARY_LIB_DIR"
 fi
 MOZ_DIST_BIN="$MOZ_LIB_DIR/firefox-FIREFOX_VERSION"
-MOZ_EXTENSIONS_DIR="$MOZ_DIST_BIN/extensions"
+MOZ_XUL_DIR="XULRUNNER_DIRECTORY"
+MOZ_LANGPACKS_DIR="$MOZ_DIST_BIN/langpacks"
+MOZ_EXTENSIONS_PROFILE_DIR="$HOME/.mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
 MOZ_PROGRAM="$MOZ_DIST_BIN/firefox"
 MOZ_LAUCHER="$MOZ_DIST_BIN/run-mozilla.sh"
  
@@ -141,15 +143,84 @@ export GNOME_DISABLE_CRASH_DIALOG
 
 # OK, here's where all the real work gets done
 
+
+##
+## To disable the use of Firefox localization, set MOZ_DISABLE_LANGPACKS=1
+## in your environment before launching Firefox.
+##
+#
+# MOZ_DISABLE_LANGPACKS=1
+# export MOZ_DISABLE_LANGPACKS
+#
+
+##
+## Fedora enables you to install custom language packs at firefox extension
+## directory (specified by MOZ_EXTENSIONS_PROFILE_DIR). To enable Firefox 
+## custom localization, set MOZ_LOCAL_LANGPACKS=1 in your environment
+## before launching Firefox.
+##
+#
+# MOZ_LOCAL_LANGPACKS=1
+# export MOZ_LOCAL_LANGPACKS
+#
+
 # check system locale
 MOZARGS=
-# Try without a local variant first, then with a local variant
-# So that pt-BR doesn't try to use pt for example
-SHORTMOZLOCALE=`echo $LC_MESSAGES | sed "s|_\([^.]*\).*||g"`
-[ -f $MOZ_EXTENSIONS_DIR/langpack-${SHORTMOZLOCALE}@firefox.mozilla.org/chrome/$SHORTMOZLOCALE.jar ] && MOZARGS="-UILocale $SHORTMOZLOCALE"
 
-MOZLOCALE=`echo $LC_MESSAGES | sed "s|_\([^.]*\).*|-\1|g"`
-[ -f $MOZ_EXTENSIONS_DIR/langpack-${MOZLOCALE}@firefox.mozilla.org/chrome/$MOZLOCALE.jar ] && MOZARGS="-UILocale $MOZLOCALE"
+# Clear existing locale settings unless MOZ_LOCAL_LANGPACKS is set
+mkdir -p $MOZ_EXTENSIONS_PROFILE_DIR
+if ! [ $MOZ_LOCAL_LANGPACKS ] || [ $MOZ_LOCAL_LANGPACKS -eq 0 ]; then
+    find $MOZ_EXTENSIONS_PROFILE_DIR -maxdepth 1 -name "langpack-*@firefox.mozilla.org" -delete;
+fi
+
+# MOZ_DISABLE_LANGPACKS disables language packs completelly
+MOZILLA_DOWN=0
+if ! [ $MOZ_DISABLE_LANGPACKS ] || [ $MOZ_DISABLE_LANGPACKS -eq 0 ]; then
+    if [ -x $MOZ_XUL_DIR/mozilla-xremote-client ]; then
+        # Is firefox running?
+        $MOZ_XUL_DIR/mozilla-xremote-client -a firefox 'ping()' > /dev/null 2>&1
+        MOZILLA_DOWN=$?
+    fi
+fi
+
+# Modify language pack configuration only when firefox is not running 
+# and language packs are not disabled
+if [ $MOZILLA_DOWN -ne 0 ]; then
+
+    # Enable local language pack (located in user extension directory)
+    if [ $MOZ_LOCAL_LANGPACKS ] && [ $MOZ_LOCAL_LANGPACKS -ne 0 ]; then
+        # Try without a local variant first, then with a local variant
+        # So that pt-BR doesn't try to use pt for example
+        SHORTMOZLOCALE=`echo $LC_MESSAGES | sed "s|_\([^.]*\).*||g"`
+        if [ -f $MOZ_EXTENSIONS_PROFILE_DIR/langpack-${SHORTMOZLOCALE}@firefox.mozilla.org/chrome/$SHORTMOZLOCALE.jar ]; then
+            MOZARGS="-UILocale $SHORTMOZLOCALE"
+        else
+            MOZLOCALE=`echo $LC_MESSAGES | sed "s|_\([^.]*\).*|-\1|g"`
+            if [ -f $MOZ_EXTENSIONS_PROFILE_DIR/langpack-${MOZLOCALE}@firefox.mozilla.org/chrome/$MOZLOCALE.jar ]; then
+                MOZARGS="-UILocale $MOZLOCALE"
+            fi
+        fi
+
+    # Enable globally installed language pack (located in firefox 
+    # installation directory)
+    else
+        # Try without a local variant first, then with a local variant
+        # So that pt-BR doesn't try to use pt for example
+        SHORTMOZLOCALE=`echo $LC_MESSAGES | sed "s|_\([^.]*\).*||g"`
+        if [ -f $MOZ_LANGPACKS_DIR/langpack-${SHORTMOZLOCALE}@firefox.mozilla.org/chrome/$SHORTMOZLOCALE.jar ]; then
+            MOZARGS="-UILocale $SHORTMOZLOCALE"
+            ln -s $MOZ_LANGPACKS_DIR/langpack-${SHORTMOZLOCALE}@firefox.mozilla.org \
+                  $MOZ_EXTENSIONS_PROFILE_DIR/langpack-${SHORTMOZLOCALE}@firefox.mozilla.org
+        else      
+            MOZLOCALE=`echo $LC_MESSAGES | sed "s|_\([^.]*\).*|-\1|g"`
+            if [ -f $MOZ_EXTENSIONS_DIR/langpack-${MOZLOCALE}@firefox.mozilla.org/chrome/$MOZLOCALE.jar ]; then
+                MOZARGS="-UILocale $MOZLOCALE"
+                ln -s $MOZ_LANGPACKS_DIR/langpack-${MOZLOCALE}@firefox.mozilla.org \
+                      $MOZ_EXTENSIONS_PROFILE_DIR/langpack-${MOZLOCALE}@firefox.mozilla.org
+            fi
+        fi
+    fi
+fi
 
 # Prepare command line arguments
 script_args=""

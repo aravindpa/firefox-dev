@@ -2,8 +2,8 @@
 %define default_bookmarks_file %{_datadir}/bookmarks/default-bookmarks.html
 %define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
-%define mozappdir  	  %{_libdir}/%{name}-%{internal_version}
-%define tarballdir 	  mozilla-1.9.2
+%define mozappdir  	      %{_libdir}/%{name}-%{internal_version}
+%define tarballdir 	      mozilla-1.9.2
 
 %define xulrunner_version 1.9.2.1-0.3.b3
 %define internal_version  3.6
@@ -20,14 +20,14 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.6.1
-Release:        0.3.%{?prever}%{?dist}
+Release:        0.4.%{?prever}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 # From ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pretag}/source
 Source0:        firefox-%{internal_version}%{?prever}.source.tar.bz2
 %if %{build_langpacks}
-Source2:        firefox-langpacks-%{version}-20091118.tar.bz2
+Source2:        firefox-langpacks-%{version}-20091125.tar.bz2
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -154,7 +154,8 @@ desktop-file-install --vendor mozilla \
 
 # set up the firefox start script
 %{__rm} -rf $RPM_BUILD_ROOT%{_bindir}/firefox
-%{__cat} %{SOURCE21} | %{__sed} -e 's,FIREFOX_VERSION,%{internal_version},g' > \
+%{__cat} %{SOURCE21} | %{__sed} -e 's,FIREFOX_VERSION,%{internal_version},g' \
+		     | %{__sed} -e "s,XULRUNNER_DIRECTORY,`pkg-config --variable=libdir libxul`,g" > \
   $RPM_BUILD_ROOT%{_bindir}/firefox
 %{__chmod} 755 $RPM_BUILD_ROOT%{_bindir}/firefox
 
@@ -217,11 +218,11 @@ ln -s %{default_bookmarks_file} $RPM_BUILD_ROOT/%{mozappdir}/defaults/profile/bo
 echo > ../%{name}.lang
 %if %{build_langpacks}
 # Install langpacks
-%{__mkdir_p} $RPM_BUILD_ROOT/%{mozappdir}/extensions
+%{__mkdir_p} $RPM_BUILD_ROOT/%{mozappdir}/langpacks
 %{__tar} xjf %{SOURCE2}
 for langpack in `ls firefox-langpacks/*.xpi`; do
   language=`basename $langpack .xpi`
-  extensiondir=$RPM_BUILD_ROOT/%{mozappdir}/extensions/langpack-$language@firefox.mozilla.org
+  extensiondir=$RPM_BUILD_ROOT/%{mozappdir}/langpacks/langpack-$language@firefox.mozilla.org
   %{__mkdir_p} $extensiondir
   unzip $langpack -d $extensiondir
   find $extensiondir -type f | xargs chmod 644
@@ -289,6 +290,7 @@ update-desktop-database &> /dev/null || :
 if [ $1 -eq 0 ]; then
   %{__rm} -rf %{mozappdir}/components
   %{__rm} -rf %{mozappdir}/extensions
+  %{__rm} -rf %{mozappdir}/langpacks
   %{__rm} -rf %{mozappdir}/plugins
 fi
 
@@ -317,6 +319,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{mozappdir}/defaults
 %dir %{mozappdir}/extensions
 %{mozappdir}/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}
+%dir %{mozappdir}/langpacks
 %{mozappdir}/icons
 %{mozappdir}/searchplugins
 %{mozappdir}/firefox
@@ -341,6 +344,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Nov 25 2009 Martin Stransky <stransky@redhat.com> - 3.6.1-0.4.b3
+- Language pack updated (#284011)
+
 * Fri Nov 20 2009 Martin Stransky <stransky@redhat.com> - 3.6.1-0.3.b3
 - Necko wifi monitor disabled
 - Added source URL (#521704)
