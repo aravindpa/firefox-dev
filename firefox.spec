@@ -5,7 +5,7 @@
 %define mozappdir  	      %{_libdir}/%{name}-%{internal_version}
 %define tarballdir 	      mozilla-1.9.2
 
-%define xulrunner_version 1.9.2.1-0.3.b3
+%define xulrunner_version 1.9.2.1-0.4.b4
 %define internal_version  3.6
 
 %define official_branding 0
@@ -14,20 +14,20 @@
 %if ! %{official_branding}
 %define cvsdate 20080327
 %define nightly .cvs%{cvsdate}
-%define prever  b3
+%define prever  b4
 %endif
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.6.1
-Release:        0.4.%{?prever}%{?dist}
+Release:        0.5.%{?prever}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 # From ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pretag}/source
 Source0:        firefox-%{internal_version}%{?prever}.source.tar.bz2
 %if %{build_langpacks}
-Source2:        firefox-langpacks-%{version}-20091125.tar.bz2
+Source2:        firefox-langpacks-%{version}-20091127.tar.bz2
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -344,6 +344,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Nov 27 2009 Martin Stransky <stransky@redhat.com> - 3.6.1-0.5.b4
+- Update to 3.6.1 Beta 4
+
 * Wed Nov 25 2009 Martin Stransky <stransky@redhat.com> - 3.6.1-0.4.b3
 - Language pack updated (#284011)
 
