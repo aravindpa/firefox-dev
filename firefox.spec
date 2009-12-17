@@ -20,7 +20,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.6.1
-Release:        0.5.%{?prever}%{?dist}
+Release:        0.6.%{?prever}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -40,6 +40,7 @@ Source100:      find-external-requires
 
 #Build patches
 Patch0:         firefox-version.patch
+Patch1:         mozilla-jemalloc-526152.patch
 
 # Upstream patches
 
@@ -85,6 +86,7 @@ sed -e 's/__RPM_VERSION_INTERNAL__/%{internal_version}/' %{P:%%PATCH0} \
     
 
 # For branding specific patches.
+%patch1 -p1 -b .526152
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -344,6 +346,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Nov 27 2009 Martin Stransky <stransky@redhat.com> - 3.6.1-0.6.b4
+- Added fix for mozbz#526152 - jemalloc fix
+
 * Wed Nov 27 2009 Martin Stransky <stransky@redhat.com> - 3.6.1-0.5.b4
 - Update to 3.6.1 Beta 4
 
