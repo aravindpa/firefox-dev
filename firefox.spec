@@ -346,7 +346,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
-* Tue Jan 5 2009 Martin Stransky <stransky@redhat.com> - 3.6.1-0.8.b4
+* Tue Jan 5 2010 Martin Stransky <stransky@redhat.com> - 3.6.1-0.8.b4
 - Removed MOZ_LOCAL_LANGPACKS from browser launcher script (#284011)
 
 * Mon Dec 21 2009 Martin Stransky <stransky@redhat.com> - 3.6.1-0.7.b4
