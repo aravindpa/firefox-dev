@@ -38,7 +38,7 @@ cmdname=`basename $0`
 ##
 MOZ_ARCH=$(uname -m)
 case $MOZ_ARCH in
-	x86_64 | ia64 | s390 )
+	x86_64 | s390x | sparc64)
 		MOZ_LIB_DIR="/usr/lib64"
 		SECONDARY_LIB_DIR="/usr/lib"
 		;;

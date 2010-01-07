@@ -20,7 +20,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.6.1
-Release:        0.8.%{?prever}%{?dist}
+Release:        0.9.%{?prever}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -346,6 +346,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Jan 7 2010 Martin Stransky <stransky@redhat.com> - 3.6.1-0.9.b4
+- firefox.sh fixes (error messages, #553184)
+
 * Tue Jan 5 2010 Martin Stransky <stransky@redhat.com> - 3.6.1-0.8.b4
 - Removed MOZ_LOCAL_LANGPACKS from browser launcher script (#284011)
 
