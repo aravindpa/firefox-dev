@@ -2,14 +2,15 @@
 %define default_bookmarks_file %{_datadir}/bookmarks/default-bookmarks.html
 %define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
-%define mozappdir  	      %{_libdir}/%{name}-%{internal_version}
-%define tarballdir 	      mozilla-1.9.2
+%define mozappdir               %{_libdir}/%{name}-%{internal_version}
+%define tarballdir              mozilla-1.9.2
 
-%define xulrunner_version 1.9.2.1-0.10.rc1
-%define internal_version  3.6
+%define xulrunner_version       1.9.2.1-0.10.rc1
+%define xulrunner_version_max   1.9.3
+%define internal_version        3.6
 
-%define official_branding 0
-%define build_langpacks   1
+%define official_branding       0
+%define build_langpacks         1
 
 %if ! %{official_branding}
 %define cvsdate 20080327
@@ -62,6 +63,7 @@ BuildRequires:  system-bookmarks
 BuildRequires:  xulrunner-devel >= %{xulrunner_version}
 
 Requires:       xulrunner >= %{xulrunner_version}
+Conflicts:      xulrunner >= %{xulrunner_version_max}
 Requires:       system-bookmarks
 Obsoletes:      mozilla <= 37:1.7.13
 Provides:       webclient
@@ -348,6 +350,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %changelog
 * Wed Jan 18 2010 Martin Stransky <stransky@redhat.com> - 3.6.1-0.11.rc2
 - Update to 3.6.1 RC2
+- Fix for #556428 - Restricted maximal xulrunner version
 
 * Wed Jan 13 2010 Martin Stransky <stransky@redhat.com> - 3.6.1-0.10.rc1
 - Update to 3.6.1 RC1
