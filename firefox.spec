@@ -5,7 +5,7 @@
 %define mozappdir               %{_libdir}/%{name}-%{internal_version}
 %define tarballdir              mozilla-1.9.2
 
-%define xulrunner_version       1.9.2.1-0.10.rc1
+%define xulrunner_version       1.9.2.1-0.10.rc2
 %define xulrunner_version_max   1.9.3
 %define internal_version        3.6
 
