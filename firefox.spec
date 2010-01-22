@@ -5,11 +5,11 @@
 %define mozappdir               %{_libdir}/%{name}-%{internal_version}
 %define tarballdir              mozilla-1.9.2
 
-%define xulrunner_version       1.9.2.1-0.10.rc2
+%define xulrunner_version       1.9.2.1-1
 %define xulrunner_version_max   1.9.3
 %define internal_version        3.6
 
-%define official_branding       0
+%define official_branding       1
 %define build_langpacks         1
 
 %if ! %{official_branding}
@@ -21,14 +21,14 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.6.1
-Release:        0.11.%{?prever}%{?dist}
+Release:        1%{?prever}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 # From ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pretag}/source
 Source0:        firefox-%{internal_version}%{?prever}.source.tar.bz2
 %if %{build_langpacks}
-Source2:        firefox-langpacks-%{version}-20100118.tar.bz2
+Source2:        firefox-langpacks-%{version}-20100122.tar.bz2
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -348,6 +348,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Jan 18 2010 Martin Stransky <stransky@redhat.com> - 3.6.1-1
+- Update to 3.6
+
 * Wed Jan 18 2010 Martin Stransky <stransky@redhat.com> - 3.6.1-0.11.rc2
 - Update to 3.6.1 RC2
 - Fix for #556428 - Restricted maximal xulrunner version
