@@ -5,8 +5,11 @@
 %define mozappdir               %{_libdir}/%{name}-%{internal_version}
 %define tarballdir              mozilla-1.9.2
 
+# xulrunner_version matches the firefox package.
+# xulrunner_version_max is first next incompatible xulrunner version
 %define xulrunner_version       1.9.2.1-1
-%define xulrunner_version_max   1.9.3
+%define xulrunner_version_max   1.9.2.2
+
 %define internal_version        3.6
 
 %define official_branding       1
@@ -21,7 +24,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.6.1
-Release:        1%{?prever}%{?dist}
+Release:        2%{?prever}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -348,6 +351,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Feb 24 2010 Martin Stransky <stransky@redhat.com> - 3.6.1-2
+- Added fix for #559960 - [all Lang]Translation is not 
+  available with 3.6 release
+
 * Wed Jan 18 2010 Martin Stransky <stransky@redhat.com> - 3.6.1-1
 - Update to 3.6
 

@@ -182,11 +182,16 @@ if [ $MOZILLA_DOWN -ne 0 ]; then
         rm `cat $FEDORA_LANGPACK_CONFIG` > /dev/null 2>&1
         rm $FEDORA_LANGPACK_CONFIG > /dev/null 2>&1
     fi
+
+    # Get locale from system
+    CURRENT_LOCALE=$LC_ALL
+    CURRENT_LOCALE=${CURRENT_LOCALE:-$LC_MESSAGES}
+    CURRENT_LOCALE=${CURRENT_LOCALE:-$LANG}
     
     # Try without a local variant first, then with a local variant
     # So that pt-BR doesn't try to use pt for example
-    SHORTMOZLOCALE=`echo $LC_MESSAGES | sed "s|_\([^.]*\).*||g"`
-    MOZLOCALE=`echo $LC_MESSAGES | sed "s|_\([^.]*\).*|-\1|g"`
+    SHORTMOZLOCALE=`echo $CURRENT_LOCALE | sed "s|_\([^.]*\).*||g"`
+    MOZLOCALE=`echo $CURRENT_LOCALE | sed "s|_\([^.]*\).*|-\1|g"`
 
     # Try to link global langpacks to an extension directory
     if [ -f $MOZ_LANGPACKS_DIR/langpack-${SHORTMOZLOCALE}@firefox.mozilla.org/chrome/$SHORTMOZLOCALE.jar ]; then
