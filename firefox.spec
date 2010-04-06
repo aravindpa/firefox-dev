@@ -29,7 +29,7 @@ URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 # From ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pretag}/source
-Source0:        firefox-%{internal_version}%{?prever}.source.tar.bz2
+Source0:        firefox-%{version}%{?prever}.source.tar.bz2
 %if %{build_langpacks}
 Source2:        firefox-langpacks-%{version}-20100403.tar.bz2
 %endif
