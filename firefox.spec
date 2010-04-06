@@ -10,7 +10,7 @@
 %define xulrunner_version       1.9.2.3-1
 %define xulrunner_version_max   1.9.2.4
 
-%define internal_version        3.6.3
+%define internal_version        3.6
 
 %define official_branding       1
 %define build_langpacks         1
@@ -24,7 +24,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.6.3
-Release:        1%{?prever}%{?dist}
+Release:        2%{?prever}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -351,6 +351,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Apr 6 2010 Martin Stransky <stransky@redhat.com> - 3.6.3-2
+- Fixed install dir
+
 * Sat Apr 3 2010 Martin Stransky <stransky@redhat.com> - 3.6.3-1
 - Update to 3.6.3
 
