@@ -24,7 +24,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.6.3
-Release:        2%{?prever}%{?dist}
+Release:        3%{?prever}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -161,8 +161,9 @@ desktop-file-install --vendor mozilla \
 
 # set up the firefox start script
 %{__rm} -rf $RPM_BUILD_ROOT%{_bindir}/firefox
+XULRUNNER_DIR=`pkg-config --variable=libdir libxul | %{__sed} -e "s,%{_libdir},,g"`
 %{__cat} %{SOURCE21} | %{__sed} -e 's,FIREFOX_VERSION,%{internal_version},g' \
-		     | %{__sed} -e "s,XULRUNNER_DIRECTORY,`pkg-config --variable=libdir libxul`,g" > \
+		     | %{__sed} -e "s,XULRUNNER_DIRECTORY,$XULRUNNER_DIR,g" > \
   $RPM_BUILD_ROOT%{_bindir}/firefox
 %{__chmod} 755 $RPM_BUILD_ROOT%{_bindir}/firefox
 
@@ -351,6 +352,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Apr 12 2010 Martin Stransky <stransky@redhat.com> - 3.6.3-3
+- Fixed multilib conflict
+
 * Tue Apr 6 2010 Martin Stransky <stransky@redhat.com> - 3.6.3-2
 - Fixed install dir
 
