@@ -24,7 +24,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        3.6.3
-Release:        3%{?prever}%{?dist}
+Release:        4%{?prever}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -352,6 +352,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Apr 13 2010 Martin Stransky <stransky@redhat.com> - 3.6.3-4
+- Fixed language packs (#559960)
+
 * Mon Apr 12 2010 Martin Stransky <stransky@redhat.com> - 3.6.3-3
 - Fixed multilib conflict
 
