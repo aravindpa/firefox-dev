@@ -7,13 +7,14 @@
 
 # xulrunner_version matches the firefox package.
 # xulrunner_version_max is first next incompatible xulrunner version
-%define xulrunner_version       1.9.2.3-1
-%define xulrunner_version_max   1.9.2.4
+%define xulrunner_version       1.9.2.4-1
+%define xulrunner_version_max   1.9.2.5
 
 %define internal_version        3.6
 
 %define official_branding       1
 %define build_langpacks         1
+%define include_debuginfo       0
 
 %if ! %{official_branding}
 %define cvsdate 20080327
@@ -23,19 +24,20 @@
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        3.6.3
-Release:        4%{?prever}%{?dist}
+Version:        3.6.4
+Release:        1%{?prever}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 # From ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pretag}/source
 Source0:        firefox-%{version}%{?prever}.source.tar.bz2
 %if %{build_langpacks}
-Source2:        firefox-langpacks-%{version}-20100403.tar.bz2
+Source2:        firefox-langpacks-%{version}-20100622.tar.bz2
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
 Source12:       firefox-redhat-default-prefs.js
+Source13:       firefox-mozconfig-debuginfo
 Source20:       firefox.desktop
 Source21:       firefox.sh.in
 Source23:       firefox.1
@@ -106,6 +108,9 @@ sed -e 's/__RPM_VERSION_INTERNAL__/%{internal_version}/' %{P:%%PATCH0} \
 %if %{official_branding}
 %{__cat} %{SOURCE11} >> .mozconfig
 %endif
+%if %{include_debuginfo}
+%{__cat} %{SOURCE13} >> .mozconfig
+%endif
 
 # Set up SDK path
 echo "ac_add_options --with-libxul-sdk=\
@@ -137,6 +142,12 @@ MOZ_APP_DIR=%{_libdir}/%{name}-${INTERNAL_GECKO}
 
 export LDFLAGS="-Wl,-rpath,${MOZ_APP_DIR}"
 make -f client.mk build STRIP="/bin/true" MOZ_MAKE_FLAGS="$MOZ_SMP_FLAGS"
+
+# create debuginfo for crash-stats.mozilla.com
+%if %{include_debuginfo}
+#cd %{moz_objdir}
+make buildsymbols
+%endif
 
 #---------------------------------------------------------------------
 
@@ -272,6 +283,11 @@ touch $RPM_BUILD_ROOT/%{mozappdir}/components/xpti.dat
 # jemalloc shows up sometimes, but it's not needed here, it's in XR
 %{__rm} -f $RPM_BUILD_ROOT/%{mozappdir}/libjemalloc.so
 
+# Enable crash reporter for Firefox application
+%if %{include_debuginfo}
+sed -i -e "s/\[Crash Reporter\]/[Crash Reporter]\nEnabled=1/" $RPM_BUILD_ROOT/%{mozappdir}/application.ini
+%endif
+
 #---------------------------------------------------------------------
 
 %clean
@@ -349,9 +365,19 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/icons/hicolor/32x32/apps/firefox.png
 %{_datadir}/icons/hicolor/48x48/apps/firefox.png
 
+%if %{include_debuginfo}
+#%{mozappdir}/crashreporter
+%{mozappdir}/crashreporter-override.ini
+#%{mozappdir}/Throbber-small.gif
+#%{mozappdir}/plugin-container
+%endif
+
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Jun 23 2010 Jan Horak <jhorak@redhat.com> -3.6.4-1
+- Update to 3.6.4
+
 * Tue Apr 13 2010 Martin Stransky <stransky@redhat.com> - 3.6.3-4
 - Fixed language packs (#559960)
 
