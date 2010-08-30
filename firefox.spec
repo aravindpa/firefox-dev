@@ -3,36 +3,36 @@
 %define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
 %define mozappdir               %{_libdir}/%{name}-%{internal_version}
-%define tarballdir              mozilla-1.9.2
+%define tarballdir              mozilla-central
 
 # xulrunner_version matches the firefox package.
 # xulrunner_version_max is first next incompatible xulrunner version
-%define xulrunner_version       1.9.2.4-1
-%define xulrunner_version_max   1.9.2.5
+%define xulrunner_version       1.9.3.0
+%define xulrunner_version_max   1.9.3.1
 
-%define internal_version        3.6
+%define internal_version        4.0
 
-%define official_branding       1
+%define official_branding       0
 %define build_langpacks         1
 %define include_debuginfo       0
 
 %if ! %{official_branding}
 %define cvsdate 20080327
 %define nightly .cvs%{cvsdate}
-%define prever  rc2
+%define prever  b4
 %endif
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        3.6.4
-Release:        2%{?prever}%{?dist}
+Version:        4.0
+Release:        0.1%{?prever}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 # From ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pretag}/source
 Source0:        firefox-%{version}%{?prever}.source.tar.bz2
 %if %{build_langpacks}
-Source2:        firefox-langpacks-%{version}-20100622.tar.bz2
+Source2:        firefox-langpacks-%{version}%{?prever}-20100830.tar.bz2
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -46,7 +46,7 @@ Source100:      find-external-requires
 
 #Build patches
 Patch0:         firefox-version.patch
-Patch1:         mozilla-jemalloc-526152.patch
+#Patch1:         mozilla-jemalloc-526152.patch
 
 # Fedora patches
 Patch10:        firefox-disable-checkupdates.patch
@@ -97,7 +97,7 @@ sed -e 's/__RPM_VERSION_INTERNAL__/%{internal_version}/' %{P:%%PATCH0} \
     
 
 # For branding specific patches.
-%patch1 -p1 -b .526152
+#%patch1 -p1 -b .526152
 
 # Fedora patches
 %patch10 -p1 -b .checkupdates
@@ -131,7 +131,7 @@ cd %{tarballdir}
 
 # Mozilla builds with -Wall with exception of a few warnings which show up
 # everywhere in the code; so, don't override that.
-MOZ_OPT_FLAGS=$(echo $RPM_OPT_FLAGS | %{__sed} -e 's/-Wall//')
+MOZ_OPT_FLAGS=$(echo $RPM_OPT_FLAGS | %{__sed} -e 's/-Wall//' | %{__sed} -e 's/-fexceptions//')
 export CFLAGS=$MOZ_OPT_FLAGS
 export CXXFLAGS=$MOZ_OPT_FLAGS
 
@@ -346,6 +346,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %ghost %{mozappdir}/components/xpti.dat
 %{mozappdir}/components/*.so
 %{mozappdir}/components/*.xpt
+%{mozappdir}/components/browser.manifest
 %attr(644, root, root) %{mozappdir}/blocklist.xml
 %attr(644, root, root) %{mozappdir}/components/*.js
 %{mozappdir}/defaults
@@ -361,11 +362,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{mozappdir}/modules/distribution.js
 %{mozappdir}/modules/openLocationLastURL.jsm
 %{mozappdir}/modules/NetworkPrioritizer.jsm
-%{mozappdir}/.autoreg
-# XXX See if these are needed still
+%{mozappdir}/modules/PlacesUIUtils.jsm
+%{mozappdir}/modules/stylePanel.jsm
 %{mozappdir}/updater*
 %exclude %{mozappdir}/removed-files
-%exclude %{mozappdir}/components/components.list
 %{_datadir}/icons/hicolor/16x16/apps/firefox.png
 %{_datadir}/icons/hicolor/22x22/apps/firefox.png
 %{_datadir}/icons/hicolor/24x24/apps/firefox.png
@@ -383,6 +383,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Aug 30 2010 Martin Stransky <stransky@redhat.com> - 4.0-0.1.b4
+- Update to 4.0 Beta 4
+
 * Tue Jun 24 2010 Martin Stransky <stransky@redhat.com> - 3.6.4-2
 - Fixed rhbz#531159 - disable firefox default browser check
 - Disabled automatic updates
