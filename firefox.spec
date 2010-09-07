@@ -357,7 +357,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %ghost %{mozappdir}/components/xpti.dat
 %{mozappdir}/components/*.so
 %{mozappdir}/components/*.xpt
-%{mozappdir}/components/browser.manifest
+# %{mozappdir}/components/browser.manifest
+%{mozappdir}/components/components.manifest
+%{mozappdir}/components/interfaces.manifest
 %attr(644, root, root) %{mozappdir}/blocklist.xml
 %attr(644, root, root) %{mozappdir}/components/*.js
 %{mozappdir}/defaults
