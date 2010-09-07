@@ -352,6 +352,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %doc %{mozappdir}/README.txt
 %{mozappdir}/*.properties
 %{mozappdir}/chrome
+%{mozappdir}/chrome.manifest
 %dir %{mozappdir}/components
 %ghost %{mozappdir}/components/compreg.dat
 %ghost %{mozappdir}/components/xpti.dat
