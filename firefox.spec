@@ -2,18 +2,18 @@
 %define default_bookmarks_file %{_datadir}/bookmarks/default-bookmarks.html
 %define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
+%global internal_version	4.0
+
 # This is a bit of a hack, but the tabview files have to be in the xulrunner_libdir
 %{!?xulrunner_libdir: %global xulrunner_libdir %(pkg-config --variable=libdir libxul)}
 
-%define mozappdir               %{_libdir}/%{name}-%{internal_version}
-%define tarballdir              mozilla-central
+%global mozappdir               %{_libdir}/%{name}-%{internal_version}
+%global tarballdir              mozilla-central
 
 # xulrunner_version matches the firefox package.
 # xulrunner_version_max is first next incompatible xulrunner version
 %define xulrunner_version       1.9.3.0
 %define xulrunner_version_max   1.9.3.1
-
-%define internal_version        4.0
 
 %define official_branding       0
 %define build_langpacks         1
@@ -32,8 +32,7 @@ Release:        0.2%{?prever}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
-# From ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pretag}/source
-Source0:        firefox-%{version}%{?prever}.source.tar.bz2
+Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?prever}/source/firefox-%{version}%{?prever}.source.tar.bz2
 %if %{build_langpacks}
 Source2:        firefox-langpacks-%{version}%{?prever}-20100830.tar.bz2
 %endif
@@ -139,7 +138,7 @@ cd %{tarballdir}
 
 # Mozilla builds with -Wall with exception of a few warnings which show up
 # everywhere in the code; so, don't override that.
-export MOZ_OPT_FLAGS=$(echo $RPM_OPT_FLAGS | %{__sed} -e 's/-Wall//' | %{__sed} -e 's/-fexceptions//')
+export MOZ_OPT_FLAGS=$(echo $RPM_OPT_FLAGS | %{__sed} -e 's/-Wall//' | %{__sed} -e 's/-fexceptions/-fno-exceptions/g')
 export CFLAGS=$MOZ_OPT_FLAGS
 export CXXFLAGS=$MOZ_OPT_FLAGS
 
