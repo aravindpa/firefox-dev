@@ -1,0 +1,12 @@
+diff -up mozilla-central/memory/mozalloc/mozalloc.h.throw mozilla-central/memory/mozalloc/mozalloc.h
+--- mozilla-central/memory/mozalloc/mozalloc.h.throw	2010-09-01 17:21:53.906286481 -0400
++++ mozilla-central/memory/mozalloc/mozalloc.h	2010-09-01 17:22:27.422157338 -0400
+@@ -214,7 +214,7 @@ MOZALLOC_EXPORT void* moz_valloc(size_t 
+ #define MOZALLOC_THROW_IF_HAS_EXCEPTIONS throw()
+ #endif
+ 
+-#ifdef MOZ_CPP_EXCEPTIONS
++#if 1
+ #define MOZALLOC_THROW_BAD_ALLOC throw(std::bad_alloc)
+ #else
+ #define MOZALLOC_THROW_BAD_ALLOC MOZALLOC_THROW_IF_HAS_EXCEPTIONS

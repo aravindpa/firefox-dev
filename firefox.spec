@@ -2,6 +2,9 @@
 %define default_bookmarks_file %{_datadir}/bookmarks/default-bookmarks.html
 %define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
+# This is a bit of a hack, but the tabview files have to be in the xulrunner_libdir
+%{!?xulrunner_libdir: %global xulrunner_libdir %(pkg-config --variable=libdir libxul)}
+
 %define mozappdir               %{_libdir}/%{name}-%{internal_version}
 %define tarballdir              mozilla-central
 
@@ -25,7 +28,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        4.0
-Release:        0.1%{?prever}%{?dist}
+Release:        0.2%{?prever}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -41,12 +44,14 @@ Source13:       firefox-mozconfig-debuginfo
 Source20:       firefox.desktop
 Source21:       firefox.sh.in
 Source23:       firefox.1
-Source100:      find-external-requires
+# Not necessary
+# Source100:      find-external-requires
 
 
 #Build patches
 Patch0:         firefox-version.patch
-#Patch1:         mozilla-jemalloc-526152.patch
+Patch1:         firefox4-jemalloc.patch
+Patch2:         firefox4-build-throw.patch
 
 # Fedora patches
 Patch10:        firefox-disable-checkupdates.patch
@@ -70,6 +75,8 @@ BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildRequires:  desktop-file-utils
 BuildRequires:  system-bookmarks
 BuildRequires:  xulrunner-devel >= %{xulrunner_version}
+# Should xulrunner-devel pull this in?
+BuildRequires:  mesa-libGL-devel
 
 Requires:       xulrunner >= %{xulrunner_version}
 Conflicts:      xulrunner >= %{xulrunner_version_max}
@@ -78,8 +85,8 @@ Obsoletes:      mozilla <= 37:1.7.13
 Provides:       webclient
 
 
-%define _use_internal_dependency_generator 0
-%define __find_requires %{SOURCE100}
+# %%define _use_internal_dependency_generator 0
+# %%define __find_requires %{SOURCE100}
 
 %description
 Mozilla Firefox is an open-source web browser, designed for standards
@@ -97,7 +104,8 @@ sed -e 's/__RPM_VERSION_INTERNAL__/%{internal_version}/' %{P:%%PATCH0} \
     
 
 # For branding specific patches.
-#%patch1 -p1 -b .526152
+%patch1 -p1 -b .526152
+%patch2 -p1 -b .throw
 
 # Fedora patches
 %patch10 -p1 -b .checkupdates
@@ -131,7 +139,7 @@ cd %{tarballdir}
 
 # Mozilla builds with -Wall with exception of a few warnings which show up
 # everywhere in the code; so, don't override that.
-MOZ_OPT_FLAGS=$(echo $RPM_OPT_FLAGS | %{__sed} -e 's/-Wall//' | %{__sed} -e 's/-fexceptions//')
+export MOZ_OPT_FLAGS=$(echo $RPM_OPT_FLAGS | %{__sed} -e 's/-Wall//' | %{__sed} -e 's/-fexceptions//')
 export CFLAGS=$MOZ_OPT_FLAGS
 export CXXFLAGS=$MOZ_OPT_FLAGS
 
@@ -149,7 +157,7 @@ INTERNAL_GECKO=%{internal_version}
 MOZ_APP_DIR=%{_libdir}/%{name}-${INTERNAL_GECKO}
 
 export LDFLAGS="-Wl,-rpath,${MOZ_APP_DIR}"
-make -f client.mk build STRIP="/bin/true" MOZ_MAKE_FLAGS="$MOZ_SMP_FLAGS"
+make -f client.mk build STRIP="/bin/true" MOZ_MAKE_FLAGS="$MOZ_SMP_FLAGS" MOZ_SERVICES_SYNC="1"
 
 # create debuginfo for crash-stats.mozilla.com
 %if %{include_debuginfo}
@@ -171,6 +179,10 @@ MOZ_APP_DIR=%{_libdir}/${INTERNAL_APP_NAME}
 DESTDIR=$RPM_BUILD_ROOT make install
 
 %{__mkdir_p} $RPM_BUILD_ROOT{%{_libdir},%{_bindir},%{_datadir}/applications}
+
+# This is a HACK. Firefox4 won't find the tabview code unless it is in the xulrunner directory.
+mkdir -p %{buildroot}/%{xulrunner_libdir}/modules/
+mv %{buildroot}%{mozappdir}/modules/tabview/ %{buildroot}/%{xulrunner_libdir}/modules/
 
 desktop-file-install --vendor mozilla \
   --dir $RPM_BUILD_ROOT%{_datadir}/applications \
@@ -364,6 +376,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{mozappdir}/modules/NetworkPrioritizer.jsm
 %{mozappdir}/modules/PlacesUIUtils.jsm
 %{mozappdir}/modules/stylePanel.jsm
+# Hack Hack Hack
+%{xulrunner_libdir}/modules/tabview/
 %{mozappdir}/updater*
 %exclude %{mozappdir}/removed-files
 %{_datadir}/icons/hicolor/16x16/apps/firefox.png
@@ -383,6 +397,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Sep  7 2010 Tom "spot" Callaway <tcallawa@redhat.com> - 4.0-0.2.b4
+- get package building and mostly functional
+
 * Mon Aug 30 2010 Martin Stransky <stransky@redhat.com> - 4.0-0.1.b4
 - Update to 4.0 Beta 4
 
