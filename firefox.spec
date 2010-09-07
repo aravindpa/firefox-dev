@@ -74,8 +74,6 @@ BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildRequires:  desktop-file-utils
 BuildRequires:  system-bookmarks
 BuildRequires:  xulrunner-devel >= %{xulrunner_version}
-# Should xulrunner-devel pull this in?
-BuildRequires:  mesa-libGL-devel
 
 Requires:       xulrunner >= %{xulrunner_version}
 Conflicts:      xulrunner >= %{xulrunner_version_max}
