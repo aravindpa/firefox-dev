@@ -74,6 +74,8 @@ BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildRequires:  desktop-file-utils
 BuildRequires:  system-bookmarks
 BuildRequires:  xulrunner-devel >= %{xulrunner_version}
+# For WebM support
+BuildRequires:	yasm
 
 Requires:       xulrunner >= %{xulrunner_version}
 Conflicts:      xulrunner >= %{xulrunner_version_max}
