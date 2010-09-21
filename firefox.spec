@@ -2,7 +2,7 @@
 %define default_bookmarks_file %{_datadir}/bookmarks/default-bookmarks.html
 %define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
-%global internal_version	4.0
+%global internal_version	4
 
 # This is a bit of a hack, but the tabview files have to be in the xulrunner_libdir
 %{!?xulrunner_libdir: %global xulrunner_libdir %(pkg-config --variable=libdir libxul)}
@@ -12,29 +12,29 @@
 
 # xulrunner_version matches the firefox package.
 # xulrunner_version_max is first next incompatible xulrunner version
-%define xulrunner_version       1.9.3.0
-%define xulrunner_version_max   1.9.3.1
+%define xulrunner_version       2.0-0.1b6
+%define xulrunner_version_max   2.1
 
 %define official_branding       0
-%define build_langpacks         1
+%define build_langpacks         0
 %define include_debuginfo       0
 
 %if ! %{official_branding}
 %define cvsdate 20080327
 %define nightly .cvs%{cvsdate}
-%define prever  b4
+%define prever  b6
 %endif
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        4.0
-Release:        0.2%{?prever}%{?dist}
+Release:        0.3%{?prever}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?prever}/source/firefox-%{version}%{?prever}.source.tar.bz2
 %if %{build_langpacks}
-Source2:        firefox-langpacks-%{version}%{?prever}-20100830.tar.bz2
+Source2:        firefox-langpacks-%{version}%{?prever}-20100921.tar.bz2
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -366,7 +366,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{mozappdir}/defaults
 %dir %{mozappdir}/extensions
 %{mozappdir}/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}
+%if %{build_langpacks}
 %dir %{mozappdir}/langpacks
+%endif
 %{mozappdir}/icons
 %{mozappdir}/searchplugins
 %{mozappdir}/firefox
@@ -399,6 +401,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Sep 21 2010 Martin Stransky <stransky@redhat.com> - 4.0-0.3.b6
+- Update to 4.0 Beta 6
+- Disabled langpacks for now
+
 * Tue Sep  7 2010 Tom "spot" Callaway <tcallawa@redhat.com> - 4.0-0.2.b4
 - get package building and mostly functional
 
