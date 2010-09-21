@@ -16,7 +16,7 @@
 %define xulrunner_version_max   2.1
 
 %define official_branding       0
-%define build_langpacks         0
+%define build_langpacks         1
 %define include_debuginfo       0
 
 %if ! %{official_branding}
@@ -265,21 +265,8 @@ for langpack in `ls firefox-langpacks/*.xpi`; do
   unzip $langpack -d $extensiondir
   find $extensiondir -type f | xargs chmod 644
 
-  tmpdir=`mktemp -d %{name}.XXXXXXXX`
-  langtmp=$tmpdir/%{name}/langpack-$language
-  %{__mkdir_p} $langtmp
-  jarfile=$extensiondir/chrome/$language.jar
-  unzip $jarfile -d $langtmp
-
   sed -i -e "s|browser.startup.homepage.*$|browser.startup.homepage=%{homepage}|g;" \
-         $langtmp/locale/browser-region/region.properties
-
-  find $langtmp -type f | xargs chmod 644
-  %{__rm} -rf $jarfile
-  cd $langtmp
-  zip -r -D $jarfile locale
-  cd -
-  %{__rm} -rf $tmpdir
+         $extensiondir/chrome/$language/locale/branding/browserconfig.properties
 
   language=`echo $language | sed -e 's/-/_/g'`
   extensiondir=`echo $extensiondir | sed -e "s,^$RPM_BUILD_ROOT,,"`
@@ -403,7 +390,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %changelog
 * Tue Sep 21 2010 Martin Stransky <stransky@redhat.com> - 4.0-0.3.b6
 - Update to 4.0 Beta 6
-- Disabled langpacks for now
 
 * Tue Sep  7 2010 Tom "spot" Callaway <tcallawa@redhat.com> - 4.0-0.2.b4
 - get package building and mostly functional
