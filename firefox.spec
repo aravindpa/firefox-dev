@@ -28,7 +28,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        4.0
-Release:        0.3%{?prever}%{?dist}
+Release:        0.4%{?prever}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -388,6 +388,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Sep 29 2010 jkeating - 4.0-0.4b6
+- Rebuilt for gcc bug 634757
+
 * Tue Sep 21 2010 Martin Stransky <stransky@redhat.com> - 4.0-0.3.b6
 - Update to 4.0 Beta 6
 
