@@ -22,19 +22,19 @@
 %if ! %{official_branding}
 %define cvsdate 20080327
 %define nightly .cvs%{cvsdate}
-%define prever  b6
+%define prever  b7
 %endif
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        4.0
-Release:        0.4%{?prever}%{?dist}
+Release:        0.5%{?prever}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?prever}/source/firefox-%{version}%{?prever}.source.tar.bz2
 %if %{build_langpacks}
-Source2:        firefox-langpacks-%{version}%{?prever}-20100921.tar.bz2
+Source2:        firefox-langpacks-%{version}%{?prever}-20101111.tar.bz2
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -388,6 +388,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Nov 11 2010 Jan Horak <jhorak@redhat.com> - 4.0b7-1
+- Update to 4.0b7
+- Added x-scheme-handler to firefox.desktop
+
 * Wed Sep 29 2010 jkeating - 4.0-0.4b6
 - Rebuilt for gcc bug 634757
 
