@@ -53,7 +53,6 @@ Patch1:         firefox4-jemalloc.patch
 Patch2:         firefox4-build-throw.patch
 
 # Fedora patches
-Patch10:        firefox-disable-checkupdates.patch
 Patch11:        firefox-default.patch
 
 # Upstream patches
@@ -107,7 +106,6 @@ sed -e 's/__RPM_VERSION_INTERNAL__/%{internal_version}/' %{P:%%PATCH0} \
 %patch2 -p1 -b .throw
 
 # Fedora patches
-%patch10 -p1 -b .checkupdates
 %patch11 -p2 -b .default
 
 %if %{official_branding}
