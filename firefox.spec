@@ -12,7 +12,7 @@
 
 # xulrunner_version matches the firefox package.
 # xulrunner_version_max is first next incompatible xulrunner version
-%define xulrunner_version       2.0-0.1b6
+%define xulrunner_version       2.0-0.6b7
 %define xulrunner_version_max   2.1
 
 %define official_branding       0
