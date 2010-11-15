@@ -367,11 +367,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{mozappdir}/modules/stylePanel.jsm
 # Hack Hack Hack
 %{xulrunner_libdir}/modules/tabview/
-%{xulrunner_libdir}/modules/services-sync/
-%{xulrunner_libdir}/modules/services-crypto/WeaveCrypto.js
-%{xulrunner_libdir}/modules/domplate.jsm
-%{xulrunner_libdir}/modules/PropertyPanel.jsm
-%{xulrunner_libdir}/modules/HUDService.jsm
+%{mozappdir}/modules/services-sync/
+%{mozappdir}/modules/services-crypto/WeaveCrypto.js
+%{mozappdir}/modules/domplate.jsm
+%{mozappdir}/modules/PropertyPanel.jsm
+%{mozappdir}/modules/HUDService.jsm
 %exclude %{mozappdir}/removed-files
 %{_datadir}/icons/hicolor/16x16/apps/firefox.png
 %{_datadir}/icons/hicolor/22x22/apps/firefox.png
