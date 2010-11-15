@@ -367,7 +367,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{mozappdir}/modules/stylePanel.jsm
 # Hack Hack Hack
 %{xulrunner_libdir}/modules/tabview/
-%{mozappdir}/updater*
 %exclude %{mozappdir}/removed-files
 %{_datadir}/icons/hicolor/16x16/apps/firefox.png
 %{_datadir}/icons/hicolor/22x22/apps/firefox.png
