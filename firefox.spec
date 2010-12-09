@@ -4,9 +4,6 @@
 
 %global internal_version	4
 
-# This is a bit of a hack, but the tabview files have to be in the xulrunner_libdir
-%{!?xulrunner_libdir: %global xulrunner_libdir %(pkg-config --variable=libdir libxul)}
-
 %global mozappdir               %{_libdir}/%{name}-%{internal_version}
 %global tarballdir              mozilla-central
 
@@ -15,7 +12,7 @@
 %define xulrunner_version       2.0-0.6b7
 %define xulrunner_version_max   2.1
 
-%define official_branding       0
+%define official_branding       1
 %define build_langpacks         1
 %define include_debuginfo       0
 
@@ -28,7 +25,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        4.0
-Release:        0.5%{?prever}%{?dist}
+Release:        0.6%{?prever}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -176,10 +173,6 @@ MOZ_APP_DIR=%{_libdir}/${INTERNAL_APP_NAME}
 DESTDIR=$RPM_BUILD_ROOT make install
 
 %{__mkdir_p} $RPM_BUILD_ROOT{%{_libdir},%{_bindir},%{_datadir}/applications}
-
-# This is a HACK. Firefox4 won't find the tabview code unless it is in the xulrunner directory.
-mkdir -p %{buildroot}/%{xulrunner_libdir}/modules/
-mv %{buildroot}%{mozappdir}/modules/tabview/ %{buildroot}/%{xulrunner_libdir}/modules/
 
 desktop-file-install --vendor mozilla \
   --dir $RPM_BUILD_ROOT%{_datadir}/applications \
@@ -365,8 +358,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{mozappdir}/modules/NetworkPrioritizer.jsm
 %{mozappdir}/modules/PlacesUIUtils.jsm
 %{mozappdir}/modules/stylePanel.jsm
-# Hack Hack Hack
-%{xulrunner_libdir}/modules/tabview/
+%{mozappdir}/modules/tabview/
 %{mozappdir}/modules/services-sync/
 %{mozappdir}/modules/services-crypto/WeaveCrypto.js
 %{mozappdir}/modules/domplate.jsm
@@ -390,6 +382,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Dec  8 2010 Christopher Aillon <caillon@redhat.com> - 4.0-0.6b7
+- Use official branding since this is an official beta
+- Fix Tab Candy/Panorama (#658573)
+
 * Thu Nov 11 2010 Jan Horak <jhorak@redhat.com> - 4.0b7-1
 - Update to 4.0b7
 - Added x-scheme-handler to firefox.desktop
