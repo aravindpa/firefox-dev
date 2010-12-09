@@ -19,6 +19,7 @@
 %if ! %{official_branding}
 %define cvsdate 20080327
 %define nightly .cvs%{cvsdate}
+%else
 %define prever  b7
 %endif
 
