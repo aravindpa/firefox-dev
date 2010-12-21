@@ -26,7 +26,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        4.0
-Release:        0.6%{?prever}%{?dist}
+Release:        0.7%{?prever}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -188,6 +188,10 @@ XULRUNNER_DIR=`pkg-config --variable=libdir libxul | %{__sed} -e "s,%{_libdir},,
 		     | %{__sed} -e "s,XULRUNNER_DIRECTORY,$XULRUNNER_DIR,g" > \
   $RPM_BUILD_ROOT%{_bindir}/firefox
 %{__chmod} 755 $RPM_BUILD_ROOT%{_bindir}/firefox
+
+# Remove binary stub from xulrunner
+%{__rm} -rf $RPM_BUILD_ROOT/%{mozappdir}/firefox
+ln -s `pkg-config --variable=libdir libxul`/xulrunner-stub $RPM_BUILD_ROOT/%{mozappdir}/firefox
 
 # set up our default preferences
 %{__cat} %{SOURCE12} | %{__sed} -e 's,FIREFOX_RPM_VR,%{version}-%{release},g' > rh-default-prefs
@@ -383,6 +387,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Dec 21 2010 Martin Stransky <stransky@redhat.com> - 4.0-0.7b7
+- Fixed rhbz#437608 - When prelink is installed, 
+  rpm builds are garbage
+
 * Wed Dec  8 2010 Christopher Aillon <caillon@redhat.com> - 4.0-0.6b7
 - Use official branding since this is an official beta
 - Fix Tab Candy/Panorama (#658573)
