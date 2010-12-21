@@ -9,7 +9,7 @@
 
 # xulrunner_version matches the firefox package.
 # xulrunner_version_max is first next incompatible xulrunner version
-%define xulrunner_version       2.0-0.6b7
+%define xulrunner_version       2.0-0.10b8
 %define xulrunner_version_max   2.1
 
 %define official_branding       1
@@ -20,7 +20,7 @@
 %define cvsdate 20080327
 %define nightly .cvs%{cvsdate}
 %else
-%define prever  b7
+%define prever  b8
 %endif
 
 Summary:        Mozilla Firefox Web browser
@@ -32,7 +32,7 @@ License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?prever}/source/firefox-%{version}%{?prever}.source.tar.bz2
 %if %{build_langpacks}
-Source2:        firefox-langpacks-%{version}%{?prever}-20101111.tar.bz2
+Source2:        firefox-langpacks-%{version}%{?prever}-20101221.tar.bz2
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -387,7 +387,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
-* Tue Dec 21 2010 Martin Stransky <stransky@redhat.com> - 4.0-0.7b7
+* Tue Dec 21 2010 Martin Stransky <stransky@redhat.com> - 4.0-0.7b8
+- Update to Beta 8
 - Fixed rhbz#437608 - When prelink is installed, 
   rpm builds are garbage
 
