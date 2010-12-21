@@ -9,7 +9,7 @@
 
 # xulrunner_version matches the firefox package.
 # xulrunner_version_max is first next incompatible xulrunner version
-%define xulrunner_version       2.0-0.10b8
+%define xulrunner_version       2.0-0.11b8
 %define xulrunner_version_max   2.1
 
 %define official_branding       1
@@ -361,11 +361,12 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{mozappdir}/modules/distribution.js
 %{mozappdir}/modules/openLocationLastURL.jsm
 %{mozappdir}/modules/NetworkPrioritizer.jsm
+%{mozappdir}/modules/NetworkHelper.jsm
 %{mozappdir}/modules/PlacesUIUtils.jsm
 %{mozappdir}/modules/stylePanel.jsm
 %{mozappdir}/modules/tabview/
 %{mozappdir}/modules/services-sync/
-%{mozappdir}/modules/services-crypto/WeaveCrypto.js
+#%{mozappdir}/modules/services-crypto/WeaveCrypto.js
 %{mozappdir}/modules/domplate.jsm
 %{mozappdir}/modules/PropertyPanel.jsm
 %{mozappdir}/modules/HUDService.jsm
