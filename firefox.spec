@@ -1,3 +1,10 @@
+# Separated plugins are supported on x86(64) only
+%ifarch i386 i686 x86_64
+%define separated_plugins 1
+%else
+%define separated_plugins 0
+%endif
+
 %define homepage http://start.fedoraproject.org/
 %define default_bookmarks_file %{_datadir}/bookmarks/default-bookmarks.html
 %define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
@@ -26,7 +33,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        4.0
-Release:        0.10%{?prever}%{?dist}
+Release:        0.11%{?prever}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -126,6 +133,10 @@ sed -e 's/__RPM_VERSION_INTERNAL__/%{internal_version}/' %{P:%%PATCH0} \
 # Set up SDK path
 echo "ac_add_options --with-libxul-sdk=\
 `pkg-config --variable=sdkdir libxul`" >> .mozconfig
+
+%if !%{?separated_plugins}
+echo "ac_add_options --disable-ipc" >> .mozconfig
+%endif
 
 #---------------------------------------------------------------------
 
@@ -386,10 +397,13 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
-* Tue Jan 6 2011 Martin Stransky <stransky@redhat.com> - 4.0-0.10b8
+* Thu Jan 6 2011 Dan Horák <dan[at]danny.cz> - 4.0-0.11b8
+- disable ipc on non-x86 arches to match xulrunner
+
+* Thu Jan 6 2011 Martin Stransky <stransky@redhat.com> - 4.0-0.10b8
 - application.ini permission check fix
 
-* Tue Jan 6 2011 Martin Stransky <stransky@redhat.com> - 4.0-0.9b8
+* Thu Jan 6 2011 Martin Stransky <stransky@redhat.com> - 4.0-0.9b8
 - Fixed rhbz#667477 - broken launch script
 
 * Tue Jan 4 2011 Martin Stransky <stransky@redhat.com> - 4.0-0.8b8
