@@ -50,8 +50,8 @@ esac
 
 MOZ_FIREFOX_FILE="application.ini"
 
-if [ ! -x $MOZ_LIB_DIR/firefox-FIREFOX_VERSION/$MOZ_FIREFOX_FILE ]; then
-    if [ ! -x $SECONDARY_LIB_DIR/firefox-FIREFOX_VERSION/$MOZ_FIREFOX_FILE ]; then
+if [ ! -r $MOZ_LIB_DIR/firefox-FIREFOX_VERSION/$MOZ_FIREFOX_FILE ]; then
+    if [ ! -r $SECONDARY_LIB_DIR/firefox-FIREFOX_VERSION/$MOZ_FIREFOX_FILE ]; then
 	echo "Error: $MOZ_LIB_DIR/firefox-FIREFOX_VERSION/$MOZ_FIREFOX_FILE not found"
 	if [ -d $SECONDARY_LIB_DIR ]; then
 	    echo "       $SECONDARY_LIB_DIR/firefox-FIREFOX_VERSION/$MOZ_FIREFOX_FILE not found"

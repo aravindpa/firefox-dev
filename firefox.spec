@@ -26,7 +26,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        4.0
-Release:        0.9%{?prever}%{?dist}
+Release:        0.10%{?prever}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -386,6 +386,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Jan 6 2011 Martin Stransky <stransky@redhat.com> - 4.0-0.10b8
+- application.ini permission check fix
+
 * Tue Jan 6 2011 Martin Stransky <stransky@redhat.com> - 4.0-0.9b8
 - Fixed rhbz#667477 - broken launch script
 
