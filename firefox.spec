@@ -16,7 +16,7 @@
 
 # xulrunner_version matches the firefox package.
 # xulrunner_version_max is first next incompatible xulrunner version
-%define xulrunner_version       2.0-0.11b8
+%define xulrunner_version       2.0-0.15b9
 %define xulrunner_version_max   2.1
 
 %define official_branding       1
@@ -27,19 +27,19 @@
 %define cvsdate 20080327
 %define nightly .cvs%{cvsdate}
 %else
-%define prever  b8
+%define prever  b9
 %endif
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        4.0
-Release:        0.11%{?prever}%{?dist}
+Release:        0.12%{?prever}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?prever}/source/firefox-%{version}%{?prever}.source.tar.bz2
 %if %{build_langpacks}
-Source2:        firefox-langpacks-%{version}%{?prever}-20101221.tar.bz2
+Source2:        firefox-langpacks-%{version}%{?prever}-20110111.tar.bz2
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -375,7 +375,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{mozappdir}/modules/stylePanel.jsm
 %{mozappdir}/modules/tabview/
 %{mozappdir}/modules/services-sync/
-#%{mozappdir}/modules/services-crypto/WeaveCrypto.js
+%{mozappdir}/modules/services-crypto/WeaveCrypto.js
 %{mozappdir}/modules/domplate.jsm
 %{mozappdir}/modules/PropertyPanel.jsm
 %{mozappdir}/modules/HUDService.jsm
@@ -397,6 +397,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Jan 14 2011 Christopher Aillon <caillon@redhat.com> - 4.0-0.12b9
+- Firefox 4.0 Beta 9
+
 * Thu Jan 6 2011 Dan Horák <dan[at]danny.cz> - 4.0-0.11b8
 - disable ipc on non-x86 arches to match xulrunner
 
