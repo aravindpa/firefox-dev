@@ -153,10 +153,13 @@ export PREFIX='%{_prefix}'
 export LIBDIR='%{_libdir}'
 
 MOZ_SMP_FLAGS=-j1
-%ifnarch ppc ppc64 s390 s390x
+# On x86 architectures, Mozilla can build up to 4 jobs at once in parallel,
+# however builds tend to fail on other arches when building in parallel.
+%ifarch %{ix86} x86_64
 [ -z "$RPM_BUILD_NCPUS" ] && \
      RPM_BUILD_NCPUS="`/usr/bin/getconf _NPROCESSORS_ONLN`"
-[ "$RPM_BUILD_NCPUS" -gt 1 ] && MOZ_SMP_FLAGS=-j2
+[ "$RPM_BUILD_NCPUS" -ge 2 ] && MOZ_SMP_FLAGS=-j2
+[ "$RPM_BUILD_NCPUS" -ge 4 ] && MOZ_SMP_FLAGS=-j4
 %endif
 
 INTERNAL_GECKO=%{internal_version}
