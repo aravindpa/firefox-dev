@@ -39,7 +39,7 @@ License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?prever}/source/firefox-%{version}%{?prever}.source.tar.bz2
 %if %{build_langpacks}
-Source2:        firefox-langpacks-%{version}%{?prever}-20110111.tar.bz2
+Source1:        firefox-langpacks-%{version}%{?prever}-20110111.tar.bz2
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -270,7 +270,7 @@ echo > ../%{name}.lang
 %if %{build_langpacks}
 # Install langpacks
 %{__mkdir_p} $RPM_BUILD_ROOT/%{mozappdir}/langpacks
-%{__tar} xjf %{SOURCE2}
+%{__tar} xjf %{SOURCE1}
 for langpack in `ls firefox-langpacks/*.xpi`; do
   language=`basename $langpack .xpi`
   extensiondir=$RPM_BUILD_ROOT/%{mozappdir}/langpacks/langpack-$language@firefox.mozilla.org
