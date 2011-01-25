@@ -145,7 +145,11 @@ cd %{tarballdir}
 
 # Mozilla builds with -Wall with exception of a few warnings which show up
 # everywhere in the code; so, don't override that.
-export MOZ_OPT_FLAGS=$(echo $RPM_OPT_FLAGS | %{__sed} -e 's/-Wall//' | %{__sed} -e 's/-fexceptions/-fno-exceptions/g')
+#
+# Disable C++ exceptions since Mozilla code is not exception-safe
+#
+MOZ_OPT_FLAGS=$(echo $RPM_OPT_FLAGS | \
+                     %{__sed} -e 's/-Wall//' -e 's/-fexceptions/-fno-exceptions/g')
 export CFLAGS=$MOZ_OPT_FLAGS
 export CXXFLAGS=$MOZ_OPT_FLAGS
 
