@@ -16,7 +16,7 @@
 
 # xulrunner_version matches the firefox package.
 # xulrunner_version_max is first next incompatible xulrunner version
-%define xulrunner_version       2.0-0.15b9
+%define xulrunner_version       2.0-0.17b10
 %define xulrunner_version_max   2.1
 
 %define official_branding       1
@@ -27,19 +27,19 @@
 %define cvsdate 20080327
 %define nightly .cvs%{cvsdate}
 %else
-%define prever  b9
+%define prever  b10
 %endif
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        4.0
-Release:        0.12%{?prever}%{?dist}
+Release:        0.13%{?prever}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?prever}/source/firefox-%{version}%{?prever}.source.tar.bz2
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?prever}-20110111.tar.bz2
+Source1:        firefox-langpacks-%{version}%{?prever}-20110125.tar.bz2
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -404,6 +404,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Jan 25 2011 Christopher Aillon <caillon@redhat.com> - 4.0-0.13b10
+- Firefox 4.0 Beta 10
+
 * Fri Jan 14 2011 Christopher Aillon <caillon@redhat.com> - 4.0-0.12b9
 - Firefox 4.0 Beta 9
 

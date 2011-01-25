@@ -69,14 +69,14 @@ diff -up firefox-4.0/mozilla-central/browser/components/shell/src/nsGNOMEShellSe
 @@ -215,8 +209,8 @@ nsGNOMEShellService::SetDefaultBrowser(P
  
    nsCOMPtr<nsIGConfService> gconf = do_GetService(NS_GCONFSERVICE_CONTRACTID);
- 
--  nsCAutoString appKeyValue(mAppPath);
--  appKeyValue.Append(" \"%s\"");
-+  nsCAutoString appKeyValue(MOZ_APP_NAME);
-+  appKeyValue.Append(" %s");
-   unsigned int i;
- 
-   for (i = 0; i < NS_ARRAY_LENGTH(appProtocols); ++i) {
+   if (gconf) {
+-    nsCAutoString appKeyValue(mAppPath);
+-    appKeyValue.Append(" \"%s\"");
++    nsCAutoString appKeyValue(MOZ_APP_NAME);
++    appKeyValue.Append(" %s");
+     for (unsigned int i = 0; i < NS_ARRAY_LENGTH(appProtocols); ++i) {
+       if (appProtocols[i].essential || aClaimAllTypes) {
+         gconf->SetAppForProtocol(nsDependentCString(appProtocols[i].name),
 diff -up firefox-4.0/mozilla-central/browser/components/shell/src/nsGNOMEShellService.h.default firefox-4.0/mozilla-central/browser/components/shell/src/nsGNOMEShellService.h
 --- firefox-4.0/mozilla-central/browser/components/shell/src/nsGNOMEShellService.h.default	2010-08-06 03:08:59.000000000 +0200
 +++ firefox-4.0/mozilla-central/browser/components/shell/src/nsGNOMEShellService.h	2010-08-30 16:35:22.000000000 +0200
