@@ -74,7 +74,6 @@ Patch11:        firefox-default.patch
 
 # ---------------------------------------------------
 
-BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildRequires:  desktop-file-utils
 BuildRequires:  system-bookmarks
 BuildRequires:  xulrunner-devel >= %{xulrunner_version}
@@ -181,7 +180,6 @@ make buildsymbols
 #---------------------------------------------------------------------
 
 %install
-%{__rm} -rf $RPM_BUILD_ROOT
 cd %{tarballdir}
 
 INTERNAL_GECKO=%{internal_version}
@@ -306,11 +304,6 @@ touch $RPM_BUILD_ROOT/%{mozappdir}/components/xpti.dat
 %if %{include_debuginfo}
 sed -i -e "s/\[Crash Reporter\]/[Crash Reporter]\nEnabled=1/" $RPM_BUILD_ROOT/%{mozappdir}/application.ini
 %endif
-
-#---------------------------------------------------------------------
-
-%clean
-%{__rm} -rf $RPM_BUILD_ROOT
 
 #---------------------------------------------------------------------
 
