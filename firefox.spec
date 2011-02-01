@@ -54,8 +54,6 @@ Source23:       firefox.1
 
 #Build patches
 Patch0:         firefox-version.patch
-Patch1:         firefox4-jemalloc.patch
-Patch2:         firefox4-build-throw.patch
 
 # Fedora patches
 Patch11:        firefox-default.patch
@@ -106,8 +104,6 @@ sed -e 's/__RPM_VERSION_INTERNAL__/%{internal_version}/' %{P:%%PATCH0} \
     
 
 # For branding specific patches.
-%patch1 -p1 -b .526152
-%patch2 -p1 -b .throw
 
 # Fedora patches
 %patch11 -p2 -b .default
@@ -294,9 +290,6 @@ done
 # ghost files
 touch $RPM_BUILD_ROOT/%{mozappdir}/components/compreg.dat
 touch $RPM_BUILD_ROOT/%{mozappdir}/components/xpti.dat
-
-# jemalloc shows up sometimes, but it's not needed here, it's in XR
-%{__rm} -f $RPM_BUILD_ROOT/%{mozappdir}/libjemalloc.so
 
 # Enable crash reporter for Firefox application
 %if %{include_debuginfo}
