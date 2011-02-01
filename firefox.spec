@@ -193,8 +193,6 @@ DESTDIR=$RPM_BUILD_ROOT make install
 
 desktop-file-install --vendor mozilla \
   --dir $RPM_BUILD_ROOT%{_datadir}/applications \
-  --add-category WebBrowser \
-  --add-category Network \
   %{SOURCE20} 
 
 # set up the firefox start script
