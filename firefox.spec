@@ -228,15 +228,6 @@ ln -s %{default_bookmarks_file} $RPM_BUILD_ROOT/%{mozappdir}/defaults/profile/bo
 
 %{__rm} -f $RPM_BUILD_ROOT/%{mozappdir}/firefox-config
 
-#cd $RPM_BUILD_ROOT/%{mozappdir}/chrome
-#find . -name "*" -type d -maxdepth 1 -exec %{__rm} -rf {} \;
-#cd -
-
-#%{__cat} > $RPM_BUILD_ROOT/%{mozappdir}/defaults/pref/firefox-l10n.js << EOF
-#pref("general.useragent.locale", "chrome://global/locale/intl.properties");
-#EOF
-#%{__chmod} 644 $RPM_BUILD_ROOT/%{mozappdir}/defaults/pref/firefox-l10n.js
-
 %{__cp} other-licenses/branding/%{name}/default16.png \
         $RPM_BUILD_ROOT/%{mozappdir}/icons/
 %{__mkdir_p} $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/16x16/apps
