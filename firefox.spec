@@ -33,7 +33,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        4.0
-Release:        0.13%{?prever}%{?dist}
+Release:        0.14%{?prever}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -106,7 +106,7 @@ sed -e 's/__RPM_VERSION_INTERNAL__/%{internal_version}/' %{P:%%PATCH0} \
 # For branding specific patches.
 
 # Fedora patches
-%patch11 -p2 -b .default
+%patch11 -p1 -b .default
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -379,6 +379,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Feb 07 2011 Christopher Aillon <caillon@redhat.com> - 4.0-0.14b10
+- Bring back the default browser check
+
 * Tue Jan 25 2011 Christopher Aillon <caillon@redhat.com> - 4.0-0.13b10
 - Firefox 4.0 Beta 10
 
