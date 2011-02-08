@@ -33,7 +33,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        4.0
-Release:        0.15%{?prever}%{?dist}
+Release:        0.16%{?prever}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -379,6 +379,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Feb 08 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 4.0-0.16b11
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
+
 * Tue Feb 08 2011 Christopher Aillon <caillon@redhat.com> - 4.0-0.15b11
 - Firefox 4.0 Beta 11
 
