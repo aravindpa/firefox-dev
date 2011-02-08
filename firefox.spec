@@ -16,7 +16,7 @@
 
 # xulrunner_version matches the firefox package.
 # xulrunner_version_max is first next incompatible xulrunner version
-%define xulrunner_version       2.0-0.17b10
+%define xulrunner_version       2.0-0.19b11
 %define xulrunner_version_max   2.1
 
 %define official_branding       1
@@ -27,19 +27,19 @@
 %define cvsdate 20080327
 %define nightly .cvs%{cvsdate}
 %else
-%define prever  b10
+%define prever  b11
 %endif
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        4.0
-Release:        0.14%{?prever}%{?dist}
+Release:        0.15%{?prever}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?prever}/source/firefox-%{version}%{?prever}.source.tar.bz2
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?prever}-20110125.tar.bz2
+Source1:        firefox-langpacks-%{version}%{?prever}-20110208.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -253,7 +253,7 @@ echo > ../%{name}.lang
 %if %{build_langpacks}
 # Install langpacks
 %{__mkdir_p} $RPM_BUILD_ROOT/%{mozappdir}/langpacks
-%{__tar} xjf %{SOURCE1}
+%{__tar} xf %{SOURCE1}
 for langpack in `ls firefox-langpacks/*.xpi`; do
   language=`basename $langpack .xpi`
   extensiondir=$RPM_BUILD_ROOT/%{mozappdir}/langpacks/langpack-$language@firefox.mozilla.org
@@ -379,6 +379,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Feb 08 2011 Christopher Aillon <caillon@redhat.com> - 4.0-0.15b11
+- Firefox 4.0 Beta 11
+
 * Mon Feb 07 2011 Christopher Aillon <caillon@redhat.com> - 4.0-0.14b10
 - Bring back the default browser check
 
