@@ -9,37 +9,28 @@
 %define default_bookmarks_file %{_datadir}/bookmarks/default-bookmarks.html
 %define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
-%global internal_version	4
+%global firefox_dir_ver 4
+%global gecko_version   2.0-beta11
+%global pre_version     b11
+%global pre_tag         .%{?pre_version}
 
-%global mozappdir               %{_libdir}/%{name}-%{internal_version}
-%global tarballdir              mozilla-central
-
-# xulrunner_version matches the firefox package.
-# xulrunner_version_max is first next incompatible xulrunner version
-%define xulrunner_version       2.0-0.19b11
-%define xulrunner_version_max   2.1
+%global mozappdir     %{_libdir}/%{name}-%{firefox_dir_ver}
+%global tarballdir    mozilla-central
 
 %define official_branding       1
 %define build_langpacks         1
 %define include_debuginfo       0
 
-%if ! %{official_branding}
-%define cvsdate 20080327
-%define nightly .cvs%{cvsdate}
-%else
-%define prever  b11
-%endif
-
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        4.0
-Release:        0.15%{?prever}%{?dist}
+Release:        0.16%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
-Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?prever}/source/firefox-%{version}%{?prever}.source.tar.bz2
+Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.bz2
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?prever}-20110208.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20110208.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -74,12 +65,11 @@ Patch11:        firefox-default.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  system-bookmarks
-BuildRequires:  xulrunner-devel >= %{xulrunner_version}
+BuildRequires:  gecko-devel%{?_isa} = %{gecko_version}
 # For WebM support
 BuildRequires:	yasm
 
-Requires:       xulrunner >= %{xulrunner_version}
-Conflicts:      xulrunner >= %{xulrunner_version_max}
+Requires:       gecko-libs%{?_isa} = %{gecko_version}
 Requires:       system-bookmarks
 Obsoletes:      mozilla <= 37:1.7.13
 Provides:       webclient
@@ -98,7 +88,7 @@ compliance, performance and portability.
 %setup -q -c
 cd %{tarballdir}
 
-sed -e 's/__RPM_VERSION_INTERNAL__/%{internal_version}/' %{P:%%PATCH0} \
+sed -e 's/__RPM_VERSION_INTERNAL__/%{firefox_dir_ver}/' %{P:%%PATCH0} \
     > version.patch
 %{__patch} -p1 -b --suffix .version --fuzz=0 < version.patch
     
@@ -186,7 +176,7 @@ desktop-file-install --vendor mozilla \
 # set up the firefox start script
 %{__rm} -rf $RPM_BUILD_ROOT%{_bindir}/firefox
 XULRUNNER_DIR=`pkg-config --variable=libdir libxul | %{__sed} -e "s,%{_libdir},,g"`
-%{__cat} %{SOURCE21} | %{__sed} -e 's,FIREFOX_VERSION,%{internal_version},g' \
+%{__cat} %{SOURCE21} | %{__sed} -e 's,FIREFOX_VERSION,%{firefox_dir_ver},g' \
 		     | %{__sed} -e "s,XULRUNNER_DIRECTORY,$XULRUNNER_DIR,g" > \
   $RPM_BUILD_ROOT%{_bindir}/firefox
 %{__chmod} 755 $RPM_BUILD_ROOT%{_bindir}/firefox
@@ -371,6 +361,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Feb 10 2011 Christopher Aillon <caillon@redhat.com> - 4.0-0.16b11
+- Update gecko-{libs,devel} requires
+
 * Tue Feb 08 2011 Christopher Aillon <caillon@redhat.com> - 4.0-0.15b11
 - Firefox 4.0 Beta 11
 
