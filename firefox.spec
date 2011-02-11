@@ -39,9 +39,6 @@ Source13:       firefox-mozconfig-debuginfo
 Source20:       firefox.desktop
 Source21:       firefox.sh.in
 Source23:       firefox.1
-# Not necessary
-# Source100:      find-external-requires
-
 
 #Build patches
 Patch0:         firefox-version.patch
@@ -74,9 +71,6 @@ Requires:       system-bookmarks
 Obsoletes:      mozilla <= 37:1.7.13
 Provides:       webclient
 
-
-# %%define _use_internal_dependency_generator 0
-# %%define __find_requires %{SOURCE100}
 
 %description
 Mozilla Firefox is an open-source web browser, designed for standards
