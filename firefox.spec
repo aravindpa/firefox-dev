@@ -1,5 +1,5 @@
 # Separated plugins are supported on x86(64) only
-%ifarch i386 i686 x86_64
+%ifarch %{ix86} x86_64
 %define separated_plugins 1
 %else
 %define separated_plugins 0
