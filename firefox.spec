@@ -161,10 +161,7 @@ MOZ_SMP_FLAGS=-j1
 [ "$RPM_BUILD_NCPUS" -ge 4 ] && MOZ_SMP_FLAGS=-j4
 %endif
 
-INTERNAL_GECKO=%{internal_version}
-MOZ_APP_DIR=%{_libdir}/%{name}-${INTERNAL_GECKO}
-
-export LDFLAGS="-Wl,-rpath,${MOZ_APP_DIR}"
+export LDFLAGS="-Wl,-rpath,%{mozappdir}"
 make -f client.mk build STRIP="/bin/true" MOZ_MAKE_FLAGS="$MOZ_SMP_FLAGS" MOZ_SERVICES_SYNC="1"
 
 # create debuginfo for crash-stats.mozilla.com
@@ -177,11 +174,6 @@ make buildsymbols
 
 %install
 cd %{tarballdir}
-
-INTERNAL_GECKO=%{internal_version}
-
-INTERNAL_APP_NAME=%{name}-${INTERNAL_GECKO}
-MOZ_APP_DIR=%{_libdir}/${INTERNAL_APP_NAME}
 
 DESTDIR=$RPM_BUILD_ROOT make install
 
