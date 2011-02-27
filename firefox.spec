@@ -178,8 +178,8 @@ XULRUNNER_DIR=`pkg-config --variable=libdir libxul | %{__sed} -e "s,%{_libdir},,
 # Remove binary stub from xulrunner
 %{__rm} -rf $RPM_BUILD_ROOT/%{mozappdir}/firefox
 
-# set up our default preferences
-%{__cat} %{SOURCE12} | %{__sed} -e 's,FIREFOX_RPM_VR,%{version}-%{release},g' > rh-default-prefs
+# Install our default preferences
+%{__install} -p -D -m 644 %{SOURCE12} $RPM_BUILD_ROOT/%{mozappdir}/defaults/preferences/all-redhat.js
 
 # resolves bug #461880
 %{__cat} > $RPM_BUILD_ROOT/%{mozappdir}/browserconfig.properties << EOF
@@ -191,10 +191,6 @@ EOF
 pref("general.useragent.locale", "chrome://global/locale/intl.properties");
 EOF
 %{__chmod} 644 $RPM_BUILD_ROOT/%{mozappdir}/defaults/preferences/firefox-l10n.js
-
-# place the preferences
-%{__cp} rh-default-prefs $RPM_BUILD_ROOT/%{mozappdir}/defaults/preferences/all-redhat.js
-%{__rm} rh-default-prefs
 
 # set up our default bookmarks
 %{__rm} -f $RPM_BUILD_ROOT/%{mozappdir}/defaults/profile/bookmarks.html
