@@ -146,7 +146,7 @@ MOZ_SMP_FLAGS=-j1
 %endif
 
 export LDFLAGS="-Wl,-rpath,%{mozappdir}"
-make -f client.mk build STRIP="/bin/true" MOZ_MAKE_FLAGS="$MOZ_SMP_FLAGS" MOZ_SERVICES_SYNC="1"
+make -f client.mk build STRIP="/bin/true" MOZ_MAKE_FLAGS="$MOZ_SMP_FLAGS"
 
 # create debuginfo for crash-stats.mozilla.com
 %if %{include_debuginfo}
