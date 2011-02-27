@@ -24,7 +24,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        4.0
-Release:        0.17%{?pre_tag}%{?dist}
+Release:        0.18%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -159,6 +159,28 @@ make buildsymbols
 %install
 cd %{tarballdir}
 
+# set up our prefs and add it to the package manifest file, so it gets pulled in
+# to omni.jar which gets created during make install
+%{__cp} %{SOURCE12} dist/bin/defaults/preferences/all-redhat.js
+# This sed call "replaces" firefox.js with all-redhat.js, newline, and itself (&)
+# having the net effect of prepending all-redhat.js above firefox.js
+%{__sed} -i -e\
+    's|@BINPATH@/@PREF_DIR@/firefox.js|@BINPATH@/@PREF_DIR@/all-redhat.js\n&|' \
+    browser/installer/package-manifest.in
+
+# set up our default bookmarks
+%{__cp} -p %{default_bookmarks_file} dist/bin/defaults/profile/bookmarks.html
+
+# Make sure locale works for langpacks
+%{__cat} > dist/bin/defaults/preferences/firefox-l10n.js << EOF
+pref("general.useragent.locale", "chrome://global/locale/intl.properties");
+EOF
+
+# resolves bug #461880
+%{__cat} > dist/bin/chrome/en-US/locale/branding/browserconfig.properties << EOF
+browser.startup.homepage=%{homepage}
+EOF
+
 DESTDIR=$RPM_BUILD_ROOT make install
 
 %{__mkdir_p} $RPM_BUILD_ROOT{%{_libdir},%{_bindir},%{_datadir}/applications}
@@ -178,23 +200,6 @@ XULRUNNER_DIR=`pkg-config --variable=libdir libxul | %{__sed} -e "s,%{_libdir},,
 # Remove binary stub from xulrunner
 %{__rm} -rf $RPM_BUILD_ROOT/%{mozappdir}/firefox
 
-# Install our default preferences
-%{__install} -p -D -m 644 %{SOURCE12} $RPM_BUILD_ROOT/%{mozappdir}/defaults/preferences/all-redhat.js
-
-# resolves bug #461880
-%{__cat} > $RPM_BUILD_ROOT/%{mozappdir}/browserconfig.properties << EOF
-browser.startup.homepage=%{homepage}
-EOF
-
-# Export correct locale
-%{__cat} > $RPM_BUILD_ROOT/%{mozappdir}/defaults/preferences/firefox-l10n.js << EOF
-pref("general.useragent.locale", "chrome://global/locale/intl.properties");
-EOF
-%{__chmod} 644 $RPM_BUILD_ROOT/%{mozappdir}/defaults/preferences/firefox-l10n.js
-
-# set up our default bookmarks
-%{__rm} -f $RPM_BUILD_ROOT/%{mozappdir}/defaults/profile/bookmarks.html
-ln -s %{default_bookmarks_file} $RPM_BUILD_ROOT/%{mozappdir}/defaults/profile/bookmarks.html
 
 %{__install} -p -D -m 644 %{SOURCE23} $RPM_BUILD_ROOT%{_mandir}/man1/firefox.1
 
@@ -297,42 +302,24 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %dir %{mozappdir}
 %doc %{mozappdir}/LICENSE
 %doc %{mozappdir}/README.txt
-%{mozappdir}/*.properties
 %{mozappdir}/chrome
 %{mozappdir}/chrome.manifest
 %dir %{mozappdir}/components
 %ghost %{mozappdir}/components/compreg.dat
 %ghost %{mozappdir}/components/xpti.dat
 %{mozappdir}/components/*.so
-%{mozappdir}/components/*.xpt
-# %{mozappdir}/components/browser.manifest
-%{mozappdir}/components/components.manifest
-%{mozappdir}/components/interfaces.manifest
+%{mozappdir}/components/binary.manifest
 %attr(644, root, root) %{mozappdir}/blocklist.xml
-%attr(644, root, root) %{mozappdir}/components/*.js
-%{mozappdir}/defaults
 %dir %{mozappdir}/extensions
 %{mozappdir}/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}
 %if %{build_langpacks}
 %dir %{mozappdir}/langpacks
 %endif
+%{mozappdir}/omni.jar
 %{mozappdir}/icons
 %{mozappdir}/searchplugins
 %{mozappdir}/run-mozilla.sh
 %{mozappdir}/application.ini
-%dir %{mozappdir}/modules
-%{mozappdir}/modules/distribution.js
-%{mozappdir}/modules/openLocationLastURL.jsm
-%{mozappdir}/modules/NetworkPrioritizer.jsm
-%{mozappdir}/modules/NetworkHelper.jsm
-%{mozappdir}/modules/PlacesUIUtils.jsm
-%{mozappdir}/modules/stylePanel.jsm
-%{mozappdir}/modules/tabview/
-%{mozappdir}/modules/services-sync/
-%{mozappdir}/modules/services-crypto/WeaveCrypto.js
-%{mozappdir}/modules/domplate.jsm
-%{mozappdir}/modules/PropertyPanel.jsm
-%{mozappdir}/modules/HUDService.jsm
 %exclude %{mozappdir}/removed-files
 %{_datadir}/icons/hicolor/16x16/apps/firefox.png
 %{_datadir}/icons/hicolor/22x22/apps/firefox.png
@@ -351,6 +338,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Sat Feb 26 2011 Christopher Aillon <caillon@redhat.com> - 4.0-0.18b12
+- Switch to using the omni chrome file format
+
 * Fri Feb 25 2011 Christopher Aillon <caillon@redhat.com> - 4.0-0.17b12
 - Firefox 4.0 Beta 12
 
