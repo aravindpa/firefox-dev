@@ -255,10 +255,6 @@ done
 # Copy over the LICENSE
 %{__install} -p -c -m 644 LICENSE $RPM_BUILD_ROOT/%{mozappdir}
 
-# ghost files
-touch $RPM_BUILD_ROOT/%{mozappdir}/components/compreg.dat
-touch $RPM_BUILD_ROOT/%{mozappdir}/components/xpti.dat
-
 # Enable crash reporter for Firefox application
 %if %{include_debuginfo}
 sed -i -e "s/\[Crash Reporter\]/[Crash Reporter]\nEnabled=1/" $RPM_BUILD_ROOT/%{mozappdir}/application.ini
@@ -305,8 +301,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{mozappdir}/chrome
 %{mozappdir}/chrome.manifest
 %dir %{mozappdir}/components
-%ghost %{mozappdir}/components/compreg.dat
-%ghost %{mozappdir}/components/xpti.dat
 %{mozappdir}/components/*.so
 %{mozappdir}/components/binary.manifest
 %attr(644, root, root) %{mozappdir}/blocklist.xml
