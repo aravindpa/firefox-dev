@@ -161,9 +161,6 @@ export GNOME_DISABLE_CRASH_DIALOG
 ##
 FEDORA_LANGPACK_CONFIG="$MOZ_EXTENSIONS_PROFILE_DIR/.fedora-langpack-install"
 
-# check system locale
-MOZARGS=
-
 # MOZ_DISABLE_LANGPACKS disables language packs completely
 MOZILLA_DOWN=0
 if ! [ $MOZ_DISABLE_LANGPACKS ] || [ $MOZ_DISABLE_LANGPACKS -eq 0 ]; then
@@ -216,15 +213,6 @@ if [ $MOZILLA_DOWN -ne 0 ]; then
             echo "$MOZ_EXTENSIONS_PROFILE_DIR/langpack-${MOZLOCALE}@firefox.mozilla.org" > $FEDORA_LANGPACK_CONFIG
         fi
     fi
-
-    # And set it up for mozilla
-    if [ -f $MOZ_EXTENSIONS_PROFILE_DIR/langpack-${SHORTMOZLOCALE}@firefox.mozilla.org/$MANIFEST ]; then
-        MOZARGS="-UILocale $SHORTMOZLOCALE"
-    else
-        if [ -f $MOZ_EXTENSIONS_PROFILE_DIR/langpack-${MOZLOCALE}@firefox.mozilla.org/$MANIFEST ]; then
-            MOZARGS="-UILocale $MOZLOCALE"
-        fi
-    fi
 fi
 
 # Prepare command line arguments
@@ -260,7 +248,7 @@ done
 debugging=0
 if [ $debugging = 1 ]
 then
-  echo $MOZ_LAUNCHER $script_args $MOZ_PROGRAM $MOZARGS "$@"
+  echo $MOZ_LAUNCHER $script_args $MOZ_PROGRAM "$@"
 fi
 
-exec $MOZ_LAUNCHER $script_args $MOZ_PROGRAM $MOZARGS "$@"
+exec $MOZ_LAUNCHER $script_args $MOZ_PROGRAM "$@"
