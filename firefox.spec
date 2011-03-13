@@ -229,22 +229,26 @@ XULRUNNER_DIR=`pkg-config --variable=libdir libxul | %{__sed} -e "s,%{_libdir},,
 
 echo > ../%{name}.lang
 %if %{build_langpacks}
-# Install langpacks
+# Extract langpacks, make any mods needed, repack the langpack, and install it.
 %{__mkdir_p} $RPM_BUILD_ROOT%{langpackdir}
 %{__tar} xf %{SOURCE1}
 for langpack in `ls firefox-langpacks/*.xpi`; do
   language=`basename $langpack .xpi`
-  extensiondir=$RPM_BUILD_ROOT%{langpackdir}/langpack-$language@firefox.mozilla.org
-  %{__mkdir_p} $extensiondir
-  unzip $langpack -d $extensiondir
-  find $extensiondir -type f | xargs chmod 644
+  extensionID=langpack-$language@firefox.mozilla.org
+  %{__mkdir_p} $extensionID
+  unzip $langpack -d $extensionID
+  find $extensionID -type f | xargs chmod 644
 
   sed -i -e "s|browser.startup.homepage.*$|browser.startup.homepage=%{homepage}|g;" \
-         $extensiondir/chrome/$language/locale/branding/browserconfig.properties
+     $extensionID/chrome/$language/locale/branding/browserconfig.properties
 
+  cd $extensionID
+  zip -r9mX ../${extensionID}.xpi *
+  cd -
+
+  %{__install} -m 644 ${extensionID}.xpi $RPM_BUILD_ROOT%{langpackdir}
   language=`echo $language | sed -e 's/-/_/g'`
-  extensiondir=`echo $extensiondir | sed -e "s,^$RPM_BUILD_ROOT,,"`
-  echo "%%lang($language) $extensiondir" >> ../%{name}.lang
+  echo "%%lang($language) %{langpackdir}/${extensionID}.xpi" >> ../%{name}.lang
 done
 %{__rm} -rf firefox-langpacks
 %endif # build_langpacks
