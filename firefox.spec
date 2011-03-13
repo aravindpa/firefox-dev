@@ -15,6 +15,7 @@
 %global pre_tag         .%{?pre_version}
 
 %global mozappdir     %{_libdir}/%{name}-%{firefox_dir_ver}
+%global langpackdir   %{mozappdir}/langpacks
 %global tarballdir    mozilla-2.0
 
 %define official_branding       1
@@ -229,11 +230,11 @@ XULRUNNER_DIR=`pkg-config --variable=libdir libxul | %{__sed} -e "s,%{_libdir},,
 echo > ../%{name}.lang
 %if %{build_langpacks}
 # Install langpacks
-%{__mkdir_p} $RPM_BUILD_ROOT/%{mozappdir}/langpacks
+%{__mkdir_p} $RPM_BUILD_ROOT%{langpackdir}
 %{__tar} xf %{SOURCE1}
 for langpack in `ls firefox-langpacks/*.xpi`; do
   language=`basename $langpack .xpi`
-  extensiondir=$RPM_BUILD_ROOT/%{mozappdir}/langpacks/langpack-$language@firefox.mozilla.org
+  extensiondir=$RPM_BUILD_ROOT%{langpackdir}/langpack-$language@firefox.mozilla.org
   %{__mkdir_p} $extensiondir
   unzip $langpack -d $extensiondir
   find $extensiondir -type f | xargs chmod 644
@@ -281,8 +282,8 @@ update-desktop-database &> /dev/null || :
 if [ $1 -eq 0 ]; then
   %{__rm} -rf %{mozappdir}/components
   %{__rm} -rf %{mozappdir}/extensions
-  %{__rm} -rf %{mozappdir}/langpacks
   %{__rm} -rf %{mozappdir}/plugins
+  %{__rm} -rf %{langpackdir}
 fi
 
 %posttrans
@@ -307,7 +308,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %dir %{mozappdir}/extensions
 %{mozappdir}/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}
 %if %{build_langpacks}
-%dir %{mozappdir}/langpacks
+%dir %{langpackdir}
 %endif
 %{mozappdir}/omni.jar
 %{mozappdir}/icons
