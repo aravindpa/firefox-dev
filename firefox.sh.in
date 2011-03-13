@@ -164,7 +164,7 @@ FEDORA_LANGPACK_CONFIG="$MOZ_EXTENSIONS_PROFILE_DIR/.fedora-langpack-install"
 # check system locale
 MOZARGS=
 
-# MOZ_DISABLE_LANGPACKS disables language packs completelly
+# MOZ_DISABLE_LANGPACKS disables language packs completely
 MOZILLA_DOWN=0
 if ! [ $MOZ_DISABLE_LANGPACKS ] || [ $MOZ_DISABLE_LANGPACKS -eq 0 ]; then
     if [ -x $MOZ_XUL_DIR/mozilla-xremote-client ]; then
