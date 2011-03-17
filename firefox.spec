@@ -24,7 +24,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        4.0
-Release:        0.19%{?pre_tag}%{?dist}
+Release:        0.20%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -332,6 +332,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Mar 17 2011 Jan Horak <jhorak@redhat.com> - 4.0-0.20
+- Rebuild against xulrunner with disabled gnomevfs and enabled gio
+
 * Wed Mar  9 2011 Christopher Aillon <caillon@redhat.com> - 4.0-0.19
 - Firefox 4.0 RC 1
 
