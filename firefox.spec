@@ -10,8 +10,8 @@
 %define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
 %global firefox_dir_ver 4
-%global gecko_version   2.0-rc1
-%global pre_version     rc1
+%global gecko_version   2.0-rc2
+%global pre_version     rc2
 %global pre_tag         .%{?pre_version}
 
 %global mozappdir     %{_libdir}/%{name}-%{firefox_dir_ver}
@@ -25,13 +25,13 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        4.0
-Release:        0.20%{?pre_tag}%{?dist}
+Release:        0.21%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.bz2
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20110309.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20110318.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -337,6 +337,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Mar 18 2011 Christopher Aillon <caillon@redhat.com> - 4.0-0.21
+- Firefox 4.0 RC 2
+
 * Thu Mar 17 2011 Jan Horak <jhorak@redhat.com> - 4.0-0.20
 - Rebuild against xulrunner with disabled gnomevfs and enabled gio
 
