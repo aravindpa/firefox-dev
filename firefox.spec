@@ -10,9 +10,10 @@
 %define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
 %global firefox_dir_ver 4
-%global gecko_version   2.0-rc2
-%global pre_version     rc2
-%global pre_tag         .%{?pre_version}
+%global gecko_version   2.0
+%global alpha_version   0
+%global beta_version    0
+%global rc_version      2
 
 %global mozappdir     %{_libdir}/%{name}-%{firefox_dir_ver}
 %global langpackdir   %{mozappdir}/langpacks
@@ -21,6 +22,25 @@
 %define official_branding       1
 %define build_langpacks         1
 %define include_debuginfo       0
+
+%if %{alpha_version} > 0
+%global pre_version a%{alpha_version}
+%global pre_name    alpha%{alpha_version}
+%endif
+%if %{beta_version} > 0
+%global pre_version b%{beta_version}
+%global pre_name    beta%{beta_version}
+%endif
+%if %{rc_version} > 0
+%global pre_version rc%{rc_version}
+%global pre_name    rc%{rc_version}
+%endif
+%if %{defined pre_version}
+%global gecko_verrel %{gecko_version}-%{pre_name}
+%global pre_tag .%{pre_version}
+%else
+%global gecko_verrel %{gecko_version}-1
+%endif
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
