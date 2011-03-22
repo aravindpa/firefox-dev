@@ -83,11 +83,11 @@ Patch11:        firefox-default.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  system-bookmarks
-BuildRequires:  gecko-devel%{?_isa} = %{gecko_version}
+BuildRequires:  gecko-devel%{?_isa} = %{gecko_verrel}
 # For WebM support
 BuildRequires:	yasm
 
-Requires:       gecko-libs%{?_isa} = %{gecko_version}
+Requires:       gecko-libs%{?_isa} = %{gecko_verrel}
 Requires:       system-bookmarks
 Obsoletes:      mozilla <= 37:1.7.13
 Provides:       webclient
