@@ -65,9 +65,9 @@ Source23:       firefox.1
 Patch0:         firefox-version.patch
 
 # Fedora patches
-Patch11:        firefox-default.patch
 
 # Upstream patches
+Patch30:        firefox-4.0-moz-app-launcher.patch
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -111,7 +111,9 @@ sed -e 's/__RPM_VERSION_INTERNAL__/%{firefox_dir_ver}/' %{P:%%PATCH0} \
 # For branding specific patches.
 
 # Fedora patches
-%patch11 -p1 -b .default
+
+# Upstream patches
+%patch30 -p1 -b .moz-app-launcher
 
 %if %{official_branding}
 # Required by Mozilla Corporation
