@@ -68,6 +68,7 @@ Patch0:         firefox-version.patch
 
 # Upstream patches
 Patch30:        firefox-4.0-moz-app-launcher.patch
+Patch31:        firefox-4.0-gnome3.patch
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -114,6 +115,7 @@ sed -e 's/__RPM_VERSION_INTERNAL__/%{firefox_dir_ver}/' %{P:%%PATCH0} \
 
 # Upstream patches
 %patch30 -p1 -b .moz-app-launcher
+%patch31 -p1 -b .gnome3
 
 %if %{official_branding}
 # Required by Mozilla Corporation
