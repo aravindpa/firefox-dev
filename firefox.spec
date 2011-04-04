@@ -45,7 +45,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        4.0
-Release:        2%{?pre_tag}%{?dist}
+Release:        3%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -93,6 +93,11 @@ Requires:       system-bookmarks
 Obsoletes:      mozilla <= 37:1.7.13
 Provides:       webclient
 
+# For GNOME 3 support, we need 2.0-2
+# The specific BR/Require pair can go away when we bump to >= 2.0.1
+# since it will be brought in by the gecko requirements
+BuildRequires:  xulrunner-devel >= 2.0-2
+Requires:       xulrunner >= 2.0-2
 
 %description
 Mozilla Firefox is an open-source web browser, designed for standards
@@ -361,6 +366,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Apr  4 2011 Christopher Aillon <caillon@redhat.com> - 4.0-3
+- Updates for NetworkManager 0.9
+- Updates for GNOME 3
+
 * Tue Mar 22 2011 Christopher Aillon <caillon@redhat.com> - 4.0-2
 - Rebuild
 
