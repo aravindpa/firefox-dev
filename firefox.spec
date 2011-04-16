@@ -296,6 +296,15 @@ sed -i -e "s/\[Crash Reporter\]/[Crash Reporter]\nEnabled=1/" $RPM_BUILD_ROOT/%{
 
 #---------------------------------------------------------------------
 
+%preun
+# is it a final removal?
+if [ $1 -eq 0 ]; then
+  %{__rm} -rf %{mozappdir}/components
+  %{__rm} -rf %{mozappdir}/extensions
+  %{__rm} -rf %{mozappdir}/plugins
+  %{__rm} -rf %{langpackdir}
+fi
+
 %post
 update-desktop-database &> /dev/null || :
 touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
@@ -305,15 +314,6 @@ update-desktop-database &> /dev/null || :
 if [ $1 -eq 0 ] ; then
     touch --no-create %{_datadir}/icons/hicolor &>/dev/null
     gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
-fi
-
-%preun
-# is it a final removal?
-if [ $1 -eq 0 ]; then
-  %{__rm} -rf %{mozappdir}/components
-  %{__rm} -rf %{mozappdir}/extensions
-  %{__rm} -rf %{mozappdir}/plugins
-  %{__rm} -rf %{langpackdir}
 fi
 
 %posttrans
