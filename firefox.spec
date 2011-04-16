@@ -235,26 +235,11 @@ XULRUNNER_DIR=`pkg-config --variable=libdir libxul | %{__sed} -e "s,%{_libdir},,
 
 %{__rm} -f $RPM_BUILD_ROOT/%{mozappdir}/firefox-config
 
-%{__cp} other-licenses/branding/%{name}/default16.png \
-        $RPM_BUILD_ROOT/%{mozappdir}/icons/
-%{__mkdir_p} $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/16x16/apps
-%{__cp} other-licenses/branding/%{name}/default16.png \
-        $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/16x16/apps/firefox.png
-%{__mkdir_p} $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/22x22/apps
-%{__cp} other-licenses/branding/%{name}/default22.png \
-        $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/22x22/apps/firefox.png
-%{__mkdir_p} $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/24x24/apps
-%{__cp} other-licenses/branding/%{name}/default24.png \
-        $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/24x24/apps/firefox.png
-%{__mkdir_p} $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/32x32/apps
-%{__cp} other-licenses/branding/%{name}/default32.png \
-        $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/32x32/apps/firefox.png
-%{__mkdir_p} $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/48x48/apps
-%{__cp} other-licenses/branding/%{name}/default48.png \
-        $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/48x48/apps/firefox.png
-%{__mkdir_p} $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/256x256/apps
-%{__cp} other-licenses/branding/%{name}/default256.png \
-        $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/256x256/apps/firefox.png
+for s in 16 22 24 32 48 256; do
+    %{__mkdir_p} $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/${s}x${s}/apps
+    %{__cp} other-licenses/branding/%{name}/default${s}.png \
+            $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/${s}x${s}/apps/firefox.png
+done
 
 echo > ../%{name}.lang
 %if %{build_langpacks}
