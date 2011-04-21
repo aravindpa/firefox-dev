@@ -45,7 +45,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        4.0
-Release:        3%{?pre_tag}%{?dist}
+Release:        4%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -348,6 +348,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Apr 21 2011 Christopher Aillon <caillon@redhat.com> - 4.0-4
+- Spec file cleanups
+
 * Mon Apr  4 2011 Christopher Aillon <caillon@redhat.com> - 4.0-3
 - Updates for NetworkManager 0.9
 - Updates for GNOME 3
