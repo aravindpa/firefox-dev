@@ -10,7 +10,7 @@
 %define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
 %global firefox_dir_ver 4
-%global gecko_version   2.0
+%global gecko_version   2.0.1
 %global alpha_version   0
 %global beta_version    0
 %global rc_version      0
