@@ -45,7 +45,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        4.0.1
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -65,6 +65,7 @@ Source23:       firefox.1
 Patch0:         firefox-version.patch
 
 # Fedora patches
+Patch12:        firefox-stub.patch
 
 # Upstream patches
 Patch30:        firefox-4.0-moz-app-launcher.patch
@@ -117,6 +118,7 @@ sed -e 's/__RPM_VERSION_INTERNAL__/%{firefox_dir_ver}/' %{P:%%PATCH0} \
 # For branding specific patches.
 
 # Fedora patches
+%patch12 -p2 -b .stub
 
 # Upstream patches
 %patch30 -p1 -b .moz-app-launcher
@@ -279,6 +281,10 @@ done
 sed -i -e "s/\[Crash Reporter\]/[Crash Reporter]\nEnabled=1/" $RPM_BUILD_ROOT/%{mozappdir}/application.ini
 %endif
 
+# Install our xulrunner stub
+%{__rm} -f $RPM_BUILD_ROOT/%{mozappdir}/firefox
+%{__cp} xulrunner/stub/xulrunner-stub $RPM_BUILD_ROOT/%{mozappdir}/firefox
+
 #---------------------------------------------------------------------
 
 %preun
@@ -307,6 +313,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %files -f %{name}.lang
 %defattr(-,root,root,-)
 %{_bindir}/firefox
+%{mozappdir}/firefox
 %doc %{_mandir}/man1/*
 %dir %{_datadir}/mozilla/extensions/%{firefox_app_id}
 %dir %{_libdir}/mozilla/extensions/%{firefox_app_id}
@@ -348,6 +355,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue May 10 2011 Martin Stransky <stransky@redhat.com> - 4.0.1-2
+- Fixed rhbz#676183 - "firefox -g" is broken
+
 * Thu Apr 28 2011 Christopher Aillon <caillon@redhat.com> - 4.0.1-1
 - Update to 4.0.1
 
