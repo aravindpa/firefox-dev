@@ -67,6 +67,7 @@ Patch1:         firefox-5.0-cache-build.patch
 
 # Fedora patches
 Patch12:        firefox-stub.patch
+Patch13:        firefox-5.0-xulstub.patch
 
 # Upstream patches
 Patch30:        firefox-4.0-moz-app-launcher.patch
@@ -123,6 +124,7 @@ sed -e 's/__RPM_VERSION_INTERNAL__/%{firefox_dir_ver}/' %{P:%%PATCH0} \
 
 # Fedora patches
 %patch12 -p2 -b .stub
+%patch13 -p1 -R -b .xulstub
 
 # Upstream patches
 %patch30 -p1 -b .moz-app-launcher
