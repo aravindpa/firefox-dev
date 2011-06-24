@@ -45,7 +45,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        5.0
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -68,6 +68,7 @@ Patch1:         firefox-5.0-cache-build.patch
 # Fedora patches
 Patch12:        firefox-stub.patch
 Patch13:        firefox-5.0-xulstub.patch
+Patch14:        firefox-5.0-asciidel.patch
 
 # Upstream patches
 Patch30:        firefox-4.0-moz-app-launcher.patch
@@ -125,6 +126,7 @@ sed -e 's/__RPM_VERSION_INTERNAL__/%{firefox_dir_ver}/' %{P:%%PATCH0} \
 # Fedora patches
 %patch12 -p2 -b .stub
 %patch13 -p1 -R -b .xulstub
+%patch14 -p1 -b .asciidel
 
 # Upstream patches
 %patch30 -p1 -b .moz-app-launcher
@@ -361,6 +363,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Jun 24 2011 Bill Nottingham <notting@redhat.com> - 5.0-2
+- Fix an issue with a stray glyph in the window title
+
 * Tue Jun 21 2011 Martin Stransky <stransky@redhat.com> - 5.0-1
 - Update to 5.0
 
