@@ -9,8 +9,8 @@
 %define default_bookmarks_file %{_datadir}/bookmarks/default-bookmarks.html
 %define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
-%global firefox_dir_ver 5
-%global gecko_version   5.0
+%global firefox_dir_ver 6
+%global gecko_version   6.0
 %global alpha_version   0
 %global beta_version    0
 %global rc_version      0
@@ -44,14 +44,14 @@
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        5.0
-Release:        2%{?pre_tag}%{?dist}
+Version:        6.0
+Release:        1%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.bz2
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20110621.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20110816.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -63,16 +63,12 @@ Source23:       firefox.1
 
 #Build patches
 Patch0:         firefox-version.patch
-Patch1:         firefox-5.0-cache-build.patch
+Patch1:         firefox-6.0-cache-build.patch
 
 # Fedora patches
-Patch12:        firefox-stub.patch
-Patch13:        firefox-5.0-xulstub.patch
 Patch14:        firefox-5.0-asciidel.patch
 
 # Upstream patches
-Patch30:        firefox-4.0-moz-app-launcher.patch
-Patch31:        firefox-4.0-gnome3.patch
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -97,11 +93,8 @@ Requires:       system-bookmarks
 Obsoletes:      mozilla <= 37:1.7.13
 Provides:       webclient
 
-# For GNOME 3 support, we need 2.0-2
-# The specific BR/Require pair can go away when we bump to >= 2.0.1
-# since it will be brought in by the gecko requirements
-BuildRequires:  xulrunner-devel >= 2.0-2
-Requires:       xulrunner >= 2.0-2
+BuildRequires:  xulrunner-devel >= 6.0-1
+Requires:       xulrunner >= 6.0-1
 
 %description
 Mozilla Firefox is an open-source web browser, designed for standards
@@ -124,13 +117,9 @@ sed -e 's/__RPM_VERSION_INTERNAL__/%{firefox_dir_ver}/' %{P:%%PATCH0} \
 # For branding specific patches.
 
 # Fedora patches
-%patch12 -p2 -b .stub
-%patch13 -p1 -R -b .xulstub
 %patch14 -p1 -b .asciidel
 
 # Upstream patches
-%patch30 -p1 -b .moz-app-launcher
-%patch31 -p1 -b .gnome3
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -237,9 +226,8 @@ XULRUNNER_DIR=`pkg-config --variable=libdir libxul | %{__sed} -e "s,%{_libdir},,
   $RPM_BUILD_ROOT%{_bindir}/firefox
 %{__chmod} 755 $RPM_BUILD_ROOT%{_bindir}/firefox
 
-# Remove binary stub from xulrunner
-%{__rm} -rf $RPM_BUILD_ROOT/%{mozappdir}/firefox
-
+# Link with xulrunner 
+ln -s `pkg-config --variable=libdir libxul` $RPM_BUILD_ROOT/%{mozappdir}/xulrunner
 
 %{__install} -p -D -m 644 %{SOURCE23} $RPM_BUILD_ROOT%{_mandir}/man1/firefox.1
 
@@ -247,7 +235,7 @@ XULRUNNER_DIR=`pkg-config --variable=libdir libxul | %{__sed} -e "s,%{_libdir},,
 
 for s in 16 22 24 32 48 256; do
     %{__mkdir_p} $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/${s}x${s}/apps
-    %{__cp} -p other-licenses/branding/%{name}/default${s}.png \
+    %{__cp} -p browser/branding/official/default${s}.png \
                $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/${s}x${s}/apps/firefox.png
 done
 
@@ -288,10 +276,6 @@ done
 %if %{include_debuginfo}
 sed -i -e "s/\[Crash Reporter\]/[Crash Reporter]\nEnabled=1/" $RPM_BUILD_ROOT/%{mozappdir}/application.ini
 %endif
-
-# Install our xulrunner stub
-%{__rm} -f $RPM_BUILD_ROOT/%{mozappdir}/firefox
-%{__cp} xulrunner/stub/xulrunner-stub $RPM_BUILD_ROOT/%{mozappdir}/firefox
 
 #---------------------------------------------------------------------
 
@@ -334,6 +318,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %dir %{mozappdir}/components
 %{mozappdir}/components/*.so
 %{mozappdir}/components/binary.manifest
+%{mozappdir}/defaults/preferences/channel-prefs.js
 %attr(644, root, root) %{mozappdir}/blocklist.xml
 %dir %{mozappdir}/extensions
 %{mozappdir}/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}
@@ -352,6 +337,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/icons/hicolor/256x256/apps/firefox.png
 %{_datadir}/icons/hicolor/32x32/apps/firefox.png
 %{_datadir}/icons/hicolor/48x48/apps/firefox.png
+%{mozappdir}/xulrunner
 
 %if %{include_debuginfo}
 #%{mozappdir}/crashreporter
@@ -363,6 +349,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Aug 16 2011 Martin Stransky <stransky@redhat.com> - 6.0-1
+- Update to 6.0
+
 * Fri Jun 24 2011 Bill Nottingham <notting@redhat.com> - 5.0-2
 - Fix an issue with a stray glyph in the window title
 
