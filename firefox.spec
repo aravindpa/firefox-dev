@@ -43,7 +43,7 @@
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        6.0.2
+Version:        7.0
 Release:        1%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
