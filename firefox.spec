@@ -9,13 +9,12 @@
 %define default_bookmarks_file %{_datadir}/bookmarks/default-bookmarks.html
 %define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
-%global firefox_dir_ver 6
-%global gecko_version   6.0.2
+%global gecko_version   7.0
 %global alpha_version   0
 %global beta_version    0
 %global rc_version      0
 
-%global mozappdir     %{_libdir}/%{name}-%{firefox_dir_ver}
+%global mozappdir     %{_libdir}/%{name}
 %global langpackdir   %{mozappdir}/langpacks
 %global tarballdir    mozilla-release
 
@@ -51,7 +50,7 @@ License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.bz2
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20110906.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20110927.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -62,7 +61,7 @@ Source21:       firefox.sh.in
 Source23:       firefox.1
 
 #Build patches
-Patch0:         firefox-version.patch
+Patch0:         firefox-install-dir.patch
 Patch1:         firefox-6.0-cache-build.patch
 
 # Fedora patches
@@ -106,12 +105,8 @@ compliance, performance and portability.
 %setup -q -c
 cd %{tarballdir}
 
-sed -e 's/__RPM_VERSION_INTERNAL__/%{firefox_dir_ver}/' %{P:%%PATCH0} \
-    > version.patch
-%{__patch} -p1 -b --suffix .version --fuzz=0 < version.patch
-    
-
 # Build patches
+%patch0 -p2 -b .install-dir
 %patch1 -p2 -b .cache
 
 # For branding specific patches.
@@ -221,8 +216,7 @@ desktop-file-install --vendor mozilla \
 # set up the firefox start script
 %{__rm} -rf $RPM_BUILD_ROOT%{_bindir}/firefox
 XULRUNNER_DIR=`pkg-config --variable=libdir libxul | %{__sed} -e "s,%{_libdir},,g"`
-%{__cat} %{SOURCE21} | %{__sed} -e 's,FIREFOX_VERSION,%{firefox_dir_ver},g' \
-		     | %{__sed} -e "s,XULRUNNER_DIRECTORY,$XULRUNNER_DIR,g" > \
+%{__cat} %{SOURCE21} | %{__sed} -e "s,XULRUNNER_DIRECTORY,$XULRUNNER_DIR,g" > \
   $RPM_BUILD_ROOT%{_bindir}/firefox
 %{__chmod} 755 $RPM_BUILD_ROOT%{_bindir}/firefox
 
@@ -349,6 +343,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Sep 27 2011 Jan Horak <jhorak@redhat.com> - 7.0
+- Update to 7.0
+
 * Tue Sep  6 2011 Jan Horak <jhorak@redhat.com> - 6.0.2-1
 - Update to 6.0.2
 
