@@ -92,9 +92,6 @@ Requires:       system-bookmarks
 Obsoletes:      mozilla <= 37:1.7.13
 Provides:       webclient
 
-BuildRequires:  xulrunner-devel >= 6.0-1
-Requires:       xulrunner >= 6.0-1
-
 %description
 Mozilla Firefox is an open-source web browser, designed for standards
 compliance, performance and portability.
