@@ -38,7 +38,7 @@
 %global gecko_verrel %{gecko_version}-%{pre_name}
 %global pre_tag .%{pre_version}
 %else
-%global gecko_verrel %{gecko_version}-1
+%global gecko_verrel %{gecko_version}
 %endif
 
 Summary:        Mozilla Firefox Web browser
@@ -91,9 +91,6 @@ Requires:       gecko-libs%{?_isa} = %{gecko_verrel}
 Requires:       system-bookmarks
 Obsoletes:      mozilla <= 37:1.7.13
 Provides:       webclient
-
-BuildRequires:  xulrunner-devel >= 6.0-1
-Requires:       xulrunner >= 6.0-1
 
 %description
 Mozilla Firefox is an open-source web browser, designed for standards
