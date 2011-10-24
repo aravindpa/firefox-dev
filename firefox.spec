@@ -44,7 +44,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        7.0.1
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -206,7 +206,7 @@ DESTDIR=$RPM_BUILD_ROOT make install
 
 %{__mkdir_p} $RPM_BUILD_ROOT{%{_libdir},%{_bindir},%{_datadir}/applications}
 
-desktop-file-install --vendor mozilla \
+desktop-file-install \
   --dir $RPM_BUILD_ROOT%{_datadir}/applications \
   %{SOURCE20} 
 
@@ -300,7 +300,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %doc %{_mandir}/man1/*
 %dir %{_datadir}/mozilla/extensions/%{firefox_app_id}
 %dir %{_libdir}/mozilla/extensions/%{firefox_app_id}
-%{_datadir}/applications/mozilla-%{name}.desktop
+%{_datadir}/applications/%{name}.desktop
 %dir %{mozappdir}
 %doc %{mozappdir}/LICENSE
 %doc %{mozappdir}/README.txt
@@ -340,6 +340,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Oct 24 2011 Martin Stransky <stransky@redhat.com> - 7.0.1-2
+- renamed mozilla-firefox.desktop to firefox.desktop (#736558)
+- nspluginwrapper is not run in plugin-container (#747981)
+
 * Fri Sep 30 2011 Jan Horak <jhorak@redhat.com> - 7.0.1-1
 - Update to 7.0.1
 
