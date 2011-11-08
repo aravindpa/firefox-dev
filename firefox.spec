@@ -62,7 +62,6 @@ Source23:       firefox.1
 
 #Build patches
 Patch0:         firefox-install-dir.patch
-Patch1:         firefox-7.0-cache-build.patch
 
 # Fedora patches
 Patch14:        firefox-5.0-asciidel.patch
@@ -104,7 +103,6 @@ cd %{tarballdir}
 
 # Build patches
 %patch0 -p2 -b .install-dir
-%patch1 -p2 -b .cache
 
 # For branding specific patches.
 
@@ -305,7 +303,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/applications/*.desktop
 %dir %{mozappdir}
 %doc %{mozappdir}/LICENSE
-%doc %{mozappdir}/README.txt
 %{mozappdir}/chrome
 %{mozappdir}/chrome.manifest
 %dir %{mozappdir}/components
