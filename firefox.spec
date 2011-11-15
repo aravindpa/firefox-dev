@@ -44,7 +44,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        8.0
-Release:        2%{?pre_tag}%{?dist}
+Release:        3%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -341,6 +341,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Nov 15 2011 Martin Stransky <stransky@redhat.com> - 8.0-3
+- Disabled addon check UI (#753551)
+
 * Tue Nov 15 2011 Martin Stransky <stransky@redhat.com> - 8.0-2
 - Temporary workaround for langpacks (#753551)
 
