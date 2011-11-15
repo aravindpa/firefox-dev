@@ -44,7 +44,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        8.0
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -65,6 +65,7 @@ Patch0:         firefox-install-dir.patch
 
 # Fedora patches
 Patch14:        firefox-5.0-asciidel.patch
+Patch15:        firefox-8.0-enable-addons.patch
 
 # Upstream patches
 
@@ -108,6 +109,7 @@ cd %{tarballdir}
 
 # Fedora patches
 %patch14 -p1 -b .asciidel
+%patch15 -p2 -b .addons
 
 # Upstream patches
 
@@ -339,6 +341,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Nov 15 2011 Martin Stransky <stransky@redhat.com> - 8.0-2
+- Temporary workaround for langpacks (#753551)
+
 * Tue Nov  8 2011 Jan Horak <jhorak@redhat.com> - 8.0-1
 - Update to 8.0
 
