@@ -102,8 +102,10 @@ compliance, performance and portability.
 %setup -q -c
 cd %{tarballdir}
 
-# Build patches
-%patch0 -p2 -b .install-dir
+# Build patches, can't change backup suffix from default because during build
+# there is a compare of config and js/config directories and .orig suffix is 
+# ignored during this compare.
+%patch0 -p2 -b .orig
 
 # For branding specific patches.
 
