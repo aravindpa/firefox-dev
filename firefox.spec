@@ -17,7 +17,7 @@
 
 %global mozappdir     %{_libdir}/%{name}
 %global langpackdir   %{mozappdir}/langpacks
-%global tarballdir    mozilla-beta
+%global tarballdir    mozilla-release
 
 %define official_branding       1
 %define build_langpacks         1
