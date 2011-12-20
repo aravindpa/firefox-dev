@@ -10,8 +10,9 @@
 %define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
 %global gecko_version   9.0
+%global gecko_release   2
 %global alpha_version   0
-%global beta_version    5
+%global beta_version    0
 %global rc_version      0
 
 %global mozappdir     %{_libdir}/%{name}
@@ -35,22 +36,22 @@
 %global pre_name    rc%{rc_version}
 %endif
 %if %{defined pre_version}
-%global gecko_verrel %{gecko_version}-%{pre_name}
+%global gecko_verrel %{gecko_version}-%{gecko_release}%{pre_name}
 %global pre_tag .%{pre_version}
 %else
-%global gecko_verrel %{gecko_version}
+%global gecko_verrel %{gecko_version}-%{gecko_release}
 %endif
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        9.0
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.bz2
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20111215.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20111220.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -343,6 +344,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Dec 20 2011 Jan Horak <jhorak@redhat.com> - 9.0-2
+- Update to 9.0
+
 * Thu Dec 15 2011 Jan Horak <jhorak@redhat.com> - 9.0-1.beta5
 - Update to 9.0 Beta 5
 
