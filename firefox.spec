@@ -45,7 +45,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        9.0
-Release:        2%{?pre_tag}%{?dist}
+Release:        3%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -344,7 +344,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
-* Tue Dec 20 2011 Jan Horak <jhorak@redhat.com> - 9.0-2
+* Wed Dec 21 2011 Jan Horak <jhorak@redhat.com> - 9.0-3
 - Update to 9.0
 
 * Thu Dec 15 2011 Jan Horak <jhorak@redhat.com> - 9.0-1.beta5
