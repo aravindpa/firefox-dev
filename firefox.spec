@@ -9,7 +9,7 @@
 %define default_bookmarks_file %{_datadir}/bookmarks/default-bookmarks.html
 %define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
-%global gecko_version   9.0.1
+%global gecko_version   10.0
 %global gecko_release   1
 %global alpha_version   0
 %global beta_version    0
@@ -44,14 +44,14 @@
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        9.0.1
-Release:        2%{?pre_tag}%{?dist}
+Version:        10.0
+Release:        1%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.bz2
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20111223.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20120131.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -320,7 +320,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %if %{build_langpacks}
 %dir %{langpackdir}
 %endif
-%{mozappdir}/omni.jar
+%{mozappdir}/omni.ja
 %{mozappdir}/icons
 %{mozappdir}/searchplugins
 %{mozappdir}/run-mozilla.sh
@@ -344,6 +344,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Jan 31 2012 Jan Horak <jhorak@redhat.com> - 10.0-1
+- Update to 10.0
+
 * Fri Jan 13 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 9.0.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
 
