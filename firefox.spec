@@ -45,7 +45,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        10.0
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -69,6 +69,8 @@ Patch14:        firefox-5.0-asciidel.patch
 Patch15:        firefox-8.0-enable-addons.patch
 
 # Upstream patches
+# fixes non functional web development tools, obsolete by version 11
+Patch100:       mozilla-703633.patch 
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -115,6 +117,7 @@ cd %{tarballdir}
 %patch15 -p2 -b .addons
 
 # Upstream patches
+%patch100 -p1 -b .703633
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -344,6 +347,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Feb  3 2012 Jan Horak <jhorak@redhat.com> - 10.0-2
+- Fixed rhbz#786983
+
 * Tue Jan 31 2012 Jan Horak <jhorak@redhat.com> - 10.0-1
 - Update to 10.0
 
