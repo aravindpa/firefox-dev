@@ -45,7 +45,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        10.0.1
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -142,6 +142,10 @@ echo "ac_add_options --with-libxul-sdk=\
 
 %if !%{?separated_plugins}
 echo "ac_add_options --disable-ipc" >> .mozconfig
+%endif
+
+%ifarch %{arm}
+echo "ac_add_options --disable-elf-hack" >> .mozconfig
 %endif
 
 #---------------------------------------------------------------------
@@ -347,6 +351,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Feb 27 2012 Peter Robinson <pbrobinson@fedoraproject.org> - 10.0.1-2
+- Add ARM config options to fix compile
+
 * Thu Feb  9 2012 Jan Horak <jhorak@redhat.com> - 10.0.1-1
 - Update to 10.0.1
 
