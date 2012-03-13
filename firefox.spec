@@ -5,11 +5,18 @@
 %define separated_plugins 0
 %endif
 
+# Build as a debug package?
+%define debug_build       0
+
+%if 0%{?fedora}
 %define homepage http://start.fedoraproject.org/
+%else
+%define homepage file:///usr/share/doc/HTML/index.html
+%endif
 %define default_bookmarks_file %{_datadir}/bookmarks/default-bookmarks.html
 %define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
-%global gecko_version   10.0.1
+%global gecko_version   11.0
 %global gecko_release   1
 %global alpha_version   0
 %global beta_version    0
@@ -44,14 +51,14 @@
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        10.0.1
-Release:        2%{?pre_tag}%{?dist}
+Version:        11.0
+Release:        1%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.bz2
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20120209.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20120313.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -69,8 +76,7 @@ Patch14:        firefox-5.0-asciidel.patch
 Patch15:        firefox-8.0-enable-addons.patch
 
 # Upstream patches
-# fixes non functional web development tools, obsolete by version 11
-Patch100:       mozilla-703633.patch 
+Patch100:       mozilla-722127.patch
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -87,8 +93,6 @@ Patch100:       mozilla-703633.patch
 BuildRequires:  desktop-file-utils
 BuildRequires:  system-bookmarks
 BuildRequires:  gecko-devel%{?_isa} = %{gecko_verrel}
-# For WebM support
-BuildRequires:	yasm
 
 Requires:       gecko-libs%{?_isa} = %{gecko_verrel}
 Requires:       system-bookmarks
@@ -117,7 +121,7 @@ cd %{tarballdir}
 %patch15 -p2 -b .addons
 
 # Upstream patches
-%patch100 -p1 -b .703633
+%patch100 -p2 -b .722127
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -148,6 +152,14 @@ echo "ac_add_options --disable-ipc" >> .mozconfig
 echo "ac_add_options --disable-elf-hack" >> .mozconfig
 %endif
 
+%if %{?debug_build}
+echo "ac_add_options --enable-debug" >> .mozconfig
+echo "ac_add_options --disable-optimize" >> .mozconfig
+%else
+echo "ac_add_options --disable-debug" >> .mozconfig
+echo "ac_add_options --enable-optimize" >> .mozconfig
+%endif
+
 #---------------------------------------------------------------------
 
 %build
@@ -160,6 +172,9 @@ cd %{tarballdir}
 #
 MOZ_OPT_FLAGS=$(echo $RPM_OPT_FLAGS | \
                      %{__sed} -e 's/-Wall//' -e 's/-fexceptions/-fno-exceptions/g')
+%if %{?debug_build}
+MOZ_OPT_FLAGS=$(echo "$MOZ_OPT_FLAGS" | %{__sed} -e 's/-O2//')
+%endif
 export CFLAGS=$MOZ_OPT_FLAGS
 export CXXFLAGS=$MOZ_OPT_FLAGS
 
@@ -351,6 +366,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Mar 13 2012 Martin Stransky <stransky@redhat.com> - 11.0-1
+- Update to 11.0
+- Fixed rhbz#800622 - make default home page of fedoraproject.org conditional
+- Fixed rhbz#801796 - enable debug build by some simple way
+
 * Mon Feb 27 2012 Peter Robinson <pbrobinson@fedoraproject.org> - 10.0.1-2
 - Add ARM config options to fix compile
 
