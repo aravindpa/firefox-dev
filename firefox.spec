@@ -93,7 +93,6 @@ Patch100:       mozilla-722127.patch
 BuildRequires:  desktop-file-utils
 BuildRequires:  system-bookmarks
 BuildRequires:  gecko-devel%{?_isa} = %{gecko_verrel}
-BuildRequires:  libvpx-devel
 
 Requires:       gecko-libs%{?_isa} = %{gecko_verrel}
 Requires:       system-bookmarks
