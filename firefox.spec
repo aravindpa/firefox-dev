@@ -16,7 +16,7 @@
 %define default_bookmarks_file %{_datadir}/bookmarks/default-bookmarks.html
 %define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
-%global gecko_version   11.0
+%global gecko_version   11.0-3
 %global gecko_release   1
 %global alpha_version   0
 %global beta_version    0
