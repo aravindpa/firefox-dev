@@ -16,11 +16,11 @@
 %define default_bookmarks_file %{_datadir}/bookmarks/default-bookmarks.html
 %define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
-%global gecko_version   11.0-3
-%global gecko_release   1
-%global alpha_version   0
-%global beta_version    0
-%global rc_version      0
+%global xulrunner_version      11.0
+%global xulrunner_release      3
+%global alpha_version          0
+%global beta_version           0
+%global rc_version             0
 
 %global mozappdir     %{_libdir}/%{name}
 %global langpackdir   %{mozappdir}/langpacks
@@ -43,16 +43,16 @@
 %global pre_name    rc%{rc_version}
 %endif
 %if %{defined pre_version}
-%global gecko_verrel %{gecko_version}-%{gecko_release}%{pre_name}
+%global xulrunner_verrel %{xulrunner_version}-%{xulrunner_release}%{pre_name}
 %global pre_tag .%{pre_version}
 %else
-%global gecko_verrel %{gecko_version}-%{gecko_release}
+%global xulrunner_verrel %{xulrunner_version}-%{xulrunner_release}
 %endif
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        11.0
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -92,9 +92,9 @@ Patch100:       mozilla-722127.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  system-bookmarks
-BuildRequires:  gecko-devel%{?_isa} = %{gecko_verrel}
+BuildRequires:  xulrunner-devel%{?_isa} >= %{xulrunner_verrel}
 
-Requires:       gecko-libs%{?_isa} = %{gecko_verrel}
+Requires:       xulrunner%{?_isa} >= %{xulrunner_verrel}
 Requires:       system-bookmarks
 Obsoletes:      mozilla <= 37:1.7.13
 Provides:       webclient
@@ -366,6 +366,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Mar 15 2012 Martin Stransky <stransky@redhat.com> - 11.0-2
+- Switched dependency to xulrunner (rhbz#803471)
+
 * Tue Mar 13 2012 Martin Stransky <stransky@redhat.com> - 11.0-1
 - Update to 11.0
 - Fixed rhbz#800622 - make default home page of fedoraproject.org conditional
