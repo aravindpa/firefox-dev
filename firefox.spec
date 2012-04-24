@@ -16,8 +16,8 @@
 %define default_bookmarks_file %{_datadir}/bookmarks/default-bookmarks.html
 %define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
-%global xulrunner_version      11.0
-%global xulrunner_release      3
+%global xulrunner_version      12.0
+%global xulrunner_release      1
 %global alpha_version          0
 %global beta_version           0
 %global rc_version             0
@@ -51,14 +51,14 @@
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        11.0
-Release:        2%{?pre_tag}%{?dist}
+Version:        12.0
+Release:        1%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.bz2
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20120313.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20120424.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -76,7 +76,6 @@ Patch14:        firefox-5.0-asciidel.patch
 Patch15:        firefox-8.0-enable-addons.patch
 
 # Upstream patches
-Patch100:       mozilla-722127.patch
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -121,7 +120,6 @@ cd %{tarballdir}
 %patch15 -p2 -b .addons
 
 # Upstream patches
-%patch100 -p2 -b .722127
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -366,6 +364,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Apr 24 2012 Martin Stransky <stransky@redhat.com> - 12.0-1
+- Update to 12.0
+
 * Thu Mar 15 2012 Martin Stransky <stransky@redhat.com> - 11.0-2
 - Switched dependency to xulrunner (rhbz#803471)
 
