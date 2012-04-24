@@ -248,6 +248,7 @@ ln -s `pkg-config --variable=libdir libxul` $RPM_BUILD_ROOT/%{mozappdir}/xulrunn
 %{__install} -p -D -m 644 %{SOURCE23} $RPM_BUILD_ROOT%{_mandir}/man1/firefox.1
 
 %{__rm} -f $RPM_BUILD_ROOT/%{mozappdir}/firefox-config
+%{__rm} -f $RPM_BUILD_ROOT/%{mozappdir}/update-settings.ini
 
 for s in 16 22 24 32 48 256; do
     %{__mkdir_p} $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/${s}x${s}/apps
