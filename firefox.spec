@@ -293,7 +293,7 @@ echo "%%lang($language_short) %{langpackdir}/langpack-$language_short@firefox.mo
 }
 
 # Table of fallbacks for each language
-# please file a bug at bugzilla.redhat.com if the assihment is incorrect
+# please file a bug at bugzilla.redhat.com if the assignment is incorrect
 create_default_langpack "bn-IN" "bn"
 create_default_langpack "es-AR" "es"
 create_default_langpack "fy-NL" "fy"
