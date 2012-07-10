@@ -52,7 +52,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        13.0.1
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -289,9 +289,24 @@ language_short=$2
 cd $RPM_BUILD_ROOT%{langpackdir}
 ln -s langpack-$language_long@firefox.mozilla.org.xpi langpack-$language_short@firefox.mozilla.org.xpi
 cd -
+echo "%%lang($language_short) %{langpackdir}/langpack-$language_short@firefox.mozilla.org.xpi" >> ../%{name}.lang
 }
 
-# Test that we have all langpacks in default setup
+# Table of fallbacks for each language
+# please file a bug at bugzilla.redhat.com if the assihment is incorrect
+create_default_langpack "bn-IN" "bn"
+create_default_langpack "es-AR" "es"
+create_default_langpack "fy-NL" "fy"
+create_default_langpack "ga-IE" "ga"
+create_default_langpack "gu-IN" "gu"
+create_default_langpack "hi-IN" "hi"
+create_default_langpack "hy-AM" "hy"
+create_default_langpack "nb-NO" "nb"
+create_default_langpack "nn-NO" "nn"
+create_default_langpack "pa-IN" "pa"
+create_default_langpack "pt-PT" "pt"
+create_default_langpack "sv-SE" "sv"
+create_default_langpack "zh-TW" "zh"
 
 # System extensions
 %{__mkdir_p} $RPM_BUILD_ROOT%{_datadir}/mozilla/extensions/%{firefox_app_id}
@@ -376,6 +391,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Jul 10 2012 Martin Stransky <stransky@redhat.com> - 13.0.1-2
+- Fixed rhbz#707100, rhbz#821169
+
 * Sat Jun 16 2012 Jan Horak <jhorak@redhat.com> - 13.0.1-1
 - Update to 13.0.1
 
