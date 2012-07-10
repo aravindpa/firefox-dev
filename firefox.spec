@@ -282,6 +282,17 @@ done
 %{__rm} -rf firefox-langpacks
 %endif # build_langpacks
 
+# Install langpack workaround (see #707100, #821169)
+function create_default_langpack() {
+language_long=$1
+language_short=$2
+cd $RPM_BUILD_ROOT%{langpackdir}
+ln -s langpack-$language_long@firefox.mozilla.org.xpi langpack-$language_short@firefox.mozilla.org.xpi
+cd -
+}
+
+# Test that we have all langpacks in default setup
+
 # System extensions
 %{__mkdir_p} $RPM_BUILD_ROOT%{_datadir}/mozilla/extensions/%{firefox_app_id}
 %{__mkdir_p} $RPM_BUILD_ROOT%{_libdir}/mozilla/extensions/%{firefox_app_id}

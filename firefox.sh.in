@@ -189,8 +189,7 @@ if [ $MOZILLA_DOWN -ne 0 ]; then
     CURRENT_LOCALE=${CURRENT_LOCALE:-$LC_MESSAGES}
     CURRENT_LOCALE=${CURRENT_LOCALE:-$LANG}
     
-    # Try without a local variant first, then with a local variant
-    # So that pt-BR doesn't try to use pt for example
+    # Try with a local variant first, then without a local variant
     SHORTMOZLOCALE=`echo $CURRENT_LOCALE | sed "s|_\([^.]*\).*||g"`
     MOZLOCALE=`echo $CURRENT_LOCALE | sed "s|_\([^.]*\).*|-\1|g"`
 
@@ -207,7 +206,7 @@ if [ $MOZILLA_DOWN -ne 0 ]; then
         return 1
     }
 
-    create_langpack_link $SHORTMOZLOCALE || create_langpack_link $MOZLOCALE || true
+    create_langpack_link $MOZLOCALE || create_langpack_link $SHORTMOZLOCALE || true
 fi
 
 # Prepare command line arguments
