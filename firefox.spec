@@ -52,7 +52,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        14.0.1
-Release:        2%{?pre_tag}%{?dist}
+Release:        3%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -76,6 +76,7 @@ Patch14:        firefox-5.0-asciidel.patch
 Patch15:        firefox-8.0-enable-addons.patch
 
 # Upstream patches
+Patch20:        mozilla-750620.patch
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -120,6 +121,7 @@ cd %{tarballdir}
 %patch15 -p2 -b .addons
 
 # Upstream patches
+%patch20 -p1 -b .750620
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -391,6 +393,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Aug 22 2012 Dan Horák <dan[at]danny.cz> - 14.0.1-3
+- add fix for secondary arches from xulrunner
+
 * Wed Aug 1 2012 Martin Stransky <stransky@redhat.com> - 14.0.1-2
 - removed StartupWMClass (rhbz#844860)
 
