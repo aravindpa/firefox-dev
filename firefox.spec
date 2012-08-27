@@ -79,7 +79,6 @@ Patch14:        firefox-5.0-asciidel.patch
 Patch15:        firefox-15.0-enable-addons.patch
 
 # Upstream patches
-Patch20:        mozilla-750620.patch
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -124,7 +123,6 @@ cd %{tarballdir}
 %patch15 -p2 -b .addons
 
 # Upstream patches
-%patch20 -p1 -b .750620
 
 %if %{official_branding}
 # Required by Mozilla Corporation
