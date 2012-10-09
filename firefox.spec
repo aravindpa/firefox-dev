@@ -116,7 +116,7 @@ cd %{tarballdir}
 # Build patches, can't change backup suffix from default because during build
 # there is a compare of config and js/config directories and .orig suffix is 
 # ignored during this compare.
-%patch0 -p2 -b .orig
+%patch0 -p1
 
 # For branding specific patches.
 
@@ -385,7 +385,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/icons/hicolor/32x32/apps/firefox.png
 %{_datadir}/icons/hicolor/48x48/apps/firefox.png
 %{mozappdir}/xulrunner
-
+%{mozappdir}/webapprt-stub
+%dir %{mozappdir}/webapprt
+%{mozappdir}/webapprt/omni.ja
+%{mozappdir}/webapprt/webapprt.ini
 %if %{include_debuginfo}
 #%{mozappdir}/crashreporter
 %{mozappdir}/crashreporter-override.ini
