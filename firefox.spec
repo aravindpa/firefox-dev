@@ -16,7 +16,7 @@
 %define default_bookmarks_file %{_datadir}/bookmarks/default-bookmarks.html
 %define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
-%global xulrunner_version      16.0.1
+%global xulrunner_version      16.0.2
 %global xulrunner_version_max  16.1
 %global xulrunner_release      1
 %global alpha_version          0
@@ -55,14 +55,14 @@
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        16.0.1
+Version:        16.0.2
 Release:        1%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.bz2
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20121011.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20121026.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -399,6 +399,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Oct 26 2012 Jan Horak <jhorak@redhat.com> - 16.0.2-1
+- Update to 16.0.2
+
 * Thu Oct 11 2012 Martin Stransky <stransky@redhat.com> - 16.0.1-1
 - Update to 16.0.1
 
