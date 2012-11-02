@@ -56,7 +56,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        16.0.2
-Release:        2%{?pre_tag}%{?dist}
+Release:        3%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -399,6 +399,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Nov  1 2012 Jan Horak <jhorak@redhat.com> - 16.0.2-3
+- Added keywords to desktop file (871900)
+
 * Tue Oct 30 2012 Martin Stransky <stransky@redhat.com> - 16.0.2-2
 - Updated man page (#800234)
 
