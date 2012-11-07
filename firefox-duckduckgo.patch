@@ -1,11 +1,7 @@
-diff -r f2fa4ae74ee1 browser/locales/en-US/chrome/browser-region/region.properties
---- a/browser/locales/en-US/chrome/browser-region/region.properties	Mon Oct 24 22:54:18 2011 +0300
-+++ b/browser/locales/en-US/chrome/browser-region/region.properties	Tue Oct 25 21:13:40 2011 -0400
-@@ -1,15 +1,16 @@
- # Default search engine
- browser.search.defaultenginename=Google
- 
- # Search engine order (order displayed in the search bar dropdown)s
+diff -up mozilla-release/browser/locales/en-US/chrome/browser-region/region.properties.duckduckgo mozilla-release/browser/locales/en-US/chrome/browser-region/region.properties
+--- mozilla-release/browser/locales/en-US/chrome/browser-region/region.properties.duckduckgo	2012-10-24 16:32:26.000000000 +0200
++++ mozilla-release/browser/locales/en-US/chrome/browser-region/region.properties	2012-11-07 16:27:04.278857840 +0100
+@@ -9,6 +9,7 @@ browser.search.defaultenginename=Google
  browser.search.order.1=Google
  browser.search.order.2=Yahoo
  browser.search.order.3=Bing
@@ -13,14 +9,9 @@ diff -r f2fa4ae74ee1 browser/locales/en-US/chrome/browser-region/region.properti
  
  # This is the default set of web based feed handlers shown in the reader
  # selection UI
- browser.contentHandlers.types.0.title=Google
- browser.contentHandlers.types.0.uri=http://fusion.google.com/add?feedurl=%s
- browser.contentHandlers.types.1.title=My Yahoo!
- browser.contentHandlers.types.1.uri=http://add.my.yahoo.com/rss?url=%s
- 
-diff -r f2fa4ae74ee1 browser/locales/en-US/searchplugins/duckduckgo.xml
---- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/browser/locales/en-US/searchplugins/duckduckgo.xml	Tue Oct 25 21:13:40 2011 -0400
+diff -up mozilla-release/browser/locales/en-US/searchplugins/duckduckgo.xml.duckduckgo mozilla-release/browser/locales/en-US/searchplugins/duckduckgo.xml
+--- mozilla-release/browser/locales/en-US/searchplugins/duckduckgo.xml.duckduckgo	2012-11-07 16:27:04.278857840 +0100
++++ mozilla-release/browser/locales/en-US/searchplugins/duckduckgo.xml	2012-11-07 16:27:04.278857840 +0100
 @@ -0,0 +1,11 @@
 +<SearchPlugin xmlns="http://www.mozilla.org/2006/browser/search/">
 +    <ShortName>DuckDuckGo</ShortName>
@@ -33,15 +24,13 @@ diff -r f2fa4ae74ee1 browser/locales/en-US/searchplugins/duckduckgo.xml
 +    </Url>
 +    <SearchForm>https://duckduckgo.com/</SearchForm>
 +</SearchPlugin>
-diff -r f2fa4ae74ee1 browser/locales/en-US/searchplugins/list.txt
---- a/browser/locales/en-US/searchplugins/list.txt	Mon Oct 24 22:54:18 2011 +0300
-+++ b/browser/locales/en-US/searchplugins/list.txt	Tue Oct 25 21:13:40 2011 -0400
-@@ -1,7 +1,8 @@
+diff -up mozilla-release/browser/locales/en-US/searchplugins/list.txt.duckduckgo mozilla-release/browser/locales/en-US/searchplugins/list.txt
+--- mozilla-release/browser/locales/en-US/searchplugins/list.txt.duckduckgo	2012-10-24 16:32:26.000000000 +0200
++++ mozilla-release/browser/locales/en-US/searchplugins/list.txt	2012-11-07 16:27:04.279857842 +0100
+@@ -1,5 +1,6 @@
  amazondotcom
  bing
 +duckduckgo
  eBay
  google
  twitter
- wikipedia
- yahoo
