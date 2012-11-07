@@ -56,7 +56,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        16.0.2
-Release:        3%{?pre_tag}%{?dist}
+Release:        4%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -72,12 +72,13 @@ Source20:       firefox.desktop
 Source21:       firefox.sh.in
 Source23:       firefox.1
 
-#Build patches
+# Build patches
 Patch0:         firefox-install-dir.patch
 
 # Fedora patches
 Patch14:        firefox-5.0-asciidel.patch
 Patch15:        firefox-15.0-enable-addons.patch
+Patch16:        firefox-duckduckgo.patch
 
 # Upstream patches
 
@@ -123,6 +124,7 @@ cd %{tarballdir}
 # Fedora patches
 %patch14 -p1 -b .asciidel
 %patch15 -p2 -b .addons
+%patch16 -p1 -b .duckduckgo
 
 # Upstream patches
 
@@ -399,6 +401,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Nov  7 2012 Jan Horak <jhorak@redhat.com> - 16.0.2-4
+- Added duckduckgo.com search engine
+
 * Thu Nov  1 2012 Jan Horak <jhorak@redhat.com> - 16.0.2-3
 - Added keywords to desktop file (871900)
 
