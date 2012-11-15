@@ -1,3 +1,6 @@
+# Use system nss/nspr?
+%define system_nss        1
+
 # Separated plugins are supported on x86(64) only
 %ifarch %{ix86} x86_64
 %define separated_plugins 1
@@ -8,26 +11,22 @@
 # Build as a debug package?
 %define debug_build       0
 
-%if 0%{?fedora}
 %define homepage http://start.fedoraproject.org/
-%else
-%define homepage file:///usr/share/doc/HTML/index.html
-%endif
 %define default_bookmarks_file %{_datadir}/bookmarks/default-bookmarks.html
 %define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
-%global xulrunner_version      16.0.2
-%global xulrunner_version_max  16.1
-%global xulrunner_release      1
+%global xulrunner_version      17.0
+%global xulrunner_version_max  17.1
+%global xulrunner_release      0.1
 %global alpha_version          0
-%global beta_version           0
+%global beta_version           6
 %global rc_version             0
 
 %global mozappdir     %{_libdir}/%{name}
 %global langpackdir   %{mozappdir}/langpacks
 %global tarballdir    mozilla-release
 
-%define official_branding       1
+%define official_branding       0
 %define build_langpacks         1
 %define include_debuginfo       0
 
@@ -47,7 +46,7 @@
 %global tarballdir  mozilla-release
 %endif
 %if %{defined pre_version}
-%global xulrunner_verrel %{xulrunner_version}-%{xulrunner_release}%{pre_name}
+%global xulrunner_verrel %{xulrunner_version}-%{xulrunner_release}
 %global pre_tag .%{pre_version}
 %else
 %global xulrunner_verrel %{xulrunner_version}-%{xulrunner_release}
@@ -55,14 +54,14 @@
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        16.0.2
-Release:        4%{?pre_tag}%{?dist}
+Version:        17.0
+Release:        0.1%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.bz2
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20121026.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20121115.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -72,7 +71,7 @@ Source20:       firefox.desktop
 Source21:       firefox.sh.in
 Source23:       firefox.1
 
-# Build patches
+#Build patches
 Patch0:         firefox-install-dir.patch
 
 # Fedora patches
@@ -165,6 +164,14 @@ echo "ac_add_options --disable-debug" >> .mozconfig
 echo "ac_add_options --enable-optimize" >> .mozconfig
 %endif
 
+%if %{?system_nss}
+echo "ac_add_options --with-system-nspr" >> .mozconfig
+echo "ac_add_options --with-system-nss" >> .mozconfig
+%else
+echo "ac_add_options --without-system-nspr" >> .mozconfig
+echo "ac_add_options --without-system-nss" >> .mozconfig
+%endif
+
 #---------------------------------------------------------------------
 
 %build
@@ -176,7 +183,7 @@ cd %{tarballdir}
 # Disable C++ exceptions since Mozilla code is not exception-safe
 #
 MOZ_OPT_FLAGS=$(echo $RPM_OPT_FLAGS | \
-                     %{__sed} -e 's/-Wall//' -e 's/-fexceptions/-fno-exceptions/g')
+                     %{__sed} -e 's/-Wall//')
 %if %{?debug_build}
 MOZ_OPT_FLAGS=$(echo "$MOZ_OPT_FLAGS" | %{__sed} -e 's/-O2//')
 %endif
@@ -322,6 +329,9 @@ create_default_langpack "zh-TW" "zh"
 # Copy over the LICENSE
 %{__install} -p -c -m 644 LICENSE $RPM_BUILD_ROOT/%{mozappdir}
 
+# Remove tmp files
+find $RPM_BUILD_ROOT/%{mozappdir}/modules -name '.mkdir.done' -exec rm -rf {} \;
+
 # Enable crash reporter for Firefox application
 %if %{include_debuginfo}
 sed -i -e "s/\[Crash Reporter\]/[Crash Reporter]\nEnabled=1/" $RPM_BUILD_ROOT/%{mozappdir}/application.ini
@@ -388,6 +398,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/icons/hicolor/48x48/apps/firefox.png
 %{mozappdir}/xulrunner
 %{mozappdir}/webapprt-stub
+%{mozappdir}/modules/*
 %dir %{mozappdir}/webapprt
 %{mozappdir}/webapprt/omni.ja
 %{mozappdir}/webapprt/webapprt.ini
@@ -401,6 +412,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Nov 15 2012 Martin Stransky <stransky@redhat.com> - 17.0-0.1b6
+- Update to 17.0 Beta 6
+
 * Wed Nov  7 2012 Jan Horak <jhorak@redhat.com> - 16.0.2-4
 - Added duckduckgo.com search engine
 
@@ -412,6 +426,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 * Fri Oct 26 2012 Jan Horak <jhorak@redhat.com> - 16.0.2-1
 - Update to 16.0.2
+
+* Thu Oct 11 2012 Martin Stransky <stransky@redhat.com> - 16.0.1-1
+- Update to 16.0.1
 
 * Thu Oct 11 2012 Martin Stransky <stransky@redhat.com> - 16.0.1-1
 - Update to 16.0.1
