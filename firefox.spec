@@ -1,6 +1,7 @@
 # Use system nss/nspr?
 %define system_nss        1
 
+
 # Separated plugins are supported on x86(64) only
 %ifarch %{ix86} x86_64
 %define separated_plugins 1
