@@ -56,7 +56,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        17.0.1
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -424,6 +424,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Dec 18 2012 Martin Stransky <stransky@redhat.com> - 17.0.1-2
+- Fix bug 878831 - Please enable gfx.color_management.enablev4=true
+
 * Thu Nov 29 2012 Jan Horak <jhorak@redhat.com> - 17.0.1-1
 - Update to 17.0.1
 
