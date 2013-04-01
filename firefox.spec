@@ -15,8 +15,8 @@
 %define default_bookmarks_file %{_datadir}/bookmarks/default-bookmarks.html
 %define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
-%global xulrunner_version      19.0.2
-%global xulrunner_version_max  19.1
+%global xulrunner_version      20.0
+%global xulrunner_version_max  20.1
 %global xulrunner_release      1
 %global alpha_version          0
 %global beta_version           0
@@ -379,6 +379,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %defattr(-,root,root,-)
 %{_bindir}/firefox
 %{mozappdir}/firefox
+%{mozappdir}/firefox-bin
 %doc %{_mandir}/man1/*
 %dir %{_datadir}/mozilla/extensions/%{firefox_app_id}
 %dir %{_libdir}/mozilla/extensions/%{firefox_app_id}
