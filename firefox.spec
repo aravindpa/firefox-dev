@@ -55,7 +55,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        20.0
-Release:        2%{?pre_tag}%{?dist}
+Release:        3%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -426,6 +426,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Apr 18 2013 Martin Stransky <stransky@redhat.com> - 20.0-3
+- Added a workaround for rhbz#907424 - textarea redrawn wrongly 
+  during edit
+
 * Thu Apr 18 2013 Jan Horak <jhorak@redhat.com> - 20.0-2
 - Updated manual page
 
