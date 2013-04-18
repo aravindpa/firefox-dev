@@ -55,7 +55,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        20.0
-Release:        3%{?pre_tag}%{?dist}
+Release:        4%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -147,8 +147,14 @@ cd %{tarballdir}
 %endif
 
 # Set up SDK path
-echo "ac_add_options --with-libxul-sdk=\
-`pkg-config --variable=sdkdir libxul`" >> .mozconfig
+MOZILLA_SDK_PATH=`pkg-config --variable=sdkdir libxul`
+if [ -z $MOZILLA_SDK_PATH ]; then
+    echo "XulRunner SDK is not available!"
+    exit 1
+else
+    echo "XulRunner SDK path: $MOZILLA_SDK_PATH"
+    echo "ac_add_options --with-libxul-sdk=$MOZILLA_SDK_PATH" >> .mozconfig
+fi
 
 %if !%{?separated_plugins}
 echo "ac_add_options --disable-ipc" >> .mozconfig
@@ -426,6 +432,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Apr 18 2013 Martin Stransky <stransky@redhat.com> - 20.0-4
+- Updated xulrunner check
+
 * Thu Apr 18 2013 Martin Stransky <stransky@redhat.com> - 20.0-3
 - Added a workaround for rhbz#907424 - textarea redrawn wrongly 
   during edit
