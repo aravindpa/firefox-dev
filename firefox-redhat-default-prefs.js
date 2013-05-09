@@ -12,3 +12,4 @@ pref("extensions.shownSelectionUI",         true);
 pref("extensions.autoDisableScope",         0);
 pref("gfx.color_management.enablev4",       true);
 pref("ui.SpellCheckerUnderlineStyle",       1);
+pref("startup.homepage_override_url",       "");

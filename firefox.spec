@@ -55,7 +55,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        20.0
-Release:        4%{?pre_tag}%{?dist}
+Release:        5%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -298,14 +298,14 @@ for langpack in `ls firefox-langpacks/*.xpi`; do
   language=`basename $langpack .xpi`
   extensionID=langpack-$language@firefox.mozilla.org
   %{__mkdir_p} $extensionID
-  unzip $langpack -d $extensionID
+  unzip -qq $langpack -d $extensionID
   find $extensionID -type f | xargs chmod 644
 
   sed -i -e "s|browser.startup.homepage.*$|browser.startup.homepage=%{homepage}|g;" \
      $extensionID/chrome/$language/locale/branding/browserconfig.properties
 
   cd $extensionID
-  zip -r9mX ../${extensionID}.xpi *
+  zip -qq -r9mX ../${extensionID}.xpi *
   cd -
 
   %{__install} -m 644 ${extensionID}.xpi $RPM_BUILD_ROOT%{langpackdir}
@@ -432,6 +432,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Thu May 9 2013 Martin Stransky <stransky@redhat.com> - 20.0-5
+- Removed firstrun page (rhbz#864793)
+- Made zip/unzip quiet in langpacks processing
+
 * Thu Apr 18 2013 Martin Stransky <stransky@redhat.com> - 20.0-4
 - Updated xulrunner check
 
