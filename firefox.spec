@@ -15,8 +15,8 @@
 %define default_bookmarks_file %{_datadir}/bookmarks/default-bookmarks.html
 %define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
-%global xulrunner_version      20.0
-%global xulrunner_version_max  20.1
+%global xulrunner_version      21.0
+%global xulrunner_version_max  21.1
 %global xulrunner_release      1
 %global alpha_version          0
 %global beta_version           0
@@ -54,14 +54,14 @@
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        20.0
-Release:        5%{?pre_tag}%{?dist}
+Version:        21.0
+Release:        1%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.bz2
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20130401.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20130514.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -80,7 +80,6 @@ Patch15:        firefox-15.0-enable-addons.patch
 Patch16:        firefox-duckduckgo.patch
 
 # Upstream patches
-Patch100:       mozilla-239254.patch
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -127,7 +126,6 @@ cd %{tarballdir}
 %patch16 -p1 -b .duckduckgo
 
 # Upstream patches
-%patch100 -p1 -b .239254
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -432,6 +430,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue May 14 2013 Martin Stransky <stransky@redhat.com> - 21.0-1
+- Updated to latest upstream (21.0)
+
 * Thu May 9 2013 Martin Stransky <stransky@redhat.com> - 20.0-5
 - Removed firstrun page (rhbz#864793)
 - Made zip/unzip quiet in langpacks processing
