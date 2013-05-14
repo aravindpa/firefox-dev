@@ -88,7 +88,6 @@ Patch16:        firefox-duckduckgo.patch
 %else
 # Not yet approved by Mozillla Corporation
 
-
 %endif
 
 # ---------------------------------------------------
