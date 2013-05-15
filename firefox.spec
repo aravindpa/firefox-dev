@@ -73,6 +73,7 @@ Source23:       firefox.1
 
 #Build patches
 Patch0:         firefox-install-dir.patch
+Patch1:         firefox-packager-build.patch
 
 # Fedora patches
 Patch14:        firefox-5.0-asciidel.patch
@@ -116,6 +117,7 @@ cd %{tarballdir}
 # there is a compare of config and js/config directories and .orig suffix is 
 # ignored during this compare.
 %patch0 -p1
+%patch1 -p2 -b .build
 
 # For branding specific patches.
 
@@ -235,7 +237,7 @@ cd %{tarballdir}
 
 # set up our prefs and add it to the package manifest file, so it gets pulled in
 # to omni.jar which gets created during make install
-%{__cp} %{SOURCE12} dist/bin/defaults/preferences/all-redhat.js
+%{__cp} %{SOURCE12} dist/bin/browser/defaults/preferences/all-redhat.js
 # This sed call "replaces" firefox.js with all-redhat.js, newline, and itself (&)
 # having the net effect of prepending all-redhat.js above firefox.js
 %{__sed} -i -e\
@@ -243,15 +245,15 @@ cd %{tarballdir}
     browser/installer/package-manifest.in
 
 # set up our default bookmarks
-%{__cp} -p %{default_bookmarks_file} dist/bin/defaults/profile/bookmarks.html
+%{__cp} -p %{default_bookmarks_file} dist/bin/browser/defaults/profile/bookmarks.html
 
 # Make sure locale works for langpacks
-%{__cat} > dist/bin/defaults/preferences/firefox-l10n.js << EOF
+%{__cat} > dist/bin/browser/defaults/preferences/firefox-l10n.js << EOF
 pref("general.useragent.locale", "chrome://global/locale/intl.properties");
 EOF
 
 # resolves bug #461880
-%{__cat} > dist/bin/chrome/en-US/locale/branding/browserconfig.properties << EOF
+%{__cat} > dist/bin/browser/chrome/en-US/locale/branding/browserconfig.properties << EOF
 browser.startup.homepage=%{homepage}
 EOF
 
@@ -299,7 +301,7 @@ for langpack in `ls firefox-langpacks/*.xpi`; do
   find $extensionID -type f | xargs chmod 644
 
   sed -i -e "s|browser.startup.homepage.*$|browser.startup.homepage=%{homepage}|g;" \
-     $extensionID/chrome/$language/locale/branding/browserconfig.properties
+     $extensionID/browser/chrome/$language/locale/branding/browserconfig.properties
 
   cd $extensionID
   zip -qq -r9mX ../${extensionID}.xpi *
@@ -338,15 +340,15 @@ create_default_langpack "pt-PT" "pt"
 create_default_langpack "sv-SE" "sv"
 create_default_langpack "zh-TW" "zh"
 
+# New preferences dir
+%{__mkdir_p} $RPM_BUILD_ROOT/%{mozappdir}/browser/defaults/preferences
+
 # System extensions
 %{__mkdir_p} $RPM_BUILD_ROOT%{_datadir}/mozilla/extensions/%{firefox_app_id}
 %{__mkdir_p} $RPM_BUILD_ROOT%{_libdir}/mozilla/extensions/%{firefox_app_id}
 
 # Copy over the LICENSE
 %{__install} -p -c -m 644 LICENSE $RPM_BUILD_ROOT/%{mozappdir}
-
-# Remove tmp files
-find $RPM_BUILD_ROOT/%{mozappdir}/modules -name '.mkdir.done' -exec rm -rf {} \;
 
 # Enable crash reporter for Firefox application
 %if %{include_debuginfo}
@@ -389,21 +391,21 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/applications/*.desktop
 %dir %{mozappdir}
 %doc %{mozappdir}/LICENSE
-%{mozappdir}/chrome
-%{mozappdir}/chrome.manifest
-%dir %{mozappdir}/components
-%{mozappdir}/components/*.so
-%{mozappdir}/components/binary.manifest
-%{mozappdir}/defaults/preferences/channel-prefs.js
-%attr(644, root, root) %{mozappdir}/blocklist.xml
-%dir %{mozappdir}/extensions
-%{mozappdir}/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}
+%{mozappdir}/browser/chrome
+%{mozappdir}/browser/chrome.manifest
+%dir %{mozappdir}/browser/components
+%{mozappdir}/browser/components/*.so
+%{mozappdir}/browser/components/components.manifest
+%dir %{mozappdir}/browser/defaults/preferences
+%attr(644, root, root) %{mozappdir}/browser/blocklist.xml
+%dir %{mozappdir}/browser/extensions
+%{mozappdir}/browser/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}
 %if %{build_langpacks}
 %dir %{langpackdir}
 %endif
-%{mozappdir}/omni.ja
-%{mozappdir}/icons
-%{mozappdir}/searchplugins
+%{mozappdir}/browser/omni.ja
+%{mozappdir}/browser/icons
+%{mozappdir}/browser/searchplugins
 %{mozappdir}/run-mozilla.sh
 %{mozappdir}/application.ini
 %exclude %{mozappdir}/removed-files
@@ -415,7 +417,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/icons/hicolor/48x48/apps/firefox.png
 %{mozappdir}/xulrunner
 %{mozappdir}/webapprt-stub
-%{mozappdir}/modules/*
 %dir %{mozappdir}/webapprt
 %{mozappdir}/webapprt/omni.ja
 %{mozappdir}/webapprt/webapprt.ini
