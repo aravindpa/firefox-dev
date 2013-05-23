@@ -55,7 +55,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        21.0
-Release:        3%{?pre_tag}%{?dist}
+Release:        4%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -442,6 +442,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Thu May 23 2013 Jan Horak <jhorak@redhat.com> - 21.0-4
+- Do not override user defined TMPDIR variable
+
 * Thu May 16 2013 Martin Stransky <stransky@redhat.com> - 21.0-3
 - Fixed extension compatibility dialog (rhbz#963422)
 
