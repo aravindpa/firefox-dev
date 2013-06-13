@@ -28,7 +28,7 @@
 
 %define official_branding       1
 %define build_langpacks         1
-%define include_debuginfo       0
+%define include_debuginfo       1
 
 %if %{alpha_version} > 0
 %global pre_version a%{alpha_version}
@@ -66,7 +66,6 @@ Source1:        firefox-langpacks-%{version}%{?pre_version}-20130514.tar.xz
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
 Source12:       firefox-redhat-default-prefs.js
-Source13:       firefox-mozconfig-debuginfo
 Source20:       firefox.desktop
 Source21:       firefox.sh.in
 Source23:       firefox.1
@@ -140,9 +139,6 @@ cd %{tarballdir}
 %{__cp} %{SOURCE10} .mozconfig
 %if %{official_branding}
 %{__cat} %{SOURCE11} >> .mozconfig
-%endif
-%if %{include_debuginfo}
-%{__cat} %{SOURCE13} >> .mozconfig
 %endif
 
 # Set up SDK path
@@ -223,12 +219,6 @@ MOZ_SMP_FLAGS=-j1
 
 export LDFLAGS="-Wl,-rpath,%{mozappdir}"
 make -f client.mk build STRIP="/bin/true" MOZ_MAKE_FLAGS="$MOZ_SMP_FLAGS"
-
-# create debuginfo for crash-stats.mozilla.com
-%if %{include_debuginfo}
-#cd %{moz_objdir}
-make buildsymbols
-%endif
 
 #---------------------------------------------------------------------
 
@@ -433,10 +423,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{mozappdir}/webapprt/omni.ja
 %{mozappdir}/webapprt/webapprt.ini
 %if %{include_debuginfo}
-#%{mozappdir}/crashreporter
-%{mozappdir}/crashreporter-override.ini
-#%{mozappdir}/Throbber-small.gif
-#%{mozappdir}/plugin-container
+%{mozappdir}/browser/crashreporter-override.ini
 %endif
 
 #---------------------------------------------------------------------
