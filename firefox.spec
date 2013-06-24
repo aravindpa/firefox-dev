@@ -72,7 +72,6 @@ Source23:       firefox.1
 
 #Build patches
 Patch0:         firefox-install-dir.patch
-Patch1:         firefox-packager-build.patch
 
 # Fedora patches
 Patch14:        firefox-5.0-asciidel.patch
@@ -116,7 +115,6 @@ cd %{tarballdir}
 # there is a compare of config and js/config directories and .orig suffix is 
 # ignored during this compare.
 %patch0 -p1
-%patch1 -p2 -b .build
 
 # For branding specific patches.
 
