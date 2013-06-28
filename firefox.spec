@@ -28,7 +28,11 @@
 
 %define official_branding       1
 %define build_langpacks         1
-%define include_debuginfo       1
+%ifarch %{ix86} x86_64
+%define enable_mozilla_crashreporter       1
+%else
+%define enable_mozilla_crashreporter       0
+%endif
 
 %if %{alpha_version} > 0
 %global pre_version a%{alpha_version}
@@ -55,7 +59,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        22.0
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -346,7 +350,7 @@ ln -s %{mozappdir}/defaults/preferences $RPM_BUILD_ROOT/%{mozappdir}/browser/def
 %{__install} -p -c -m 644 LICENSE $RPM_BUILD_ROOT/%{mozappdir}
 
 # Enable crash reporter for Firefox application
-%if %{include_debuginfo}
+%if %{enable_mozilla_crashreporter}
 sed -i -e "s/\[Crash Reporter\]/[Crash Reporter]\nEnabled=1/" $RPM_BUILD_ROOT/%{mozappdir}/application.ini
 %endif
 
@@ -420,13 +424,16 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %dir %{mozappdir}/webapprt
 %{mozappdir}/webapprt/omni.ja
 %{mozappdir}/webapprt/webapprt.ini
-%if %{include_debuginfo}
+%if %{enable_mozilla_crashreporter}
 %{mozappdir}/browser/crashreporter-override.ini
 %endif
 
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Jun 28 2013 Jan Horak <jhorak@redhat.com> - 22.0-2
+- Fixed crashreporter for third arch
+
 * Fri Jun 21 2013 Martin Stransky <stransky@redhat.com> - 22.0-1
 - Updated to latest upstream (22.0)
 
