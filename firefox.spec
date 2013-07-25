@@ -59,7 +59,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        22.0
-Release:        2%{?pre_tag}%{?dist}
+Release:        3%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -233,7 +233,7 @@ cd %{tarballdir}
 # This sed call "replaces" firefox.js with all-redhat.js, newline, and itself (&)
 # having the net effect of prepending all-redhat.js above firefox.js
 %{__sed} -i -e\
-    's|@BINPATH@/@PREF_DIR@/firefox.js|@BINPATH@/@PREF_DIR@/all-redhat.js\n&|' \
+    's|@BINPATH@/browser/@PREF_DIR@/firefox.js|@BINPATH@/browser/@PREF_DIR@/all-redhat.js\n&|' \
     browser/installer/package-manifest.in
 
 # set up our default bookmarks
@@ -431,6 +431,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Jul 25 2013 Martin Stransky <stransky@redhat.com> - 22.0-3
+- Fixed rhbz#988363 - firefox-redhat-default-prefs.js is not used
+
 * Fri Jun 28 2013 Jan Horak <jhorak@redhat.com> - 22.0-2
 - Fixed crashreporter for third arch
 
