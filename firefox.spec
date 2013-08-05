@@ -432,7 +432,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %changelog
 * Mon Aug 5 2013 Martin Stransky <stransky@redhat.com> - 23.0-1
-- Updated to latest upstream (23.0)
+- Updated to latest upstream (23.0 Build 2)
 
 * Thu Jul 25 2013 Martin Stransky <stransky@redhat.com> - 22.0-3
 - Fixed rhbz#988363 - firefox-redhat-default-prefs.js is not used
