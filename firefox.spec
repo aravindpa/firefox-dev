@@ -436,6 +436,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Aug 30 2013 Jan Horak <jhorak@redhat.com> - 23.0.1-2
+- Homepage moved to pref file
+- Fixed migration from F18 -> F19 (rhbz#976420)
+
 * Mon Aug 19 2013 Jan Horak <jhorak@redhat.com> - 23.0.1-1
 - Update to 23.0.1
 
