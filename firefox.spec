@@ -58,7 +58,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        23.0.1
-Release:        2%{?pre_tag}%{?dist}
+Release:        3%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -255,7 +255,7 @@ desktop-file-install --dir $RPM_BUILD_ROOT%{_datadir}/applications %{SOURCE20}
 
 # set up the firefox start script
 %{__rm} -rf $RPM_BUILD_ROOT%{_bindir}/firefox
-XULRUNNER_DIR=`pkg-config --variable=libdir libxul | %{__sed} -e "s,%{_libdir},,g"`
+XULRUNNER_DIR=`pkg-config --variable=libdir libxul | %{__sed} -e "s,%{_libdir}/\?,,g"`
 %{__cat} %{SOURCE21} | %{__sed} -e "s,XULRUNNER_DIRECTORY,$XULRUNNER_DIR,g" > \
   $RPM_BUILD_ROOT%{_bindir}/firefox
 %{__chmod} 755 $RPM_BUILD_ROOT%{_bindir}/firefox
@@ -436,6 +436,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Aug 30 2013 Martin Stransky <stransky@redhat.com> - 23.0.1-3
+- Spec tweak (rhbz#991493)
+
 * Fri Aug 30 2013 Jan Horak <jhorak@redhat.com> - 23.0.1-2
 - Homepage moved to pref file
 - Fixed migration from F18 -> F19 (rhbz#976420)
