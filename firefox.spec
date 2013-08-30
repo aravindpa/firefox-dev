@@ -11,7 +11,6 @@
 # Build as a debug package?
 %define debug_build       0
 
-%define homepage http://start.fedoraproject.org/
 %define default_bookmarks_file %{_datadir}/bookmarks/default-bookmarks.html
 %define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
@@ -59,7 +58,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        23.0.1
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -244,11 +243,6 @@ cd %{tarballdir}
 pref("general.useragent.locale", "chrome://global/locale/intl.properties");
 EOF
 
-# resolves bug #461880
-%{__cat} > dist/bin/browser/chrome/en-US/locale/branding/browserconfig.properties << EOF
-browser.startup.homepage=%{homepage}
-EOF
-
 DESTDIR=$RPM_BUILD_ROOT make install
 
 %{__mkdir_p} $RPM_BUILD_ROOT{%{_libdir},%{_bindir},%{_datadir}/applications}
@@ -291,9 +285,6 @@ for langpack in `ls firefox-langpacks/*.xpi`; do
   %{__mkdir_p} $extensionID
   unzip -qq $langpack -d $extensionID
   find $extensionID -type f | xargs chmod 644
-
-  sed -i -e "s|browser.startup.homepage.*$|browser.startup.homepage=%{homepage}|g;" \
-     $extensionID/browser/chrome/$language/locale/branding/browserconfig.properties
 
   cd $extensionID
   zip -qq -r9mX ../${extensionID}.xpi *
@@ -355,6 +346,20 @@ sed -i -e "s/\[Crash Reporter\]/[Crash Reporter]\nEnabled=1/" $RPM_BUILD_ROOT/%{
 %endif
 
 #---------------------------------------------------------------------
+
+%pretrans
+# Moves defaults/preferences to browser/defaults/preferences in Fedora 19+
+%if 0%{?fedora} >= 19
+if [ -L %{mozappdir}/browser/defaults/preferences ]; then
+  rm %{mozappdir}/browser/defaults/preferences
+  mkdir -p %{mozappdir}/browser/defaults/preferences
+  if [ -d %{mozappdir}/defaults/preferences ]; then
+    mv %{mozappdir}/defaults/preferences/* %{mozappdir}/browser/defaults/preferences
+    rm -f %{mozappdir}/defaults/preferences/*
+    echo "Content of this directory has been moved to %{mozappdir}/browser/defaults/preferences." > %{mozappdir}/defaults/preferences/README
+  fi
+fi
+%endif
 
 %preun
 # is it a final removal?
