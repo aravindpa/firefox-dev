@@ -58,7 +58,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        23.0.1
-Release:        3%{?pre_tag}%{?dist}
+Release:        4%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -347,18 +347,25 @@ sed -i -e "s/\[Crash Reporter\]/[Crash Reporter]\nEnabled=1/" $RPM_BUILD_ROOT/%{
 
 #---------------------------------------------------------------------
 
-%pretrans
 # Moves defaults/preferences to browser/defaults/preferences in Fedora 19+
+%pretrans -p <lua>
 %if 0%{?fedora} >= 19
-if [ -L %{mozappdir}/browser/defaults/preferences ]; then
-  rm %{mozappdir}/browser/defaults/preferences
-  mkdir -p %{mozappdir}/browser/defaults/preferences
-  if [ -d %{mozappdir}/defaults/preferences ]; then
-    mv %{mozappdir}/defaults/preferences/* %{mozappdir}/browser/defaults/preferences
-    rm -f %{mozappdir}/defaults/preferences/*
-    echo "Content of this directory has been moved to %{mozappdir}/browser/defaults/preferences." > %{mozappdir}/defaults/preferences/README
-  fi
-fi
+require 'posix'
+require 'os'
+if (posix.stat("%{mozappdir}/browser/defaults/preferences", "type") == "link") then
+  posix.unlink("%{mozappdir}/browser/defaults/preferences")
+  posix.mkdir("%{mozappdir}/browser/defaults/preferences")
+  if (posix.stat("%{mozappdir}/defaults/preferences", "type") == "directory") then
+    for i,filename in pairs(posix.dir("%{mozappdir}/defaults/preferences")) do 
+      os.rename("%{mozappdir}/defaults/preferences/"..filename, "%{mozappdir}/browser/defaults/preferences/"..filename)
+    end
+    f = io.open("%{mozappdir}/defaults/preferences/README","w")
+    if f then
+      f:write("Content of this directory has been moved to %{mozappdir}/browser/defaults/preferences.")
+      f:close()
+    end
+  end
+end
 %endif
 
 %preun
@@ -436,6 +443,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Sep  3 2013 Jan Horak <jhorak@redhat.com> - 23.0.1-4
+- Fixing rhbz#1003691
+
 * Fri Aug 30 2013 Martin Stransky <stransky@redhat.com> - 23.0.1-3
 - Spec tweak (rhbz#991493)
 
