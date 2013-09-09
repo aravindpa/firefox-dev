@@ -58,7 +58,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        23.0.1
-Release:        4%{?pre_tag}%{?dist}
+Release:        5%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -348,8 +348,8 @@ sed -i -e "s/\[Crash Reporter\]/[Crash Reporter]\nEnabled=1/" $RPM_BUILD_ROOT/%{
 #---------------------------------------------------------------------
 
 # Moves defaults/preferences to browser/defaults/preferences in Fedora 19+
-%pretrans -p <lua>
 %if 0%{?fedora} >= 19
+%pretrans -p <lua>
 require 'posix'
 require 'os'
 if (posix.stat("%{mozappdir}/browser/defaults/preferences", "type") == "link") then
@@ -443,7 +443,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
-* Tue Sep  3 2013 Jan Horak <jhorak@redhat.com> - 23.0.1-4
+* Tue Sep  3 2013 Jan Horak <jhorak@redhat.com> - 23.0.1-5
 - Fixing rhbz#1003691
 
 * Fri Aug 30 2013 Martin Stransky <stransky@redhat.com> - 23.0.1-3
