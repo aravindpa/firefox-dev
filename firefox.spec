@@ -58,7 +58,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        24.0
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -443,6 +443,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Oct 17 2013 Martin Stransky <stransky@redhat.com> - 24.0-2
+- Fixed rhbz#1005611 - BEAST workaround not enabled in Firefox
+
 * Fri Sep 13 2013 Martin Stransky <stransky@redhat.com> - 24.0-1
 - Update to 24.0
 
