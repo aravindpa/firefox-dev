@@ -14,8 +14,8 @@
 %define default_bookmarks_file %{_datadir}/bookmarks/default-bookmarks.html
 %define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
-%global xulrunner_version      24.0
-%global xulrunner_version_max  24.1
+%global xulrunner_version      25.0
+%global xulrunner_version_max  25.1
 %global xulrunner_release      1
 %global alpha_version          0
 %global beta_version           0
@@ -58,7 +58,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        25.0
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -443,6 +443,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Oct 24 2013 Martin Stransky <stransky@redhat.com> - 25.0-2
+- Fixed xulrunner dependency
+
 * Thu Oct 24 2013 Martin Stransky <stransky@redhat.com> - 25.0-1
 - Update to 25.0 Build 2
 
