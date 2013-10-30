@@ -58,13 +58,13 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        25.0
-Release:        2%{?pre_tag}%{?dist}
+Release:        3%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.bz2
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20131024.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20131030.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -443,6 +443,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Oct 30 2013 Martin Stransky <stransky@redhat.com> - 25.0-3
+- Update to 25.0 Build 3
+
 * Thu Oct 24 2013 Martin Stransky <stransky@redhat.com> - 25.0-2
 - Fixed xulrunner dependency
 
