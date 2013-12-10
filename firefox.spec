@@ -228,7 +228,7 @@ cd %{tarballdir}
 
 # set up our prefs and add it to the package manifest file, so it gets pulled in
 # to omni.jar which gets created during make install
-%{__cp} %{SOURCE12} dist/bin/browser/defaults/preferences/all-redhat.js
+%{__cp} %{SOURCE12} objdir/dist/bin/browser/defaults/preferences/all-redhat.js
 # This sed call "replaces" firefox.js with all-redhat.js, newline, and itself (&)
 # having the net effect of prepending all-redhat.js above firefox.js
 %{__sed} -i -e\
@@ -236,14 +236,14 @@ cd %{tarballdir}
     browser/installer/package-manifest.in
 
 # set up our default bookmarks
-%{__cp} -p %{default_bookmarks_file} dist/bin/browser/defaults/profile/bookmarks.html
+%{__cp} -p %{default_bookmarks_file} objdir/dist/bin/browser/defaults/profile/bookmarks.html
 
 # Make sure locale works for langpacks
-%{__cat} > dist/bin/browser/defaults/preferences/firefox-l10n.js << EOF
+%{__cat} > objdir/dist/bin/browser/defaults/preferences/firefox-l10n.js << EOF
 pref("general.useragent.locale", "chrome://global/locale/intl.properties");
 EOF
 
-DESTDIR=$RPM_BUILD_ROOT make install
+DESTDIR=$RPM_BUILD_ROOT make -C objdir install
 
 %{__mkdir_p} $RPM_BUILD_ROOT{%{_libdir},%{_bindir},%{_datadir}/applications}
 
