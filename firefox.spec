@@ -16,7 +16,7 @@
 
 %global xulrunner_version      26.0
 %global xulrunner_version_max  26.1
-%global xulrunner_release      2
+%global xulrunner_release      1
 %global alpha_version          0
 %global beta_version           0
 %global rc_version             0
