@@ -326,6 +326,10 @@ echo "ac_add_options --disable-tracejit" >> .mozconfig
 echo "ac_add_options --disable-webrtc" >> .mozconfig
 %endif
 
+%if !%{enable_mozilla_crashreporter}
+echo "ac_add_options --disable-crashreporter" >> .mozconfig
+%endif
+
 #---------------------------------------------------------------------
 
 %build
@@ -422,13 +426,8 @@ desktop-file-install --dir $RPM_BUILD_ROOT%{_datadir}/applications %{SOURCE20}
 
 # set up the firefox start script
 %{__rm} -rf $RPM_BUILD_ROOT%{_bindir}/firefox
-XULRUNNER_DIR=`pkg-config --variable=libdir libxul | %{__sed} -e "s,%{_libdir}/\?,,g"`
-%{__cat} %{SOURCE21} | %{__sed} -e "s,XULRUNNER_DIRECTORY,$XULRUNNER_DIR,g" > \
-  $RPM_BUILD_ROOT%{_bindir}/firefox
+%{__cat} %{SOURCE21} > $RPM_BUILD_ROOT%{_bindir}/firefox
 %{__chmod} 755 $RPM_BUILD_ROOT%{_bindir}/firefox
-
-# Link with xulrunner 
-ln -s `pkg-config --variable=libdir libxul` $RPM_BUILD_ROOT/%{mozappdir}/xulrunner
 
 %{__install} -p -D -m 644 %{SOURCE23} $RPM_BUILD_ROOT%{_mandir}/man1/firefox.1
 
@@ -462,7 +461,6 @@ for langpack in `ls firefox-langpacks/*.xpi`; do
   echo "%%lang($language) %{langpackdir}/${extensionID}.xpi" >> ../%{name}.lang
 done
 %{__rm} -rf firefox-langpacks
-%endif # build_langpacks
 
 # Install langpack workaround (see #707100, #821169)
 function create_default_langpack() {
@@ -489,6 +487,7 @@ create_default_langpack "pa-IN" "pa"
 create_default_langpack "pt-PT" "pt"
 create_default_langpack "sv-SE" "sv"
 create_default_langpack "zh-TW" "zh"
+%endif # build_langpacks
 
 # Keep compatibility with the old preference location 
 # on Fedora 18 and earlier
