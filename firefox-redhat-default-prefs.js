@@ -1,6 +1,11 @@
 pref("app.update.auto",                     false);
 pref("app.update.enabled",                  false);
 pref("app.update.autoInstallEnabled",       false);
+pref("general.smoothScroll",                true);
+pref("intl.locale.matchOS",                 true);
+pref("toolkit.storage.synchronous",         0);
+pref("toolkit.networkmanager.disable",      false);
+pref("offline.autoDetect",                  true);
 pref("browser.backspace_action",            2);
 pref("browser.display.use_system_colors",   true);
 pref("browser.download.folderList",         1);
