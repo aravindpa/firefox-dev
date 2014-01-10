@@ -601,7 +601,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/icons/hicolor/256x256/apps/firefox.png
 %{_datadir}/icons/hicolor/32x32/apps/firefox.png
 %{_datadir}/icons/hicolor/48x48/apps/firefox.png
-%{mozappdir}/xulrunner
 %{mozappdir}/webapprt-stub
 %dir %{mozappdir}/webapprt
 %{mozappdir}/webapprt/omni.ja
