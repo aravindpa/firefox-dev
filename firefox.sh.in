@@ -171,9 +171,9 @@ FEDORA_LANGPACK_CONFIG="$MOZ_EXTENSIONS_PROFILE_DIR/.fedora-langpack-install"
 # MOZ_DISABLE_LANGPACKS disables language packs completely
 MOZILLA_DOWN=0
 if ! [ $MOZ_DISABLE_LANGPACKS ] || [ $MOZ_DISABLE_LANGPACKS -eq 0 ]; then
-    if [ -x $MOZ_LIB_DIR/mozilla-xremote-client ]; then
+    if [ -x $MOZ_DIST_BIN/mozilla-xremote-client ]; then
         # Is firefox running?
-        $MOZ_LIB_DIR/mozilla-xremote-client -a firefox 'ping()' > /dev/null 2>&1
+        $MOZ_DIST_BIN/mozilla-xremote-client -a firefox 'ping()' > /dev/null 2>&1
         MOZILLA_DOWN=$?
     fi
 fi

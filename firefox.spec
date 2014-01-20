@@ -85,7 +85,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        26.0
-Release:        5%{?pre_tag}%{?dist}
+Release:        6%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -629,6 +629,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Jan 20 2014 Jan Horak <jhorak@redhat.com> - 26.0-6
+- Fixed langpack installation
+
 * Thu Jan  9 2014 Jan Horak <jhorak@redhat.com> - 26.0-5
 - Build standalone firefox package without dependency on xulrunner
 
