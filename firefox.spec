@@ -56,6 +56,7 @@
 %global rc_version    0
 
 %global mozappdir     %{_libdir}/%{name}
+%global mozappdirdev  %{_libdir}/%{name}-devel-%{version}
 %global langpackdir   %{mozappdir}/langpacks
 %global tarballdir    mozilla-release
 
@@ -85,7 +86,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        26.0
-Release:        6%{?pre_tag}%{?dist}
+Release:        7%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -402,9 +403,9 @@ cd %{tarballdir}
 %{__cp} %{SOURCE12} objdir/dist/bin/browser/defaults/preferences/all-redhat.js
 # This sed call "replaces" firefox.js with all-redhat.js, newline, and itself (&)
 # having the net effect of prepending all-redhat.js above firefox.js
-%{__sed} -i -e\
-    's|@BINPATH@/browser/@PREF_DIR@/firefox.js|@BINPATH@/browser/@PREF_DIR@/all-redhat.js\n&|' \
-    browser/installer/package-manifest.in
+#%{__sed} -i -e\
+#    's|@BINPATH@/browser/@PREF_DIR@/firefox.js|@BINPATH@/browser/@PREF_DIR@/all-redhat.js\n&|' \
+#    browser/installer/package-manifest.in
 
 # set up our default bookmarks
 %{__cp} -p %{default_bookmarks_file} objdir/dist/bin/browser/defaults/profile/bookmarks.html
@@ -515,6 +516,13 @@ ln -s %{_datadir}/myspell ${RPM_BUILD_ROOT}%{mozappdir}/dictionaries
 sed -i -e "s/\[Crash Reporter\]/[Crash Reporter]\nEnabled=1/" $RPM_BUILD_ROOT/%{mozappdir}/application.ini
 %endif
 
+# Default 
+%{__cp} %{SOURCE12} ${RPM_BUILD_ROOT}%{mozappdir}/browser/defaults/preferences
+
+# Remove copied libraries to speed up build
+rm -f ${RPM_BUILD_ROOT}%{mozappdirdev}/sdk/lib/libmozjs.so 
+rm -f ${RPM_BUILD_ROOT}%{mozappdirdev}/sdk/lib/libmozalloc.so
+rm -f ${RPM_BUILD_ROOT}%{mozappdirdev}/sdk/lib/libxul.so
 #---------------------------------------------------------------------
 
 # Moves defaults/preferences to browser/defaults/preferences in Fedora 19+
@@ -577,12 +585,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %dir %{mozappdir}/browser/components
 %{mozappdir}/browser/components/*.so
 %{mozappdir}/browser/components/components.manifest
-%if 0%{?fedora} < 19
-%dir %{mozappdir}/defaults/preferences
-%{mozappdir}/browser/defaults/preferences
-%else
-%dir %{mozappdir}/browser/defaults/preferences
-%endif
+%{mozappdir}/browser/defaults/preferences/firefox-redhat-default-prefs.js
 %attr(644, root, root) %{mozappdir}/browser/blocklist.xml
 %dir %{mozappdir}/browser/extensions
 %{mozappdir}/browser/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}
@@ -614,14 +617,13 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{mozappdir}/*.so
 %{mozappdir}/chrome.manifest
 %{mozappdir}/components
-%{mozappdir}/defaults
+%{mozappdir}/defaults/pref/channel-prefs.js
 %{mozappdir}/dependentlibs.list
 %{mozappdir}/dictionaries
 %{mozappdir}/mozilla-xremote-client
 %{mozappdir}/omni.ja
 %{mozappdir}/platform.ini
 %{mozappdir}/plugin-container
-%{mozappdir}/run-mozilla.sh
 %exclude %{_includedir}
 %exclude %{_libdir}/firefox-devel-%{version}
 %exclude %{_datadir}/idl
@@ -629,6 +631,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Jan 21 2014 Jan Horak <jhorak@redhat.com> - 26.0-7
+- Set default homepage to about:newtab and make start.fedoraproject.org page pinned on it
+
 * Mon Jan 20 2014 Jan Horak <jhorak@redhat.com> - 26.0-6
 - Fixed langpack installation
 
