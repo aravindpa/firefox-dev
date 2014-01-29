@@ -276,6 +276,12 @@ echo "ac_add_options --disable-system-cairo" >> .mozconfig
 echo "ac_add_options --enable-system-ffi" >> .mozconfig
 %endif
 
+%if %{?enable_gstreamer}
+echo "ac_add_options --enable-gstreamer" >> .mozconfig
+%else
+echo "ac_add_options --disable-gstreamer" >> .mozconfig
+%endif
+
 %if !%{?separated_plugins}
 echo "ac_add_options --disable-ipc" >> .mozconfig
 %endif
