@@ -11,7 +11,7 @@
 %endif
 
 # Use system cairo?
-%define system_cairo      1
+%define system_cairo      0
 
 %define enable_gstreamer  1
 
@@ -637,8 +637,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
-* Tue Jan 21 2014 Jan Horak <jhorak@redhat.com> - 26.0-7
+* Thu Jan 30 2014 Jan Horak <jhorak@redhat.com> - 26.0-7
 - Set default homepage to about:newtab and make start.fedoraproject.org page pinned on it
+- Disable system cairo because of rhbz#1059076
 
 * Mon Jan 20 2014 Jan Horak <jhorak@redhat.com> - 26.0-6
 - Fixed langpack installation
