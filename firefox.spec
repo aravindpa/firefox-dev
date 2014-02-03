@@ -36,7 +36,7 @@
 %if %{?system_nss}
 %global nspr_version 4.10.2
 %global nspr_build_version %(pkg-config --silence-errors --modversion nspr 2>/dev/null || echo 65536)
-%global nss_version 3.15.2
+%global nss_version 3.15.4
 %global nss_build_version %(pkg-config --silence-errors --modversion nss 2>/dev/null || echo 65536)
 %endif
 
@@ -85,8 +85,8 @@
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        26.0
-Release:        7%{?pre_tag}%{?dist}
+Version:        27.0
+Release:        1%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -220,8 +220,8 @@ cd %{tarballdir}
 # ignored during this compare.
 %patch0 -p1
 
-%patch2  -p1 -b .bld
-%patch3  -p1 -b .arm
+%patch2  -p2 -b .bld
+%patch3  -p2 -b .arm
 %patch14 -p2 -b .chromium-types
 %patch17 -p1 -b .gcc47
 %patch18 -p2 -b .jemalloc-ppc
@@ -637,6 +637,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Feb 3 2014 Martin Stransky <stransky@redhat.com> - 27.0-1
+- Update to 27.0
+
 * Thu Jan 30 2014 Jan Horak <jhorak@redhat.com> - 26.0-7
 - Set default homepage to about:newtab and make start.fedoraproject.org page pinned on it
 - Disable system cairo because of rhbz#1059076
