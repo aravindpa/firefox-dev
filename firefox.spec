@@ -86,7 +86,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        27.0.1
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -103,7 +103,6 @@ Source23:       firefox.1
 
 #Build patches
 Patch0:         firefox-install-dir.patch
-Patch2:         mozilla-build.patch
 Patch3:         mozilla-build-arm.patch
 Patch14:        xulrunner-2.0-chromium-types.patch
 Patch17:        xulrunner-24.0-gcc47.patch
@@ -220,7 +219,6 @@ cd %{tarballdir}
 # ignored during this compare.
 %patch0 -p1
 
-%patch2  -p2 -b .bld
 %patch3  -p2 -b .arm
 %patch14 -p2 -b .chromium-types
 %patch17 -p1 -b .gcc47
@@ -637,6 +635,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Mar 6 2014 Martin Stransky <stransky@redhat.com> - 27.0.1-2
+- Removed needless build patch
+
 * Mon Feb 24 2014 Martin Stransky <stransky@redhat.com> - 27.0.1-1
 - Update to 27.0.1
 
