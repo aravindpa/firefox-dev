@@ -85,14 +85,14 @@
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        27.0.1
-Release:        2%{?pre_tag}%{?dist}
+Version:        28.0
+Release:        1%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.bz2
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20140224.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20140318.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -114,14 +114,10 @@ Patch19:        xulrunner-24.0-s390-inlines.patch
 # Fedora specific patches
 # Unable to install addons from https pages
 Patch204:        rhbz-966424.patch
-Patch214:        firefox-5.0-asciidel.patch
 Patch215:        firefox-15.0-enable-addons.patch
 Patch216:        firefox-duckduckgo.patch
 
 # Upstream patches
-Patch300:        mozilla-837563.patch
-Patch301:        mozilla-938730.patch
-Patch302:        mozilla-885002.patch
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -229,14 +225,10 @@ cd %{tarballdir}
 
 # Fedora patches
 %patch204 -p1 -b .966424
-%patch214 -p1 -b .asciidel
 %patch215 -p2 -b .addons
 %patch216 -p1 -b .duckduckgo
 
 # Upstream patches
-%patch300 -p1 -b .837563
-%patch301 -p1 -b .938730
-%patch302 -p1 -b .885002
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -635,6 +627,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Mar 18 2014 Martin Stransky <stransky@redhat.com> - 28.0-1
+- Update to 28.0
+
 * Thu Mar 6 2014 Martin Stransky <stransky@redhat.com> - 27.0.1-2
 - Removed needless build patch
 
