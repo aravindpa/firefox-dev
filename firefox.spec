@@ -86,14 +86,11 @@
 %global tarballdir  mozilla-release
 %endif
 
-%if %{disable_arm}
-ExcludeArch: %{arm}
-%endif
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        28.0
-Release:        2%{?pre_tag}%{?dist}
+Release:        3%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -222,7 +219,9 @@ cd %{tarballdir}
 # ignored during this compare.
 %patch0 -p1
 
+%ifarch %{arm}
 %patch3  -p2 -b .arm
+%endif
 %patch14 -p2 -b .chromium-types
 %patch17 -p1 -b .gcc47
 %patch18 -p2 -b .jemalloc-ppc
@@ -634,6 +633,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Mar 19 2014 Martin Stransky <stransky@redhat.com> - 28.0-3
+- Arm build fix
+
 * Wed Mar 19 2014 Martin Stransky <stransky@redhat.com> - 28.0-2
 - NSS version up, disable arm for now
 
