@@ -37,7 +37,7 @@
 %global libvpx_version 1.0.0
 
 %if %{?system_nss}
-%global nspr_version 4.10.2
+%global nspr_version 4.10.3
 %global nspr_build_version %(pkg-config --silence-errors --modversion nspr 2>/dev/null || echo 65536)
 %global nss_version 3.15.4
 %global nss_build_version %(pkg-config --silence-errors --modversion nss 2>/dev/null || echo 65536)
