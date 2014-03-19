@@ -1,3 +1,6 @@
+# Build for arm architecture?
+%define disable_arm       1
+
 # Use system nspr/nss?
 %define system_nss        1
 
@@ -81,6 +84,10 @@
 %global pre_version rc%{rc_version}
 %global pre_name    rc%{rc_version}
 %global tarballdir  mozilla-release
+%endif
+
+%if %{disable_arm}
+ExcludeArch: %{arm}
 %endif
 
 Summary:        Mozilla Firefox Web browser
