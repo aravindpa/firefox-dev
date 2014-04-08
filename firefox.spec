@@ -122,6 +122,7 @@ Patch215:        firefox-15.0-enable-addons.patch
 Patch216:        firefox-duckduckgo.patch
 
 # Upstream patches
+Patch300:        mozilla-ppc64le.patch
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -235,6 +236,11 @@ cd %{tarballdir}
 %patch216 -p1 -b .duckduckgo
 
 # Upstream patches
+%ifarch ppc64le
+%if 0%{?fedora} > 20
+%patch300 -p1 -b .ppc64le
+%endif
+%endif
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -378,7 +384,7 @@ export LIBDIR='%{_libdir}'
 MOZ_SMP_FLAGS=-j1
 # On x86 architectures, Mozilla can build up to 4 jobs at once in parallel,
 # however builds tend to fail on other arches when building in parallel.
-%ifarch %{ix86} x86_64 ppc ppc64
+%ifarch %{ix86} x86_64 ppc ppc64 ppc64le
 [ -z "$RPM_BUILD_NCPUS" ] && \
      RPM_BUILD_NCPUS="`/usr/bin/getconf _NPROCESSORS_ONLN`"
 [ "$RPM_BUILD_NCPUS" -ge 2 ] && MOZ_SMP_FLAGS=-j2
@@ -633,6 +639,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Apr  8 2014 Jan Horak <jhorak@redhat.com> - 28.0-4
+- Support for ppc64le architecture
+
 * Wed Mar 19 2014 Martin Stransky <stransky@redhat.com> - 28.0-3
 - Arm build fix
 
