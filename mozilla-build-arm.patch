@@ -1,7 +1,7 @@
-diff -up firefox-28.0/mozilla-release/gfx/ycbcr/moz.build.arm firefox-28.0/mozilla-release/gfx/ycbcr/moz.build
---- firefox-28.0/mozilla-release/gfx/ycbcr/moz.build.arm	2014-03-11 01:54:04.000000000 +0100
-+++ firefox-28.0/mozilla-release/gfx/ycbcr/moz.build	2014-03-11 10:12:19.586220802 +0100
-@@ -59,7 +59,7 @@ else:
+diff -up firefox-29.0/mozilla-release/gfx/ycbcr/moz.build.arm firefox-29.0/mozilla-release/gfx/ycbcr/moz.build
+--- firefox-29.0/mozilla-release/gfx/ycbcr/moz.build.arm	2014-04-22 07:27:47.000000000 +0200
++++ firefox-29.0/mozilla-release/gfx/ycbcr/moz.build	2014-04-22 16:40:34.862849368 +0200
+@@ -61,7 +61,7 @@ else:
          'yuv_row_other.cpp',
      ]
  
@@ -10,15 +10,3 @@ diff -up firefox-28.0/mozilla-release/gfx/ycbcr/moz.build.arm firefox-28.0/mozil
      SOURCES += [
          'yuv_row_arm.s',
      ]
-diff -up firefox-28.0/mozilla-release/media/libtheora/lib/moz.build.arm firefox-28.0/mozilla-release/media/libtheora/lib/moz.build
---- firefox-28.0/mozilla-release/media/libtheora/lib/moz.build.arm	2014-03-11 01:54:13.000000000 +0100
-+++ firefox-28.0/mozilla-release/media/libtheora/lib/moz.build	2014-03-19 12:00:57.491064764 +0100
-@@ -20,7 +20,7 @@ UNIFIED_SOURCES += [
-     'state.c',
- ]
- 
--if CONFIG['OS_TEST'] == 'arm' and CONFIG['GNU_AS']:
-+if CONFIG['GNU_AS']:
-     GENERATED_SOURCES += [ '%s.%s' % (f, CONFIG['ASM_SUFFIX']) for f in [
-         'armbits-gnu',
-         'armfrag-gnu',

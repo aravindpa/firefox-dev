@@ -1,6 +1,3 @@
-# Build for arm architecture?
-%define disable_arm       1
-
 # Use system nspr/nss?
 %define system_nss        1
 
