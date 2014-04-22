@@ -519,6 +519,9 @@ ln -s %{_datadir}/myspell ${RPM_BUILD_ROOT}%{mozappdir}/dictionaries
 # Enable crash reporter for Firefox application
 %if %{enable_mozilla_crashreporter}
 sed -i -e "s/\[Crash Reporter\]/[Crash Reporter]\nEnabled=1/" $RPM_BUILD_ROOT/%{mozappdir}/application.ini
+# Add debuginfo for crash-stats.mozilla.com
+%{__mkdir_p} $RPM_BUILD_ROOT/%{moz_debug_dir}
+%{__cp} objdir/dist/%{symbols_file_name} $RPM_BUILD_ROOT/%{moz_debug_dir}
 %endif
 
 # Default 
