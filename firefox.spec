@@ -106,7 +106,6 @@ Source23:       firefox.1
 Patch0:         firefox-install-dir.patch
 Patch3:         mozilla-build-arm.patch
 Patch14:        xulrunner-2.0-chromium-types.patch
-Patch17:        xulrunner-24.0-gcc47.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=814879#c3
 Patch18:        xulrunner-24.0-jemalloc-ppc.patch
 # workaround linking issue on s390 (JSContext::updateMallocCounter(size_t) not found)
@@ -221,7 +220,6 @@ cd %{tarballdir}
 %patch3  -p2 -b .arm
 %endif
 %patch14 -p2 -b .chromium-types
-%patch17 -p1 -b .gcc47
 %patch18 -p2 -b .jemalloc-ppc
 %patch19 -p2 -b .s390-inlines
 
