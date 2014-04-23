@@ -621,6 +621,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{mozappdir}/browser/crashreporter-override.ini
 %endif
 %{mozappdir}/*.so
+%{mozappdir}/libicu*
 %{mozappdir}/chrome.manifest
 %{mozappdir}/components
 %{mozappdir}/defaults/pref/channel-prefs.js
