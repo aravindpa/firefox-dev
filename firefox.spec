@@ -321,11 +321,9 @@ echo "ac_add_options --with-float-abi=soft" >> .mozconfig
 echo "ac_add_options --disable-elf-hack" >> .mozconfig
 %endif
 
-%ifnarch %{ix86} x86_64 armv7hl armv7hnl
-echo "ac_add_options --disable-methodjit" >> .mozconfig
-echo "ac_add_options --disable-monoic" >> .mozconfig
-echo "ac_add_options --disable-polyic" >> .mozconfig
-echo "ac_add_options --disable-tracejit" >> .mozconfig
+%ifnarch %{ix86} x86_64
+echo "ac_add_options --disable-ion" >> .mozconfig
+echo "ac_add_options --disable-yarr-jit" >> .mozconfig
 %endif
 
 %ifnarch %{ix86} x86_64 armv7hl armv7hnl
