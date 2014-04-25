@@ -87,7 +87,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        29.0
-Release:        2%{?pre_tag}%{?dist}
+Release:        3%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -156,6 +156,7 @@ BuildRequires:  libcurl-devel
 BuildRequires:  libvpx-devel >= %{libvpx_version}
 BuildRequires:  autoconf213
 BuildRequires:  pulseaudio-libs-devel
+BuildRequires:  libicu-devel
 
 Requires:       mozilla-filesystem
 %if %{?system_nss}
@@ -617,7 +618,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{mozappdir}/browser/crashreporter-override.ini
 %endif
 %{mozappdir}/*.so
-%{mozappdir}/libicu*
 %{mozappdir}/chrome.manifest
 %{mozappdir}/components
 %{mozappdir}/defaults/pref/channel-prefs.js
@@ -634,6 +634,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Apr 25 2014 Martin Stransky <stransky@redhat.com> - 29.0-3
+- Build with system ICU
+
 * Thu Apr 24 2014 Martin Stransky <stransky@redhat.com> - 29.0-2
 - Removed unused patch
 
