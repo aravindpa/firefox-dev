@@ -87,7 +87,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        29.0
-Release:        3%{?pre_tag}%{?dist}
+Release:        4%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -305,20 +305,21 @@ echo "ac_add_options --with-arch=armv7-a" >> .mozconfig
 echo "ac_add_options --with-float-abi=hard" >> .mozconfig
 echo "ac_add_options --with-fpu=vfpv3-d16" >> .mozconfig
 echo "ac_add_options --disable-elf-hack" >> .mozconfig
+echo "ac_add_options --disable-ion" >> .mozconfig
+echo "ac_add_options --disable-yarr-jit" >> .mozconfig
 %endif
 %ifarch armv7hnl
 echo "ac_add_options --with-arch=armv7-a" >> .mozconfig
 echo "ac_add_options --with-float-abi=hard" >> .mozconfig
 echo "ac_add_options --with-fpu=neon" >> .mozconfig
 echo "ac_add_options --disable-elf-hack" >> .mozconfig
+echo "ac_add_options --disable-ion" >> .mozconfig
+echo "ac_add_options --disable-yarr-jit" >> .mozconfig
 %endif
 %ifarch armv5tel
 echo "ac_add_options --with-arch=armv5te" >> .mozconfig
 echo "ac_add_options --with-float-abi=soft" >> .mozconfig
 echo "ac_add_options --disable-elf-hack" >> .mozconfig
-%endif
-
-%ifnarch %{ix86} x86_64
 echo "ac_add_options --disable-ion" >> .mozconfig
 echo "ac_add_options --disable-yarr-jit" >> .mozconfig
 %endif
@@ -634,6 +635,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Apr 28 2014 Martin Stransky <stransky@redhat.com> - 29.0-4
+- Arm build fixes
+
 * Fri Apr 25 2014 Martin Stransky <stransky@redhat.com> - 29.0-3
 - Build with system ICU
 
