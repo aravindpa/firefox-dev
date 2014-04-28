@@ -3,10 +3,11 @@
 # User Ulrich Weigand <uweigand@de.ibm.com>
 Bug 976648 - powerpc64le-linux support - toplevel build/config
 
-diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
---- a/build/autoconf/config.guess
-+++ b/build/autoconf/config.guess
-@@ -1,47 +1,41 @@
+Index: mozilla-release/build/autoconf/config.guess
+===================================================================
+--- mozilla-release.orig/build/autoconf/config.guess
++++ mozilla-release/build/autoconf/config.guess
+@@ -1,14 +1,12 @@
  #! /bin/sh
  # Attempt to guess a canonical system name.
 -#   Copyright (C) 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999,
@@ -24,8 +25,7 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
  # (at your option) any later version.
  #
  # This program is distributed in the hope that it will be useful, but
- # WITHOUT ANY WARRANTY; without even the implied warranty of
- # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+@@ -17,26 +15,22 @@ timestamp='2009-08-19'
  # General Public License for more details.
  #
  # You should have received a copy of the GNU General Public License
@@ -60,17 +60,7 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
  
  me=`echo "$0" | sed -e 's,.*/,,'`
  
- usage="\
- Usage: $0 [OPTION]
- 
- Output the configuration name of the system \`$me' is run on.
- 
-@@ -51,18 +45,17 @@ Operation modes:
-   -v, --version      print version number, then exit
- 
- Report bugs and patches to <config-patches@gnu.org>."
- 
- version="\
+@@ -56,8 +50,7 @@ version="\
  GNU config.guess ($timestamp)
  
  Originally written by Per Bothner.
@@ -80,17 +70,7 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
  
  This is free software; see the source for copying conditions.  There is NO
  warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
- 
- help="
- Try \`$me --help' for more information."
- 
- # Parse command line
-@@ -134,22 +127,43 @@ if (test -f /.attbin/uname) >/dev/null 2
- 	PATH=$PATH:/.attbin ; export PATH
- fi
- 
- UNAME_MACHINE=`(uname -m) 2>/dev/null` || UNAME_MACHINE=unknown
- UNAME_RELEASE=`(uname -r) 2>/dev/null` || UNAME_RELEASE=unknown
+@@ -139,12 +132,33 @@ UNAME_RELEASE=`(uname -r) 2>/dev/null` |
  UNAME_SYSTEM=`(uname -s) 2>/dev/null`  || UNAME_SYSTEM=unknown
  UNAME_VERSION=`(uname -v) 2>/dev/null` || UNAME_VERSION=unknown
  
@@ -125,17 +105,7 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
  	# *-*-netbsdecoff* and *-*-netbsd*.  For targets that recently
  	# switched to ELF, *-*-netbsd* would select the old
  	# object file format.  This provides both forward
- 	# compatibility and a consistent mechanism for selecting the
- 	# object file format.
- 	#
- 	# Note: NetBSD doesn't particularly care about the vendor
- 	# portion of the name.  We always set it to "unknown".
-@@ -175,17 +189,17 @@ case "${UNAME_MACHINE}:${UNAME_SYSTEM}:$
- 		    # Once all utilities can be ECOFF (netbsdecoff) or a.out (netbsdaout).
- 		    # Return netbsd for either.  FIX?
- 		    os=netbsd
- 		else
- 		    os=netbsdelf
+@@ -180,7 +194,7 @@ case "${UNAME_MACHINE}:${UNAME_SYSTEM}:$
  		fi
  		;;
  	    *)
@@ -144,17 +114,7 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
  		;;
  	esac
  	# The OS release
- 	# Debian GNU/NetBSD machines have a different userland, and
- 	# thus, need a distinct triplet. However, they do not need
- 	# kernel version information, so it can be replaced with a
- 	# suitable tag, in the style of linux-gnu.
- 	case "${UNAME_VERSION}" in
-@@ -196,16 +210,20 @@ case "${UNAME_MACHINE}:${UNAME_SYSTEM}:$
- 		release=`echo ${UNAME_RELEASE}|sed -e 's/[-_].*/\./'`
- 		;;
- 	esac
- 	# Since CPU_TYPE-MANUFACTURER-KERNEL-OPERATING_SYSTEM:
- 	# contains redundant information, the shorter form:
+@@ -201,6 +215,10 @@ case "${UNAME_MACHINE}:${UNAME_SYSTEM}:$
  	# CPU_TYPE-MANUFACTURER-OPERATING_SYSTEM is used.
  	echo "${machine}-${os}${release}"
  	exit ;;
@@ -165,17 +125,7 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
      *:OpenBSD:*:*)
  	UNAME_MACHINE_ARCH=`arch | sed 's/OpenBSD.//'`
  	echo ${UNAME_MACHINE_ARCH}-unknown-openbsd${UNAME_RELEASE}
- 	exit ;;
-     *:ekkoBSD:*:*)
- 	echo ${UNAME_MACHINE}-unknown-ekkobsd${UNAME_RELEASE}
- 	exit ;;
-     *:SolidBSD:*:*)
-@@ -218,17 +236,17 @@ case "${UNAME_MACHINE}:${UNAME_SYSTEM}:$
- 	echo ${UNAME_MACHINE}-unknown-mirbsd${UNAME_RELEASE}
- 	exit ;;
-     alpha:OSF1:*:*)
- 	case $UNAME_RELEASE in
- 	*4.0)
+@@ -223,7 +241,7 @@ case "${UNAME_MACHINE}:${UNAME_SYSTEM}:$
  		UNAME_RELEASE=`/usr/sbin/sizer -v | awk '{print $3}'`
  		;;
  	*5.*)
@@ -184,17 +134,7 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
  		;;
  	esac
  	# According to Compaq, /usr/sbin/psrinfo has been available on
- 	# OSF/1 and Tru64 systems produced since 1995.  I hope that
- 	# covers most systems running today.  This code pipes the CPU
- 	# types through head -n 1, so we only detect the type of CPU 0.
- 	ALPHA_CPU_TYPE=`/usr/sbin/psrinfo -v | sed -n -e 's/^  The alpha \(.*\) processor.*$/\1/p' | head -n 1`
- 	case "$ALPHA_CPU_TYPE" in
-@@ -264,17 +282,20 @@ case "${UNAME_MACHINE}:${UNAME_SYSTEM}:$
- 		UNAME_MACHINE="alphaev79" ;;
- 	esac
- 	# A Pn.n version is a patched version.
- 	# A Vn.n version is a released version.
- 	# A Tn.n version is a released field test version.
+@@ -269,7 +287,10 @@ case "${UNAME_MACHINE}:${UNAME_SYSTEM}:$
  	# A Xn.n version is an unreleased experimental baselevel.
  	# 1.2 uses "1.2" for uname -r.
  	echo ${UNAME_MACHINE}-dec-osf`echo ${UNAME_RELEASE} | sed -e 's/^[PVTX]//' | tr 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' 'abcdefghijklmnopqrstuvwxyz'`
@@ -206,17 +146,7 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
      Alpha\ *:Windows_NT*:*)
  	# How do we know it's Interix rather than the generic POSIX subsystem?
  	# Should we change UNAME_MACHINE based on the output of uname instead
- 	# of the specific Alpha model?
- 	echo alpha-pc-interix
- 	exit ;;
-     21064:Windows_NT:50:3)
- 	echo alpha-dec-winnt3.5
-@@ -290,22 +311,22 @@ case "${UNAME_MACHINE}:${UNAME_SYSTEM}:$
- 	exit ;;
-     *:OS/390:*:*)
- 	echo i370-ibm-openedition
- 	exit ;;
-     *:z/VM:*:*)
+@@ -295,12 +316,12 @@ case "${UNAME_MACHINE}:${UNAME_SYSTEM}:$
  	echo s390-ibm-zvmoe
  	exit ;;
      *:OS400:*:*)
@@ -231,17 +161,7 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
  	echo arm-unknown-riscos
  	exit ;;
      SR2?01:HI-UX/MPP:*:* | SR8000:HI-UX/MPP:*:*)
- 	echo hppa1.1-hitachi-hiuxmpp
- 	exit ;;
-     Pyramid*:OSx*:*:* | MIS*:OSx*:*:* | MIS*:SMP_DC-OSx*:*:*)
- 	# akee@wpdis03.wpafb.af.mil (Earle F. Ake) contributed MIS and NILE.
- 	if test "`(/bin/universe) 2>/dev/null`" = att ; then
-@@ -328,16 +349,19 @@ case "${UNAME_MACHINE}:${UNAME_SYSTEM}:$
- 	echo ${UNAME_MACHINE}-ibm-solaris2`echo ${UNAME_RELEASE}|sed -e 's/[^.]*//'`
- 	exit ;;
-     sun4H:SunOS:5.*:*)
- 	echo sparc-hal-solaris2`echo ${UNAME_RELEASE}|sed -e 's/[^.]*//'`
- 	exit ;;
+@@ -333,6 +354,9 @@ case "${UNAME_MACHINE}:${UNAME_SYSTEM}:$
      sun4*:SunOS:5.*:* | tadpole*:SunOS:5.*:*)
  	echo sparc-sun-solaris2`echo ${UNAME_RELEASE}|sed -e 's/[^.]*//'`
  	exit ;;
@@ -251,17 +171,7 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
      i86pc:SunOS:5.*:* | i86xen:SunOS:5.*:*)
  	eval $set_cc_for_build
  	SUN_ARCH="i386"
- 	# If there is a compiler, see if it is configured for 64-bit objects.
- 	# Note that the Sun cc does not turn __LP64__ into 1 like gcc does.
- 	# This test works for both compilers.
- 	if [ "$CC_FOR_BUILD" != 'no_compiler_found' ]; then
- 	    if (echo '#ifdef __amd64'; echo IS_64BIT_ARCH; echo '#endif') | \
-@@ -386,33 +410,33 @@ case "${UNAME_MACHINE}:${UNAME_SYSTEM}:$
-     # can be virtually everything (everything which is not
-     # "atarist" or "atariste" at least should have a processor
-     # > m68000).  The system name ranges from "MiNT" over "FreeMiNT"
-     # to the lowercase version "mint" (or "freemint").  Finally
-     # the system name "TOS" denotes a system which is actually not
+@@ -391,23 +415,23 @@ case "${UNAME_MACHINE}:${UNAME_SYSTEM}:$
      # MiNT.  But MiNT is downward compatible to TOS, so this should
      # be no problem.
      atarist[e]:*MiNT:*:* | atarist[e]:*mint:*:* | atarist[e]:*TOS:*:*)
@@ -294,17 +204,7 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
      m68k:machten:*:*)
  	echo m68k-apple-machten${UNAME_RELEASE}
  	exit ;;
-     powerpc:machten:*:*)
- 	echo powerpc-apple-machten${UNAME_RELEASE}
- 	exit ;;
-     RISC*:Mach:*:*)
- 	echo mips-dec-mach_bsd4.3
-@@ -472,31 +496,31 @@ EOF
- 	exit ;;
-     m88k:*:4*:R4*)
- 	echo m88k-motorola-sysv4
- 	exit ;;
-     m88k:*:3*:R3*)
+@@ -477,8 +501,8 @@ EOF
  	echo m88k-motorola-sysv3
  	exit ;;
      AViiON:dgux:*:*)
@@ -315,12 +215,7 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
  	if [ $UNAME_PROCESSOR = mc88100 ] || [ $UNAME_PROCESSOR = mc88110 ]
  	then
  	    if [ ${TARGET_BINARY_INTERFACE}x = m88kdguxelfx ] || \
- 	       [ ${TARGET_BINARY_INTERFACE}x = x ]
- 	    then
- 		echo m88k-dg-dgux${UNAME_RELEASE}
- 	    else
- 		echo m88k-dg-dguxbcs${UNAME_RELEASE}
- 	    fi
+@@ -491,7 +515,7 @@ EOF
  	else
  	    echo i586-dg-dgux${UNAME_RELEASE}
  	fi
@@ -329,17 +224,7 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
      M88*:DolphinOS:*:*)	# DolphinOS (SVR3)
  	echo m88k-dolphin-sysv3
  	exit ;;
-     M88*:*:R3*:*)
- 	# Delta 88k system running SVR3
- 	echo m88k-motorola-sysv3
- 	exit ;;
-     XD88*:*:*:*) # Tektronix XD88 system running UTekV (SVR3)
-@@ -543,17 +567,17 @@ EOF
- 			echo rs6000-ibm-aix3.2.5
- 		fi
- 	elif grep bos324 /usr/include/stdio.h >/dev/null 2>&1; then
- 		echo rs6000-ibm-aix3.2.4
- 	else
+@@ -548,7 +572,7 @@ EOF
  		echo rs6000-ibm-aix3.2
  	fi
  	exit ;;
@@ -348,17 +233,7 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
  	IBM_CPU_ID=`/usr/sbin/lsdev -C -c processor -S available | sed 1q | awk '{ print $1 }'`
  	if /usr/sbin/lsattr -El ${IBM_CPU_ID} | grep ' POWER' >/dev/null 2>&1; then
  		IBM_ARCH=rs6000
- 	else
- 		IBM_ARCH=powerpc
- 	fi
- 	if [ -x /usr/bin/oslevel ] ; then
- 		IBM_REV=`/usr/bin/oslevel`
-@@ -586,62 +610,62 @@ EOF
-     9000/[34678]??:HP-UX:*:*)
- 	HPUX_REV=`echo ${UNAME_RELEASE}|sed -e 's/[^.]*.[0B]*//'`
- 	case "${UNAME_MACHINE}" in
- 	    9000/31? )            HP_ARCH=m68000 ;;
- 	    9000/[34]?? )         HP_ARCH=m68k ;;
+@@ -591,52 +615,52 @@ EOF
  	    9000/[678][0-9][0-9])
  		if [ -x /usr/bin/getconf ]; then
  		    sc_cpu_version=`/usr/bin/getconf SC_CPU_VERSION 2>/dev/null`
@@ -388,20 +263,11 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
  		    eval $set_cc_for_build
 -		    sed 's/^              //' << EOF >$dummy.c
 +		    sed 's/^		//' << EOF >$dummy.c
- 
--              #define _HPUX_SOURCE
--              #include <stdlib.h>
--              #include <unistd.h>
++
 +		#define _HPUX_SOURCE
 +		#include <stdlib.h>
 +		#include <unistd.h>
- 
--              int main ()
--              {
--              #if defined(_SC_KERNEL_BITS)
--                  long bits = sysconf(_SC_KERNEL_BITS);
--              #endif
--                  long cpu  = sysconf (_SC_CPU_VERSION);
++
 +		int main ()
 +		{
 +		#if defined(_SC_KERNEL_BITS)
@@ -409,6 +275,17 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
 +		#endif
 +		    long cpu  = sysconf (_SC_CPU_VERSION);
  
+-              #define _HPUX_SOURCE
+-              #include <stdlib.h>
+-              #include <unistd.h>
+-
+-              int main ()
+-              {
+-              #if defined(_SC_KERNEL_BITS)
+-                  long bits = sysconf(_SC_KERNEL_BITS);
+-              #endif
+-                  long cpu  = sysconf (_SC_CPU_VERSION);
+-
 -                  switch (cpu)
 -              	{
 -              	case CPU_PA_RISC1_0: puts ("hppa1.0"); break;
@@ -450,17 +327,7 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
  EOF
  		    (CCOPTS= $CC_FOR_BUILD -o $dummy $dummy.c 2>/dev/null) && HP_ARCH=`$dummy`
  		    test -z "$HP_ARCH" && HP_ARCH=hppa
- 		fi ;;
- 	esac
- 	if [ ${HP_ARCH} = "hppa2.0w" ]
- 	then
- 	    eval $set_cc_for_build
-@@ -722,32 +746,32 @@ EOF
- 	    echo ${UNAME_MACHINE}-unknown-osf1
- 	fi
- 	exit ;;
-     parisc*:Lites*:*:*)
- 	echo hppa1.1-hp-lites
+@@ -727,22 +751,22 @@ EOF
  	exit ;;
      C1*:ConvexOS:*:* | convex:ConvexOS:C1*:*)
  	echo c1-convex-bsd
@@ -488,17 +355,7 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
      CRAY*Y-MP:*:*:*)
  	echo ymp-cray-unicos${UNAME_RELEASE} | sed -e 's/\.[^.]*$/.X/'
  	exit ;;
-     CRAY*[A-Z]90:*:*:*)
- 	echo ${UNAME_MACHINE}-cray-unicos${UNAME_RELEASE} \
- 	| sed -e 's/CRAY.*\([A-Z]90\)/\1/' \
- 	      -e y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/ \
- 	      -e 's/\.[^.]*$/.X/'
-@@ -761,63 +785,68 @@ EOF
-     CRAY*SV1:*:*:*)
- 	echo sv1-cray-unicos${UNAME_RELEASE} | sed -e 's/\.[^.]*$/.X/'
- 	exit ;;
-     *:UNICOS/mp:*:*)
- 	echo craynv-cray-unicosmp${UNAME_RELEASE} | sed -e 's/\.[^.]*$/.X/'
+@@ -766,14 +790,14 @@ EOF
  	exit ;;
      F30[01]:UNIX_System_V:*:* | F700:UNIX_System_V:*:*)
  	FUJITSU_PROC=`uname -m | tr 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' 'abcdefghijklmnopqrstuvwxyz'`
@@ -520,11 +377,7 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
  	exit ;;
      i*86:BSD/386:*:* | i*86:BSD/OS:*:* | *:Ascend\ Embedded/OS:*:*)
  	echo ${UNAME_MACHINE}-pc-bsdi${UNAME_RELEASE}
- 	exit ;;
-     sparc*:BSD/OS:*:*)
- 	echo sparc-unknown-bsdi${UNAME_RELEASE}
- 	exit ;;
-     *:BSD/OS:*:*)
+@@ -785,34 +809,39 @@ EOF
  	echo ${UNAME_MACHINE}-unknown-bsdi${UNAME_RELEASE}
  	exit ;;
      *:FreeBSD:*:*)
@@ -573,17 +426,7 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
  		echo x86_64-unknown-interix${UNAME_RELEASE}
  		exit ;;
  	    IA64)
- 		echo ia64-unknown-interix${UNAME_RELEASE}
- 		exit ;;
- 	esac ;;
-     [345]86:Windows_95:* | [345]86:Windows_98:* | [345]86:Windows_NT:*)
- 	echo i${UNAME_MACHINE}-pc-mks
-@@ -840,55 +869,91 @@ EOF
-     p*:CYGWIN*:*)
- 	echo powerpcle-unknown-cygwin
- 	exit ;;
-     prep*:SunOS:5.*:*)
- 	echo powerpcle-unknown-solaris2`echo ${UNAME_RELEASE}|sed -e 's/[^.]*//'`
+@@ -845,45 +874,81 @@ EOF
  	exit ;;
      *:GNU:*:*)
  	# the GNU system
@@ -676,17 +519,7 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
  	exit ;;
      mips:Linux:*:* | mips64:Linux:*:*)
  	eval $set_cc_for_build
- 	sed 's/^	//' << EOF >$dummy.c
- 	#undef CPU
- 	#undef ${UNAME_MACHINE}
- 	#undef ${UNAME_MACHINE}el
- 	#if defined(__MIPSEL__) || defined(__MIPSEL) || defined(_MIPSEL) || defined(MIPSEL)
-@@ -896,145 +961,87 @@ EOF
- 	#else
- 	#if defined(__MIPSEB__) || defined(__MIPSEB) || defined(_MIPSEB) || defined(MIPSEB)
- 	CPU=${UNAME_MACHINE}
- 	#else
- 	CPU=
+@@ -901,123 +966,65 @@ EOF
  	#endif
  	#endif
  EOF
@@ -699,10 +532,7 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
 +	eval `$CC_FOR_BUILD -E $dummy.c 2>/dev/null | grep '^CPU'`
 +	test x"${CPU}" != x && { echo "${CPU}-unknown-linux-${LIBC}"; exit; }
  	;;
-+    or1k:Linux:*:*)
-+	echo ${UNAME_MACHINE}-unknown-linux-${LIBC}
-+	exit ;;
-     or32:Linux:*:*)
+-    or32:Linux:*:*)
 -	echo or32-unknown-linux-gnu
 -	exit ;;
 -    ppc:Linux:*:*)
@@ -710,7 +540,9 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
 -	exit ;;
 -    ppc64:Linux:*:*)
 -	echo powerpc64-unknown-linux-gnu
--	exit ;;
++    or1k:Linux:*:*)
++	echo ${UNAME_MACHINE}-unknown-linux-${LIBC}
+ 	exit ;;
 -    alpha:Linux:*:*)
 -	case `sed -n '/^cpu model/s/^.*: \(.*\)/\1/p' < /proc/cpuinfo` in
 -	  EV5)   UNAME_MACHINE=alphaev5 ;;
@@ -724,6 +556,7 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
 -	objdump --private-headers /bin/sh | grep -q ld.so.1
 -	if test "$?" = 0 ; then LIBC="libc1" ; else LIBC="" ; fi
 -	echo ${UNAME_MACHINE}-unknown-linux-gnu${LIBC}
++    or32:Linux:*:*)
 +	echo ${UNAME_MACHINE}-unknown-linux-${LIBC}
  	exit ;;
      padre:Linux:*:*)
@@ -844,7 +677,7 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
      i*86:DYNIX/ptx:4*:*)
  	# ptx 4.0 does uname -s correctly, with DYNIX/ptx in there.
  	# earlier versions are messed up and put the nodename in both
- 	# sysname and nodename.
+@@ -1025,11 +1032,11 @@ EOF
  	echo i386-sequent-sysv4
  	exit ;;
      i*86:UNIX_SV:4.2MP:2.*)
@@ -860,17 +693,7 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
  	echo ${UNAME_MACHINE}-pc-sysv4.2uw${UNAME_VERSION}
  	exit ;;
      i*86:OS/2:*:*)
- 	# If we were able to find `uname', then EMX Unix compatibility
- 	# is probably installed.
- 	echo ${UNAME_MACHINE}-pc-os2-emx
- 	exit ;;
-     i*86:XTS-300:*:STOP)
-@@ -1056,17 +1063,17 @@ EOF
- 	UNAME_REL=`echo ${UNAME_RELEASE} | sed 's/\/MP$//'`
- 	if grep Novell /usr/include/link.h >/dev/null 2>/dev/null; then
- 		echo ${UNAME_MACHINE}-univel-sysv${UNAME_REL}
- 	else
- 		echo ${UNAME_MACHINE}-pc-sysv${UNAME_REL}
+@@ -1061,7 +1068,7 @@ EOF
  	fi
  	exit ;;
      i*86:*:5:[678]*)
@@ -879,17 +702,7 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
  	case `/bin/uname -X | grep "^Machine"` in
  	    *486*)	     UNAME_MACHINE=i486 ;;
  	    *Pentium)	     UNAME_MACHINE=i586 ;;
- 	    *Pent*|*Celeron) UNAME_MACHINE=i686 ;;
- 	esac
- 	echo ${UNAME_MACHINE}-unknown-sysv${UNAME_RELEASE}${UNAME_SYSTEM}${UNAME_VERSION}
- 	exit ;;
-     i*86:*:3.2:*)
-@@ -1084,23 +1091,23 @@ EOF
- 			&& UNAME_MACHINE=i686
- 		echo ${UNAME_MACHINE}-pc-sco$UNAME_REL
- 	else
- 		echo ${UNAME_MACHINE}-pc-sysv32
- 	fi
+@@ -1089,13 +1096,13 @@ EOF
  	exit ;;
      pc:*:*:*)
  	# Left here for compatibility:
@@ -906,17 +719,7 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
      Intel:Mach:3*:*)
  	echo i386-pc-mach3
  	exit ;;
-     paragon:*:*:*)
- 	echo i860-intel-osf1
- 	exit ;;
-     i860:*:4.*:*) # i860-SVR4
- 	if grep Stardent /usr/include/sys/uadmin.h >/dev/null 2>&1 ; then
-@@ -1125,18 +1132,18 @@ EOF
- 	OS_REL=''
- 	test -r /etc/.relid \
- 	&& OS_REL=.`sed -n 's/[^ ]* [^ ]* \([0-9][0-9]\).*/\1/p' < /etc/.relid`
- 	/bin/uname -p 2>/dev/null | grep 86 >/dev/null \
- 	  && { echo i486-ncr-sysv4.3${OS_REL}; exit; }
+@@ -1130,8 +1137,8 @@ EOF
  	/bin/uname -p 2>/dev/null | /bin/grep entium >/dev/null \
  	  && { echo i586-ncr-sysv4.3${OS_REL}; exit; } ;;
      3[34]??:*:4.0:* | 3[34]??,*:*:4.0:*)
@@ -927,17 +730,7 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
      NCR*:*:4.2:* | MPRAS*:*:4.2:*)
  	OS_REL='.3'
  	test -r /etc/.relid \
- 	    && OS_REL=.`sed -n 's/[^ ]* [^ ]* \([0-9][0-9]\).*/\1/p' < /etc/.relid`
- 	/bin/uname -p 2>/dev/null | grep 86 >/dev/null \
- 	    && { echo i486-ncr-sysv4.3${OS_REL}; exit; }
- 	/bin/uname -p 2>/dev/null | /bin/grep entium >/dev/null \
- 	    && { echo i586-ncr-sysv4.3${OS_REL}; exit; }
-@@ -1169,20 +1176,20 @@ EOF
-     *:SINIX-*:*:*)
- 	if uname -p 2>/dev/null >/dev/null ; then
- 		UNAME_MACHINE=`(uname -p) 2>/dev/null`
- 		echo ${UNAME_MACHINE}-sni-sysv4
- 	else
+@@ -1174,10 +1181,10 @@ EOF
  		echo ns32k-sni-sysv
  	fi
  	exit ;;
@@ -952,17 +745,7 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
      *:UNIX_System_V:4*:FTX*)
  	# From Gerald Hewes <hewes@openmarket.com>.
  	# How about differentiating between stratus architectures? -djm
- 	echo hppa1.1-stratus-sysv4
- 	exit ;;
-     *:*:*:FTX*)
- 	# From seanf@swdc.stratus.com.
- 	echo i860-stratus-sysv4
-@@ -1198,33 +1205,36 @@ EOF
-     mc68*:A/UX:*:*)
- 	echo m68k-apple-aux${UNAME_RELEASE}
- 	exit ;;
-     news*:NEWS-OS:6*:*)
- 	echo mips-sony-newsos6
+@@ -1203,11 +1210,11 @@ EOF
  	exit ;;
      R[34]000:*System_V*:*:* | R4000:UNIX_SYSV:*:* | R*000:UNIX_SV:*:*)
  	if [ -d /usr/nec ]; then
@@ -977,12 +760,7 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
      BeBox:BeOS:*:*)	# BeOS running on hardware made by Be, PPC only.
  	echo powerpc-be-beos
  	exit ;;
-     BeMac:BeOS:*:*)	# BeOS running on Mac or Mac clone, PPC only.
- 	echo powerpc-apple-beos
- 	exit ;;
-     BePC:BeOS:*:*)	# BeOS running on Intel PC compatible.
- 	echo i586-pc-beos
- 	exit ;;
+@@ -1220,6 +1227,9 @@ EOF
      BePC:Haiku:*:*)	# Haiku running on Intel PC compatible.
  	echo i586-pc-haiku
  	exit ;;
@@ -992,17 +770,7 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
      SX-4:SUPER-UX:*:*)
  	echo sx4-nec-superux${UNAME_RELEASE}
  	exit ;;
-     SX-5:SUPER-UX:*:*)
- 	echo sx5-nec-superux${UNAME_RELEASE}
- 	exit ;;
-     SX-6:SUPER-UX:*:*)
- 	echo sx6-nec-superux${UNAME_RELEASE}
-@@ -1241,37 +1251,58 @@ EOF
-     Power*:Rhapsody:*:*)
- 	echo powerpc-apple-rhapsody${UNAME_RELEASE}
- 	exit ;;
-     *:Rhapsody:*:*)
- 	echo ${UNAME_MACHINE}-apple-rhapsody${UNAME_RELEASE}
+@@ -1246,13 +1256,31 @@ EOF
  	exit ;;
      *:Darwin:*:*)
  	UNAME_PROCESSOR=`uname -p` || UNAME_PROCESSOR=unknown
@@ -1041,13 +809,7 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
  	echo ${UNAME_PROCESSOR}-apple-darwin${UNAME_RELEASE}
  	exit ;;
      *:procnto*:*:* | *:QNX:[0123456789]*:*)
- 	UNAME_PROCESSOR=`uname -p`
- 	if test "$UNAME_PROCESSOR" = "x86"; then
- 		UNAME_PROCESSOR=i386
- 		UNAME_MACHINE=pc
- 	fi
- 	echo ${UNAME_PROCESSOR}-${UNAME_MACHINE}-nto-qnx${UNAME_RELEASE}
- 	exit ;;
+@@ -1266,7 +1294,10 @@ EOF
      *:QNX:*:4*)
  	echo i386-pc-qnx
  	exit ;;
@@ -1059,17 +821,7 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
  	echo nse-tandem-nsk${UNAME_RELEASE}
  	exit ;;
      NSR-?:NONSTOP_KERNEL:*:*)
- 	echo nsr-tandem-nsk${UNAME_RELEASE}
- 	exit ;;
-     *:NonStop-UX:*:*)
- 	echo mips-compaq-nonstopux
- 	exit ;;
-@@ -1306,23 +1337,23 @@ EOF
- 	exit ;;
-     *:TOPS-20:*:*)
- 	echo pdp10-unknown-tops20
- 	exit ;;
-     *:ITS:*:*)
+@@ -1311,13 +1342,13 @@ EOF
  	echo pdp10-unknown-its
  	exit ;;
      SEI:*:*:SEIUX)
@@ -1085,25 +837,12 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
  	case "${UNAME_MACHINE}" in
  	    A*) echo alpha-dec-vms ; exit ;;
  	    I*) echo ia64-dec-vms ; exit ;;
- 	    V*) echo vax-dec-vms ; exit ;;
- 	esac ;;
-     *:XENIX:*:SysV)
- 	echo i386-pc-xenix
- 	exit ;;
-@@ -1330,169 +1361,21 @@ EOF
- 	echo ${UNAME_MACHINE}-pc-skyos`echo ${UNAME_RELEASE}` | sed -e 's/ .*$//'
- 	exit ;;
-     i*86:rdos:*:*)
- 	echo ${UNAME_MACHINE}-pc-rdos
- 	exit ;;
+@@ -1335,158 +1366,10 @@ EOF
      i*86:AROS:*:*)
  	echo ${UNAME_MACHINE}-pc-aros
  	exit ;;
-+    x86_64:VMkernel:*:*)
-+	echo ${UNAME_MACHINE}-unknown-esx
-+	exit ;;
- esac
- 
+-esac
+-
 -#echo '(No uname command or uname output not recognized.)' 1>&2
 -#echo "${UNAME_MACHINE}:${UNAME_SYSTEM}:${UNAME_RELEASE}:${UNAME_VERSION}" 1>&2
 -
@@ -1236,7 +975,9 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
 -    case `getsysinfo -f cpu_type` in
 -    c1*)
 -	echo c1-convex-bsd
--	exit ;;
++    x86_64:VMkernel:*:*)
++	echo ${UNAME_MACHINE}-unknown-esx
+ 	exit ;;
 -    c2*)
 -	if getsysinfo -f scalar_acc
 -	then echo c32-convex-bsd
@@ -1254,29 +995,23 @@ diff --git a/build/autoconf/config.guess b/build/autoconf/config.guess
 -	exit ;;
 -    esac
 -fi
--
++esac
+ 
  cat >&2 <<EOF
  $0: unable to guess system type
- 
- This script, last modified $timestamp, has failed to recognize
- the operating system you are using. It is advised that you
- download the most up to date version of the config scripts from
- 
-   http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD
-diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
---- a/build/autoconf/config.sub
-+++ b/build/autoconf/config.sub
-@@ -1,43 +1,36 @@
+Index: mozilla-release/build/autoconf/config.sub
+===================================================================
+--- mozilla-release.orig/build/autoconf/config.sub
++++ mozilla-release/build/autoconf/config.sub
+@@ -1,38 +1,31 @@
  #! /bin/sh
  # Configuration validation subroutine script.
 -#   Copyright (C) 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999,
 -#   2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009
 -#   Free Software Foundation, Inc.
-+#   Copyright 1992-2014 Free Software Foundation, Inc.
- 
+-
 -timestamp='2011-01-03'
-+timestamp='2014-01-01'
- 
+-
 -# This file is (in principle) common to ALL GNU software.
 -# The presence of a machine in this file suggests that SOME GNU software
 -# can handle that machine.  It does not imply ALL GNU software can.
@@ -1284,6 +1019,10 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
 -# This file is free software; you can redistribute it and/or modify
 -# it under the terms of the GNU General Public License as published by
 -# the Free Software Foundation; either version 2 of the License, or
++#   Copyright 1992-2014 Free Software Foundation, Inc.
++
++timestamp='2014-01-01'
++
 +# This file is free software; you can redistribute it and/or modify it
 +# under the terms of the GNU General Public License as published by
 +# the Free Software Foundation; either version 3 of the License, or
@@ -1319,17 +1058,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  #
  # Configuration subroutine to validate and canonicalize a configuration type.
  # Supply the specified configuration type as an argument.
- # If it is invalid, we print an error message on stderr and exit with code 1.
- # Otherwise, we print the canonical config type on stdout and succeed.
- 
- # You can get the latest version of this script from:
- # http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD
-@@ -70,18 +63,17 @@ Operation modes:
-   -t, --time-stamp   print date of last modification, then exit
-   -v, --version      print version number, then exit
- 
- Report bugs and patches to <config-patches@gnu.org>."
- 
+@@ -75,8 +68,7 @@ Report bugs and patches to <config-patch
  version="\
  GNU config.sub ($timestamp)
  
@@ -1339,17 +1068,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  
  This is free software; see the source for copying conditions.  There is NO
  warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
- 
- help="
- Try \`$me --help' for more information."
- 
- # Parse command line
-@@ -118,23 +110,28 @@ case $# in
-  *) echo "$me: too many arguments$help" >&2
-     exit 1;;
- esac
- 
- # Separate what the user gave into CPU-COMPANY and OS or KERNEL-OS (if any).
+@@ -123,13 +115,18 @@ esac
  # Here we must recognize all the valid KERNEL-OS combinations.
  maybe_os=`echo $1 | sed 's/^\(.*\)-\([^-]*-[^-]*\)$/\2/'`
  case $maybe_os in
@@ -1371,17 +1090,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
    *)
      basic_machine=`echo $1 | sed 's/-[^-]*$//'`
      if [ $basic_machine != $1 ]
-     then os=`echo $1 | sed 's/.*-/-/'`
-     else os=; fi
-     ;;
- esac
- 
-@@ -147,41 +144,41 @@ case $os in
- 		# Prevent following clause from handling this invalid input.
- 		;;
- 	-dec* | -mips* | -sequent* | -encore* | -pc532* | -sgi* | -sony* | \
- 	-att* | -7300* | -3300* | -delta* | -motorola* | -sun[234]* | \
- 	-unicom* | -ibm* | -next | -hp | -isi* | -apollo | -altos* | \
+@@ -152,12 +149,12 @@ case $os in
  	-convergent* | -ncr* | -news | -32* | -3600* | -3100* | -hitachi* |\
  	-c[123]* | -convex* | -sun | -crds | -omron* | -dg | -ultra | -tti* | \
  	-harris | -dolphin | -highlevel | -gould | -cbm | -ns | -masscomp | \
@@ -1397,15 +1106,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  		;;
  	-sim | -cisco | -oki | -wec | -winbond)
  		os=
- 		basic_machine=$1
- 		;;
- 	-scout)
- 		;;
- 	-wrs)
- 		os=-vxworks
- 		basic_machine=$1
- 		;;
- 	-chorusos*)
+@@ -173,10 +170,10 @@ case $os in
  		os=-chorusos
  		basic_machine=$1
  		;;
@@ -1419,17 +1120,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  	-hiux*)
  		os=-hiuxwe2
  		;;
- 	-sco6)
- 		os=-sco5v6
- 		basic_machine=`echo $1 | sed -e 's/86-.*/86-pc/'`
- 		;;
- 	-sco5)
-@@ -216,16 +213,22 @@ case $os in
- 		basic_machine=`echo $1 | sed -e 's/86-.*/86-pc/'`
- 		;;
- 	-clix*)
- 		basic_machine=clipper-intergraph
- 		;;
+@@ -221,6 +218,12 @@ case $os in
  	-isc*)
  		basic_machine=`echo $1 | sed -e 's/86-.*/86-pc/'`
  		;;
@@ -1442,17 +1133,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  	-lynx*)
  		os=-lynxos
  		;;
- 	-ptx*)
- 		basic_machine=`echo $1 | sed -e 's/86-.*/86-sequent/'`
- 		;;
- 	-windowsnt*)
- 		os=`echo $os | sed -e 's/windowsnt/winnt/'`
-@@ -240,30 +243,38 @@ case $os in
- esac
- 
- # Decode aliases for certain CPU-COMPANY combinations.
- case $basic_machine in
- 	# Recognize the basic CPU types without company name.
+@@ -245,20 +248,28 @@ case $basic_machine in
  	# Some are omitted here because they have special meanings below.
  	1750a | 580 \
  	| a29k \
@@ -1484,17 +1165,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  	| mips | mipsbe | mipseb | mipsel | mipsle \
  	| mips16 \
  	| mips64 | mips64el \
- 	| mips64octeon | mips64octeonel \
- 	| mips64orion | mips64orionel \
- 	| mips64r5900 | mips64r5900el \
- 	| mips64vr | mips64vrel \
- 	| mips64vr4100 | mips64vr4100el \
-@@ -271,84 +282,118 @@ case $basic_machine in
- 	| mips64vr5000 | mips64vr5000el \
- 	| mips64vr5900 | mips64vr5900el \
- 	| mipsisa32 | mipsisa32el \
- 	| mipsisa32r2 | mipsisa32r2el \
- 	| mipsisa64 | mipsisa64el \
+@@ -276,32 +287,45 @@ case $basic_machine in
  	| mipsisa64r2 | mipsisa64r2el \
  	| mipsisa64sb1 | mipsisa64sb1el \
  	| mipsisa64sr71k | mipsisa64sr71kel \
@@ -1549,9 +1220,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  		basic_machine=$basic_machine-unknown
  		os=-none
  		;;
- 	m88110 | m680[12346]0 | m683?2 | m68360 | m5200 | v70 | w65 | z8k)
- 		;;
- 	ms1)
+@@ -311,6 +335,21 @@ case $basic_machine in
  		basic_machine=mt-unknown
  		;;
  
@@ -1573,14 +1242,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  	# We use `pc' rather than `unknown'
  	# because (1) that's what they normally are, and
  	# (2) the word "unknown" tends to confuse beginning users.
- 	i*86 | x86_64)
- 	  basic_machine=$basic_machine-pc
- 	  ;;
- 	# Object if more than one company name word.
- 	*-*-*)
- 		echo Invalid configuration \`$1\': machine \`$basic_machine\' not recognized 1>&2
- 		exit 1
- 		;;
+@@ -325,25 +364,31 @@ case $basic_machine in
  	# Recognize the basic CPU types with company name.
  	580-* \
  	| a29k-* \
@@ -1616,17 +1278,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  	| mips-* | mipsbe-* | mipseb-* | mipsel-* | mipsle-* \
  	| mips16-* \
  	| mips64-* | mips64el-* \
- 	| mips64octeon-* | mips64octeonel-* \
- 	| mips64orion-* | mips64orionel-* \
- 	| mips64r5900-* | mips64r5900el-* \
- 	| mips64vr-* | mips64vrel-* \
- 	| mips64vr4100-* | mips64vr4100el-* \
-@@ -356,38 +401,44 @@ case $basic_machine in
- 	| mips64vr5000-* | mips64vr5000el-* \
- 	| mips64vr5900-* | mips64vr5900el-* \
- 	| mipsisa32-* | mipsisa32el-* \
- 	| mipsisa32r2-* | mipsisa32r2el-* \
- 	| mipsisa64-* | mipsisa64el-* \
+@@ -361,28 +406,34 @@ case $basic_machine in
  	| mipsisa64r2-* | mipsisa64r2el-* \
  	| mipsisa64sb1-* | mipsisa64sb1el-* \
  	| mipsisa64sr71k-* | mipsisa64sr71kel-* \
@@ -1669,17 +1321,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  	| xstormy16-* | xtensa*-* \
  	| ymp-* \
  	| z8k-* | z80-*)
- 		;;
- 	# Recognize the basic CPU types without company name, with glob match.
- 	xtensa*)
- 		basic_machine=$basic_machine-unknown
- 		;;
-@@ -402,17 +453,17 @@ case $basic_machine in
- 		;;
- 	3b*)
- 		basic_machine=we32k-att
- 		;;
- 	a29khif)
+@@ -407,7 +458,7 @@ case $basic_machine in
  		basic_machine=a29k-amd
  		os=-udi
  		;;
@@ -1688,17 +1330,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  		basic_machine=abacus-unknown
  		;;
  	adobe68k)
- 		basic_machine=m68010-adobe
- 		os=-scout
- 		;;
- 	alliant | fx80)
- 		basic_machine=fx80-alliant
-@@ -472,21 +523,30 @@ case $basic_machine in
- 	blackfin-*)
- 		basic_machine=bfin-`echo $basic_machine | sed 's/^[^-]*-//'`
- 		os=-linux
- 		;;
- 	bluegene*)
+@@ -477,11 +528,20 @@ case $basic_machine in
  		basic_machine=powerpc-ibm
  		os=-cnk
  		;;
@@ -1720,17 +1352,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  		basic_machine=arm-unknown
  		os=-cegcc
  		;;
- 	convex-c1)
- 		basic_machine=c1-convex
- 		os=-bsd
- 		;;
- 	convex-c2)
-@@ -508,17 +568,17 @@ case $basic_machine in
- 	cray | j90)
- 		basic_machine=j90-cray
- 		os=-unicos
- 		;;
- 	craynv)
+@@ -513,7 +573,7 @@ case $basic_machine in
  		basic_machine=craynv-cray
  		os=-unicosmp
  		;;
@@ -1739,17 +1361,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  		basic_machine=cr16-unknown
  		os=-elf
  		;;
- 	crds | unos)
- 		basic_machine=m68k-crds
- 		;;
- 	crisv32 | crisv32-* | etraxfs*)
- 		basic_machine=crisv32-axis
-@@ -666,17 +726,16 @@ case $basic_machine in
- 		;;
- 	hppro)
- 		basic_machine=hppa1.1-hp
- 		os=-proelf
- 		;;
+@@ -671,7 +731,6 @@ case $basic_machine in
  	i370-ibm* | ibm*)
  		basic_machine=i370-ibm
  		;;
@@ -1757,17 +1369,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  	i*86v32)
  		basic_machine=`echo $1 | sed -e 's/86.*/86-pc/'`
  		os=-sysv32
- 		;;
- 	i*86v4*)
- 		basic_machine=`echo $1 | sed -e 's/86.*/86-pc/'`
- 		os=-sysv4
- 		;;
-@@ -724,21 +783,25 @@ case $basic_machine in
- 	magnum | m3230)
- 		basic_machine=mips-mips
- 		os=-sysv
- 		;;
- 	merlin)
+@@ -729,11 +788,15 @@ case $basic_machine in
  		basic_machine=ns32k-utek
  		os=-sysv
  		;;
@@ -1785,17 +1387,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  		os=-mingw32
  		;;
  	mingw32ce)
- 		basic_machine=arm-unknown
- 		os=-mingw32ce
- 		;;
- 	miniframe)
- 		basic_machine=m68000-convergent
-@@ -763,20 +826,28 @@ case $basic_machine in
- 		;;
- 	msdos)
- 		basic_machine=i386-pc
- 		os=-msdos
- 		;;
+@@ -768,10 +831,18 @@ case $basic_machine in
  	ms1-*)
  		basic_machine=`echo $basic_machine | sed -e 's/ms1-/mt-/'`
  		;;
@@ -1814,17 +1406,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  	ncr3000)
  		basic_machine=i486-ncr
  		os=-sysv4
- 		;;
- 	netbsd386)
- 		basic_machine=i386-unknown
- 		os=-netbsd
- 		;;
-@@ -831,16 +902,22 @@ case $basic_machine in
- 		;;
- 	nonstopux)
- 		basic_machine=mips-compaq
- 		os=-nonstopux
- 		;;
+@@ -836,6 +907,12 @@ case $basic_machine in
  	np1)
  		basic_machine=np1-gould
  		;;
@@ -1837,17 +1419,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  	nsr-tandem)
  		basic_machine=nsr-tandem
  		;;
- 	op50n-* | op60c-*)
- 		basic_machine=hppa1.1-oki
- 		os=-proelf
- 		;;
- 	openrisc | openrisc-*)
-@@ -913,19 +990,20 @@ case $basic_machine in
- 	pentium4-*)
- 		basic_machine=i786-`echo $basic_machine | sed 's/^[^-]*-//'`
- 		;;
- 	pn)
- 		basic_machine=pn-gould
+@@ -918,9 +995,10 @@ case $basic_machine in
  		;;
  	power)	basic_machine=power-ibm
  		;;
@@ -1860,17 +1432,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  		;;
  	ppcle | powerpclittle | ppc-le | powerpc-little)
  		basic_machine=powerpcle-unknown
- 		;;
- 	ppcle-* | powerpclittle-*)
- 		basic_machine=powerpcle-`echo $basic_machine | sed 's/^[^-]*-//'`
- 		;;
- 	ppc64)	basic_machine=powerpc64-unknown
-@@ -940,17 +1018,21 @@ case $basic_machine in
- 		;;
- 	ps2)
- 		basic_machine=i386-ibm
- 		;;
- 	pw32)
+@@ -945,7 +1023,11 @@ case $basic_machine in
  		basic_machine=i586-unknown
  		os=-pw32
  		;;
@@ -1883,17 +1445,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  		basic_machine=i386-pc
  		os=-rdos
  		;;
- 	rom68k)
- 		basic_machine=m68k-rom68k
- 		os=-coff
- 		;;
- 	rm[46]00)
-@@ -1009,16 +1091,19 @@ case $basic_machine in
- 		;;
- 	st2000)
- 		basic_machine=m68k-tandem
- 		;;
- 	stratus)
+@@ -1014,6 +1096,9 @@ case $basic_machine in
  		basic_machine=i860-stratus
  		os=-sysv4
  		;;
@@ -1903,17 +1455,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  	sun2)
  		basic_machine=m68000-sun
  		;;
- 	sun2os3)
- 		basic_machine=m68000-sun
- 		os=-sunos3
- 		;;
- 	sun2os4)
-@@ -1065,30 +1150,18 @@ case $basic_machine in
- 	t3e)
- 		basic_machine=alphaev5-cray
- 		os=-unicos
- 		;;
- 	t90)
+@@ -1070,20 +1155,8 @@ case $basic_machine in
  		basic_machine=t90-cray
  		os=-unicos
  		;;
@@ -1935,17 +1477,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  		os=-linux-gnu
  		;;
  	tx39)
- 		basic_machine=mipstx39-unknown
- 		;;
- 	tx39el)
- 		basic_machine=mipstx39el-unknown
- 		;;
-@@ -1148,16 +1221,19 @@ case $basic_machine in
- 		;;
- 	xbox)
- 		basic_machine=i686-pc
- 		os=-mingw32
- 		;;
+@@ -1153,6 +1226,9 @@ case $basic_machine in
  	xps | xps100)
  		basic_machine=xps100-honeywell
  		;;
@@ -1955,17 +1487,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  	ymp)
  		basic_machine=ymp-cray
  		os=-unicos
- 		;;
- 	z8k-*-coff)
- 		basic_machine=z8k-unknown
- 		os=-sim
- 		;;
-@@ -1245,19 +1321,22 @@ case $basic_machine in
- 		;;
- esac
- 
- # Decode manufacturer-specific aliases for certain operating systems.
- 
+@@ -1250,9 +1326,12 @@ esac
  if [ x"$os" != x"" ]
  then
  case $os in
@@ -1980,17 +1502,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  	-solaris1 | -solaris1.*)
  		os=`echo $os | sed -e 's|solaris1|sunos4|'`
  		;;
- 	-solaris)
- 		os=-solaris2
- 		;;
- 	-svr4*)
- 		os=-sysv4
-@@ -1269,39 +1348,40 @@ case $os in
- 		os=`echo $os | sed -e 's|gnu/linux|linux-gnu|'`
- 		;;
- 	# First accept the basic system types.
- 	# The portable systems comes first.
- 	# Each alternative MUST END IN A *, to match a version number.
+@@ -1274,21 +1353,22 @@ case $os in
  	# -sysv* is not here because it comes later, after sysvr4.
  	-gnu* | -bsd* | -mach* | -minix* | -genix* | -ultrix* | -irix* \
  	      | -*vms* | -sco* | -esix* | -isc* | -aix* | -cnk* | -sunos | -sunos[34]*\
@@ -2018,7 +1530,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  	      | -uxpv* | -beos* | -mpeix* | -udk* \
  	      | -interix* | -uwin* | -mks* | -rhapsody* | -darwin* | -opened* \
  	      | -openstep* | -oskit* | -conix* | -pw32* | -nonstopux* \
- 	      | -storm-chaos* | -tops10* | -tenex* | -tops20* | -its* \
+@@ -1296,7 +1376,7 @@ case $os in
  	      | -os2* | -vos* | -palmos* | -uclinux* | -nucleus* \
  	      | -morphos* | -superux* | -rtmk* | -rtmk-nova* | -windiss* \
  	      | -powermax* | -dnix* | -nx6 | -nx7 | -sei* | -dragonfly* \
@@ -2027,17 +1539,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  	# Remember, each alternative MUST END IN *, to match a version number.
  		;;
  	-qnx*)
- 		case $basic_machine in
- 		    x86-* | i*86-*)
- 			;;
- 		    *)
- 			os=-nto$os
-@@ -1330,22 +1410,19 @@ case $os in
- 		os=`echo $os | sed -e 's|sunos5|solaris2|'`
- 		;;
- 	-sunos6*)
- 		os=`echo $os | sed -e 's|sunos6|solaris3|'`
- 		;;
+@@ -1335,12 +1415,9 @@ case $os in
  	-opened*)
  		os=-openedition
  		;;
@@ -2051,17 +1553,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  	-wince*)
  		os=-wince
  		;;
- 	-osfrose*)
- 		os=-osfrose
- 		;;
- 	-osf*)
- 		os=-osf
-@@ -1382,17 +1459,17 @@ case $os in
- 		;;
- 	# Preserve the version number of sinix5.
- 	-sinix5.*)
- 		os=`echo $os | sed -e 's|sinix|sysv|'`
- 		;;
+@@ -1387,7 +1464,7 @@ case $os in
  	-sinix*)
  		os=-sysv4
  		;;
@@ -2070,17 +1562,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  		os=-tpf
  		;;
  	-triton*)
- 		os=-sysv3
- 		;;
- 	-oss*)
- 		os=-sysv3
- 		;;
-@@ -1418,28 +1495,24 @@ case $os in
- 		os=-xenix
- 		;;
- 	-*mint | -mint[0-9]* | -*MiNT | -MiNT[0-9]*)
- 		os=-mint
- 		;;
+@@ -1423,18 +1500,14 @@ case $os in
  	-aros*)
  		os=-aros
  		;;
@@ -2101,17 +1583,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  	-none)
  		;;
  	*)
- 		# Get rid of the `-' at the beginning of $os.
- 		os=`echo $os | sed 's/[^-]*-//'`
- 		echo Invalid configuration \`$1\': system \`$os\' not recognized 1>&2
- 		exit 1
- 		;;
-@@ -1452,33 +1525,48 @@ else
- 
- # Note that if you're going to try to match "-MANUFACTURER" here (say,
- # "-sun"), then you have to tell the case statement up towards the top
- # that MANUFACTURER isn't an operating system.  Otherwise, code above
- # will signal an error saying that MANUFACTURER isn't an operating
+@@ -1457,10 +1530,10 @@ else
  # system, and we'll never get to this point.
  
  case $basic_machine in
@@ -2124,11 +1596,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  		os=-elf
  		;;
  	*-acorn)
- 		os=-riscix1.2
- 		;;
- 	arm*-rebel)
- 		os=-linux
- 		;;
+@@ -1472,8 +1545,23 @@ case $basic_machine in
  	arm*-semi)
  		os=-aout
  		;;
@@ -2154,17 +1622,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  		;;
  	# This must come before the *-dec entry.
  	pdp10-*)
- 		os=-tops20
- 		;;
- 	pdp11-*)
- 		os=-none
- 		;;
-@@ -1488,32 +1576,32 @@ case $basic_machine in
- 	m68*-apollo)
- 		os=-domain
- 		;;
- 	i386-sun)
- 		os=-sunos4.0.2
+@@ -1493,14 +1581,11 @@ case $basic_machine in
  		;;
  	m68000-sun)
  		os=-sunos3
@@ -2180,8 +1638,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  		os=-elf
  		;;
  	mips*-cisco)
- 		os=-elf
- 		;;
+@@ -1509,6 +1594,9 @@ case $basic_machine in
  	mips*-*)
  		os=-elf
  		;;
@@ -2191,17 +1648,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  	or32-*)
  		os=-coff
  		;;
- 	*-tti)	# must be before sparc entry or we get the wrong os.
- 		os=-sysv3
- 		;;
- 	sparc-* | *-sun)
- 		os=-sunos4.1.1
-@@ -1522,17 +1610,17 @@ case $basic_machine in
- 		os=-beos
- 		;;
- 	*-haiku)
- 		os=-haiku
- 		;;
+@@ -1527,7 +1615,7 @@ case $basic_machine in
  	*-ibm)
  		os=-aix
  		;;
@@ -2210,17 +1657,7 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  		os=-mmixware
  		;;
  	*-wec)
- 		os=-proelf
- 		;;
- 	*-winbond)
- 		os=-proelf
- 		;;
-@@ -1684,19 +1772,16 @@ case $basic_machine in
- 				vendor=apple
- 				;;
- 			-*mint | -mint[0-9]* | -*MiNT | -MiNT[0-9]*)
- 				vendor=atari
- 				;;
+@@ -1689,9 +1777,6 @@ case $basic_machine in
  			-vos*)
  				vendor=stratus
  				;;
@@ -2230,20 +1667,11 @@ diff --git a/build/autoconf/config.sub b/build/autoconf/config.sub
  		esac
  		basic_machine=`echo $basic_machine | sed "s/unknown/$vendor/"`
  		;;
- esac
- 
- echo $basic_machine$os
- exit
- 
-diff --git a/configure.in b/configure.in
---- a/configure.in
-+++ b/configure.in
-@@ -1082,17 +1082,17 @@ esac
- 
- # Only set CPU_ARCH if we recognize the value of OS_TEST
- 
- case "$OS_TEST" in
- *86 | i86pc)
+Index: mozilla-release/configure.in
+===================================================================
+--- mozilla-release.orig/configure.in
++++ mozilla-release/configure.in
+@@ -1119,7 +1119,7 @@ case "$OS_TEST" in
      CPU_ARCH=x86
      ;;
  
@@ -2252,2257 +1680,11 @@ diff --git a/configure.in b/configure.in
      CPU_ARCH=ppc64
      ;;
  
- powerpc | ppc | rs6000)
-     CPU_ARCH=ppc
-     ;;
- 
- Alpha | alpha | ALPHA)
-diff --git a/js/src/build/autoconf/config.guess b/js/src/build/autoconf/config.guess
---- a/js/src/build/autoconf/config.guess
-+++ b/js/src/build/autoconf/config.guess
-@@ -1,47 +1,41 @@
- #! /bin/sh
- # Attempt to guess a canonical system name.
--#   Copyright (C) 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999,
--#   2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009
--#   Free Software Foundation, Inc.
-+#   Copyright 1992-2014 Free Software Foundation, Inc.
- 
--timestamp='2009-08-19'
-+timestamp='2014-02-12'
- 
- # This file is free software; you can redistribute it and/or modify it
- # under the terms of the GNU General Public License as published by
--# the Free Software Foundation; either version 2 of the License, or
-+# the Free Software Foundation; either version 3 of the License, or
- # (at your option) any later version.
- #
- # This program is distributed in the hope that it will be useful, but
- # WITHOUT ANY WARRANTY; without even the implied warranty of
- # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- # General Public License for more details.
- #
- # You should have received a copy of the GNU General Public License
--# along with this program; if not, write to the Free Software
--# Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA
--# 02110-1301, USA.
-+# along with this program; if not, see <http://www.gnu.org/licenses/>.
- #
- # As a special exception to the GNU General Public License, if you
- # distribute this file as part of a program that contains a
- # configuration script generated by Autoconf, you may include it under
--# the same distribution terms that you use for the rest of that program.
--
--
--# Originally written by Per Bothner.  Please send patches (context
--# diff format) to <config-patches@gnu.org> and include a ChangeLog
--# entry.
-+# the same distribution terms that you use for the rest of that
-+# program.  This Exception is an additional permission under section 7
-+# of the GNU General Public License, version 3 ("GPLv3").
- #
--# This script attempts to guess a canonical system name similar to
--# config.sub.  If it succeeds, it prints the system name on stdout, and
--# exits with 0.  Otherwise, it exits with 1.
-+# Originally written by Per Bothner.
- #
- # You can get the latest version of this script from:
- # http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD
-+#
-+# Please send patches with a ChangeLog entry to config-patches@gnu.org.
-+
- 
- me=`echo "$0" | sed -e 's,.*/,,'`
- 
- usage="\
- Usage: $0 [OPTION]
- 
- Output the configuration name of the system \`$me' is run on.
- 
-@@ -51,18 +45,17 @@ Operation modes:
-   -v, --version      print version number, then exit
- 
- Report bugs and patches to <config-patches@gnu.org>."
- 
- version="\
- GNU config.guess ($timestamp)
- 
- Originally written by Per Bothner.
--Copyright (C) 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001,
--2002, 2003, 2004, 2005, 2006, 2007, 2008 Free Software Foundation, Inc.
-+Copyright 1992-2014 Free Software Foundation, Inc.
- 
- This is free software; see the source for copying conditions.  There is NO
- warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
- 
- help="
- Try \`$me --help' for more information."
- 
- # Parse command line
-@@ -134,22 +127,43 @@ if (test -f /.attbin/uname) >/dev/null 2
- 	PATH=$PATH:/.attbin ; export PATH
- fi
- 
- UNAME_MACHINE=`(uname -m) 2>/dev/null` || UNAME_MACHINE=unknown
- UNAME_RELEASE=`(uname -r) 2>/dev/null` || UNAME_RELEASE=unknown
- UNAME_SYSTEM=`(uname -s) 2>/dev/null`  || UNAME_SYSTEM=unknown
- UNAME_VERSION=`(uname -v) 2>/dev/null` || UNAME_VERSION=unknown
- 
-+case "${UNAME_SYSTEM}" in
-+Linux|GNU|GNU/*)
-+	# If the system lacks a compiler, then just pick glibc.
-+	# We could probably try harder.
-+	LIBC=gnu
-+
-+	eval $set_cc_for_build
-+	cat <<-EOF > $dummy.c
-+	#include <features.h>
-+	#if defined(__UCLIBC__)
-+	LIBC=uclibc
-+	#elif defined(__dietlibc__)
-+	LIBC=dietlibc
-+	#else
-+	LIBC=gnu
-+	#endif
-+	EOF
-+	eval `$CC_FOR_BUILD -E $dummy.c 2>/dev/null | grep '^LIBC' | sed 's, ,,g'`
-+	;;
-+esac
-+
- # Note: order is significant - the case branches are not exclusive.
- 
- case "${UNAME_MACHINE}:${UNAME_SYSTEM}:${UNAME_RELEASE}:${UNAME_VERSION}" in
-     *:NetBSD:*:*)
- 	# NetBSD (nbsd) targets should (where applicable) match one or
--	# more of the tupples: *-*-netbsdelf*, *-*-netbsdaout*,
-+	# more of the tuples: *-*-netbsdelf*, *-*-netbsdaout*,
- 	# *-*-netbsdecoff* and *-*-netbsd*.  For targets that recently
- 	# switched to ELF, *-*-netbsd* would select the old
- 	# object file format.  This provides both forward
- 	# compatibility and a consistent mechanism for selecting the
- 	# object file format.
- 	#
- 	# Note: NetBSD doesn't particularly care about the vendor
- 	# portion of the name.  We always set it to "unknown".
-@@ -175,17 +189,17 @@ case "${UNAME_MACHINE}:${UNAME_SYSTEM}:$
- 		    # Once all utilities can be ECOFF (netbsdecoff) or a.out (netbsdaout).
- 		    # Return netbsd for either.  FIX?
- 		    os=netbsd
- 		else
- 		    os=netbsdelf
- 		fi
- 		;;
- 	    *)
--	        os=netbsd
-+		os=netbsd
- 		;;
- 	esac
- 	# The OS release
- 	# Debian GNU/NetBSD machines have a different userland, and
- 	# thus, need a distinct triplet. However, they do not need
- 	# kernel version information, so it can be replaced with a
- 	# suitable tag, in the style of linux-gnu.
- 	case "${UNAME_VERSION}" in
-@@ -196,16 +210,20 @@ case "${UNAME_MACHINE}:${UNAME_SYSTEM}:$
- 		release=`echo ${UNAME_RELEASE}|sed -e 's/[-_].*/\./'`
- 		;;
- 	esac
- 	# Since CPU_TYPE-MANUFACTURER-KERNEL-OPERATING_SYSTEM:
- 	# contains redundant information, the shorter form:
- 	# CPU_TYPE-MANUFACTURER-OPERATING_SYSTEM is used.
- 	echo "${machine}-${os}${release}"
- 	exit ;;
-+    *:Bitrig:*:*)
-+	UNAME_MACHINE_ARCH=`arch | sed 's/Bitrig.//'`
-+	echo ${UNAME_MACHINE_ARCH}-unknown-bitrig${UNAME_RELEASE}
-+	exit ;;
-     *:OpenBSD:*:*)
- 	UNAME_MACHINE_ARCH=`arch | sed 's/OpenBSD.//'`
- 	echo ${UNAME_MACHINE_ARCH}-unknown-openbsd${UNAME_RELEASE}
- 	exit ;;
-     *:ekkoBSD:*:*)
- 	echo ${UNAME_MACHINE}-unknown-ekkobsd${UNAME_RELEASE}
- 	exit ;;
-     *:SolidBSD:*:*)
-@@ -218,17 +236,17 @@ case "${UNAME_MACHINE}:${UNAME_SYSTEM}:$
- 	echo ${UNAME_MACHINE}-unknown-mirbsd${UNAME_RELEASE}
- 	exit ;;
-     alpha:OSF1:*:*)
- 	case $UNAME_RELEASE in
- 	*4.0)
- 		UNAME_RELEASE=`/usr/sbin/sizer -v | awk '{print $3}'`
- 		;;
- 	*5.*)
--	        UNAME_RELEASE=`/usr/sbin/sizer -v | awk '{print $4}'`
-+		UNAME_RELEASE=`/usr/sbin/sizer -v | awk '{print $4}'`
- 		;;
- 	esac
- 	# According to Compaq, /usr/sbin/psrinfo has been available on
- 	# OSF/1 and Tru64 systems produced since 1995.  I hope that
- 	# covers most systems running today.  This code pipes the CPU
- 	# types through head -n 1, so we only detect the type of CPU 0.
- 	ALPHA_CPU_TYPE=`/usr/sbin/psrinfo -v | sed -n -e 's/^  The alpha \(.*\) processor.*$/\1/p' | head -n 1`
- 	case "$ALPHA_CPU_TYPE" in
-@@ -264,17 +282,20 @@ case "${UNAME_MACHINE}:${UNAME_SYSTEM}:$
- 		UNAME_MACHINE="alphaev79" ;;
- 	esac
- 	# A Pn.n version is a patched version.
- 	# A Vn.n version is a released version.
- 	# A Tn.n version is a released field test version.
- 	# A Xn.n version is an unreleased experimental baselevel.
- 	# 1.2 uses "1.2" for uname -r.
- 	echo ${UNAME_MACHINE}-dec-osf`echo ${UNAME_RELEASE} | sed -e 's/^[PVTX]//' | tr 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' 'abcdefghijklmnopqrstuvwxyz'`
--	exit ;;
-+	# Reset EXIT trap before exiting to avoid spurious non-zero exit code.
-+	exitcode=$?
-+	trap '' 0
-+	exit $exitcode ;;
-     Alpha\ *:Windows_NT*:*)
- 	# How do we know it's Interix rather than the generic POSIX subsystem?
- 	# Should we change UNAME_MACHINE based on the output of uname instead
- 	# of the specific Alpha model?
- 	echo alpha-pc-interix
- 	exit ;;
-     21064:Windows_NT:50:3)
- 	echo alpha-dec-winnt3.5
-@@ -290,22 +311,22 @@ case "${UNAME_MACHINE}:${UNAME_SYSTEM}:$
- 	exit ;;
-     *:OS/390:*:*)
- 	echo i370-ibm-openedition
- 	exit ;;
-     *:z/VM:*:*)
- 	echo s390-ibm-zvmoe
- 	exit ;;
-     *:OS400:*:*)
--        echo powerpc-ibm-os400
-+	echo powerpc-ibm-os400
- 	exit ;;
-     arm:RISC*:1.[012]*:*|arm:riscix:1.[012]*:*)
- 	echo arm-acorn-riscix${UNAME_RELEASE}
- 	exit ;;
--    arm:riscos:*:*|arm:RISCOS:*:*)
-+    arm*:riscos:*:*|arm*:RISCOS:*:*)
- 	echo arm-unknown-riscos
- 	exit ;;
-     SR2?01:HI-UX/MPP:*:* | SR8000:HI-UX/MPP:*:*)
- 	echo hppa1.1-hitachi-hiuxmpp
- 	exit ;;
-     Pyramid*:OSx*:*:* | MIS*:OSx*:*:* | MIS*:SMP_DC-OSx*:*:*)
- 	# akee@wpdis03.wpafb.af.mil (Earle F. Ake) contributed MIS and NILE.
- 	if test "`(/bin/universe) 2>/dev/null`" = att ; then
-@@ -328,16 +349,19 @@ case "${UNAME_MACHINE}:${UNAME_SYSTEM}:$
- 	echo ${UNAME_MACHINE}-ibm-solaris2`echo ${UNAME_RELEASE}|sed -e 's/[^.]*//'`
- 	exit ;;
-     sun4H:SunOS:5.*:*)
- 	echo sparc-hal-solaris2`echo ${UNAME_RELEASE}|sed -e 's/[^.]*//'`
- 	exit ;;
-     sun4*:SunOS:5.*:* | tadpole*:SunOS:5.*:*)
- 	echo sparc-sun-solaris2`echo ${UNAME_RELEASE}|sed -e 's/[^.]*//'`
- 	exit ;;
-+    i86pc:AuroraUX:5.*:* | i86xen:AuroraUX:5.*:*)
-+	echo i386-pc-auroraux${UNAME_RELEASE}
-+	exit ;;
-     i86pc:SunOS:5.*:* | i86xen:SunOS:5.*:*)
- 	eval $set_cc_for_build
- 	SUN_ARCH="i386"
- 	# If there is a compiler, see if it is configured for 64-bit objects.
- 	# Note that the Sun cc does not turn __LP64__ into 1 like gcc does.
- 	# This test works for both compilers.
- 	if [ "$CC_FOR_BUILD" != 'no_compiler_found' ]; then
- 	    if (echo '#ifdef __amd64'; echo IS_64BIT_ARCH; echo '#endif') | \
-@@ -386,33 +410,33 @@ case "${UNAME_MACHINE}:${UNAME_SYSTEM}:$
-     # can be virtually everything (everything which is not
-     # "atarist" or "atariste" at least should have a processor
-     # > m68000).  The system name ranges from "MiNT" over "FreeMiNT"
-     # to the lowercase version "mint" (or "freemint").  Finally
-     # the system name "TOS" denotes a system which is actually not
-     # MiNT.  But MiNT is downward compatible to TOS, so this should
-     # be no problem.
-     atarist[e]:*MiNT:*:* | atarist[e]:*mint:*:* | atarist[e]:*TOS:*:*)
--        echo m68k-atari-mint${UNAME_RELEASE}
-+	echo m68k-atari-mint${UNAME_RELEASE}
- 	exit ;;
-     atari*:*MiNT:*:* | atari*:*mint:*:* | atarist[e]:*TOS:*:*)
- 	echo m68k-atari-mint${UNAME_RELEASE}
--        exit ;;
-+	exit ;;
-     *falcon*:*MiNT:*:* | *falcon*:*mint:*:* | *falcon*:*TOS:*:*)
--        echo m68k-atari-mint${UNAME_RELEASE}
-+	echo m68k-atari-mint${UNAME_RELEASE}
- 	exit ;;
-     milan*:*MiNT:*:* | milan*:*mint:*:* | *milan*:*TOS:*:*)
--        echo m68k-milan-mint${UNAME_RELEASE}
--        exit ;;
-+	echo m68k-milan-mint${UNAME_RELEASE}
-+	exit ;;
-     hades*:*MiNT:*:* | hades*:*mint:*:* | *hades*:*TOS:*:*)
--        echo m68k-hades-mint${UNAME_RELEASE}
--        exit ;;
-+	echo m68k-hades-mint${UNAME_RELEASE}
-+	exit ;;
-     *:*MiNT:*:* | *:*mint:*:* | *:*TOS:*:*)
--        echo m68k-unknown-mint${UNAME_RELEASE}
--        exit ;;
-+	echo m68k-unknown-mint${UNAME_RELEASE}
-+	exit ;;
-     m68k:machten:*:*)
- 	echo m68k-apple-machten${UNAME_RELEASE}
- 	exit ;;
-     powerpc:machten:*:*)
- 	echo powerpc-apple-machten${UNAME_RELEASE}
- 	exit ;;
-     RISC*:Mach:*:*)
- 	echo mips-dec-mach_bsd4.3
-@@ -472,31 +496,31 @@ EOF
- 	exit ;;
-     m88k:*:4*:R4*)
- 	echo m88k-motorola-sysv4
- 	exit ;;
-     m88k:*:3*:R3*)
- 	echo m88k-motorola-sysv3
- 	exit ;;
-     AViiON:dgux:*:*)
--        # DG/UX returns AViiON for all architectures
--        UNAME_PROCESSOR=`/usr/bin/uname -p`
-+	# DG/UX returns AViiON for all architectures
-+	UNAME_PROCESSOR=`/usr/bin/uname -p`
- 	if [ $UNAME_PROCESSOR = mc88100 ] || [ $UNAME_PROCESSOR = mc88110 ]
- 	then
- 	    if [ ${TARGET_BINARY_INTERFACE}x = m88kdguxelfx ] || \
- 	       [ ${TARGET_BINARY_INTERFACE}x = x ]
- 	    then
- 		echo m88k-dg-dgux${UNAME_RELEASE}
- 	    else
- 		echo m88k-dg-dguxbcs${UNAME_RELEASE}
- 	    fi
- 	else
- 	    echo i586-dg-dgux${UNAME_RELEASE}
- 	fi
-- 	exit ;;
-+	exit ;;
-     M88*:DolphinOS:*:*)	# DolphinOS (SVR3)
- 	echo m88k-dolphin-sysv3
- 	exit ;;
-     M88*:*:R3*:*)
- 	# Delta 88k system running SVR3
- 	echo m88k-motorola-sysv3
- 	exit ;;
-     XD88*:*:*:*) # Tektronix XD88 system running UTekV (SVR3)
-@@ -543,17 +567,17 @@ EOF
- 			echo rs6000-ibm-aix3.2.5
- 		fi
- 	elif grep bos324 /usr/include/stdio.h >/dev/null 2>&1; then
- 		echo rs6000-ibm-aix3.2.4
- 	else
- 		echo rs6000-ibm-aix3.2
- 	fi
- 	exit ;;
--    *:AIX:*:[456])
-+    *:AIX:*:[4567])
- 	IBM_CPU_ID=`/usr/sbin/lsdev -C -c processor -S available | sed 1q | awk '{ print $1 }'`
- 	if /usr/sbin/lsattr -El ${IBM_CPU_ID} | grep ' POWER' >/dev/null 2>&1; then
- 		IBM_ARCH=rs6000
- 	else
- 		IBM_ARCH=powerpc
- 	fi
- 	if [ -x /usr/bin/oslevel ] ; then
- 		IBM_REV=`/usr/bin/oslevel`
-@@ -586,62 +610,62 @@ EOF
-     9000/[34678]??:HP-UX:*:*)
- 	HPUX_REV=`echo ${UNAME_RELEASE}|sed -e 's/[^.]*.[0B]*//'`
- 	case "${UNAME_MACHINE}" in
- 	    9000/31? )            HP_ARCH=m68000 ;;
- 	    9000/[34]?? )         HP_ARCH=m68k ;;
- 	    9000/[678][0-9][0-9])
- 		if [ -x /usr/bin/getconf ]; then
- 		    sc_cpu_version=`/usr/bin/getconf SC_CPU_VERSION 2>/dev/null`
--                    sc_kernel_bits=`/usr/bin/getconf SC_KERNEL_BITS 2>/dev/null`
--                    case "${sc_cpu_version}" in
--                      523) HP_ARCH="hppa1.0" ;; # CPU_PA_RISC1_0
--                      528) HP_ARCH="hppa1.1" ;; # CPU_PA_RISC1_1
--                      532)                      # CPU_PA_RISC2_0
--                        case "${sc_kernel_bits}" in
--                          32) HP_ARCH="hppa2.0n" ;;
--                          64) HP_ARCH="hppa2.0w" ;;
-+		    sc_kernel_bits=`/usr/bin/getconf SC_KERNEL_BITS 2>/dev/null`
-+		    case "${sc_cpu_version}" in
-+		      523) HP_ARCH="hppa1.0" ;; # CPU_PA_RISC1_0
-+		      528) HP_ARCH="hppa1.1" ;; # CPU_PA_RISC1_1
-+		      532)                      # CPU_PA_RISC2_0
-+			case "${sc_kernel_bits}" in
-+			  32) HP_ARCH="hppa2.0n" ;;
-+			  64) HP_ARCH="hppa2.0w" ;;
- 			  '') HP_ARCH="hppa2.0" ;;   # HP-UX 10.20
--                        esac ;;
--                    esac
-+			esac ;;
-+		    esac
- 		fi
- 		if [ "${HP_ARCH}" = "" ]; then
- 		    eval $set_cc_for_build
--		    sed 's/^              //' << EOF >$dummy.c
-+		    sed 's/^		//' << EOF >$dummy.c
- 
--              #define _HPUX_SOURCE
--              #include <stdlib.h>
--              #include <unistd.h>
-+		#define _HPUX_SOURCE
-+		#include <stdlib.h>
-+		#include <unistd.h>
- 
--              int main ()
--              {
--              #if defined(_SC_KERNEL_BITS)
--                  long bits = sysconf(_SC_KERNEL_BITS);
--              #endif
--                  long cpu  = sysconf (_SC_CPU_VERSION);
-+		int main ()
-+		{
-+		#if defined(_SC_KERNEL_BITS)
-+		    long bits = sysconf(_SC_KERNEL_BITS);
-+		#endif
-+		    long cpu  = sysconf (_SC_CPU_VERSION);
- 
--                  switch (cpu)
--              	{
--              	case CPU_PA_RISC1_0: puts ("hppa1.0"); break;
--              	case CPU_PA_RISC1_1: puts ("hppa1.1"); break;
--              	case CPU_PA_RISC2_0:
--              #if defined(_SC_KERNEL_BITS)
--              	    switch (bits)
--              		{
--              		case 64: puts ("hppa2.0w"); break;
--              		case 32: puts ("hppa2.0n"); break;
--              		default: puts ("hppa2.0"); break;
--              		} break;
--              #else  /* !defined(_SC_KERNEL_BITS) */
--              	    puts ("hppa2.0"); break;
--              #endif
--              	default: puts ("hppa1.0"); break;
--              	}
--                  exit (0);
--              }
-+		    switch (cpu)
-+			{
-+			case CPU_PA_RISC1_0: puts ("hppa1.0"); break;
-+			case CPU_PA_RISC1_1: puts ("hppa1.1"); break;
-+			case CPU_PA_RISC2_0:
-+		#if defined(_SC_KERNEL_BITS)
-+			    switch (bits)
-+				{
-+				case 64: puts ("hppa2.0w"); break;
-+				case 32: puts ("hppa2.0n"); break;
-+				default: puts ("hppa2.0"); break;
-+				} break;
-+		#else  /* !defined(_SC_KERNEL_BITS) */
-+			    puts ("hppa2.0"); break;
-+		#endif
-+			default: puts ("hppa1.0"); break;
-+			}
-+		    exit (0);
-+		}
- EOF
- 		    (CCOPTS= $CC_FOR_BUILD -o $dummy $dummy.c 2>/dev/null) && HP_ARCH=`$dummy`
- 		    test -z "$HP_ARCH" && HP_ARCH=hppa
- 		fi ;;
- 	esac
- 	if [ ${HP_ARCH} = "hppa2.0w" ]
- 	then
- 	    eval $set_cc_for_build
-@@ -722,32 +746,32 @@ EOF
- 	    echo ${UNAME_MACHINE}-unknown-osf1
- 	fi
- 	exit ;;
-     parisc*:Lites*:*:*)
- 	echo hppa1.1-hp-lites
- 	exit ;;
-     C1*:ConvexOS:*:* | convex:ConvexOS:C1*:*)
- 	echo c1-convex-bsd
--        exit ;;
-+	exit ;;
-     C2*:ConvexOS:*:* | convex:ConvexOS:C2*:*)
- 	if getsysinfo -f scalar_acc
- 	then echo c32-convex-bsd
- 	else echo c2-convex-bsd
- 	fi
--        exit ;;
-+	exit ;;
-     C34*:ConvexOS:*:* | convex:ConvexOS:C34*:*)
- 	echo c34-convex-bsd
--        exit ;;
-+	exit ;;
-     C38*:ConvexOS:*:* | convex:ConvexOS:C38*:*)
- 	echo c38-convex-bsd
--        exit ;;
-+	exit ;;
-     C4*:ConvexOS:*:* | convex:ConvexOS:C4*:*)
- 	echo c4-convex-bsd
--        exit ;;
-+	exit ;;
-     CRAY*Y-MP:*:*:*)
- 	echo ymp-cray-unicos${UNAME_RELEASE} | sed -e 's/\.[^.]*$/.X/'
- 	exit ;;
-     CRAY*[A-Z]90:*:*:*)
- 	echo ${UNAME_MACHINE}-cray-unicos${UNAME_RELEASE} \
- 	| sed -e 's/CRAY.*\([A-Z]90\)/\1/' \
- 	      -e y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/ \
- 	      -e 's/\.[^.]*$/.X/'
-@@ -761,63 +785,68 @@ EOF
-     CRAY*SV1:*:*:*)
- 	echo sv1-cray-unicos${UNAME_RELEASE} | sed -e 's/\.[^.]*$/.X/'
- 	exit ;;
-     *:UNICOS/mp:*:*)
- 	echo craynv-cray-unicosmp${UNAME_RELEASE} | sed -e 's/\.[^.]*$/.X/'
- 	exit ;;
-     F30[01]:UNIX_System_V:*:* | F700:UNIX_System_V:*:*)
- 	FUJITSU_PROC=`uname -m | tr 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' 'abcdefghijklmnopqrstuvwxyz'`
--        FUJITSU_SYS=`uname -p | tr 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' 'abcdefghijklmnopqrstuvwxyz' | sed -e 's/\///'`
--        FUJITSU_REL=`echo ${UNAME_RELEASE} | sed -e 's/ /_/'`
--        echo "${FUJITSU_PROC}-fujitsu-${FUJITSU_SYS}${FUJITSU_REL}"
--        exit ;;
-+	FUJITSU_SYS=`uname -p | tr 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' 'abcdefghijklmnopqrstuvwxyz' | sed -e 's/\///'`
-+	FUJITSU_REL=`echo ${UNAME_RELEASE} | sed -e 's/ /_/'`
-+	echo "${FUJITSU_PROC}-fujitsu-${FUJITSU_SYS}${FUJITSU_REL}"
-+	exit ;;
-     5000:UNIX_System_V:4.*:*)
--        FUJITSU_SYS=`uname -p | tr 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' 'abcdefghijklmnopqrstuvwxyz' | sed -e 's/\///'`
--        FUJITSU_REL=`echo ${UNAME_RELEASE} | tr 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' 'abcdefghijklmnopqrstuvwxyz' | sed -e 's/ /_/'`
--        echo "sparc-fujitsu-${FUJITSU_SYS}${FUJITSU_REL}"
-+	FUJITSU_SYS=`uname -p | tr 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' 'abcdefghijklmnopqrstuvwxyz' | sed -e 's/\///'`
-+	FUJITSU_REL=`echo ${UNAME_RELEASE} | tr 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' 'abcdefghijklmnopqrstuvwxyz' | sed -e 's/ /_/'`
-+	echo "sparc-fujitsu-${FUJITSU_SYS}${FUJITSU_REL}"
- 	exit ;;
-     i*86:BSD/386:*:* | i*86:BSD/OS:*:* | *:Ascend\ Embedded/OS:*:*)
- 	echo ${UNAME_MACHINE}-pc-bsdi${UNAME_RELEASE}
- 	exit ;;
-     sparc*:BSD/OS:*:*)
- 	echo sparc-unknown-bsdi${UNAME_RELEASE}
- 	exit ;;
-     *:BSD/OS:*:*)
- 	echo ${UNAME_MACHINE}-unknown-bsdi${UNAME_RELEASE}
- 	exit ;;
-     *:FreeBSD:*:*)
--	case ${UNAME_MACHINE} in
--	    pc98)
--		echo i386-unknown-freebsd`echo ${UNAME_RELEASE}|sed -e 's/[-(].*//'` ;;
-+	UNAME_PROCESSOR=`/usr/bin/uname -p`
-+	case ${UNAME_PROCESSOR} in
- 	    amd64)
- 		echo x86_64-unknown-freebsd`echo ${UNAME_RELEASE}|sed -e 's/[-(].*//'` ;;
- 	    *)
--		echo ${UNAME_MACHINE}-unknown-freebsd`echo ${UNAME_RELEASE}|sed -e 's/[-(].*//'` ;;
-+		echo ${UNAME_PROCESSOR}-unknown-freebsd`echo ${UNAME_RELEASE}|sed -e 's/[-(].*//'` ;;
- 	esac
- 	exit ;;
-     i*:CYGWIN*:*)
- 	echo ${UNAME_MACHINE}-pc-cygwin
- 	exit ;;
-+    *:MINGW64*:*)
-+	echo ${UNAME_MACHINE}-pc-mingw64
-+	exit ;;
-     *:MINGW*:*)
- 	echo ${UNAME_MACHINE}-pc-mingw32
- 	exit ;;
-+    i*:MSYS*:*)
-+	echo ${UNAME_MACHINE}-pc-msys
-+	exit ;;
-     i*:windows32*:*)
--    	# uname -m includes "-pc" on this system.
--    	echo ${UNAME_MACHINE}-mingw32
-+	# uname -m includes "-pc" on this system.
-+	echo ${UNAME_MACHINE}-mingw32
- 	exit ;;
-     i*:PW*:*)
- 	echo ${UNAME_MACHINE}-pc-pw32
- 	exit ;;
--    *:Interix*:[3456]*)
--    	case ${UNAME_MACHINE} in
-+    *:Interix*:*)
-+	case ${UNAME_MACHINE} in
- 	    x86)
- 		echo i586-pc-interix${UNAME_RELEASE}
- 		exit ;;
--	    EM64T | authenticamd | genuineintel)
-+	    authenticamd | genuineintel | EM64T)
- 		echo x86_64-unknown-interix${UNAME_RELEASE}
- 		exit ;;
- 	    IA64)
- 		echo ia64-unknown-interix${UNAME_RELEASE}
- 		exit ;;
- 	esac ;;
-     [345]86:Windows_95:* | [345]86:Windows_98:* | [345]86:Windows_NT:*)
- 	echo i${UNAME_MACHINE}-pc-mks
-@@ -840,55 +869,91 @@ EOF
-     p*:CYGWIN*:*)
- 	echo powerpcle-unknown-cygwin
- 	exit ;;
-     prep*:SunOS:5.*:*)
- 	echo powerpcle-unknown-solaris2`echo ${UNAME_RELEASE}|sed -e 's/[^.]*//'`
- 	exit ;;
-     *:GNU:*:*)
- 	# the GNU system
--	echo `echo ${UNAME_MACHINE}|sed -e 's,[-/].*$,,'`-unknown-gnu`echo ${UNAME_RELEASE}|sed -e 's,/.*$,,'`
-+	echo `echo ${UNAME_MACHINE}|sed -e 's,[-/].*$,,'`-unknown-${LIBC}`echo ${UNAME_RELEASE}|sed -e 's,/.*$,,'`
- 	exit ;;
-     *:GNU/*:*:*)
- 	# other systems with GNU libc and userland
--	echo ${UNAME_MACHINE}-unknown-`echo ${UNAME_SYSTEM} | sed 's,^[^/]*/,,' | tr '[A-Z]' '[a-z]'``echo ${UNAME_RELEASE}|sed -e 's/[-(].*//'`-gnu
-+	echo ${UNAME_MACHINE}-unknown-`echo ${UNAME_SYSTEM} | sed 's,^[^/]*/,,' | tr '[A-Z]' '[a-z]'``echo ${UNAME_RELEASE}|sed -e 's/[-(].*//'`-${LIBC}
- 	exit ;;
-     i*86:Minix:*:*)
- 	echo ${UNAME_MACHINE}-pc-minix
- 	exit ;;
-+    aarch64:Linux:*:*)
-+	echo ${UNAME_MACHINE}-unknown-linux-${LIBC}
-+	exit ;;
-+    aarch64_be:Linux:*:*)
-+	UNAME_MACHINE=aarch64_be
-+	echo ${UNAME_MACHINE}-unknown-linux-${LIBC}
-+	exit ;;
-+    alpha:Linux:*:*)
-+	case `sed -n '/^cpu model/s/^.*: \(.*\)/\1/p' < /proc/cpuinfo` in
-+	  EV5)   UNAME_MACHINE=alphaev5 ;;
-+	  EV56)  UNAME_MACHINE=alphaev56 ;;
-+	  PCA56) UNAME_MACHINE=alphapca56 ;;
-+	  PCA57) UNAME_MACHINE=alphapca56 ;;
-+	  EV6)   UNAME_MACHINE=alphaev6 ;;
-+	  EV67)  UNAME_MACHINE=alphaev67 ;;
-+	  EV68*) UNAME_MACHINE=alphaev68 ;;
-+	esac
-+	objdump --private-headers /bin/sh | grep -q ld.so.1
-+	if test "$?" = 0 ; then LIBC="gnulibc1" ; fi
-+	echo ${UNAME_MACHINE}-unknown-linux-${LIBC}
-+	exit ;;
-+    arc:Linux:*:* | arceb:Linux:*:*)
-+	echo ${UNAME_MACHINE}-unknown-linux-${LIBC}
-+	exit ;;
-     arm*:Linux:*:*)
- 	eval $set_cc_for_build
- 	if echo __ARM_EABI__ | $CC_FOR_BUILD -E - 2>/dev/null \
- 	    | grep -q __ARM_EABI__
- 	then
--	    echo ${UNAME_MACHINE}-unknown-linux-gnu
-+	    echo ${UNAME_MACHINE}-unknown-linux-${LIBC}
- 	else
--	    echo ${UNAME_MACHINE}-unknown-linux-gnueabi
-+	    if echo __ARM_PCS_VFP | $CC_FOR_BUILD -E - 2>/dev/null \
-+		| grep -q __ARM_PCS_VFP
-+	    then
-+		echo ${UNAME_MACHINE}-unknown-linux-${LIBC}eabi
-+	    else
-+		echo ${UNAME_MACHINE}-unknown-linux-${LIBC}eabihf
-+	    fi
- 	fi
- 	exit ;;
-     avr32*:Linux:*:*)
--	echo ${UNAME_MACHINE}-unknown-linux-gnu
-+	echo ${UNAME_MACHINE}-unknown-linux-${LIBC}
- 	exit ;;
-     cris:Linux:*:*)
--	echo cris-axis-linux-gnu
-+	echo ${UNAME_MACHINE}-axis-linux-${LIBC}
- 	exit ;;
-     crisv32:Linux:*:*)
--	echo crisv32-axis-linux-gnu
-+	echo ${UNAME_MACHINE}-axis-linux-${LIBC}
- 	exit ;;
-     frv:Linux:*:*)
--    	echo frv-unknown-linux-gnu
-+	echo ${UNAME_MACHINE}-unknown-linux-${LIBC}
-+	exit ;;
-+    hexagon:Linux:*:*)
-+	echo ${UNAME_MACHINE}-unknown-linux-${LIBC}
-+	exit ;;
-+    i*86:Linux:*:*)
-+	echo ${UNAME_MACHINE}-pc-linux-${LIBC}
- 	exit ;;
-     ia64:Linux:*:*)
--	echo ${UNAME_MACHINE}-unknown-linux-gnu
-+	echo ${UNAME_MACHINE}-unknown-linux-${LIBC}
- 	exit ;;
-     m32r*:Linux:*:*)
--	echo ${UNAME_MACHINE}-unknown-linux-gnu
-+	echo ${UNAME_MACHINE}-unknown-linux-${LIBC}
- 	exit ;;
-     m68*:Linux:*:*)
--	echo ${UNAME_MACHINE}-unknown-linux-gnu
-+	echo ${UNAME_MACHINE}-unknown-linux-${LIBC}
- 	exit ;;
-     mips:Linux:*:* | mips64:Linux:*:*)
- 	eval $set_cc_for_build
- 	sed 's/^	//' << EOF >$dummy.c
- 	#undef CPU
- 	#undef ${UNAME_MACHINE}
- 	#undef ${UNAME_MACHINE}el
- 	#if defined(__MIPSEL__) || defined(__MIPSEL) || defined(_MIPSEL) || defined(MIPSEL)
-@@ -896,145 +961,87 @@ EOF
- 	#else
- 	#if defined(__MIPSEB__) || defined(__MIPSEB) || defined(_MIPSEB) || defined(MIPSEB)
- 	CPU=${UNAME_MACHINE}
- 	#else
- 	CPU=
- 	#endif
- 	#endif
- EOF
--	eval "`$CC_FOR_BUILD -E $dummy.c 2>/dev/null | sed -n '
--	    /^CPU/{
--		s: ::g
--		p
--	    }'`"
--	test x"${CPU}" != x && { echo "${CPU}-unknown-linux-gnu"; exit; }
-+	eval `$CC_FOR_BUILD -E $dummy.c 2>/dev/null | grep '^CPU'`
-+	test x"${CPU}" != x && { echo "${CPU}-unknown-linux-${LIBC}"; exit; }
- 	;;
-+    or1k:Linux:*:*)
-+	echo ${UNAME_MACHINE}-unknown-linux-${LIBC}
-+	exit ;;
-     or32:Linux:*:*)
--	echo or32-unknown-linux-gnu
--	exit ;;
--    ppc:Linux:*:*)
--	echo powerpc-unknown-linux-gnu
--	exit ;;
--    ppc64:Linux:*:*)
--	echo powerpc64-unknown-linux-gnu
--	exit ;;
--    alpha:Linux:*:*)
--	case `sed -n '/^cpu model/s/^.*: \(.*\)/\1/p' < /proc/cpuinfo` in
--	  EV5)   UNAME_MACHINE=alphaev5 ;;
--	  EV56)  UNAME_MACHINE=alphaev56 ;;
--	  PCA56) UNAME_MACHINE=alphapca56 ;;
--	  PCA57) UNAME_MACHINE=alphapca56 ;;
--	  EV6)   UNAME_MACHINE=alphaev6 ;;
--	  EV67)  UNAME_MACHINE=alphaev67 ;;
--	  EV68*) UNAME_MACHINE=alphaev68 ;;
--        esac
--	objdump --private-headers /bin/sh | grep -q ld.so.1
--	if test "$?" = 0 ; then LIBC="libc1" ; else LIBC="" ; fi
--	echo ${UNAME_MACHINE}-unknown-linux-gnu${LIBC}
-+	echo ${UNAME_MACHINE}-unknown-linux-${LIBC}
- 	exit ;;
-     padre:Linux:*:*)
--	echo sparc-unknown-linux-gnu
-+	echo sparc-unknown-linux-${LIBC}
-+	exit ;;
-+    parisc64:Linux:*:* | hppa64:Linux:*:*)
-+	echo hppa64-unknown-linux-${LIBC}
- 	exit ;;
-     parisc:Linux:*:* | hppa:Linux:*:*)
- 	# Look for CPU level
- 	case `grep '^cpu[^a-z]*:' /proc/cpuinfo 2>/dev/null | cut -d' ' -f2` in
--	  PA7*) echo hppa1.1-unknown-linux-gnu ;;
--	  PA8*) echo hppa2.0-unknown-linux-gnu ;;
--	  *)    echo hppa-unknown-linux-gnu ;;
-+	  PA7*) echo hppa1.1-unknown-linux-${LIBC} ;;
-+	  PA8*) echo hppa2.0-unknown-linux-${LIBC} ;;
-+	  *)    echo hppa-unknown-linux-${LIBC} ;;
- 	esac
- 	exit ;;
--    parisc64:Linux:*:* | hppa64:Linux:*:*)
--	echo hppa64-unknown-linux-gnu
-+    ppc64:Linux:*:*)
-+	echo powerpc64-unknown-linux-${LIBC}
-+	exit ;;
-+    ppc:Linux:*:*)
-+	echo powerpc-unknown-linux-${LIBC}
-+	exit ;;
-+    ppc64le:Linux:*:*)
-+	echo powerpc64le-unknown-linux-${LIBC}
-+	exit ;;
-+    ppcle:Linux:*:*)
-+	echo powerpcle-unknown-linux-${LIBC}
- 	exit ;;
-     s390:Linux:*:* | s390x:Linux:*:*)
--	echo ${UNAME_MACHINE}-ibm-linux
-+	echo ${UNAME_MACHINE}-ibm-linux-${LIBC}
- 	exit ;;
-     sh64*:Linux:*:*)
--    	echo ${UNAME_MACHINE}-unknown-linux-gnu
-+	echo ${UNAME_MACHINE}-unknown-linux-${LIBC}
- 	exit ;;
-     sh*:Linux:*:*)
--	echo ${UNAME_MACHINE}-unknown-linux-gnu
-+	echo ${UNAME_MACHINE}-unknown-linux-${LIBC}
- 	exit ;;
-     sparc:Linux:*:* | sparc64:Linux:*:*)
--	echo ${UNAME_MACHINE}-unknown-linux-gnu
-+	echo ${UNAME_MACHINE}-unknown-linux-${LIBC}
-+	exit ;;
-+    tile*:Linux:*:*)
-+	echo ${UNAME_MACHINE}-unknown-linux-${LIBC}
- 	exit ;;
-     vax:Linux:*:*)
--	echo ${UNAME_MACHINE}-dec-linux-gnu
-+	echo ${UNAME_MACHINE}-dec-linux-${LIBC}
- 	exit ;;
-     x86_64:Linux:*:*)
--	echo x86_64-unknown-linux-gnu
-+	echo ${UNAME_MACHINE}-unknown-linux-${LIBC}
- 	exit ;;
-     xtensa*:Linux:*:*)
--    	echo ${UNAME_MACHINE}-unknown-linux-gnu
-+	echo ${UNAME_MACHINE}-unknown-linux-${LIBC}
- 	exit ;;
--    i*86:Linux:*:*)
--	# The BFD linker knows what the default object file format is, so
--	# first see if it will tell us. cd to the root directory to prevent
--	# problems with other programs or directories called `ld' in the path.
--	# Set LC_ALL=C to ensure ld outputs messages in English.
--	ld_supported_targets=`cd /; LC_ALL=C ld --help 2>&1 \
--			 | sed -ne '/supported targets:/!d
--				    s/[ 	][ 	]*/ /g
--				    s/.*supported targets: *//
--				    s/ .*//
--				    p'`
--        case "$ld_supported_targets" in
--	  elf32-i386)
--		TENTATIVE="${UNAME_MACHINE}-pc-linux-gnu"
--		;;
--	esac
--	# Determine whether the default compiler is a.out or elf
--	eval $set_cc_for_build
--	sed 's/^	//' << EOF >$dummy.c
--	#include <features.h>
--	#ifdef __ELF__
--	# ifdef __GLIBC__
--	#  if __GLIBC__ >= 2
--	LIBC=gnu
--	#  else
--	LIBC=gnulibc1
--	#  endif
--	# else
--	LIBC=gnulibc1
--	# endif
--	#else
--	#if defined(__INTEL_COMPILER) || defined(__PGI) || defined(__SUNPRO_C) || defined(__SUNPRO_CC)
--	LIBC=gnu
--	#else
--	LIBC=gnuaout
--	#endif
--	#endif
--	#ifdef __dietlibc__
--	LIBC=dietlibc
--	#endif
--EOF
--	eval "`$CC_FOR_BUILD -E $dummy.c 2>/dev/null | sed -n '
--	    /^LIBC/{
--		s: ::g
--		p
--	    }'`"
--	test x"${LIBC}" != x && {
--		echo "${UNAME_MACHINE}-pc-linux-${LIBC}"
--		exit
--	}
--	test x"${TENTATIVE}" != x && { echo "${TENTATIVE}"; exit; }
--	;;
-     i*86:DYNIX/ptx:4*:*)
- 	# ptx 4.0 does uname -s correctly, with DYNIX/ptx in there.
- 	# earlier versions are messed up and put the nodename in both
- 	# sysname and nodename.
- 	echo i386-sequent-sysv4
- 	exit ;;
-     i*86:UNIX_SV:4.2MP:2.*)
--        # Unixware is an offshoot of SVR4, but it has its own version
--        # number series starting with 2...
--        # I am not positive that other SVR4 systems won't match this,
-+	# Unixware is an offshoot of SVR4, but it has its own version
-+	# number series starting with 2...
-+	# I am not positive that other SVR4 systems won't match this,
- 	# I just have to hope.  -- rms.
--        # Use sysv4.2uw... so that sysv4* matches it.
-+	# Use sysv4.2uw... so that sysv4* matches it.
- 	echo ${UNAME_MACHINE}-pc-sysv4.2uw${UNAME_VERSION}
- 	exit ;;
-     i*86:OS/2:*:*)
- 	# If we were able to find `uname', then EMX Unix compatibility
- 	# is probably installed.
- 	echo ${UNAME_MACHINE}-pc-os2-emx
- 	exit ;;
-     i*86:XTS-300:*:STOP)
-@@ -1056,17 +1063,17 @@ EOF
- 	UNAME_REL=`echo ${UNAME_RELEASE} | sed 's/\/MP$//'`
- 	if grep Novell /usr/include/link.h >/dev/null 2>/dev/null; then
- 		echo ${UNAME_MACHINE}-univel-sysv${UNAME_REL}
- 	else
- 		echo ${UNAME_MACHINE}-pc-sysv${UNAME_REL}
- 	fi
- 	exit ;;
-     i*86:*:5:[678]*)
--    	# UnixWare 7.x, OpenUNIX and OpenServer 6.
-+	# UnixWare 7.x, OpenUNIX and OpenServer 6.
- 	case `/bin/uname -X | grep "^Machine"` in
- 	    *486*)	     UNAME_MACHINE=i486 ;;
- 	    *Pentium)	     UNAME_MACHINE=i586 ;;
- 	    *Pent*|*Celeron) UNAME_MACHINE=i686 ;;
- 	esac
- 	echo ${UNAME_MACHINE}-unknown-sysv${UNAME_RELEASE}${UNAME_SYSTEM}${UNAME_VERSION}
- 	exit ;;
-     i*86:*:3.2:*)
-@@ -1084,23 +1091,23 @@ EOF
- 			&& UNAME_MACHINE=i686
- 		echo ${UNAME_MACHINE}-pc-sco$UNAME_REL
- 	else
- 		echo ${UNAME_MACHINE}-pc-sysv32
- 	fi
- 	exit ;;
-     pc:*:*:*)
- 	# Left here for compatibility:
--        # uname -m prints for DJGPP always 'pc', but it prints nothing about
--        # the processor, so we play safe by assuming i586.
-+	# uname -m prints for DJGPP always 'pc', but it prints nothing about
-+	# the processor, so we play safe by assuming i586.
- 	# Note: whatever this is, it MUST be the same as what config.sub
- 	# prints for the "djgpp" host, or else GDB configury will decide that
- 	# this is a cross-build.
- 	echo i586-pc-msdosdjgpp
--        exit ;;
-+	exit ;;
-     Intel:Mach:3*:*)
- 	echo i386-pc-mach3
- 	exit ;;
-     paragon:*:*:*)
- 	echo i860-intel-osf1
- 	exit ;;
-     i860:*:4.*:*) # i860-SVR4
- 	if grep Stardent /usr/include/sys/uadmin.h >/dev/null 2>&1 ; then
-@@ -1125,18 +1132,18 @@ EOF
- 	OS_REL=''
- 	test -r /etc/.relid \
- 	&& OS_REL=.`sed -n 's/[^ ]* [^ ]* \([0-9][0-9]\).*/\1/p' < /etc/.relid`
- 	/bin/uname -p 2>/dev/null | grep 86 >/dev/null \
- 	  && { echo i486-ncr-sysv4.3${OS_REL}; exit; }
- 	/bin/uname -p 2>/dev/null | /bin/grep entium >/dev/null \
- 	  && { echo i586-ncr-sysv4.3${OS_REL}; exit; } ;;
-     3[34]??:*:4.0:* | 3[34]??,*:*:4.0:*)
--        /bin/uname -p 2>/dev/null | grep 86 >/dev/null \
--          && { echo i486-ncr-sysv4; exit; } ;;
-+	/bin/uname -p 2>/dev/null | grep 86 >/dev/null \
-+	  && { echo i486-ncr-sysv4; exit; } ;;
-     NCR*:*:4.2:* | MPRAS*:*:4.2:*)
- 	OS_REL='.3'
- 	test -r /etc/.relid \
- 	    && OS_REL=.`sed -n 's/[^ ]* [^ ]* \([0-9][0-9]\).*/\1/p' < /etc/.relid`
- 	/bin/uname -p 2>/dev/null | grep 86 >/dev/null \
- 	    && { echo i486-ncr-sysv4.3${OS_REL}; exit; }
- 	/bin/uname -p 2>/dev/null | /bin/grep entium >/dev/null \
- 	    && { echo i586-ncr-sysv4.3${OS_REL}; exit; }
-@@ -1169,20 +1176,20 @@ EOF
-     *:SINIX-*:*:*)
- 	if uname -p 2>/dev/null >/dev/null ; then
- 		UNAME_MACHINE=`(uname -p) 2>/dev/null`
- 		echo ${UNAME_MACHINE}-sni-sysv4
- 	else
- 		echo ns32k-sni-sysv
- 	fi
- 	exit ;;
--    PENTIUM:*:4.0*:*) # Unisys `ClearPath HMP IX 4000' SVR4/MP effort
--                      # says <Richard.M.Bartel@ccMail.Census.GOV>
--        echo i586-unisys-sysv4
--        exit ;;
-+    PENTIUM:*:4.0*:*)	# Unisys `ClearPath HMP IX 4000' SVR4/MP effort
-+			# says <Richard.M.Bartel@ccMail.Census.GOV>
-+	echo i586-unisys-sysv4
-+	exit ;;
-     *:UNIX_System_V:4*:FTX*)
- 	# From Gerald Hewes <hewes@openmarket.com>.
- 	# How about differentiating between stratus architectures? -djm
- 	echo hppa1.1-stratus-sysv4
- 	exit ;;
-     *:*:*:FTX*)
- 	# From seanf@swdc.stratus.com.
- 	echo i860-stratus-sysv4
-@@ -1198,33 +1205,36 @@ EOF
-     mc68*:A/UX:*:*)
- 	echo m68k-apple-aux${UNAME_RELEASE}
- 	exit ;;
-     news*:NEWS-OS:6*:*)
- 	echo mips-sony-newsos6
- 	exit ;;
-     R[34]000:*System_V*:*:* | R4000:UNIX_SYSV:*:* | R*000:UNIX_SV:*:*)
- 	if [ -d /usr/nec ]; then
--	        echo mips-nec-sysv${UNAME_RELEASE}
-+		echo mips-nec-sysv${UNAME_RELEASE}
- 	else
--	        echo mips-unknown-sysv${UNAME_RELEASE}
-+		echo mips-unknown-sysv${UNAME_RELEASE}
- 	fi
--        exit ;;
-+	exit ;;
-     BeBox:BeOS:*:*)	# BeOS running on hardware made by Be, PPC only.
- 	echo powerpc-be-beos
- 	exit ;;
-     BeMac:BeOS:*:*)	# BeOS running on Mac or Mac clone, PPC only.
- 	echo powerpc-apple-beos
- 	exit ;;
-     BePC:BeOS:*:*)	# BeOS running on Intel PC compatible.
- 	echo i586-pc-beos
- 	exit ;;
-     BePC:Haiku:*:*)	# Haiku running on Intel PC compatible.
- 	echo i586-pc-haiku
- 	exit ;;
-+    x86_64:Haiku:*:*)
-+	echo x86_64-unknown-haiku
-+	exit ;;
-     SX-4:SUPER-UX:*:*)
- 	echo sx4-nec-superux${UNAME_RELEASE}
- 	exit ;;
-     SX-5:SUPER-UX:*:*)
- 	echo sx5-nec-superux${UNAME_RELEASE}
- 	exit ;;
-     SX-6:SUPER-UX:*:*)
- 	echo sx6-nec-superux${UNAME_RELEASE}
-@@ -1241,37 +1251,58 @@ EOF
-     Power*:Rhapsody:*:*)
- 	echo powerpc-apple-rhapsody${UNAME_RELEASE}
- 	exit ;;
-     *:Rhapsody:*:*)
- 	echo ${UNAME_MACHINE}-apple-rhapsody${UNAME_RELEASE}
- 	exit ;;
-     *:Darwin:*:*)
- 	UNAME_PROCESSOR=`uname -p` || UNAME_PROCESSOR=unknown
--	case $UNAME_PROCESSOR in
--	    i386) eval $set_cc_for_build
--	          if $CC_FOR_BUILD -E -dM -x c /dev/null | grep __LP64__>/dev/null 2>&1 ; then
--	            UNAME_PROCESSOR=x86_64
--	          fi ;;
--	    unknown) UNAME_PROCESSOR=powerpc ;;
--	esac
-+	eval $set_cc_for_build
-+	if test "$UNAME_PROCESSOR" = unknown ; then
-+	    UNAME_PROCESSOR=powerpc
-+	fi
-+	if test `echo "$UNAME_RELEASE" | sed -e 's/\..*//'` -le 10 ; then
-+	    if [ "$CC_FOR_BUILD" != 'no_compiler_found' ]; then
-+		if (echo '#ifdef __LP64__'; echo IS_64BIT_ARCH; echo '#endif') | \
-+		    (CCOPTS= $CC_FOR_BUILD -E - 2>/dev/null) | \
-+		    grep IS_64BIT_ARCH >/dev/null
-+		then
-+		    case $UNAME_PROCESSOR in
-+			i386) UNAME_PROCESSOR=x86_64 ;;
-+			powerpc) UNAME_PROCESSOR=powerpc64 ;;
-+		    esac
-+		fi
-+	    fi
-+	elif test "$UNAME_PROCESSOR" = i386 ; then
-+	    # Avoid executing cc on OS X 10.9, as it ships with a stub
-+	    # that puts up a graphical alert prompting to install
-+	    # developer tools.  Any system running Mac OS X 10.7 or
-+	    # later (Darwin 11 and later) is required to have a 64-bit
-+	    # processor. This is not true of the ARM version of Darwin
-+	    # that Apple uses in portable devices.
-+	    UNAME_PROCESSOR=x86_64
-+	fi
- 	echo ${UNAME_PROCESSOR}-apple-darwin${UNAME_RELEASE}
- 	exit ;;
-     *:procnto*:*:* | *:QNX:[0123456789]*:*)
- 	UNAME_PROCESSOR=`uname -p`
- 	if test "$UNAME_PROCESSOR" = "x86"; then
- 		UNAME_PROCESSOR=i386
- 		UNAME_MACHINE=pc
- 	fi
- 	echo ${UNAME_PROCESSOR}-${UNAME_MACHINE}-nto-qnx${UNAME_RELEASE}
- 	exit ;;
-     *:QNX:*:4*)
- 	echo i386-pc-qnx
- 	exit ;;
--    NSE-?:NONSTOP_KERNEL:*:*)
-+    NEO-?:NONSTOP_KERNEL:*:*)
-+	echo neo-tandem-nsk${UNAME_RELEASE}
-+	exit ;;
-+    NSE-*:NONSTOP_KERNEL:*:*)
- 	echo nse-tandem-nsk${UNAME_RELEASE}
- 	exit ;;
-     NSR-?:NONSTOP_KERNEL:*:*)
- 	echo nsr-tandem-nsk${UNAME_RELEASE}
- 	exit ;;
-     *:NonStop-UX:*:*)
- 	echo mips-compaq-nonstopux
- 	exit ;;
-@@ -1306,23 +1337,23 @@ EOF
- 	exit ;;
-     *:TOPS-20:*:*)
- 	echo pdp10-unknown-tops20
- 	exit ;;
-     *:ITS:*:*)
- 	echo pdp10-unknown-its
- 	exit ;;
-     SEI:*:*:SEIUX)
--        echo mips-sei-seiux${UNAME_RELEASE}
-+	echo mips-sei-seiux${UNAME_RELEASE}
- 	exit ;;
-     *:DragonFly:*:*)
- 	echo ${UNAME_MACHINE}-unknown-dragonfly`echo ${UNAME_RELEASE}|sed -e 's/[-(].*//'`
- 	exit ;;
-     *:*VMS:*:*)
--    	UNAME_MACHINE=`(uname -p) 2>/dev/null`
-+	UNAME_MACHINE=`(uname -p) 2>/dev/null`
- 	case "${UNAME_MACHINE}" in
- 	    A*) echo alpha-dec-vms ; exit ;;
- 	    I*) echo ia64-dec-vms ; exit ;;
- 	    V*) echo vax-dec-vms ; exit ;;
- 	esac ;;
-     *:XENIX:*:SysV)
- 	echo i386-pc-xenix
- 	exit ;;
-@@ -1330,169 +1361,21 @@ EOF
- 	echo ${UNAME_MACHINE}-pc-skyos`echo ${UNAME_RELEASE}` | sed -e 's/ .*$//'
- 	exit ;;
-     i*86:rdos:*:*)
- 	echo ${UNAME_MACHINE}-pc-rdos
- 	exit ;;
-     i*86:AROS:*:*)
- 	echo ${UNAME_MACHINE}-pc-aros
- 	exit ;;
-+    x86_64:VMkernel:*:*)
-+	echo ${UNAME_MACHINE}-unknown-esx
-+	exit ;;
- esac
- 
--#echo '(No uname command or uname output not recognized.)' 1>&2
--#echo "${UNAME_MACHINE}:${UNAME_SYSTEM}:${UNAME_RELEASE}:${UNAME_VERSION}" 1>&2
--
--eval $set_cc_for_build
--cat >$dummy.c <<EOF
--#ifdef _SEQUENT_
--# include <sys/types.h>
--# include <sys/utsname.h>
--#endif
--main ()
--{
--#if defined (sony)
--#if defined (MIPSEB)
--  /* BFD wants "bsd" instead of "newsos".  Perhaps BFD should be changed,
--     I don't know....  */
--  printf ("mips-sony-bsd\n"); exit (0);
--#else
--#include <sys/param.h>
--  printf ("m68k-sony-newsos%s\n",
--#ifdef NEWSOS4
--          "4"
--#else
--	  ""
--#endif
--         ); exit (0);
--#endif
--#endif
--
--#if defined (__arm) && defined (__acorn) && defined (__unix)
--  printf ("arm-acorn-riscix\n"); exit (0);
--#endif
--
--#if defined (hp300) && !defined (hpux)
--  printf ("m68k-hp-bsd\n"); exit (0);
--#endif
--
--#if defined (NeXT)
--#if !defined (__ARCHITECTURE__)
--#define __ARCHITECTURE__ "m68k"
--#endif
--  int version;
--  version=`(hostinfo | sed -n 's/.*NeXT Mach \([0-9]*\).*/\1/p') 2>/dev/null`;
--  if (version < 4)
--    printf ("%s-next-nextstep%d\n", __ARCHITECTURE__, version);
--  else
--    printf ("%s-next-openstep%d\n", __ARCHITECTURE__, version);
--  exit (0);
--#endif
--
--#if defined (MULTIMAX) || defined (n16)
--#if defined (UMAXV)
--  printf ("ns32k-encore-sysv\n"); exit (0);
--#else
--#if defined (CMU)
--  printf ("ns32k-encore-mach\n"); exit (0);
--#else
--  printf ("ns32k-encore-bsd\n"); exit (0);
--#endif
--#endif
--#endif
--
--#if defined (__386BSD__)
--  printf ("i386-pc-bsd\n"); exit (0);
--#endif
--
--#if defined (sequent)
--#if defined (i386)
--  printf ("i386-sequent-dynix\n"); exit (0);
--#endif
--#if defined (ns32000)
--  printf ("ns32k-sequent-dynix\n"); exit (0);
--#endif
--#endif
--
--#if defined (_SEQUENT_)
--    struct utsname un;
--
--    uname(&un);
--
--    if (strncmp(un.version, "V2", 2) == 0) {
--	printf ("i386-sequent-ptx2\n"); exit (0);
--    }
--    if (strncmp(un.version, "V1", 2) == 0) { /* XXX is V1 correct? */
--	printf ("i386-sequent-ptx1\n"); exit (0);
--    }
--    printf ("i386-sequent-ptx\n"); exit (0);
--
--#endif
--
--#if defined (vax)
--# if !defined (ultrix)
--#  include <sys/param.h>
--#  if defined (BSD)
--#   if BSD == 43
--      printf ("vax-dec-bsd4.3\n"); exit (0);
--#   else
--#    if BSD == 199006
--      printf ("vax-dec-bsd4.3reno\n"); exit (0);
--#    else
--      printf ("vax-dec-bsd\n"); exit (0);
--#    endif
--#   endif
--#  else
--    printf ("vax-dec-bsd\n"); exit (0);
--#  endif
--# else
--    printf ("vax-dec-ultrix\n"); exit (0);
--# endif
--#endif
--
--#if defined (alliant) && defined (i860)
--  printf ("i860-alliant-bsd\n"); exit (0);
--#endif
--
--  exit (1);
--}
--EOF
--
--$CC_FOR_BUILD -o $dummy $dummy.c 2>/dev/null && SYSTEM_NAME=`$dummy` &&
--	{ echo "$SYSTEM_NAME"; exit; }
--
--# Apollos put the system type in the environment.
--
--test -d /usr/apollo && { echo ${ISP}-apollo-${SYSTYPE}; exit; }
--
--# Convex versions that predate uname can use getsysinfo(1)
--
--if [ -x /usr/convex/getsysinfo ]
--then
--    case `getsysinfo -f cpu_type` in
--    c1*)
--	echo c1-convex-bsd
--	exit ;;
--    c2*)
--	if getsysinfo -f scalar_acc
--	then echo c32-convex-bsd
--	else echo c2-convex-bsd
--	fi
--	exit ;;
--    c34*)
--	echo c34-convex-bsd
--	exit ;;
--    c38*)
--	echo c38-convex-bsd
--	exit ;;
--    c4*)
--	echo c4-convex-bsd
--	exit ;;
--    esac
--fi
--
- cat >&2 <<EOF
- $0: unable to guess system type
- 
- This script, last modified $timestamp, has failed to recognize
- the operating system you are using. It is advised that you
- download the most up to date version of the config scripts from
- 
-   http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD
-diff --git a/js/src/build/autoconf/config.sub b/js/src/build/autoconf/config.sub
---- a/js/src/build/autoconf/config.sub
-+++ b/js/src/build/autoconf/config.sub
-@@ -1,43 +1,36 @@
- #! /bin/sh
- # Configuration validation subroutine script.
--#   Copyright (C) 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999,
--#   2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009
--#   Free Software Foundation, Inc.
-+#   Copyright 1992-2014 Free Software Foundation, Inc.
- 
--timestamp='2011-01-03'
-+timestamp='2014-01-01'
- 
--# This file is (in principle) common to ALL GNU software.
--# The presence of a machine in this file suggests that SOME GNU software
--# can handle that machine.  It does not imply ALL GNU software can.
--#
--# This file is free software; you can redistribute it and/or modify
--# it under the terms of the GNU General Public License as published by
--# the Free Software Foundation; either version 2 of the License, or
-+# This file is free software; you can redistribute it and/or modify it
-+# under the terms of the GNU General Public License as published by
-+# the Free Software Foundation; either version 3 of the License, or
- # (at your option) any later version.
- #
--# This program is distributed in the hope that it will be useful,
--# but WITHOUT ANY WARRANTY; without even the implied warranty of
--# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
--# GNU General Public License for more details.
-+# This program is distributed in the hope that it will be useful, but
-+# WITHOUT ANY WARRANTY; without even the implied warranty of
-+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-+# General Public License for more details.
- #
- # You should have received a copy of the GNU General Public License
--# along with this program; if not, write to the Free Software
--# Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA
--# 02110-1301, USA.
-+# along with this program; if not, see <http://www.gnu.org/licenses/>.
- #
- # As a special exception to the GNU General Public License, if you
- # distribute this file as part of a program that contains a
- # configuration script generated by Autoconf, you may include it under
--# the same distribution terms that you use for the rest of that program.
-+# the same distribution terms that you use for the rest of that
-+# program.  This Exception is an additional permission under section 7
-+# of the GNU General Public License, version 3 ("GPLv3").
- 
- 
--# Please send patches to <config-patches@gnu.org>.  Submit a context
--# diff and a properly formatted GNU ChangeLog entry.
-+# Please send patches with a ChangeLog entry to config-patches@gnu.org.
- #
- # Configuration subroutine to validate and canonicalize a configuration type.
- # Supply the specified configuration type as an argument.
- # If it is invalid, we print an error message on stderr and exit with code 1.
- # Otherwise, we print the canonical config type on stdout and succeed.
- 
- # You can get the latest version of this script from:
- # http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD
-@@ -70,18 +63,17 @@ Operation modes:
-   -t, --time-stamp   print date of last modification, then exit
-   -v, --version      print version number, then exit
- 
- Report bugs and patches to <config-patches@gnu.org>."
- 
- version="\
- GNU config.sub ($timestamp)
- 
--Copyright (C) 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001,
--2002, 2003, 2004, 2005, 2006, 2007, 2008 Free Software Foundation, Inc.
-+Copyright 1992-2014 Free Software Foundation, Inc.
- 
- This is free software; see the source for copying conditions.  There is NO
- warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
- 
- help="
- Try \`$me --help' for more information."
- 
- # Parse command line
-@@ -118,23 +110,28 @@ case $# in
-  *) echo "$me: too many arguments$help" >&2
-     exit 1;;
- esac
- 
- # Separate what the user gave into CPU-COMPANY and OS or KERNEL-OS (if any).
- # Here we must recognize all the valid KERNEL-OS combinations.
- maybe_os=`echo $1 | sed 's/^\(.*\)-\([^-]*-[^-]*\)$/\2/'`
- case $maybe_os in
--  nto-qnx* | linux-gnu* | linux-dietlibc | linux-newlib* | linux-uclibc* | \
--  uclinux-uclibc* | uclinux-gnu* | kfreebsd*-gnu* | knetbsd*-gnu* | netbsd*-gnu* | \
-+  nto-qnx* | linux-gnu* | linux-android* | linux-dietlibc | linux-newlib* | \
-+  linux-musl* | linux-uclibc* | uclinux-uclibc* | uclinux-gnu* | kfreebsd*-gnu* | \
-+  knetbsd*-gnu* | netbsd*-gnu* | \
-   kopensolaris*-gnu* | \
--  storm-chaos* | os2-emx* | rtmk-nova* | wince-winmo*)
-+  storm-chaos* | os2-emx* | rtmk-nova*)
-     os=-$maybe_os
-     basic_machine=`echo $1 | sed 's/^\(.*\)-\([^-]*-[^-]*\)$/\1/'`
-     ;;
-+  android-linux)
-+    os=-linux-android
-+    basic_machine=`echo $1 | sed 's/^\(.*\)-\([^-]*-[^-]*\)$/\1/'`-unknown
-+    ;;
-   *)
-     basic_machine=`echo $1 | sed 's/-[^-]*$//'`
-     if [ $basic_machine != $1 ]
-     then os=`echo $1 | sed 's/.*-/-/'`
-     else os=; fi
-     ;;
- esac
- 
-@@ -147,41 +144,41 @@ case $os in
- 		# Prevent following clause from handling this invalid input.
- 		;;
- 	-dec* | -mips* | -sequent* | -encore* | -pc532* | -sgi* | -sony* | \
- 	-att* | -7300* | -3300* | -delta* | -motorola* | -sun[234]* | \
- 	-unicom* | -ibm* | -next | -hp | -isi* | -apollo | -altos* | \
- 	-convergent* | -ncr* | -news | -32* | -3600* | -3100* | -hitachi* |\
- 	-c[123]* | -convex* | -sun | -crds | -omron* | -dg | -ultra | -tti* | \
- 	-harris | -dolphin | -highlevel | -gould | -cbm | -ns | -masscomp | \
--	-apple | -axis | -knuth | -cray | -microblaze)
-+	-apple | -axis | -knuth | -cray | -microblaze*)
- 		os=
- 		basic_machine=$1
- 		;;
--        -bluegene*)
--	        os=-cnk
-+	-bluegene*)
-+		os=-cnk
- 		;;
- 	-sim | -cisco | -oki | -wec | -winbond)
- 		os=
- 		basic_machine=$1
- 		;;
- 	-scout)
- 		;;
- 	-wrs)
- 		os=-vxworks
- 		basic_machine=$1
- 		;;
- 	-chorusos*)
- 		os=-chorusos
- 		basic_machine=$1
- 		;;
-- 	-chorusrdb)
-- 		os=-chorusrdb
-+	-chorusrdb)
-+		os=-chorusrdb
- 		basic_machine=$1
-- 		;;
-+		;;
- 	-hiux*)
- 		os=-hiuxwe2
- 		;;
- 	-sco6)
- 		os=-sco5v6
- 		basic_machine=`echo $1 | sed -e 's/86-.*/86-pc/'`
- 		;;
- 	-sco5)
-@@ -216,16 +213,22 @@ case $os in
- 		basic_machine=`echo $1 | sed -e 's/86-.*/86-pc/'`
- 		;;
- 	-clix*)
- 		basic_machine=clipper-intergraph
- 		;;
- 	-isc*)
- 		basic_machine=`echo $1 | sed -e 's/86-.*/86-pc/'`
- 		;;
-+	-lynx*178)
-+		os=-lynxos178
-+		;;
-+	-lynx*5)
-+		os=-lynxos5
-+		;;
- 	-lynx*)
- 		os=-lynxos
- 		;;
- 	-ptx*)
- 		basic_machine=`echo $1 | sed -e 's/86-.*/86-sequent/'`
- 		;;
- 	-windowsnt*)
- 		os=`echo $os | sed -e 's/windowsnt/winnt/'`
-@@ -240,30 +243,38 @@ case $os in
- esac
- 
- # Decode aliases for certain CPU-COMPANY combinations.
- case $basic_machine in
- 	# Recognize the basic CPU types without company name.
- 	# Some are omitted here because they have special meanings below.
- 	1750a | 580 \
- 	| a29k \
-+	| aarch64 | aarch64_be \
- 	| alpha | alphaev[4-8] | alphaev56 | alphaev6[78] | alphapca5[67] \
- 	| alpha64 | alpha64ev[4-8] | alpha64ev56 | alpha64ev6[78] | alpha64pca5[67] \
- 	| am33_2.0 \
--	| arc | arm | arm[bl]e | arme[lb] | armv[2345] | armv[345][lb] | avr | avr32 \
-+	| arc | arceb \
-+	| arm | arm[bl]e | arme[lb] | armv[2-8] | armv[3-8][lb] | armv7[arm] \
-+	| avr | avr32 \
-+	| be32 | be64 \
- 	| bfin \
--	| c4x | clipper \
-+	| c4x | c8051 | clipper \
- 	| d10v | d30v | dlx | dsp16xx \
-+	| epiphany \
- 	| fido | fr30 | frv \
- 	| h8300 | h8500 | hppa | hppa1.[01] | hppa2.0 | hppa2.0[nw] | hppa64 \
-+	| hexagon \
- 	| i370 | i860 | i960 | ia64 \
- 	| ip2k | iq2000 \
-+	| k1om \
-+	| le32 | le64 \
- 	| lm32 \
- 	| m32c | m32r | m32rle | m68000 | m68k | m88k \
--	| maxq | mb | microblaze | mcore | mep | metag \
-+	| maxq | mb | microblaze | microblazeel | mcore | mep | metag \
- 	| mips | mipsbe | mipseb | mipsel | mipsle \
- 	| mips16 \
- 	| mips64 | mips64el \
- 	| mips64octeon | mips64octeonel \
- 	| mips64orion | mips64orionel \
- 	| mips64r5900 | mips64r5900el \
- 	| mips64vr | mips64vrel \
- 	| mips64vr4100 | mips64vr4100el \
-@@ -271,84 +282,118 @@ case $basic_machine in
- 	| mips64vr5000 | mips64vr5000el \
- 	| mips64vr5900 | mips64vr5900el \
- 	| mipsisa32 | mipsisa32el \
- 	| mipsisa32r2 | mipsisa32r2el \
- 	| mipsisa64 | mipsisa64el \
- 	| mipsisa64r2 | mipsisa64r2el \
- 	| mipsisa64sb1 | mipsisa64sb1el \
- 	| mipsisa64sr71k | mipsisa64sr71kel \
-+	| mipsr5900 | mipsr5900el \
- 	| mipstx39 | mipstx39el \
- 	| mn10200 | mn10300 \
- 	| moxie \
- 	| mt \
- 	| msp430 \
--	| nios | nios2 \
-+	| nds32 | nds32le | nds32be \
-+	| nios | nios2 | nios2eb | nios2el \
- 	| ns16k | ns32k \
--	| or32 \
-+	| open8 \
-+	| or1k | or32 \
- 	| pdp10 | pdp11 | pj | pjl \
--	| powerpc | powerpc64 | powerpc64le | powerpcle | ppcbe \
-+	| powerpc | powerpc64 | powerpc64le | powerpcle \
- 	| pyramid \
-+	| rl78 | rx \
- 	| score \
- 	| sh | sh[1234] | sh[24]a | sh[24]aeb | sh[23]e | sh[34]eb | sheb | shbe | shle | sh[1234]le | sh3ele \
- 	| sh64 | sh64le \
- 	| sparc | sparc64 | sparc64b | sparc64v | sparc86x | sparclet | sparclite \
- 	| sparcv8 | sparcv9 | sparcv9b | sparcv9v \
--	| spu | strongarm \
--	| tahoe | thumb | tic4x | tic80 | tron \
--	| v850 | v850e \
-+	| spu \
-+	| tahoe | tic4x | tic54x | tic55x | tic6x | tic80 | tron \
-+	| ubicom32 \
-+	| v850 | v850e | v850e1 | v850e2 | v850es | v850e2v3 \
- 	| we32k \
--	| x86 | xc16x | xscale | xscalee[bl] | xstormy16 | xtensa \
-+	| x86 | xc16x | xstormy16 | xtensa \
- 	| z8k | z80)
- 		basic_machine=$basic_machine-unknown
- 		;;
--	m6811 | m68hc11 | m6812 | m68hc12)
--		# Motorola 68HC11/12.
-+	c54x)
-+		basic_machine=tic54x-unknown
-+		;;
-+	c55x)
-+		basic_machine=tic55x-unknown
-+		;;
-+	c6x)
-+		basic_machine=tic6x-unknown
-+		;;
-+	m6811 | m68hc11 | m6812 | m68hc12 | m68hcs12x | nvptx | picochip)
- 		basic_machine=$basic_machine-unknown
- 		os=-none
- 		;;
- 	m88110 | m680[12346]0 | m683?2 | m68360 | m5200 | v70 | w65 | z8k)
- 		;;
- 	ms1)
- 		basic_machine=mt-unknown
- 		;;
- 
-+	strongarm | thumb | xscale)
-+		basic_machine=arm-unknown
-+		;;
-+	xgate)
-+		basic_machine=$basic_machine-unknown
-+		os=-none
-+		;;
-+	xscaleeb)
-+		basic_machine=armeb-unknown
-+		;;
-+
-+	xscaleel)
-+		basic_machine=armel-unknown
-+		;;
-+
- 	# We use `pc' rather than `unknown'
- 	# because (1) that's what they normally are, and
- 	# (2) the word "unknown" tends to confuse beginning users.
- 	i*86 | x86_64)
- 	  basic_machine=$basic_machine-pc
- 	  ;;
- 	# Object if more than one company name word.
- 	*-*-*)
- 		echo Invalid configuration \`$1\': machine \`$basic_machine\' not recognized 1>&2
- 		exit 1
- 		;;
- 	# Recognize the basic CPU types with company name.
- 	580-* \
- 	| a29k-* \
-+	| aarch64-* | aarch64_be-* \
- 	| alpha-* | alphaev[4-8]-* | alphaev56-* | alphaev6[78]-* \
- 	| alpha64-* | alpha64ev[4-8]-* | alpha64ev56-* | alpha64ev6[78]-* \
--	| alphapca5[67]-* | alpha64pca5[67]-* | arc-* \
-+	| alphapca5[67]-* | alpha64pca5[67]-* | arc-* | arceb-* \
- 	| arm-*  | armbe-* | armle-* | armeb-* | armv*-* \
- 	| avr-* | avr32-* \
-+	| be32-* | be64-* \
- 	| bfin-* | bs2000-* \
--	| c[123]* | c30-* | [cjt]90-* | c4x-* | c54x-* | c55x-* | c6x-* \
--	| clipper-* | craynv-* | cydra-* \
-+	| c[123]* | c30-* | [cjt]90-* | c4x-* \
-+	| c8051-* | clipper-* | craynv-* | cydra-* \
- 	| d10v-* | d30v-* | dlx-* \
- 	| elxsi-* \
- 	| f30[01]-* | f700-* | fido-* | fr30-* | frv-* | fx80-* \
- 	| h8300-* | h8500-* \
- 	| hppa-* | hppa1.[01]-* | hppa2.0-* | hppa2.0[nw]-* | hppa64-* \
-+	| hexagon-* \
- 	| i*86-* | i860-* | i960-* | ia64-* \
- 	| ip2k-* | iq2000-* \
-+	| k1om-* \
-+	| le32-* | le64-* \
- 	| lm32-* \
- 	| m32c-* | m32r-* | m32rle-* \
- 	| m68000-* | m680[012346]0-* | m68360-* | m683?2-* | m68k-* \
--	| m88110-* | m88k-* | maxq-* | mcore-* | metag-* | microblaze-* \
-+	| m88110-* | m88k-* | maxq-* | mcore-* | metag-* \
-+	| microblaze-* | microblazeel-* \
- 	| mips-* | mipsbe-* | mipseb-* | mipsel-* | mipsle-* \
- 	| mips16-* \
- 	| mips64-* | mips64el-* \
- 	| mips64octeon-* | mips64octeonel-* \
- 	| mips64orion-* | mips64orionel-* \
- 	| mips64r5900-* | mips64r5900el-* \
- 	| mips64vr-* | mips64vrel-* \
- 	| mips64vr4100-* | mips64vr4100el-* \
-@@ -356,38 +401,44 @@ case $basic_machine in
- 	| mips64vr5000-* | mips64vr5000el-* \
- 	| mips64vr5900-* | mips64vr5900el-* \
- 	| mipsisa32-* | mipsisa32el-* \
- 	| mipsisa32r2-* | mipsisa32r2el-* \
- 	| mipsisa64-* | mipsisa64el-* \
- 	| mipsisa64r2-* | mipsisa64r2el-* \
- 	| mipsisa64sb1-* | mipsisa64sb1el-* \
- 	| mipsisa64sr71k-* | mipsisa64sr71kel-* \
-+	| mipsr5900-* | mipsr5900el-* \
- 	| mipstx39-* | mipstx39el-* \
- 	| mmix-* \
- 	| mt-* \
- 	| msp430-* \
--	| nios-* | nios2-* \
-+	| nds32-* | nds32le-* | nds32be-* \
-+	| nios-* | nios2-* | nios2eb-* | nios2el-* \
- 	| none-* | np1-* | ns16k-* | ns32k-* \
-+	| open8-* \
- 	| orion-* \
- 	| pdp10-* | pdp11-* | pj-* | pjl-* | pn-* | power-* \
--	| powerpc-* | powerpc64-* | powerpc64le-* | powerpcle-* | ppcbe-* \
-+	| powerpc-* | powerpc64-* | powerpc64le-* | powerpcle-* \
- 	| pyramid-* \
--	| romp-* | rs6000-* \
-+	| rl78-* | romp-* | rs6000-* | rx-* \
- 	| sh-* | sh[1234]-* | sh[24]a-* | sh[24]aeb-* | sh[23]e-* | sh[34]eb-* | sheb-* | shbe-* \
- 	| shle-* | sh[1234]le-* | sh3ele-* | sh64-* | sh64le-* \
- 	| sparc-* | sparc64-* | sparc64b-* | sparc64v-* | sparc86x-* | sparclet-* \
- 	| sparclite-* \
--	| sparcv8-* | sparcv9-* | sparcv9b-* | sparcv9v-* | strongarm-* | sv1-* | sx?-* \
--	| tahoe-* | thumb-* \
--	| tic30-* | tic4x-* | tic54x-* | tic55x-* | tic6x-* | tic80-* | tile-* \
-+	| sparcv8-* | sparcv9-* | sparcv9b-* | sparcv9v-* | sv1-* | sx?-* \
-+	| tahoe-* \
-+	| tic30-* | tic4x-* | tic54x-* | tic55x-* | tic6x-* | tic80-* \
-+	| tile*-* \
- 	| tron-* \
--	| v850-* | v850e-* | vax-* \
-+	| ubicom32-* \
-+	| v850-* | v850e-* | v850e1-* | v850es-* | v850e2-* | v850e2v3-* \
-+	| vax-* \
- 	| we32k-* \
--	| x86-* | x86_64-* | xc16x-* | xps100-* | xscale-* | xscalee[bl]-* \
-+	| x86-* | x86_64-* | xc16x-* | xps100-* \
- 	| xstormy16-* | xtensa*-* \
- 	| ymp-* \
- 	| z8k-* | z80-*)
- 		;;
- 	# Recognize the basic CPU types without company name, with glob match.
- 	xtensa*)
- 		basic_machine=$basic_machine-unknown
- 		;;
-@@ -402,17 +453,17 @@ case $basic_machine in
- 		;;
- 	3b*)
- 		basic_machine=we32k-att
- 		;;
- 	a29khif)
- 		basic_machine=a29k-amd
- 		os=-udi
- 		;;
--    	abacus)
-+	abacus)
- 		basic_machine=abacus-unknown
- 		;;
- 	adobe68k)
- 		basic_machine=m68010-adobe
- 		os=-scout
- 		;;
- 	alliant | fx80)
- 		basic_machine=fx80-alliant
-@@ -472,21 +523,30 @@ case $basic_machine in
- 	blackfin-*)
- 		basic_machine=bfin-`echo $basic_machine | sed 's/^[^-]*-//'`
- 		os=-linux
- 		;;
- 	bluegene*)
- 		basic_machine=powerpc-ibm
- 		os=-cnk
- 		;;
-+	c54x-*)
-+		basic_machine=tic54x-`echo $basic_machine | sed 's/^[^-]*-//'`
-+		;;
-+	c55x-*)
-+		basic_machine=tic55x-`echo $basic_machine | sed 's/^[^-]*-//'`
-+		;;
-+	c6x-*)
-+		basic_machine=tic6x-`echo $basic_machine | sed 's/^[^-]*-//'`
-+		;;
- 	c90)
- 		basic_machine=c90-cray
- 		os=-unicos
- 		;;
--        cegcc)
-+	cegcc)
- 		basic_machine=arm-unknown
- 		os=-cegcc
- 		;;
- 	convex-c1)
- 		basic_machine=c1-convex
- 		os=-bsd
- 		;;
- 	convex-c2)
-@@ -508,17 +568,17 @@ case $basic_machine in
- 	cray | j90)
- 		basic_machine=j90-cray
- 		os=-unicos
- 		;;
- 	craynv)
- 		basic_machine=craynv-cray
- 		os=-unicosmp
- 		;;
--	cr16)
-+	cr16 | cr16-*)
- 		basic_machine=cr16-unknown
- 		os=-elf
- 		;;
- 	crds | unos)
- 		basic_machine=m68k-crds
- 		;;
- 	crisv32 | crisv32-* | etraxfs*)
- 		basic_machine=crisv32-axis
-@@ -666,17 +726,16 @@ case $basic_machine in
- 		;;
- 	hppro)
- 		basic_machine=hppa1.1-hp
- 		os=-proelf
- 		;;
- 	i370-ibm* | ibm*)
- 		basic_machine=i370-ibm
- 		;;
--# I'm not sure what "Sysv32" means.  Should this be sysv3.2?
- 	i*86v32)
- 		basic_machine=`echo $1 | sed -e 's/86.*/86-pc/'`
- 		os=-sysv32
- 		;;
- 	i*86v4*)
- 		basic_machine=`echo $1 | sed -e 's/86.*/86-pc/'`
- 		os=-sysv4
- 		;;
-@@ -724,21 +783,25 @@ case $basic_machine in
- 	magnum | m3230)
- 		basic_machine=mips-mips
- 		os=-sysv
- 		;;
- 	merlin)
- 		basic_machine=ns32k-utek
- 		os=-sysv
- 		;;
--        microblaze)
-+	microblaze*)
- 		basic_machine=microblaze-xilinx
- 		;;
-+	mingw64)
-+		basic_machine=x86_64-pc
-+		os=-mingw64
-+		;;
- 	mingw32)
--		basic_machine=i386-pc
-+		basic_machine=i686-pc
- 		os=-mingw32
- 		;;
- 	mingw32ce)
- 		basic_machine=arm-unknown
- 		os=-mingw32ce
- 		;;
- 	miniframe)
- 		basic_machine=m68000-convergent
-@@ -763,20 +826,28 @@ case $basic_machine in
- 		;;
- 	msdos)
- 		basic_machine=i386-pc
- 		os=-msdos
- 		;;
- 	ms1-*)
- 		basic_machine=`echo $basic_machine | sed -e 's/ms1-/mt-/'`
- 		;;
-+	msys)
-+		basic_machine=i686-pc
-+		os=-msys
-+		;;
- 	mvs)
- 		basic_machine=i370-ibm
- 		os=-mvs
- 		;;
-+	nacl)
-+		basic_machine=le32-unknown
-+		os=-nacl
-+		;;
- 	ncr3000)
- 		basic_machine=i486-ncr
- 		os=-sysv4
- 		;;
- 	netbsd386)
- 		basic_machine=i386-unknown
- 		os=-netbsd
- 		;;
-@@ -831,16 +902,22 @@ case $basic_machine in
- 		;;
- 	nonstopux)
- 		basic_machine=mips-compaq
- 		os=-nonstopux
- 		;;
- 	np1)
- 		basic_machine=np1-gould
- 		;;
-+	neo-tandem)
-+		basic_machine=neo-tandem
-+		;;
-+	nse-tandem)
-+		basic_machine=nse-tandem
-+		;;
- 	nsr-tandem)
- 		basic_machine=nsr-tandem
- 		;;
- 	op50n-* | op60c-*)
- 		basic_machine=hppa1.1-oki
- 		os=-proelf
- 		;;
- 	openrisc | openrisc-*)
-@@ -913,19 +990,20 @@ case $basic_machine in
- 	pentium4-*)
- 		basic_machine=i786-`echo $basic_machine | sed 's/^[^-]*-//'`
- 		;;
- 	pn)
- 		basic_machine=pn-gould
- 		;;
- 	power)	basic_machine=power-ibm
- 		;;
--	ppc)	basic_machine=powerpc-unknown
-+	ppc | ppcbe)	basic_machine=powerpc-unknown
- 		;;
--	ppc-*)	basic_machine=powerpc-`echo $basic_machine | sed 's/^[^-]*-//'`
-+	ppc-* | ppcbe-*)
-+		basic_machine=powerpc-`echo $basic_machine | sed 's/^[^-]*-//'`
- 		;;
- 	ppcle | powerpclittle | ppc-le | powerpc-little)
- 		basic_machine=powerpcle-unknown
- 		;;
- 	ppcle-* | powerpclittle-*)
- 		basic_machine=powerpcle-`echo $basic_machine | sed 's/^[^-]*-//'`
- 		;;
- 	ppc64)	basic_machine=powerpc64-unknown
-@@ -940,17 +1018,21 @@ case $basic_machine in
- 		;;
- 	ps2)
- 		basic_machine=i386-ibm
- 		;;
- 	pw32)
- 		basic_machine=i586-unknown
- 		os=-pw32
- 		;;
--	rdos)
-+	rdos | rdos64)
-+		basic_machine=x86_64-pc
-+		os=-rdos
-+		;;
-+	rdos32)
- 		basic_machine=i386-pc
- 		os=-rdos
- 		;;
- 	rom68k)
- 		basic_machine=m68k-rom68k
- 		os=-coff
- 		;;
- 	rm[46]00)
-@@ -1009,16 +1091,19 @@ case $basic_machine in
- 		;;
- 	st2000)
- 		basic_machine=m68k-tandem
- 		;;
- 	stratus)
- 		basic_machine=i860-stratus
- 		os=-sysv4
- 		;;
-+	strongarm-* | thumb-*)
-+		basic_machine=arm-`echo $basic_machine | sed 's/^[^-]*-//'`
-+		;;
- 	sun2)
- 		basic_machine=m68000-sun
- 		;;
- 	sun2os3)
- 		basic_machine=m68000-sun
- 		os=-sunos3
- 		;;
- 	sun2os4)
-@@ -1065,30 +1150,18 @@ case $basic_machine in
- 	t3e)
- 		basic_machine=alphaev5-cray
- 		os=-unicos
- 		;;
- 	t90)
- 		basic_machine=t90-cray
- 		os=-unicos
- 		;;
--	tic54x | c54x*)
--		basic_machine=tic54x-unknown
--		os=-coff
--		;;
--	tic55x | c55x*)
--		basic_machine=tic55x-unknown
--		os=-coff
--		;;
--	tic6x | c6x*)
--		basic_machine=tic6x-unknown
--		os=-coff
--		;;
- 	tile*)
--		basic_machine=tile-unknown
-+		basic_machine=$basic_machine-unknown
- 		os=-linux-gnu
- 		;;
- 	tx39)
- 		basic_machine=mipstx39-unknown
- 		;;
- 	tx39el)
- 		basic_machine=mipstx39el-unknown
- 		;;
-@@ -1148,16 +1221,19 @@ case $basic_machine in
- 		;;
- 	xbox)
- 		basic_machine=i686-pc
- 		os=-mingw32
- 		;;
- 	xps | xps100)
- 		basic_machine=xps100-honeywell
- 		;;
-+	xscale-* | xscalee[bl]-*)
-+		basic_machine=`echo $basic_machine | sed 's/^xscale/arm/'`
-+		;;
- 	ymp)
- 		basic_machine=ymp-cray
- 		os=-unicos
- 		;;
- 	z8k-*-coff)
- 		basic_machine=z8k-unknown
- 		os=-sim
- 		;;
-@@ -1245,19 +1321,22 @@ case $basic_machine in
- 		;;
- esac
- 
- # Decode manufacturer-specific aliases for certain operating systems.
- 
- if [ x"$os" != x"" ]
- then
- case $os in
--        # First match some system type aliases
--        # that might get confused with valid system types.
-+	# First match some system type aliases
-+	# that might get confused with valid system types.
- 	# -solaris* is a basic system type, with this one exception.
-+	-auroraux)
-+		os=-auroraux
-+		;;
- 	-solaris1 | -solaris1.*)
- 		os=`echo $os | sed -e 's|solaris1|sunos4|'`
- 		;;
- 	-solaris)
- 		os=-solaris2
- 		;;
- 	-svr4*)
- 		os=-sysv4
-@@ -1269,39 +1348,40 @@ case $os in
- 		os=`echo $os | sed -e 's|gnu/linux|linux-gnu|'`
- 		;;
- 	# First accept the basic system types.
- 	# The portable systems comes first.
- 	# Each alternative MUST END IN A *, to match a version number.
- 	# -sysv* is not here because it comes later, after sysvr4.
- 	-gnu* | -bsd* | -mach* | -minix* | -genix* | -ultrix* | -irix* \
- 	      | -*vms* | -sco* | -esix* | -isc* | -aix* | -cnk* | -sunos | -sunos[34]*\
--	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -solaris* | -sym* \
--	      | -kopensolaris* \
-+	      | -hpux* | -unos* | -osf* | -luna* | -dgux* | -auroraux* | -solaris* \
-+	      | -sym* | -kopensolaris* | -plan9* \
- 	      | -amigaos* | -amigados* | -msdos* | -newsos* | -unicos* | -aof* \
- 	      | -aos* | -aros* \
- 	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
- 	      | -clix* | -riscos* | -uniplus* | -iris* | -rtu* | -xenix* \
- 	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \
--	      | -openbsd* | -solidbsd* \
-+	      | -bitrig* | -openbsd* | -solidbsd* \
- 	      | -ekkobsd* | -kfreebsd* | -freebsd* | -riscix* | -lynxos* \
- 	      | -bosx* | -nextstep* | -cxux* | -aout* | -elf* | -oabi* \
- 	      | -ptx* | -coff* | -ecoff* | -winnt* | -domain* | -vsta* \
- 	      | -udi* | -eabi* | -lites* | -ieee* | -go32* | -aux* \
- 	      | -chorusos* | -chorusrdb* | -cegcc* \
--	      | -cygwin* | -pe* | -psos* | -moss* | -proelf* | -rtems* \
--	      | -mingw32* | -linux-gnu* | -linux-newlib* | -linux-uclibc* \
-+	      | -cygwin* | -msys* | -pe* | -psos* | -moss* | -proelf* | -rtems* \
-+	      | -mingw32* | -mingw64* | -linux-gnu* | -linux-android* \
-+	      | -linux-newlib* | -linux-musl* | -linux-uclibc* \
- 	      | -uxpv* | -beos* | -mpeix* | -udk* \
- 	      | -interix* | -uwin* | -mks* | -rhapsody* | -darwin* | -opened* \
- 	      | -openstep* | -oskit* | -conix* | -pw32* | -nonstopux* \
- 	      | -storm-chaos* | -tops10* | -tenex* | -tops20* | -its* \
- 	      | -os2* | -vos* | -palmos* | -uclinux* | -nucleus* \
- 	      | -morphos* | -superux* | -rtmk* | -rtmk-nova* | -windiss* \
- 	      | -powermax* | -dnix* | -nx6 | -nx7 | -sei* | -dragonfly* \
--	      | -skyos* | -haiku* | -rdos* | -toppers* | -drops* | -winmo*)
-+	      | -skyos* | -haiku* | -rdos* | -toppers* | -drops* | -es*)
- 	# Remember, each alternative MUST END IN *, to match a version number.
- 		;;
- 	-qnx*)
- 		case $basic_machine in
- 		    x86-* | i*86-*)
- 			;;
- 		    *)
- 			os=-nto$os
-@@ -1330,22 +1410,19 @@ case $os in
- 		os=`echo $os | sed -e 's|sunos5|solaris2|'`
- 		;;
- 	-sunos6*)
- 		os=`echo $os | sed -e 's|sunos6|solaris3|'`
- 		;;
- 	-opened*)
- 		os=-openedition
- 		;;
--        -os400*)
-+	-os400*)
- 		os=-os400
- 		;;
--	-wince-winmo*)
--		os=-wince-winmo
--		;;
- 	-wince*)
- 		os=-wince
- 		;;
- 	-osfrose*)
- 		os=-osfrose
- 		;;
- 	-osf*)
- 		os=-osf
-@@ -1382,17 +1459,17 @@ case $os in
- 		;;
- 	# Preserve the version number of sinix5.
- 	-sinix5.*)
- 		os=`echo $os | sed -e 's|sinix|sysv|'`
- 		;;
- 	-sinix*)
- 		os=-sysv4
- 		;;
--        -tpf*)
-+	-tpf*)
- 		os=-tpf
- 		;;
- 	-triton*)
- 		os=-sysv3
- 		;;
- 	-oss*)
- 		os=-sysv3
- 		;;
-@@ -1418,28 +1495,24 @@ case $os in
- 		os=-xenix
- 		;;
- 	-*mint | -mint[0-9]* | -*MiNT | -MiNT[0-9]*)
- 		os=-mint
- 		;;
- 	-aros*)
- 		os=-aros
- 		;;
--	-kaos*)
--		os=-kaos
--		;;
- 	-zvmoe)
- 		os=-zvmoe
- 		;;
- 	-dicos*)
- 		os=-dicos
- 		;;
--        -android*)
--	        os=-android
--                ;;
-+	-nacl*)
-+		;;
- 	-none)
- 		;;
- 	*)
- 		# Get rid of the `-' at the beginning of $os.
- 		os=`echo $os | sed 's/[^-]*-//'`
- 		echo Invalid configuration \`$1\': system \`$os\' not recognized 1>&2
- 		exit 1
- 		;;
-@@ -1452,33 +1525,48 @@ else
- 
- # Note that if you're going to try to match "-MANUFACTURER" here (say,
- # "-sun"), then you have to tell the case statement up towards the top
- # that MANUFACTURER isn't an operating system.  Otherwise, code above
- # will signal an error saying that MANUFACTURER isn't an operating
- # system, and we'll never get to this point.
- 
- case $basic_machine in
--        score-*)
-+	score-*)
- 		os=-elf
- 		;;
--        spu-*)
-+	spu-*)
- 		os=-elf
- 		;;
- 	*-acorn)
- 		os=-riscix1.2
- 		;;
- 	arm*-rebel)
- 		os=-linux
- 		;;
- 	arm*-semi)
- 		os=-aout
- 		;;
--        c4x-* | tic4x-*)
--        	os=-coff
-+	c4x-* | tic4x-*)
-+		os=-coff
-+		;;
-+	c8051-*)
-+		os=-elf
-+		;;
-+	hexagon-*)
-+		os=-elf
-+		;;
-+	tic54x-*)
-+		os=-coff
-+		;;
-+	tic55x-*)
-+		os=-coff
-+		;;
-+	tic6x-*)
-+		os=-coff
- 		;;
- 	# This must come before the *-dec entry.
- 	pdp10-*)
- 		os=-tops20
- 		;;
- 	pdp11-*)
- 		os=-none
- 		;;
-@@ -1488,32 +1576,32 @@ case $basic_machine in
- 	m68*-apollo)
- 		os=-domain
- 		;;
- 	i386-sun)
- 		os=-sunos4.0.2
- 		;;
- 	m68000-sun)
- 		os=-sunos3
--		# This also exists in the configure program, but was not the
--		# default.
--		# os=-sunos4
- 		;;
- 	m68*-cisco)
- 		os=-aout
- 		;;
--        mep-*)
-+	mep-*)
- 		os=-elf
- 		;;
- 	mips*-cisco)
- 		os=-elf
- 		;;
- 	mips*-*)
- 		os=-elf
- 		;;
-+	or1k-*)
-+		os=-elf
-+		;;
- 	or32-*)
- 		os=-coff
- 		;;
- 	*-tti)	# must be before sparc entry or we get the wrong os.
- 		os=-sysv3
- 		;;
- 	sparc-* | *-sun)
- 		os=-sunos4.1.1
-@@ -1522,17 +1610,17 @@ case $basic_machine in
- 		os=-beos
- 		;;
- 	*-haiku)
- 		os=-haiku
- 		;;
- 	*-ibm)
- 		os=-aix
- 		;;
--    	*-knuth)
-+	*-knuth)
- 		os=-mmixware
- 		;;
- 	*-wec)
- 		os=-proelf
- 		;;
- 	*-winbond)
- 		os=-proelf
- 		;;
-@@ -1684,19 +1772,16 @@ case $basic_machine in
- 				vendor=apple
- 				;;
- 			-*mint | -mint[0-9]* | -*MiNT | -MiNT[0-9]*)
- 				vendor=atari
- 				;;
- 			-vos*)
- 				vendor=stratus
- 				;;
--			*-android*|*-linuxandroid*)
--				vendor=linux-
--				;;
- 		esac
- 		basic_machine=`echo $basic_machine | sed "s/unknown/$vendor/"`
- 		;;
- esac
- 
- echo $basic_machine$os
- exit
- 
-# HG changeset patch
-# Parent e6f9fc7c1611990ed9fdafd3ff19c79fd356a1d6
-# User Ulrich Weigand <uweigand@de.ibm.com>
-Bug 976648 - powerpc64le-linux support - JavaScript build/config
-
-diff --git a/js/src/assembler/wtf/Platform.h b/js/src/assembler/wtf/Platform.h
---- a/js/src/assembler/wtf/Platform.h
-+++ b/js/src/assembler/wtf/Platform.h
-@@ -160,26 +160,32 @@
- /* WTF_CPU_PPC - PowerPC 32-bit */
- #if   defined(__ppc__)     \
-     || defined(__PPC__)     \
-     || defined(__powerpc__) \
-     || defined(__powerpc)   \
+Index: mozilla-release/js/src/assembler/wtf/Platform.h
+===================================================================
+--- mozilla-release.orig/js/src/assembler/wtf/Platform.h
++++ mozilla-release/js/src/assembler/wtf/Platform.h
+@@ -165,16 +165,22 @@
      || defined(__POWERPC__) \
      || defined(_M_PPC)      \
      || defined(__PPC)
@@ -4525,20 +1707,11 @@ diff --git a/js/src/assembler/wtf/Platform.h b/js/src/assembler/wtf/Platform.h
  
  /* WTF_CPU_SH4 - SuperH SH-4 */
  #if defined(__SH4__)
- #define WTF_CPU_SH4 1
- #endif
- 
- /* WTF_CPU_SPARC32 - SPARC 32-bit */
- #if defined(__sparc) && !defined(__arch64__) || defined(__sparcv8)
-diff --git a/js/src/configure.in b/js/src/configure.in
---- a/js/src/configure.in
-+++ b/js/src/configure.in
-@@ -923,17 +923,17 @@ esac
- 
- # Only set CPU_ARCH if we recognize the value of OS_TEST
- 
- case "$OS_TEST" in
- *86 | i86pc)
+Index: mozilla-release/js/src/configure.in
+===================================================================
+--- mozilla-release.orig/js/src/configure.in
++++ mozilla-release/js/src/configure.in
+@@ -931,7 +931,7 @@ case "$OS_TEST" in
      CPU_ARCH=x86
      ;;
  
@@ -4547,20 +1720,11 @@ diff --git a/js/src/configure.in b/js/src/configure.in
      CPU_ARCH=ppc64
      ;;
  
- powerpc | ppc | rs6000)
-     CPU_ARCH=ppc
-     ;;
- 
- Alpha | alpha | ALPHA)
-diff --git a/js/src/jscpucfg.h b/js/src/jscpucfg.h
---- a/js/src/jscpucfg.h
-+++ b/js/src/jscpucfg.h
-@@ -22,17 +22,17 @@
- 
- # ifdef __WATCOMC__
- #  define HAVE_VA_LIST_AS_ARRAY 1
- # endif
- 
+Index: mozilla-release/js/src/jscpucfg.h
+===================================================================
+--- mozilla-release.orig/js/src/jscpucfg.h
++++ mozilla-release/js/src/jscpucfg.h
+@@ -27,7 +27,7 @@
  # define IS_LITTLE_ENDIAN 1
  # undef  IS_BIG_ENDIAN
  
@@ -4569,17 +1733,7 @@ diff --git a/js/src/jscpucfg.h b/js/src/jscpucfg.h
  # if __LITTLE_ENDIAN__
  #  define IS_LITTLE_ENDIAN 1
  #  undef  IS_BIG_ENDIAN
- # elif __BIG_ENDIAN__
- #  undef  IS_LITTLE_ENDIAN
- #  define IS_BIG_ENDIAN 1
- # endif
- 
-@@ -84,18 +84,17 @@
- #  if defined(_STACK_GROWS_UPWARD)
- #   define JS_STACK_GROWTH_DIRECTION (1)
- #  elif defined(_STACK_GROWS_DOWNWARD)
- #   define JS_STACK_GROWTH_DIRECTION (-1)
- #  endif
+@@ -89,8 +89,7 @@
  # endif
  
  #elif defined(__sparc) || defined(__sparc__) || \
@@ -4589,25 +1743,11 @@ diff --git a/js/src/jscpucfg.h b/js/src/jscpucfg.h
        defined(_MIPSEB) || defined(_BIG_ENDIAN)
  /* IA64 running HP-UX will have _BIG_ENDIAN defined.
   * IA64 running Linux will have endian.h and be handled above.
-  */
- # undef IS_LITTLE_ENDIAN
- # define IS_BIG_ENDIAN 1
- 
- #else /* !defined(__sparc) && !defined(__sparc__) && ... */
-# HG changeset patch
-# Parent 16cf73a02802e3b4a77ccd77794346441638e2a7
-# User Ulrich Weigand <uweigand@de.ibm.com>
-Bug 976648 - powerpc64le-linux support - libffi backport
-
-diff --git a/js/src/ctypes/libffi/aclocal.m4 b/js/src/ctypes/libffi/aclocal.m4
---- a/js/src/ctypes/libffi/aclocal.m4
-+++ b/js/src/ctypes/libffi/aclocal.m4
-@@ -1277,31 +1277,34 @@ ia64-*-hpux*)
- 	  LD="${LD-ld} -64"
- 	  ;;
-       esac
-     fi
-   fi
+Index: mozilla-release/js/src/ctypes/libffi/aclocal.m4
+===================================================================
+--- mozilla-release.orig/js/src/ctypes/libffi/aclocal.m4
++++ mozilla-release/js/src/ctypes/libffi/aclocal.m4
+@@ -1282,7 +1282,7 @@ ia64-*-hpux*)
    rm -rf conftest*
    ;;
  
@@ -4616,13 +1756,7 @@ diff --git a/js/src/ctypes/libffi/aclocal.m4 b/js/src/ctypes/libffi/aclocal.m4
  s390*-*linux*|s390*-*tpf*|sparc*-*linux*)
    # Find out which ABI we are using.
    echo 'int i;' > conftest.$ac_ext
-   if AC_TRY_EVAL(ac_compile); then
-     case `/usr/bin/file conftest.o` in
-       *32-bit*)
- 	case $host in
- 	  x86_64-*kfreebsd*-gnu)
- 	    LD="${LD-ld} -m elf_i386_fbsd"
- 	    ;;
+@@ -1296,7 +1296,10 @@ s390*-*linux*|s390*-*tpf*|sparc*-*linux*
  	  x86_64-*linux*)
  	    LD="${LD-ld} -m elf_i386"
  	    ;;
@@ -4634,17 +1768,7 @@ diff --git a/js/src/ctypes/libffi/aclocal.m4 b/js/src/ctypes/libffi/aclocal.m4
  	    LD="${LD-ld} -m elf32ppclinux"
  	    ;;
  	  s390x-*linux*)
- 	    LD="${LD-ld} -m elf_s390"
- 	    ;;
- 	  sparc64-*linux*)
- 	    LD="${LD-ld} -m elf32_sparc"
- 	    ;;
-@@ -1310,17 +1313,20 @@ s390*-*linux*|s390*-*tpf*|sparc*-*linux*
-       *64-bit*)
- 	case $host in
- 	  x86_64-*kfreebsd*-gnu)
- 	    LD="${LD-ld} -m elf_x86_64_fbsd"
- 	    ;;
+@@ -1315,7 +1318,10 @@ s390*-*linux*|s390*-*tpf*|sparc*-*linux*
  	  x86_64-*linux*)
  	    LD="${LD-ld} -m elf_x86_64"
  	    ;;
@@ -4656,20 +1780,11 @@ diff --git a/js/src/ctypes/libffi/aclocal.m4 b/js/src/ctypes/libffi/aclocal.m4
  	    LD="${LD-ld} -m elf64ppc"
  	    ;;
  	  s390*-*linux*|s390*-*tpf*)
- 	    LD="${LD-ld} -m elf64_s390"
- 	    ;;
- 	  sparc*-*linux*)
- 	    LD="${LD-ld} -m elf64_sparc"
- 	    ;;
-diff --git a/js/src/ctypes/libffi/configure b/js/src/ctypes/libffi/configure
---- a/js/src/ctypes/libffi/configure
-+++ b/js/src/ctypes/libffi/configure
-@@ -6293,17 +6293,17 @@ ia64-*-hpux*)
- 	  LD="${LD-ld} -64"
- 	  ;;
-       esac
-     fi
-   fi
+Index: mozilla-release/js/src/ctypes/libffi/configure
+===================================================================
+--- mozilla-release.orig/js/src/ctypes/libffi/configure
++++ mozilla-release/js/src/ctypes/libffi/configure
+@@ -6298,7 +6298,7 @@ ia64-*-hpux*)
    rm -rf conftest*
    ;;
  
@@ -4678,17 +1793,7 @@ diff --git a/js/src/ctypes/libffi/configure b/js/src/ctypes/libffi/configure
  s390*-*linux*|s390*-*tpf*|sparc*-*linux*)
    # Find out which ABI we are using.
    echo 'int i;' > conftest.$ac_ext
-   if { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$ac_compile\""; } >&5
-   (eval $ac_compile) 2>&5
-   ac_status=$?
-   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
-   test $ac_status = 0; }; then
-@@ -6311,17 +6311,20 @@ s390*-*linux*|s390*-*tpf*|sparc*-*linux*
-       *32-bit*)
- 	case $host in
- 	  x86_64-*kfreebsd*-gnu)
- 	    LD="${LD-ld} -m elf_i386_fbsd"
- 	    ;;
+@@ -6316,7 +6316,10 @@ s390*-*linux*|s390*-*tpf*|sparc*-*linux*
  	  x86_64-*linux*)
  	    LD="${LD-ld} -m elf_i386"
  	    ;;
@@ -4700,17 +1805,7 @@ diff --git a/js/src/ctypes/libffi/configure b/js/src/ctypes/libffi/configure
  	    LD="${LD-ld} -m elf32ppclinux"
  	    ;;
  	  s390x-*linux*)
- 	    LD="${LD-ld} -m elf_s390"
- 	    ;;
- 	  sparc64-*linux*)
- 	    LD="${LD-ld} -m elf32_sparc"
- 	    ;;
-@@ -6330,17 +6333,20 @@ s390*-*linux*|s390*-*tpf*|sparc*-*linux*
-       *64-bit*)
- 	case $host in
- 	  x86_64-*kfreebsd*-gnu)
- 	    LD="${LD-ld} -m elf_x86_64_fbsd"
- 	    ;;
+@@ -6335,7 +6338,10 @@ s390*-*linux*|s390*-*tpf*|sparc*-*linux*
  	  x86_64-*linux*)
  	    LD="${LD-ld} -m elf_x86_64"
  	    ;;
@@ -4722,20 +1817,11 @@ diff --git a/js/src/ctypes/libffi/configure b/js/src/ctypes/libffi/configure
  	    LD="${LD-ld} -m elf64ppc"
  	    ;;
  	  s390*-*linux*|s390*-*tpf*)
- 	    LD="${LD-ld} -m elf64_s390"
- 	    ;;
- 	  sparc*-*linux*)
- 	    LD="${LD-ld} -m elf64_sparc"
- 	    ;;
-diff --git a/js/src/ctypes/libffi/m4/libtool.m4 b/js/src/ctypes/libffi/m4/libtool.m4
---- a/js/src/ctypes/libffi/m4/libtool.m4
-+++ b/js/src/ctypes/libffi/m4/libtool.m4
-@@ -1262,31 +1262,34 @@ ia64-*-hpux*)
- 	  LD="${LD-ld} -64"
- 	  ;;
-       esac
-     fi
-   fi
+Index: mozilla-release/js/src/ctypes/libffi/m4/libtool.m4
+===================================================================
+--- mozilla-release.orig/js/src/ctypes/libffi/m4/libtool.m4
++++ mozilla-release/js/src/ctypes/libffi/m4/libtool.m4
+@@ -1267,7 +1267,7 @@ ia64-*-hpux*)
    rm -rf conftest*
    ;;
  
@@ -4744,13 +1830,7 @@ diff --git a/js/src/ctypes/libffi/m4/libtool.m4 b/js/src/ctypes/libffi/m4/libtoo
  s390*-*linux*|s390*-*tpf*|sparc*-*linux*)
    # Find out which ABI we are using.
    echo 'int i;' > conftest.$ac_ext
-   if AC_TRY_EVAL(ac_compile); then
-     case `/usr/bin/file conftest.o` in
-       *32-bit*)
- 	case $host in
- 	  x86_64-*kfreebsd*-gnu)
- 	    LD="${LD-ld} -m elf_i386_fbsd"
- 	    ;;
+@@ -1281,7 +1281,10 @@ s390*-*linux*|s390*-*tpf*|sparc*-*linux*
  	  x86_64-*linux*)
  	    LD="${LD-ld} -m elf_i386"
  	    ;;
@@ -4762,17 +1842,7 @@ diff --git a/js/src/ctypes/libffi/m4/libtool.m4 b/js/src/ctypes/libffi/m4/libtoo
  	    LD="${LD-ld} -m elf32ppclinux"
  	    ;;
  	  s390x-*linux*)
- 	    LD="${LD-ld} -m elf_s390"
- 	    ;;
- 	  sparc64-*linux*)
- 	    LD="${LD-ld} -m elf32_sparc"
- 	    ;;
-@@ -1295,17 +1298,20 @@ s390*-*linux*|s390*-*tpf*|sparc*-*linux*
-       *64-bit*)
- 	case $host in
- 	  x86_64-*kfreebsd*-gnu)
- 	    LD="${LD-ld} -m elf_x86_64_fbsd"
- 	    ;;
+@@ -1300,7 +1303,10 @@ s390*-*linux*|s390*-*tpf*|sparc*-*linux*
  	  x86_64-*linux*)
  	    LD="${LD-ld} -m elf_x86_64"
  	    ;;
@@ -4784,15 +1854,11 @@ diff --git a/js/src/ctypes/libffi/m4/libtool.m4 b/js/src/ctypes/libffi/m4/libtoo
  	    LD="${LD-ld} -m elf64ppc"
  	    ;;
  	  s390*-*linux*|s390*-*tpf*)
- 	    LD="${LD-ld} -m elf64_s390"
- 	    ;;
- 	  sparc*-*linux*)
- 	    LD="${LD-ld} -m elf64_sparc"
- 	    ;;
-diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/powerpc/ffi.c
---- a/js/src/ctypes/libffi/src/powerpc/ffi.c
-+++ b/js/src/ctypes/libffi/src/powerpc/ffi.c
-@@ -1,12 +1,14 @@
+Index: mozilla-release/js/src/ctypes/libffi/src/powerpc/ffi.c
+===================================================================
+--- mozilla-release.orig/js/src/ctypes/libffi/src/powerpc/ffi.c
++++ mozilla-release/js/src/ctypes/libffi/src/powerpc/ffi.c
+@@ -1,7 +1,9 @@
  /* -----------------------------------------------------------------------
 -   ffi.c - Copyright (c) 1998 Geoffrey Keating
 -   Copyright (C) 2007, 2008 Free Software Foundation, Inc
@@ -4805,17 +1871,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
  
     PowerPC Foreign Function Interface
  
-    Permission is hereby granted, free of charge, to any person obtaining
-    a copy of this software and associated documentation files (the
-    ``Software''), to deal in the Software without restriction, including
-    without limitation the rights to use, copy, modify, merge, publish,
-    distribute, sublicense, and/or sell copies of the Software, and to
-@@ -34,42 +36,39 @@
- 
- extern void ffi_closure_SYSV (void);
- extern void FFI_HIDDEN ffi_closure_LINUX64 (void);
- 
- enum {
+@@ -39,32 +41,29 @@ enum {
    /* The assembly depends on these exact flags.  */
    FLAG_RETURNS_SMST	= 1 << (31-31), /* Used for FFI_SYSV small structs.  */
    FLAG_RETURNS_NOTHING  = 1 << (31-30), /* These go in cr7 */
@@ -4856,17 +1912,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
  /* ffi_prep_args_SYSV is called by the assembly routine once stack space
     has been allocated for the function's arguments.
  
-    The stack layout we want looks like this:
- 
-    |   Return address from ffi_call_SYSV 4bytes	|	higher addresses
-    |--------------------------------------------|
-    |   Previous backchain pointer	4	|       stack pointer here
-@@ -108,100 +107,119 @@ ffi_prep_args_SYSV (extended_cif *ecif, 
-   /* 'stacktop' points at the previous backchain pointer.  */
-   valp stacktop;
- 
-   /* 'gpr_base' points at the space for gpr3, and grows upwards as
-      we use GPR registers.  */
+@@ -113,10 +112,12 @@ ffi_prep_args_SYSV (extended_cif *ecif,
    valp gpr_base;
    int intarg_count;
  
@@ -4879,8 +1925,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
  
    /* 'copy_space' grows down as we put structures in it.  It should
       stay 16-byte aligned.  */
-   valp copy_space;
- 
+@@ -125,9 +126,11 @@ ffi_prep_args_SYSV (extended_cif *ecif,
    /* 'next_arg' grows up as we put parameters in it.  */
    valp next_arg;
  
@@ -4893,15 +1938,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
    union {
      void **v;
      char **c;
-     signed char **sc;
-     unsigned char **uc;
-     signed short **ss;
-     unsigned short **us;
-     unsigned int **ui;
-     long long **ll;
-     float **f;
-     double **d;
-   } p_argv;
+@@ -143,21 +146,22 @@ ffi_prep_args_SYSV (extended_cif *ecif,
    size_t struct_copy_size;
    unsigned gprvalue;
  
@@ -4930,16 +1967,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
    FFI_ASSERT ((bytes & 0xF) == 0);
    FFI_ASSERT (copy_space.c >= next_arg.c);
  
-   /* Deal with return values that are actually pass-by-reference.  */
-   if (flags & FLAG_RETVAL_REFERENCE)
-     {
-       *gpr_base.u++ = (unsigned long) (char *) ecif->rvalue;
-       intarg_count++;
-     }
- 
-   /* Now for the arguments.  */
-   p_argv.v = ecif->avalue;
-   for (ptr = ecif->cif->arg_types, i = ecif->cif->nargs;
+@@ -174,12 +178,28 @@ ffi_prep_args_SYSV (extended_cif *ecif,
         i > 0;
         i--, ptr++, p_argv.v++)
      {
@@ -4972,15 +2000,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
  	  double_tmp = **p_argv.f;
  	  if (fparg_count >= NUM_FPR_ARG_REGISTERS)
  	    {
- 	      *next_arg.f = (float) double_tmp;
- 	      next_arg.u += 1;
- 	      intarg_count++;
- 	    }
- 	  else
- 	    *fpr_base.d++ = double_tmp;
- 	  fparg_count++;
- 	  FFI_ASSERT (flags & FLAG_FP_ARGUMENTS);
- 	  break;
+@@ -195,8 +215,6 @@ ffi_prep_args_SYSV (extended_cif *ecif,
  
  	case FFI_TYPE_DOUBLE:
  	  /* With FFI_LINUX_SOFT_FLOAT doubles are handled like UINT64.  */
@@ -4989,17 +2009,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
  	  double_tmp = **p_argv.d;
  
  	  if (fparg_count >= NUM_FPR_ARG_REGISTERS)
- 	    {
- 	      if (intarg_count >= NUM_GPR_ARG_REGISTERS
- 		  && intarg_count % 2 != 0)
- 		{
- 		  intarg_count++;
-@@ -213,53 +231,16 @@ ffi_prep_args_SYSV (extended_cif *ecif, 
- 	  else
- 	    *fpr_base.d++ = double_tmp;
- 	  fparg_count++;
- 	  FFI_ASSERT (flags & FLAG_FP_ARGUMENTS);
- 	  break;
+@@ -218,43 +236,6 @@ ffi_prep_args_SYSV (extended_cif *ecif,
  
  #if FFI_TYPE_LONGDOUBLE != FFI_TYPE_DOUBLE
  	case FFI_TYPE_LONGDOUBLE:
@@ -5043,17 +2053,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
  	      double_tmp = (*p_argv.d)[0];
  
  	      if (fparg_count >= NUM_FPR_ARG_REGISTERS - 1)
- 		{
- 		  if (intarg_count >= NUM_GPR_ARG_REGISTERS
- 		      && intarg_count % 2 != 0)
- 		    {
- 		      intarg_count++;
-@@ -275,23 +256,50 @@ ffi_prep_args_SYSV (extended_cif *ecif, 
- 		{
- 		  *fpr_base.d++ = double_tmp;
- 		  double_tmp = (*p_argv.d)[1];
- 		  *fpr_base.d++ = double_tmp;
- 		}
+@@ -280,13 +261,40 @@ ffi_prep_args_SYSV (extended_cif *ecif,
  
  	      fparg_count += 2;
  	      FFI_ASSERT (flags & FLAG_FP_ARGUMENTS);
@@ -5096,17 +2096,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
  	  if (intarg_count == NUM_GPR_ARG_REGISTERS-1)
  	    intarg_count++;
  	  if (intarg_count >= NUM_GPR_ARG_REGISTERS)
- 	    {
- 	      if (intarg_count % 2 != 0)
- 		{
- 		  intarg_count++;
- 		  next_arg.u++;
-@@ -314,19 +322,16 @@ ffi_prep_args_SYSV (extended_cif *ecif, 
- 		  gpr_base.u++;
- 		}
- 	      *gpr_base.ll++ = **p_argv.ll;
- 	    }
- 	  intarg_count += 2;
+@@ -319,9 +327,6 @@ ffi_prep_args_SYSV (extended_cif *ecif,
  	  break;
  
  	case FFI_TYPE_STRUCT:
@@ -5116,17 +2106,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
  	  struct_copy_size = ((*ptr)->size + 15) & ~0xF;
  	  copy_space.c -= struct_copy_size;
  	  memcpy (copy_space.c, *p_argv.c, (*ptr)->size);
- 
- 	  gprvalue = (unsigned long) copy_space.c;
- 
- 	  FFI_ASSERT (copy_space.c > next_arg.c);
- 	  FFI_ASSERT (flags & FLAG_ARG_NEEDS_COPY);
-@@ -344,45 +349,91 @@ ffi_prep_args_SYSV (extended_cif *ecif, 
- 	case FFI_TYPE_SINT16:
- 	  gprvalue = **p_argv.ss;
- 	  goto putgpr;
- 
- 	case FFI_TYPE_INT:
+@@ -349,7 +354,6 @@ ffi_prep_args_SYSV (extended_cif *ecif,
  	case FFI_TYPE_UINT32:
  	case FFI_TYPE_SINT32:
  	case FFI_TYPE_POINTER:
@@ -5134,16 +2114,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
  
  	  gprvalue = **p_argv.ui;
  
- 	putgpr:
- 	  if (intarg_count >= NUM_GPR_ARG_REGISTERS)
- 	    *next_arg.u++ = gprvalue;
- 	  else
- 	    *gpr_base.u++ = gprvalue;
- 	  intarg_count++;
- 	  break;
- 	}
-     }
- 
+@@ -366,8 +370,16 @@ ffi_prep_args_SYSV (extended_cif *ecif,
    /* Check that we didn't overrun the stack...  */
    FFI_ASSERT (copy_space.c >= next_arg.c);
    FFI_ASSERT (gpr_base.u <= stacktop.u - ASM_NEEDS_REGISTERS);
@@ -5160,10 +2131,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
    FFI_ASSERT (flags & FLAG_4_GPR_ARGUMENTS || intarg_count <= 4);
  }
  
- /* About the LINUX64 ABI.  */
- enum {
-   NUM_GPR_ARG_REGISTERS64 = 8,
-   NUM_FPR_ARG_REGISTERS64 = 13
+@@ -378,6 +390,45 @@ enum {
  };
  enum { ASM_NEEDS_REGISTERS64 = 4 };
  
@@ -5209,17 +2177,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
  /* ffi_prep_args64 is called by the assembly routine once stack space
     has been allocated for the function's arguments.
  
-    The stack layout we want looks like this:
- 
-    |   Ret addr from ffi_call_LINUX64	8bytes	|	higher addresses
-    |--------------------------------------------|
-    |   CR save area			8bytes	|
-@@ -418,141 +469,216 @@ ffi_prep_args64 (extended_cif *ecif, uns
-   const unsigned long bytes = ecif->cif->bytes;
-   const unsigned long flags = ecif->cif->flags;
- 
-   typedef union {
-     char *c;
+@@ -423,6 +474,7 @@ ffi_prep_args64 (extended_cif *ecif, uns
      unsigned long *ul;
      float *f;
      double *d;
@@ -5227,15 +2185,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
    } valp;
  
    /* 'stacktop' points at the previous backchain pointer.  */
-   valp stacktop;
- 
-   /* 'next_arg' points at the space for gpr3, and grows upwards as
-      we use GPR registers, then continues at rest.  */
-   valp gpr_base;
-   valp gpr_end;
-   valp rest;
-   valp next_arg;
- 
+@@ -438,9 +490,9 @@ ffi_prep_args64 (extended_cif *ecif, uns
    /* 'fpr_base' points at the space for fpr3, and grows upwards as
       we use FPR registers.  */
    valp fpr_base;
@@ -5247,16 +2197,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
    ffi_type **ptr;
    double double_tmp;
    union {
-     void **v;
-     char **c;
-     signed char **sc;
-     unsigned char **uc;
-     signed short **ss;
-     unsigned short **us;
-     signed int **si;
-     unsigned int **ui;
-     unsigned long **ul;
-     float **f;
+@@ -457,11 +509,18 @@ ffi_prep_args64 (extended_cif *ecif, uns
      double **d;
    } p_argv;
    unsigned long gprvalue;
@@ -5275,15 +2216,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
    fpr_base.d = gpr_base.d - NUM_FPR_ARG_REGISTERS64;
    fparg_count = 0;
    next_arg.ul = gpr_base.ul;
- 
-   /* Check that everything starts aligned properly.  */
-   FFI_ASSERT (((unsigned long) (char *) stack & 0xF) == 0);
-   FFI_ASSERT (((unsigned long) stacktop.c & 0xF) == 0);
-   FFI_ASSERT ((bytes & 0xF) == 0);
- 
-   /* Deal with return values that are actually pass-by-reference.  */
-   if (flags & FLAG_RETVAL_REFERENCE)
-     *next_arg.ul++ = (unsigned long) (char *) ecif->rvalue;
+@@ -477,30 +536,36 @@ ffi_prep_args64 (extended_cif *ecif, uns
  
    /* Now for the arguments.  */
    p_argv.v = ecif->avalue;
@@ -5329,7 +2262,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
  	  fparg_count++;
  	  FFI_ASSERT (flags & FLAG_FP_ARGUMENTS);
  	  break;
- 
+@@ -508,18 +573,20 @@ ffi_prep_args64 (extended_cif *ecif, uns
  #if FFI_TYPE_LONGDOUBLE != FFI_TYPE_DOUBLE
  	case FFI_TYPE_LONGDOUBLE:
  	  double_tmp = (*p_argv.d)[0];
@@ -5356,7 +2289,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
  	  fparg_count++;
  	  FFI_ASSERT (__LDBL_MANT_DIG__ == 106);
  	  FFI_ASSERT (flags & FLAG_FP_ARGUMENTS);
- 	  break;
+@@ -527,27 +594,86 @@ ffi_prep_args64 (extended_cif *ecif, uns
  #endif
  
  	case FFI_TYPE_STRUCT:
@@ -5424,6 +2357,11 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
  	  else
  	    {
 -	      char *where = next_arg.c;
+-
+-	      /* Structures with size less than eight bytes are passed
+-		 left-padded.  */
+-	      if ((*ptr)->size < 8)
+-		where += 8 - (*ptr)->size;
 +	      words = ((*ptr)->size + 7) / 8;
 +	      if (next_arg.ul >= gpr_base.ul && next_arg.ul + words > gpr_end.ul)
 +		{
@@ -5436,11 +2374,6 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
 +		{
 +		  char *where = next_arg.c;
  
--	      /* Structures with size less than eight bytes are passed
--		 left-padded.  */
--	      if ((*ptr)->size < 8)
--		where += 8 - (*ptr)->size;
--
 -	      memcpy (where, *p_argv.c, (*ptr)->size);
 -	      next_arg.ul += words;
 -	      if (next_arg.ul == gpr_end.ul)
@@ -5459,17 +2392,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
  	    }
  	  break;
  
- 	case FFI_TYPE_UINT8:
- 	  gprvalue = **p_argv.uc;
- 	  goto putgpr;
- 	case FFI_TYPE_SINT8:
- 	  gprvalue = **p_argv.sc;
-@@ -586,53 +712,55 @@ ffi_prep_args64 (extended_cif *ecif, uns
-   FFI_ASSERT (flags & FLAG_4_GPR_ARGUMENTS
- 	      || (next_arg.ul >= gpr_base.ul
- 		  && next_arg.ul <= gpr_base.ul + 4));
- }
- 
+@@ -591,27 +717,22 @@ ffi_prep_args64 (extended_cif *ecif, uns
  
  
  /* Perform machine dependent cif processing */
@@ -5503,9 +2426,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
        /* Space for the frame pointer, callee's LR, and the asm's temp regs.  */
        bytes = (2 + ASM_NEEDS_REGISTERS) * sizeof (int);
  
-       /* Space for the GPR registers.  */
-       bytes += NUM_GPR_ARG_REGISTERS * sizeof (int);
-     }
+@@ -621,13 +742,20 @@ ffi_prep_cif_machdep (ffi_cif *cif)
    else
      {
        /* 64-bit ABI.  */
@@ -5526,17 +2447,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
      }
  
    /* Return value handling.  The rules for SYSV are as follows:
-      - 32-bit (or less) integer values are returned in gpr3;
-      - Structures of size <= 4 bytes also returned in gpr3;
-      - 64-bit integer values and structures between 5 and 8 bytes are returned
-      in gpr3 and gpr4;
-      - Single/double FP values are returned in fpr1;
-@@ -641,71 +769,93 @@ ffi_prep_cif_machdep (ffi_cif *cif)
-      - long doubles (if not equivalent to double) are returned in
-      fpr1,fpr2 for Linux and as for large structs for SysV.
-      For LINUX64:
-      - integer values in gpr3;
-      - Structures/Unions by reference;
+@@ -646,13 +774,30 @@ ffi_prep_cif_machdep (ffi_cif *cif)
       - Single/double FP values in fpr1, long double in fpr1,fpr2.
       - soft-float float/doubles are treated as UINT32/UINT64 respectivley.
       - soft-float long doubles are returned in gpr3-gpr6.  */
@@ -5570,7 +2481,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
        flags |= FLAG_RETURNS_128BITS;
        /* Fall through.  */
  #endif
-     case FFI_TYPE_DOUBLE:
+@@ -660,47 +805,52 @@ ffi_prep_cif_machdep (ffi_cif *cif)
        flags |= FLAG_RETURNS_64BITS;
        /* Fall through.  */
      case FFI_TYPE_FLOAT:
@@ -5651,17 +2562,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
  #endif
        intarg_count++;
        flags |= FLAG_RETVAL_REFERENCE;
-       /* Fall through.  */
-     case FFI_TYPE_VOID:
-       flags |= FLAG_RETURNS_NOTHING;
-       break;
- 
-@@ -717,218 +867,334 @@ ffi_prep_cif_machdep (ffi_cif *cif)
-   if (cif->abi != FFI_LINUX64)
-     /* The first NUM_GPR_ARG_REGISTERS words of integer arguments, and the
-        first NUM_FPR_ARG_REGISTERS fp arguments, go in registers; the rest
-        goes on the stack.  Structures and long doubles (if not equivalent
-        to double) are passed as a pointer to a copy of the structure.
+@@ -722,39 +872,36 @@ ffi_prep_cif_machdep (ffi_cif *cif)
         Stuff on the stack needs to keep proper alignment.  */
      for (ptr = cif->arg_types, i = cif->nargs; i > 0; i--, ptr++)
        {
@@ -5721,8 +2622,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
  	    fparg_count++;
  	    /* If this FP arg is going on the stack, it must be
  	       8-byte-aligned.  */
- 	    if (fparg_count > NUM_FPR_ARG_REGISTERS
- 		&& intarg_count >= NUM_GPR_ARG_REGISTERS
+@@ -763,10 +910,21 @@ ffi_prep_cif_machdep (ffi_cif *cif)
  		&& intarg_count % 2 != 0)
  	      intarg_count++;
  	    break;
@@ -5745,16 +2645,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
  	    /* 'long long' arguments are passed as two words, but
  	       either both words must fit in registers or both go
  	       on the stack.  If they go on the stack, they must
- 	       be 8-byte-aligned.
- 
- 	       Also, only certain register pairs can be used for
- 	       passing long long int -- specifically (r3,r4), (r5,r6),
- 	       (r7,r8), (r9,r10).
- 	    */
- 	    if (intarg_count == NUM_GPR_ARG_REGISTERS-1
- 		|| intarg_count % 2 != 0)
- 	      intarg_count++;
- 	    intarg_count += 2;
+@@ -783,9 +941,6 @@ ffi_prep_cif_machdep (ffi_cif *cif)
  	    break;
  
  	  case FFI_TYPE_STRUCT:
@@ -5764,7 +2655,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
  	    /* We must allocate space for a copy of these to enforce
  	       pass-by-value.  Pad the space up to a multiple of 16
  	       bytes (the maximum alignment required for anything under
- 	       the SYSV ABI).  */
+@@ -793,50 +948,100 @@ ffi_prep_cif_machdep (ffi_cif *cif)
  	    struct_copy_size += ((*ptr)->size + 15) & ~0xF;
  	    /* Fall through (allocate space for the pointer).  */
  
@@ -5875,7 +2766,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
    if (intarg_count > 4)
      flags |= FLAG_4_GPR_ARGUMENTS;
    if (struct_copy_size != 0)
-     flags |= FLAG_ARG_NEEDS_COPY;
+@@ -844,25 +1049,36 @@ ffi_prep_cif_machdep (ffi_cif *cif)
  
    if (cif->abi != FFI_LINUX64)
      {
@@ -5912,14 +2803,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
      }
  
    /* The stack space allocated needs to be a multiple of 16 bytes.  */
-   bytes = (bytes + 15) & ~0xF;
- 
-   /* Add in the space for the copied structures.  */
-   bytes += struct_copy_size;
- 
-   cif->flags = flags;
-   cif->bytes = bytes;
- 
+@@ -877,6 +1093,26 @@ ffi_prep_cif_machdep (ffi_cif *cif)
    return FFI_OK;
  }
  
@@ -5946,9 +2830,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
  extern void ffi_call_SYSV(extended_cif *, unsigned, unsigned, unsigned *,
  			  void (*fn)(void));
  extern void FFI_HIDDEN ffi_call_LINUX64(extended_cif *, unsigned long,
- 					unsigned long, unsigned long *,
- 					void (*fn)(void));
- 
+@@ -886,28 +1122,39 @@ extern void FFI_HIDDEN ffi_call_LINUX64(
  void
  ffi_call(ffi_cif *cif, void (*fn)(void), void *rvalue, void **avalue)
  {
@@ -5998,12 +2880,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
      case FFI_LINUX_SOFT_FLOAT:
        ffi_call_SYSV (&ecif, -cif->bytes, cif->flags, ecif.rvalue, fn);
        break;
- #else
-     case FFI_LINUX64:
-       ffi_call_LINUX64 (&ecif, -(long) cif->bytes, cif->flags, ecif.rvalue, fn);
-       break;
- #endif
-     default:
+@@ -920,10 +1167,29 @@ ffi_call(ffi_cif *cif, void (*fn)(void),
        FFI_ASSERT (0);
        break;
      }
@@ -6034,17 +2911,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
  #define MIN_CACHE_LINE_SIZE 8
  
  static void
- flush_icache (char *wraddr, char *xaddr, int size)
- {
-   int i;
-   for (i = 0; i < size; i += MIN_CACHE_LINE_SIZE)
-     __asm__ volatile ("icbi 0,%0;" "dcbf 0,%1;"
-@@ -942,26 +1208,48 @@ flush_icache (char *wraddr, char *xaddr,
- ffi_status
- ffi_prep_closure_loc (ffi_closure *closure,
- 		      ffi_cif *cif,
- 		      void (*fun) (ffi_cif *, void *, void **, void *),
- 		      void *user_data,
+@@ -947,16 +1213,38 @@ ffi_prep_closure_loc (ffi_closure *closu
  		      void *codeloc)
  {
  #ifdef POWERPC64
@@ -6085,17 +2952,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
  
    tramp = (unsigned int *) &closure->tramp[0];
    tramp[0] = 0x7c0802a6;  /*   mflr    r0 */
-   tramp[1] = 0x4800000d;  /*   bl      10 <trampoline_initial+0x10> */
-   tramp[4] = 0x7d6802a6;  /*   mflr    r11 */
-   tramp[5] = 0x7c0803a6;  /*   mtlr    r0 */
-   tramp[6] = 0x800b0000;  /*   lwz     r0,0(r11) */
-   tramp[7] = 0x816b0004;  /*   lwz     r11,4(r11) */
-@@ -1006,110 +1294,215 @@ ffi_closure_helper_SYSV (ffi_closure *cl
-   /* rvalue is the pointer to space for return value in closure assembly */
-   /* pgr is the pointer to where r3-r10 are stored in ffi_closure_SYSV */
-   /* pfr is the pointer to where f1-f8 are stored in ffi_closure_SYSV  */
-   /* pst is the pointer to outgoing parameter stack in original caller */
- 
+@@ -1011,32 +1299,38 @@ ffi_closure_helper_SYSV (ffi_closure *cl
    void **          avalue;
    ffi_type **      arg_types;
    long             i, avn;
@@ -6108,12 +2965,12 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
 +  long             nf = 0;   /* number of floating registers already used */
 +#endif
 +  long             ng = 0;   /* number of general registers already used */
- 
--  cif = closure->cif;
++
 +  ffi_cif *cif = closure->cif;
 +  unsigned       size     = cif->rtype->size;
 +  unsigned short rtypenum = cif->rtype->type;
-+
+ 
+-  cif = closure->cif;
    avalue = alloca (cif->nargs * sizeof (void *));
 -  size = cif->rtype->size;
  
@@ -6152,10 +3009,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
        rvalue = (void *) *pgr;
        ng++;
        pgr++;
-     }
- 
-   i = 0;
-   avn = cif->nargs;
+@@ -1047,12 +1341,112 @@ ffi_closure_helper_SYSV (ffi_closure *cl
    arg_types = cif->arg_types;
  
    /* Grab the addresses of the arguments from the stack frame.  */
@@ -6272,13 +3126,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
  	  /* there are 8 gpr registers used to pass values */
  	  if (ng < 8)
  	    {
- 	      avalue[i] = (char *) pgr + 3;
- 	      ng++;
- 	      pgr++;
- 	    }
- 	  else
- 	    {
- 	      avalue[i] = (char *) pst + 3;
+@@ -1066,9 +1460,11 @@ ffi_closure_helper_SYSV (ffi_closure *cl
  	      pst++;
  	    }
  	  break;
@@ -6290,13 +3138,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
  	  /* there are 8 gpr registers used to pass values */
  	  if (ng < 8)
  	    {
- 	      avalue[i] = (char *) pgr + 2;
- 	      ng++;
- 	      pgr++;
- 	    }
- 	  else
- 	    {
- 	      avalue[i] = (char *) pst + 2;
+@@ -1082,11 +1478,11 @@ ffi_closure_helper_SYSV (ffi_closure *cl
  	      pst++;
  	    }
  	  break;
@@ -6309,15 +3151,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
  	  /* there are 8 gpr registers used to pass values */
  	  if (ng < 8)
  	    {
- 	      avalue[i] = pgr;
- 	      ng++;
- 	      pgr++;
- 	    }
- 	  else
- 	    {
- 	      avalue[i] = pst;
- 	      pst++;
- 	    }
+@@ -1102,9 +1498,6 @@ ffi_closure_helper_SYSV (ffi_closure *cl
  	  break;
  
  	case FFI_TYPE_STRUCT:
@@ -6327,17 +3161,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
  	  /* Structs are passed by reference. The address will appear in a
  	     gpr if it is one of the first 8 arguments.  */
  	  if (ng < 8)
- 	    {
- 	      avalue[i] = (void *) *pgr;
- 	      ng++;
- 	      pgr++;
- 	    }
-@@ -1117,17 +1510,16 @@ ffi_closure_helper_SYSV (ffi_closure *cl
- 	    {
- 	      avalue[i] = (void *) *pst;
- 	      pst++;
- 	    }
- 	  break;
+@@ -1122,7 +1515,6 @@ ffi_closure_helper_SYSV (ffi_closure *cl
  
  	case FFI_TYPE_SINT64:
  	case FFI_TYPE_UINT64:
@@ -6345,17 +3169,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
  	  /* passing long long ints are complex, they must
  	   * be passed in suitable register pairs such as
  	   * (r3,r4) or (r5,r6) or (r6,r7), or (r7,r8) or (r9,r10)
- 	   * and if the entire pair aren't available then the outgoing
- 	   * parameter stack is used for both but an alignment of 8
- 	   * must will be kept.  So we must either look in pgr
- 	   * or pst to find the correct address for this type
- 	   * of parameter.
-@@ -1149,277 +1541,239 @@ ffi_closure_helper_SYSV (ffi_closure *cl
- 	      if (((long) pst) & 4)
- 		pst++;
- 	      avalue[i] = pst;
- 	      pst += 2;
- 	      ng = 8;
+@@ -1154,99 +1546,8 @@ ffi_closure_helper_SYSV (ffi_closure *cl
  	    }
  	  break;
  
@@ -6456,16 +3270,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
  	}
  
        i++;
-     }
- 
- 
-   (closure->fun) (cif, rvalue, avalue, closure->user_data);
- 
-   /* Tell ffi_closure_SYSV how to perform return type promotions.
-      Because the FFI_SYSV ABI returns the structures <= 8 bytes in r3/r4
-      we have to tell ffi_closure_SYSV how to treat them. We combine the base
-      type FFI_SYSV_TYPE_SMALL_STRUCT - 1  with the size of the struct.
-      So a one byte struct gets the return type 16. Return type 1 to 15 are
+@@ -1263,39 +1564,9 @@ ffi_closure_helper_SYSV (ffi_closure *cl
       already used and we never have a struct with size zero. That is the reason
       for the subtraction of 1. See the comment in ffitarget.h about ordering.
    */
@@ -6507,16 +3312,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
  }
  
  int FFI_HIDDEN ffi_closure_helper_LINUX64 (ffi_closure *, void *,
- 					   unsigned long *, ffi_dblfl *);
- 
- int FFI_HIDDEN
- ffi_closure_helper_LINUX64 (ffi_closure *closure, void *rvalue,
- 			    unsigned long *pst, ffi_dblfl *pfr)
- {
-   /* rvalue is the pointer to space for return value in closure assembly */
-   /* pst is the pointer to parameter save area
-      (r3-r10 are stored into its first 8 slots by ffi_closure_LINUX64) */
-   /* pfr is the pointer to where f1-f13 are stored in ffi_closure_LINUX64 */
+@@ -1312,16 +1583,20 @@ ffi_closure_helper_LINUX64 (ffi_closure
  
    void **avalue;
    ffi_type **arg_types;
@@ -6541,7 +3337,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
      {
        rvalue = (void *) *pst;
        pst++;
-     }
+@@ -1329,30 +1604,39 @@ ffi_closure_helper_LINUX64 (ffi_closure
  
    i = 0;
    avn = cif->nargs;
@@ -6581,9 +3377,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
  
  	case FFI_TYPE_SINT64:
  	case FFI_TYPE_UINT64:
- 	case FFI_TYPE_POINTER:
- 	  avalue[i] = pst;
- 	  pst++;
+@@ -1362,12 +1646,82 @@ ffi_closure_helper_LINUX64 (ffi_closure
  	  break;
  
  	case FFI_TYPE_STRUCT:
@@ -6671,11 +3465,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
  	  pst += (arg_types[i]->size + 7) / 8;
  	  break;
  
- 	case FFI_TYPE_FLOAT:
- 	  /* unfortunately float values are stored as doubles
- 	   * in the ffi_closure_LINUX64 code (since we don't check
- 	   * the type in that routine).
- 	   */
+@@ -1379,7 +1733,7 @@ ffi_closure_helper_LINUX64 (ffi_closure
  
  	  /* there are 13 64bit floating point registers */
  
@@ -6684,15 +3474,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
  	    {
  	      double temp = pfr->d;
  	      pfr->f = (float) temp;
- 	      avalue[i] = pfr;
- 	      pfr++;
- 	    }
- 	  else
- 	    avalue[i] = pst;
- 	  pst++;
- 	  break;
- 
- 	case FFI_TYPE_DOUBLE:
+@@ -1395,7 +1749,7 @@ ffi_closure_helper_LINUX64 (ffi_closure
  	  /* On the outgoing stack all values are aligned to 8 */
  	  /* there are 13 64bit floating point registers */
  
@@ -6701,11 +3483,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
  	    {
  	      avalue[i] = pfr;
  	      pfr++;
- 	    }
- 	  else
- 	    avalue[i] = pst;
- 	  pst++;
- 	  break;
+@@ -1407,14 +1761,14 @@ ffi_closure_helper_LINUX64 (ffi_closure
  
  #if FFI_TYPE_LONGDOUBLE != FFI_TYPE_DOUBLE
  	case FFI_TYPE_LONGDOUBLE:
@@ -6722,17 +3500,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
  		{
  		  /* Passed partly in f13 and partly on the stack.
  		     Move it all to the stack.  */
- 		  *pst = *(unsigned long *) pfr;
- 		  pfr++;
- 		}
- 	      avalue[i] = pst;
- 	    }
-@@ -1433,10 +1787,19 @@ ffi_closure_helper_LINUX64 (ffi_closure 
- 
-       i++;
-     }
- 
- 
+@@ -1438,5 +1792,14 @@ ffi_closure_helper_LINUX64 (ffi_closure
    (closure->fun) (cif, rvalue, avalue, closure->user_data);
  
    /* Tell ffi_closure_LINUX64 how to perform return type promotions.  */
@@ -6747,10 +3515,11 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffi.c b/js/src/ctypes/libffi/src/p
 +    }
    return cif->rtype->type;
  }
-diff --git a/js/src/ctypes/libffi/src/powerpc/ffitarget.h b/js/src/ctypes/libffi/src/powerpc/ffitarget.h
---- a/js/src/ctypes/libffi/src/powerpc/ffitarget.h
-+++ b/js/src/ctypes/libffi/src/powerpc/ffitarget.h
-@@ -1,11 +1,13 @@
+Index: mozilla-release/js/src/ctypes/libffi/src/powerpc/ffitarget.h
+===================================================================
+--- mozilla-release.orig/js/src/ctypes/libffi/src/powerpc/ffitarget.h
++++ mozilla-release/js/src/ctypes/libffi/src/powerpc/ffitarget.h
+@@ -1,6 +1,8 @@
  /* -----------------------------------------------------------------*-C-*-
 -   ffitarget.h - Copyright (c) 1996-2003  Red Hat, Inc.
 -   Copyright (C) 2007, 2008 Free Software Foundation, Inc
@@ -6761,17 +3530,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffitarget.h b/js/src/ctypes/libffi
     Target configuration macros for PowerPC.
  
     Permission is hereby granted, free of charge, to any person obtaining
-    a copy of this software and associated documentation files (the
-    ``Software''), to deal in the Software without restriction, including
-    without limitation the rights to use, copy, modify, merge, publish,
-    distribute, sublicense, and/or sell copies of the Software, and to
-    permit persons to whom the Software is furnished to do so, subject to
-@@ -23,16 +25,20 @@
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-    DEALINGS IN THE SOFTWARE.
- 
-    ----------------------------------------------------------------------- */
- 
+@@ -28,6 +30,10 @@
  #ifndef LIBFFI_TARGET_H
  #define LIBFFI_TARGET_H
  
@@ -6782,51 +3541,31 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffitarget.h b/js/src/ctypes/libffi
  /* ---- System specific configurations ----------------------------------- */
  
  #if defined (POWERPC) && defined (__powerpc64__)	/* linux64 */
- #ifndef POWERPC64
- #define POWERPC64
- #endif
- #elif defined (POWERPC_DARWIN) && defined (__ppc64__)	/* Darwin */
- #ifndef POWERPC64
-@@ -52,28 +58,24 @@ typedef enum ffi_abi {
-   FFI_FIRST_ABI = 0,
- 
- #ifdef POWERPC
-   FFI_SYSV,
-   FFI_GCC_SYSV,
+@@ -57,18 +63,14 @@ typedef enum ffi_abi {
    FFI_LINUX64,
    FFI_LINUX,
    FFI_LINUX_SOFT_FLOAT,
 -# ifdef POWERPC64
 +# if defined(POWERPC64)
    FFI_DEFAULT_ABI = FFI_LINUX64,
-+# elif defined(__NO_FPRS__)
-+  FFI_DEFAULT_ABI = FFI_LINUX_SOFT_FLOAT,
-+# elif (__LDBL_MANT_DIG__ == 106)
-+  FFI_DEFAULT_ABI = FFI_LINUX,
- # else
+-# else
 -#  if (!defined(__NO_FPRS__) && (__LDBL_MANT_DIG__ == 106))
 -  FFI_DEFAULT_ABI = FFI_LINUX,
 -#  else
 -#   ifdef __NO_FPRS__
--  FFI_DEFAULT_ABI = FFI_LINUX_SOFT_FLOAT,
++# elif defined(__NO_FPRS__)
+   FFI_DEFAULT_ABI = FFI_LINUX_SOFT_FLOAT,
 -#   else
++# elif (__LDBL_MANT_DIG__ == 106)
++  FFI_DEFAULT_ABI = FFI_LINUX,
++# else
    FFI_DEFAULT_ABI = FFI_GCC_SYSV,
 -#   endif
 -#  endif
  # endif
  #endif
  
- #ifdef POWERPC_AIX
-   FFI_AIX,
-   FFI_DARWIN,
-   FFI_DEFAULT_ABI = FFI_AIX,
- #endif
-@@ -96,32 +98,45 @@ typedef enum ffi_abi {
-   FFI_LAST_ABI
- } ffi_abi;
- #endif
- 
- /* ---- Definitions for closures ----------------------------------------- */
+@@ -101,6 +103,10 @@ typedef enum ffi_abi {
  
  #define FFI_CLOSURES 1
  #define FFI_NATIVE_RAW_API 0
@@ -6837,12 +3576,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffitarget.h b/js/src/ctypes/libffi
  
  /* For additional types like the below, take care about the order in
     ppc_closures.S. They must follow after the FFI_TYPE_LAST.  */
- 
- /* Needed for soft-float long-double-128 support.  */
- #define FFI_TYPE_UINT128 (FFI_TYPE_LAST + 1)
- 
- /* Needed for FFI_SYSV small structure returns.
-    We use two flag bits, (FLAG_SYSV_SMST_R3, FLAG_SYSV_SMST_R4) which are
+@@ -113,10 +119,19 @@ typedef enum ffi_abi {
     defined in ffi.c, to determine the exact return type and its size.  */
  #define FFI_SYSV_TYPE_SMALL_STRUCT (FFI_TYPE_LAST + 2)
  
@@ -6866,20 +3600,11 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ffitarget.h b/js/src/ctypes/libffi
  #endif
  
  #ifndef LIBFFI_ASM
- #if defined(POWERPC_DARWIN) || defined(POWERPC_AIX)
- struct ffi_aix_trampoline_struct {
-     void * code_pointer;	/* Pointer to ffi_closure_ASM */
-     void * toc;			/* TOC */
-     void * static_chain;	/* Pointer to closure */
-diff --git a/js/src/ctypes/libffi/src/powerpc/linux64.S b/js/src/ctypes/libffi/src/powerpc/linux64.S
---- a/js/src/ctypes/libffi/src/powerpc/linux64.S
-+++ b/js/src/ctypes/libffi/src/powerpc/linux64.S
-@@ -25,56 +25,86 @@
-    DEALINGS IN THE SOFTWARE.
-    ----------------------------------------------------------------------- */
- 
- #define LIBFFI_ASM
- #include <fficonfig.h>
+Index: mozilla-release/js/src/ctypes/libffi/src/powerpc/linux64.S
+===================================================================
+--- mozilla-release.orig/js/src/ctypes/libffi/src/powerpc/linux64.S
++++ mozilla-release/js/src/ctypes/libffi/src/powerpc/linux64.S
+@@ -30,16 +30,33 @@
  #include <ffi.h>
  
  #ifdef __powerpc64__
@@ -6915,14 +3640,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/linux64.S b/js/src/ctypes/libffi/s
  .LFB1:
  	mflr	%r0
  	std	%r28, -32(%r1)
- 	std	%r29, -24(%r1)
- 	std	%r30, -16(%r1)
- 	std	%r31, -8(%r1)
- 	std	%r0, 16(%r1)
- 
- 	mr	%r28, %r1	/* our AP.  */
- .LCFI0:
- 	stdux	%r1, %r1, %r4
+@@ -54,22 +71,35 @@ ffi_call_LINUX64:
  	mr	%r31, %r5	/* flags, */
  	mr	%r30, %r6	/* rvalue, */
  	mr	%r29, %r7	/* function address.  */
@@ -6961,17 +3679,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/linux64.S b/js/src/ctypes/libffi/s
  	/* Load all those argument registers.  */
  	ld	%r3, -32-(8*8)(%r28)
  	ld	%r4, -32-(7*8)(%r28)
- 	ld	%r5, -32-(6*8)(%r28)
- 	ld	%r6, -32-(5*8)(%r28)
- 	bf-	5, 1f
- 	ld	%r7, -32-(4*8)(%r28)
- 	ld	%r8, -32-(3*8)(%r28)
-@@ -99,50 +129,93 @@ 1:
- 	lfd	%f13, -32-(9*8)(%r28)
- 2:
- 
- 	/* Make the call.  */
- 	bctrl
+@@ -104,12 +134,17 @@ ffi_call_LINUX64:
  
  	/* This must follow the call immediately, the unwinder
  	   uses this to find out if r2 has been saved or not.  */
@@ -6991,7 +3699,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/linux64.S b/js/src/ctypes/libffi/s
  	std	%r3, 0(%r30)
  	/* Fall through...  */
  
- .Ldone_return_value:
+@@ -117,7 +152,7 @@ ffi_call_LINUX64:
  	/* Restore the registers we used and return.  */
  	mr	%r1, %r28
  	ld	%r0, 16(%r28)
@@ -7000,16 +3708,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/linux64.S b/js/src/ctypes/libffi/s
  	mtlr	%r0
  	ld	%r29, -24(%r1)
  	ld	%r30, -16(%r1)
- 	ld	%r31, -8(%r1)
- 	blr
- 
- .Lfp_return_value:
- 	bf	28, .Lfloat_return_value
- 	stfd	%f1, 0(%r30)
- 	mtcrf	0x02, %r31 /* cr6  */
- 	bf	27, .Ldone_return_value
- 	stfd	%f2, 8(%r30)
- 	b	.Ldone_return_value
+@@ -134,10 +169,48 @@ ffi_call_LINUX64:
  .Lfloat_return_value:
  	stfs	%f1, 0(%r30)
  	b	.Ldone_return_value
@@ -7058,38 +3757,22 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/linux64.S b/js/src/ctypes/libffi/s
  
  	.section	.eh_frame,EH_FRAME_FLAGS,@progbits
  .Lframe1:
- 	.4byte	.LECIE1-.LSCIE1	 # Length of Common Information Entry
- .LSCIE1:
- 	.4byte	0x0	 # CIE Identifier Tag
- 	.byte	0x1	 # CIE Version
- 	.ascii "zR\0"	 # CIE Augmentation
-@@ -175,13 +248,13 @@ 2:
- 	.byte	0x9e	 # DW_CFA_offset, column 0x1e
- 	.uleb128 0x2
- 	.byte	0x9d	 # DW_CFA_offset, column 0x1d
- 	.uleb128 0x3
- 	.byte	0x9c	 # DW_CFA_offset, column 0x1c
+@@ -180,8 +253,8 @@ ffi_call_LINUX64:
  	.uleb128 0x4
  	.align 3
  .LEFDE1:
-+
+-#endif
+ 
+-#if defined __ELF__ && defined __linux__
 +# if (defined __ELF__ && defined __linux__) || _CALL_ELF == 2
-+	.section	.note.GNU-stack,"",@progbits
+ 	.section	.note.GNU-stack,"",@progbits
 +# endif
  #endif
--
--#if defined __ELF__ && defined __linux__
--	.section	.note.GNU-stack,"",@progbits
--#endif
-diff --git a/js/src/ctypes/libffi/src/powerpc/linux64_closure.S b/js/src/ctypes/libffi/src/powerpc/linux64_closure.S
---- a/js/src/ctypes/libffi/src/powerpc/linux64_closure.S
-+++ b/js/src/ctypes/libffi/src/powerpc/linux64_closure.S
-@@ -27,179 +27,330 @@
- #define LIBFFI_ASM
- #include <fficonfig.h>
- #include <ffi.h>
- 
- 	.file	"linux64_closure.S"
+Index: mozilla-release/js/src/ctypes/libffi/src/powerpc/linux64_closure.S
+===================================================================
+--- mozilla-release.orig/js/src/ctypes/libffi/src/powerpc/linux64_closure.S
++++ mozilla-release/js/src/ctypes/libffi/src/powerpc/linux64_closure.S
+@@ -32,66 +32,125 @@
  
  #ifdef __powerpc64__
  	FFI_HIDDEN (ffi_closure_LINUX64)
@@ -7144,7 +3827,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/linux64_closure.S b/js/src/ctypes/
 -	std	%r6, 72(%r1)
 +# if _CALL_ELF == 2
 +	ld	%r12, FFI_TRAMPOLINE_SIZE(%r11)		# closure->cif
- 	mflr	%r0
++	mflr	%r0
 +	lwz	%r12, 28(%r12)				# cif->flags
 +	mtcrf	0x40, %r12
 +	addi	%r12, %r1, PARMSAVE
@@ -7164,15 +3847,11 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/linux64_closure.S b/js/src/ctypes/
 +	std	%r8, 40(%r12)
 +	std	%r9, 48(%r12)
 +	std	%r10, 56(%r12)
- 
--	std	%r7, 80(%r1)
--	std	%r8, 88(%r1)
--	std	%r9, 96(%r1)
--	std	%r10, 104(%r1)
++
 +	# load up the pointer to the parm save area
 +	mr	%r5, %r12
 +# else
-+	mflr	%r0
+ 	mflr	%r0
 +	# Save general regs into parm save area
 +	# This is the parameter save area set up by our caller.
 +	std	%r3, PARMSAVE+0(%r1)
@@ -7183,41 +3862,22 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/linux64_closure.S b/js/src/ctypes/
 +	std	%r8, PARMSAVE+40(%r1)
 +	std	%r9, PARMSAVE+48(%r1)
 +	std	%r10, PARMSAVE+56(%r1)
-+
+ 
+-	std	%r7, 80(%r1)
+-	std	%r8, 88(%r1)
+-	std	%r9, 96(%r1)
+-	std	%r10, 104(%r1)
  	std	%r0, 16(%r1)
  
 -	# mandatory 48 bytes special reg save area + 64 bytes parm save area
 -	# + 16 bytes retval area + 13*8 bytes fpr save area + round to 16
 -	stdu	%r1, -240(%r1)
+-.LCFI0:
 +	# load up the pointer to the parm save area
 +	addi	%r5, %r1, PARMSAVE
 +# endif
-+
-+	# next save fpr 1 to fpr 13
-+	stfd	%f1, -104+(0*8)(%r1)
-+	stfd	%f2, -104+(1*8)(%r1)
-+	stfd	%f3, -104+(2*8)(%r1)
-+	stfd	%f4, -104+(3*8)(%r1)
-+	stfd	%f5, -104+(4*8)(%r1)
-+	stfd	%f6, -104+(5*8)(%r1)
-+	stfd	%f7, -104+(6*8)(%r1)
-+	stfd	%f8, -104+(7*8)(%r1)
-+	stfd	%f9, -104+(8*8)(%r1)
-+	stfd	%f10, -104+(9*8)(%r1)
-+	stfd	%f11, -104+(10*8)(%r1)
-+	stfd	%f12, -104+(11*8)(%r1)
-+	stfd	%f13, -104+(12*8)(%r1)
-+
-+	# load up the pointer to the saved fpr registers */
-+	addi	%r6, %r1, -104
-+
-+	# load up the pointer to the result storage
-+	addi	%r4, %r1, -STACKFRAME+RETVAL
-+
-+	stdu	%r1, -STACKFRAME(%r1)
- .LCFI0:
  
--	# next save fpr 1 to fpr 13
+ 	# next save fpr 1 to fpr 13
 -	stfd  %f1, 128+(0*8)(%r1)
 -	stfd  %f2, 128+(1*8)(%r1)
 -	stfd  %f3, 128+(2*8)(%r1)
@@ -7231,20 +3891,40 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/linux64_closure.S b/js/src/ctypes/
 -	stfd  %f11, 128+(10*8)(%r1)
 -	stfd  %f12, 128+(11*8)(%r1)
 -	stfd  %f13, 128+(12*8)(%r1)
--
++	stfd	%f1, -104+(0*8)(%r1)
++	stfd	%f2, -104+(1*8)(%r1)
++	stfd	%f3, -104+(2*8)(%r1)
++	stfd	%f4, -104+(3*8)(%r1)
++	stfd	%f5, -104+(4*8)(%r1)
++	stfd	%f6, -104+(5*8)(%r1)
++	stfd	%f7, -104+(6*8)(%r1)
++	stfd	%f8, -104+(7*8)(%r1)
++	stfd	%f9, -104+(8*8)(%r1)
++	stfd	%f10, -104+(9*8)(%r1)
++	stfd	%f11, -104+(10*8)(%r1)
++	stfd	%f12, -104+(11*8)(%r1)
++	stfd	%f13, -104+(12*8)(%r1)
+ 
 -	# set up registers for the routine that actually does the work
- 	# get the context pointer from the trampoline
+-	# get the context pointer from the trampoline
 -	mr %r3, %r11
--
++	# load up the pointer to the saved fpr registers */
++	addi	%r6, %r1, -104
+ 
 -	# now load up the pointer to the result storage
 -	addi %r4, %r1, 112
--
++	# load up the pointer to the result storage
++	addi	%r4, %r1, -STACKFRAME+RETVAL
+ 
 -	# now load up the pointer to the parameter save area
 -	# in the previous frame
 -	addi %r5, %r1, 240 + 48
--
++	stdu	%r1, -STACKFRAME(%r1)
++.LCFI0:
+ 
 -	# now load up the pointer to the saved fpr registers */
 -	addi %r6, %r1, 128
++	# get the context pointer from the trampoline
 +	mr	%r3, %r11
  
  	# make the call
@@ -7256,8 +3936,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/linux64_closure.S b/js/src/ctypes/
  .Lret:
  
  	# now r3 contains the return type
- 	# so use it to look up in a table
- 	# so we know how to deal with each type
+@@ -100,10 +159,12 @@ ffi_closure_LINUX64:
  
  	# look up the proper starting point in table
  	# by using return type as offset
@@ -7271,12 +3950,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/linux64_closure.S b/js/src/ctypes/
  	add %r3, %r3, %r4	# add contents of table to table address
  	mtctr %r3
  	bctr			# jump to it
- 
- # Each of the ret_typeX code fragments has to be exactly 16 bytes long
- # (4 instructions). For cache effectiveness we align to a 16 byte boundary
- # first.
- 	.align 4
- 
+@@ -116,85 +177,175 @@ ffi_closure_LINUX64:
  .Lret_type0:
  # case FFI_TYPE_VOID
  	mtlr %r0
@@ -7408,8 +4082,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/linux64_closure.S b/js/src/ctypes/
  	mtlr %r0
 -	addi %r1, %r1, 240
 +	addi %r1, %r1, STACKFRAME
- 	blr
--# esac
++	blr
 +# case FFI_V2_TYPE_FLOAT_HOMOG
 +	lfs %f1, RETVAL+0(%r1)
 +	lfs %f2, RETVAL+4(%r1)
@@ -7462,7 +4135,8 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/linux64_closure.S b/js/src/ctypes/
 +	sldi %r5, %r5, 3
 +	addi %r1, %r1, STACKFRAME
 +	srd %r3, %r3, %r5
-+	blr
+ 	blr
+-# esac
 +# endif
 +
  .LFE1:
@@ -7480,17 +4154,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/linux64_closure.S b/js/src/ctypes/
  
  	.section	.eh_frame,EH_FRAME_FLAGS,@progbits
  .Lframe1:
- 	.4byte	.LECIE1-.LSCIE1	 # Length of Common Information Entry
- .LSCIE1:
- 	.4byte	0x0	 # CIE Identifier Tag
- 	.byte	0x1	 # CIE Version
- 	.ascii "zR\0"	 # CIE Augmentation
-@@ -218,19 +369,19 @@ ffi_closure_LINUX64:
- .LASFDE1:
- 	.4byte	.LASFDE1-.Lframe1	 # FDE CIE offset
- 	.8byte	.LFB1-.	 # FDE initial location
- 	.8byte	.LFE1-.LFB1	 # FDE address range
- 	.uleb128 0x0	 # Augmentation size
+@@ -223,14 +374,14 @@ ffi_closure_LINUX64:
  	.byte	0x2	 # DW_CFA_advance_loc1
  	.byte	.LCFI0-.LFB1
  	.byte	0xe	 # DW_CFA_def_cfa_offset
@@ -7501,24 +4165,18 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/linux64_closure.S b/js/src/ctypes/
  	.sleb128 -2
  	.align 3
  .LEFDE1:
-+
+-#endif
+ 
+-#if defined __ELF__ && defined __linux__
 +# if defined __ELF__ && defined __linux__
-+	.section	.note.GNU-stack,"",@progbits
+ 	.section	.note.GNU-stack,"",@progbits
 +# endif
  #endif
--
--#if defined __ELF__ && defined __linux__
--	.section	.note.GNU-stack,"",@progbits
--#endif
-diff --git a/js/src/ctypes/libffi/src/powerpc/ppc_closure.S b/js/src/ctypes/libffi/src/powerpc/ppc_closure.S
---- a/js/src/ctypes/libffi/src/powerpc/ppc_closure.S
-+++ b/js/src/ctypes/libffi/src/powerpc/ppc_closure.S
-@@ -117,53 +117,88 @@ ENTRY(ffi_closure_SYSV)
- # case FFI_TYPE_INT
- 	lwz %r3,112+0(%r1)
- 	mtlr %r0
- .Lfinish:
- 	addi %r1,%r1,144
+Index: mozilla-release/js/src/ctypes/libffi/src/powerpc/ppc_closure.S
+===================================================================
+--- mozilla-release.orig/js/src/ctypes/libffi/src/powerpc/ppc_closure.S
++++ mozilla-release/js/src/ctypes/libffi/src/powerpc/ppc_closure.S
+@@ -122,43 +122,78 @@ ENTRY(ffi_closure_SYSV)
  	blr
  
  # case FFI_TYPE_FLOAT
@@ -7597,17 +4255,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ppc_closure.S b/js/src/ctypes/libf
  	mtlr %r0
  	addi %r1,%r1,144
  	blr
- 
- # case FFI_TYPE_UINT32
- 	lwz %r3,112+0(%r1)
- 	mtlr %r0
- 	addi %r1,%r1,144
-@@ -198,76 +233,99 @@ ENTRY(ffi_closure_SYSV)
- 	mtlr %r0
- 	addi %r1,%r1,144
- 	blr
- 
- # case FFI_TYPE_UINT128
+@@ -203,7 +238,7 @@ ENTRY(ffi_closure_SYSV)
  	lwz %r3,112+0(%r1)
  	lwz %r4,112+4(%r1)
  	lwz %r5,112+8(%r1)
@@ -7616,16 +4264,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ppc_closure.S b/js/src/ctypes/libf
  
  # The return types below are only used when the ABI type is FFI_SYSV.
  # case FFI_SYSV_TYPE_SMALL_STRUCT + 1. One byte struct.
- 	lbz %r3,112+0(%r1)
- 	mtlr %r0
- 	addi %r1,%r1,144
- 	blr
- 
- # case FFI_SYSV_TYPE_SMALL_STRUCT + 2. Two byte struct.
- 	lhz %r3,112+0(%r1)
- 	mtlr %r0
- 	addi %r1,%r1,144
- 	blr
+@@ -220,9 +255,15 @@ ENTRY(ffi_closure_SYSV)
  
  # case FFI_SYSV_TYPE_SMALL_STRUCT + 3. Three byte struct.
  	lwz %r3,112+0(%r1)
@@ -7641,10 +4280,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ppc_closure.S b/js/src/ctypes/libf
  
  # case FFI_SYSV_TYPE_SMALL_STRUCT + 4. Four byte struct.
  	lwz %r3,112+0(%r1)
- 	mtlr %r0
- 	addi %r1,%r1,144
- 	blr
- 
+@@ -233,20 +274,35 @@ ENTRY(ffi_closure_SYSV)
  # case FFI_SYSV_TYPE_SMALL_STRUCT + 5. Five byte struct.
  	lwz %r3,112+0(%r1)
  	lwz %r4,112+4(%r1)
@@ -7680,7 +4316,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ppc_closure.S b/js/src/ctypes/libf
  
  # case FFI_SYSV_TYPE_SMALL_STRUCT + 8. Eight byte struct.
  	lwz %r3,112+0(%r1)
- 	lwz %r4,112+4(%r1)
+@@ -254,6 +310,7 @@ ENTRY(ffi_closure_SYSV)
  	mtlr %r0
  	b .Lfinish
  
@@ -7688,9 +4324,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ppc_closure.S b/js/src/ctypes/libf
  .Lstruct567:
  	subfic %r6,%r5,32
  	srw %r4,%r4,%r5
- 	slw %r6,%r3,%r6
- 	srw %r3,%r3,%r5
- 	or %r4,%r6,%r4
+@@ -263,6 +320,7 @@ ENTRY(ffi_closure_SYSV)
  	mtlr %r0
  	addi %r1,%r1,144
  	blr
@@ -7698,20 +4332,11 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/ppc_closure.S b/js/src/ctypes/libf
  
  .Luint128:
  	lwz %r6,112+12(%r1)
- 	mtlr %r0
- 	addi %r1,%r1,144
- 	blr
- 
- END(ffi_closure_SYSV)
-diff --git a/js/src/ctypes/libffi/src/powerpc/sysv.S b/js/src/ctypes/libffi/src/powerpc/sysv.S
---- a/js/src/ctypes/libffi/src/powerpc/sysv.S
-+++ b/js/src/ctypes/libffi/src/powerpc/sysv.S
-@@ -78,37 +78,41 @@ ENTRY(ffi_call_SYSV)
- 	nop
- 	lwz	%r7,-16-(4*4)(%r28)
- 	lwz	%r8,-16-(3*4)(%r28)
- 	lwz	%r9,-16-(2*4)(%r28)
- 	lwz	%r10,-16-(1*4)(%r28)
+Index: mozilla-release/js/src/ctypes/libffi/src/powerpc/sysv.S
+===================================================================
+--- mozilla-release.orig/js/src/ctypes/libffi/src/powerpc/sysv.S
++++ mozilla-release/js/src/ctypes/libffi/src/powerpc/sysv.S
+@@ -83,6 +83,7 @@ ENTRY(ffi_call_SYSV)
  	nop
  1:
  
@@ -7719,11 +4344,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/sysv.S b/js/src/ctypes/libffi/src/
  	/* Load all the FP registers.  */
  	bf-	6,2f
  	lfd	%f1,-16-(8*4)-(8*8)(%r28)
- 	lfd	%f2,-16-(8*4)-(7*8)(%r28)
- 	lfd	%f3,-16-(8*4)-(6*8)(%r28)
- 	lfd	%f4,-16-(8*4)-(5*8)(%r28)
- 	nop
- 	lfd	%f5,-16-(8*4)-(4*8)(%r28)
+@@ -94,6 +95,7 @@ ENTRY(ffi_call_SYSV)
  	lfd	%f6,-16-(8*4)-(3*8)(%r28)
  	lfd	%f7,-16-(8*4)-(2*8)(%r28)
  	lfd	%f8,-16-(8*4)-(1*8)(%r28)
@@ -7731,9 +4352,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/sysv.S b/js/src/ctypes/libffi/src/
  2:
  
  	/* Make the call.  */
- 	bctrl
- 
- 	/* Now, deal with the return value.  */
+@@ -103,7 +105,9 @@ ENTRY(ffi_call_SYSV)
  	mtcrf	0x01,%r31 /* cr7  */
  	bt-	31,L(small_struct_return_value)
  	bt-	30,L(done_return_value)
@@ -7743,17 +4362,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/sysv.S b/js/src/ctypes/libffi/src/
  	stw	%r3,0(%r30)
  	bf+	28,L(done_return_value)
  	stw	%r4,4(%r30)
- 	mtcrf	0x02,%r31 /* cr6  */
- 	bf	27,L(done_return_value)
- 	stw     %r5,8(%r30)
- 	stw	%r6,12(%r30)
- 	/* Fall through...  */
-@@ -119,41 +123,38 @@ L(done_return_value):
- 	lwz	%r31, -4(%r28)
- 	mtlr	%r9
- 	lwz	%r30, -8(%r28)
- 	lwz	%r29,-12(%r28)
- 	lwz	%r28,-16(%r28)
+@@ -124,6 +128,7 @@ L(done_return_value):
  	lwz	%r1,0(%r1)
  	blr
  
@@ -7761,10 +4370,7 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/sysv.S b/js/src/ctypes/libffi/src/
  L(fp_return_value):
  	bf	28,L(float_return_value)
  	stfd	%f1,0(%r30)
- 	mtcrf   0x02,%r31 /* cr6  */
- 	bf	27,L(done_return_value)
- 	stfd	%f2,8(%r30)
- 	b	L(done_return_value)
+@@ -134,21 +139,17 @@ L(fp_return_value):
  L(float_return_value):
  	stfs	%f1,0(%r30)
  	b	L(done_return_value)
@@ -7795,25 +4401,11 @@ diff --git a/js/src/ctypes/libffi/src/powerpc/sysv.S b/js/src/ctypes/libffi/src/
  
  .LFE1:
  END(ffi_call_SYSV)
- 
-       .section	".eh_frame",EH_FRAME_FLAGS,@progbits
- .Lframe1:
-       .4byte    .LECIE1-.LSCIE1  /*  Length of Common Information Entry */
- .LSCIE1:
-# HG changeset patch
-# Parent 147a75fe8f8e4a43b66f9716659e1209d7f5a950
-# User Ulrich Weigand <uweigand@de.ibm.com>
-Bug 976648 - powerpc64le-linux support - mfbt endian config
-
-diff --git a/mfbt/Endian.h b/mfbt/Endian.h
---- a/mfbt/Endian.h
-+++ b/mfbt/Endian.h
-@@ -86,17 +86,17 @@
- #    error "CPU type is unknown"
- #  endif
- #elif defined(_WIN32)
- #  if defined(_M_IX86)
- #    define MOZ_LITTLE_ENDIAN 1
+Index: mozilla-release/mfbt/Endian.h
+===================================================================
+--- mozilla-release.orig/mfbt/Endian.h
++++ mozilla-release/mfbt/Endian.h
+@@ -91,7 +91,7 @@
  #  else
  #    error "CPU type is unknown"
  #  endif
@@ -7822,17 +4414,7 @@ diff --git a/mfbt/Endian.h b/mfbt/Endian.h
  #  if __LITTLE_ENDIAN__
  #    define MOZ_LITTLE_ENDIAN 1
  #  elif __BIG_ENDIAN__
- #    define MOZ_BIG_ENDIAN 1
- #  endif
- #elif defined(__GNUC__) && \
-       defined(__BYTE_ORDER__) && \
-       defined(__ORDER_LITTLE_ENDIAN__) && \
-@@ -114,18 +114,17 @@
- #  endif
- /*
-  * We can't include useful headers like <endian.h> or <sys/isa_defs.h>
-  * here because they're not present on all platforms.  Instead we have
-  * this big conditional that ideally will catch all the interesting
+@@ -119,8 +119,7 @@
   * cases.
   */
  #elif defined(__sparc) || defined(__sparc__) || \
@@ -7840,27 +4422,13 @@ diff --git a/mfbt/Endian.h b/mfbt/Endian.h
 -      defined(__ppc__) || defined(__hppa) || \
 +      defined(_POWER) || defined(__hppa) || \
        defined(_MIPSEB) || defined(__ARMEB__) || \
-       defined(__s390__) || \
+       defined(__s390__) || defined(__AARCH64EB__) || \
        (defined(__sh__) && defined(__LITTLE_ENDIAN__)) || \
-       (defined(__ia64) && defined(__BIG_ENDIAN__))
- #  define MOZ_BIG_ENDIAN 1
- #elif defined(__i386) || defined(__i386__) || \
-       defined(__x86_64) || defined(__x86_64__) || \
-       defined(_MIPSEL) || defined(__ARMEL__) || \
-# HG changeset patch
-# Parent acbe154db4c912f3ac853c0671cd3d5e52b1e716
-# User Ulrich Weigand <uweigand@de.ibm.com>
-Bug 976648 - powerpc64le-linux support - WebRTC endian config
-
-diff --git a/media/webrtc/trunk/webrtc/typedefs.h b/media/webrtc/trunk/webrtc/typedefs.h
---- a/media/webrtc/trunk/webrtc/typedefs.h
-+++ b/media/webrtc/trunk/webrtc/typedefs.h
-@@ -47,23 +47,33 @@
- //#define WEBRTC_ARCH_ARM_FAMILY
- //#define WEBRTC_ARCH_ARMEL
- #define WEBRTC_ARCH_32_BITS
- #define WEBRTC_ARCH_LITTLE_ENDIAN
- #define WEBRTC_LITTLE_ENDIAN
+Index: mozilla-release/media/webrtc/trunk/webrtc/typedefs.h
+===================================================================
+--- mozilla-release.orig/media/webrtc/trunk/webrtc/typedefs.h
++++ mozilla-release/media/webrtc/trunk/webrtc/typedefs.h
+@@ -52,13 +52,23 @@
  #elif defined(__powerpc64__)
  #define WEBRTC_ARCH_PPC64 1
  #define WEBRTC_ARCH_64_BITS 1
@@ -7884,21 +4452,11 @@ diff --git a/media/webrtc/trunk/webrtc/typedefs.h b/media/webrtc/trunk/webrtc/ty
  #elif defined(__sparc64__)
  #define WEBRTC_ARCH_SPARC 1
  #define WEBRTC_ARCH_64_BITS 1
- #define WEBRTC_ARCH_BIG_ENDIAN
- #define WEBRTC_BIG_ENDIAN
- #elif defined(__sparc__)
- #define WEBRTC_ARCH_SPARC 1
- #define WEBRTC_ARCH_32_BITS 1
-# HG changeset patch
-# Parent 571f8d1f1501d31bd7c0d0affdc7cdc8b21203a0
-# User Ulrich Weigand <uweigand@de.ibm.com>
-Bug 976648 - powerpc64le-linux support - xptcall port
-
-Index: mozilla/xpcom/reflect/xptcall/src/md/unix/moz.build
+Index: mozilla-release/xpcom/reflect/xptcall/src/md/unix/moz.build
 ===================================================================
---- mozilla.orig/xpcom/reflect/xptcall/src/md/unix/moz.build
-+++ mozilla/xpcom/reflect/xptcall/src/md/unix/moz.build
-@@ -224,12 +224,12 @@ if CONFIG['OS_TEST'] == 'powerpc':
+--- mozilla-release.orig/xpcom/reflect/xptcall/src/md/unix/moz.build
++++ mozilla-release/xpcom/reflect/xptcall/src/md/unix/moz.build
+@@ -206,12 +206,12 @@ if CONFIG['OS_TEST'] == 'powerpc':
              'xptcstubs_ppc_linux.cpp',
          ]
  
@@ -7914,15 +4472,167 @@ Index: mozilla/xpcom/reflect/xptcall/src/md/unix/moz.build
                'xptcstubs_ppc64_linux.cpp',
            ]
  
-diff --git a/xpcom/reflect/xptcall/src/md/unix/xptcinvoke_asm_ppc64_linux.s b/xpcom/reflect/xptcall/src/md/unix/xptcinvoke_asm_ppc64_linux.S
-rename from xpcom/reflect/xptcall/src/md/unix/xptcinvoke_asm_ppc64_linux.s
-rename to xpcom/reflect/xptcall/src/md/unix/xptcinvoke_asm_ppc64_linux.S
---- a/xpcom/reflect/xptcall/src/md/unix/xptcinvoke_asm_ppc64_linux.s
-+++ b/xpcom/reflect/xptcall/src/md/unix/xptcinvoke_asm_ppc64_linux.S
-@@ -17,12 +17,38 @@
- .set f25,25; .set f26,26; .set f27,27; .set f28,28; .set f29,29
- .set f30,30; .set f31,31
- 
+Index: mozilla-release/xpcom/reflect/xptcall/src/md/unix/xptcinvoke_asm_ppc64_linux.s
+===================================================================
+--- mozilla-release.orig/xpcom/reflect/xptcall/src/md/unix/xptcinvoke_asm_ppc64_linux.s
++++ /dev/null
+@@ -1,132 +0,0 @@
+-# This Source Code Form is subject to the terms of the Mozilla Public
+-# License, v. 2.0. If a copy of the MPL was not distributed with this
+-# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+-
+-.set r0,0; .set r1,1; .set r2,2; .set r3,3; .set r4,4
+-.set r5,5; .set r6,6; .set r7,7; .set r8,8; .set r9,9
+-.set r10,10; .set r11,11; .set r12,12; .set r13,13; .set r14,14
+-.set r15,15; .set r16,16; .set r17,17; .set r18,18; .set r19,19
+-.set r20,20; .set r21,21; .set r22,22; .set r23,23; .set r24,24
+-.set r25,25; .set r26,26; .set r27,27; .set r28,28; .set r29,29
+-.set r30,30; .set r31,31
+-.set f0,0; .set f1,1; .set f2,2; .set f3,3; .set f4,4
+-.set f5,5; .set f6,6; .set f7,7; .set f8,8; .set f9,9
+-.set f10,10; .set f11,11; .set f12,12; .set f13,13; .set f14,14
+-.set f15,15; .set f16,16; .set f17,17; .set f18,18; .set f19,19
+-.set f20,20; .set f21,21; .set f22,22; .set f23,23; .set f24,24
+-.set f25,25; .set f26,26; .set f27,27; .set f28,28; .set f29,29
+-.set f30,30; .set f31,31
+-
+-
+-#
+-# NS_InvokeByIndex(nsISupports* that, uint32_t methodIndex,
+-#                    uint32_t paramCount, nsXPTCVariant* params)
+-#
+-
+-        .section ".toc","aw"
+-        .section ".text"
+-        .align 2
+-        .globl  NS_InvokeByIndex
+-        .section ".opd","aw"
+-        .align 3
+-NS_InvokeByIndex:
+-        .quad   .NS_InvokeByIndex,.TOC.@tocbase
+-        .previous
+-        .type   NS_InvokeByIndex,@function
+-.NS_InvokeByIndex:
+-        mflr    0
+-        std     0,16(r1)
+-
+-        std     r29,-24(r1)
+-        std     r30,-16(r1)
+-        std     r31,-8(r1)
+-
+-        mr      r29,r3                  # Save 'that' in r29
+-        mr      r30,r4                  # Save 'methodIndex' in r30
+-        mr      r31,r1                  # Save old frame
+-
+-        # Allocate stack frame with space for params. Since at least the
+-        # first 7 parameters (not including 'that') will be in registers,
+-        # we don't actually need stack space for those. We must ensure
+-        # that the stack remains 16-byte aligned.
+-        #
+-        #  | ..128-byte stack frame.. |     | 7 GP | 13 FP | 3 NV |
+-        #  |               |(params)........| regs | regs  | regs |
+-        # (r1)...........(+112)....(+128)
+-        #                               (-23*8).(-16*8).(-3*8)..(r31)
+-
+-        # +stack frame, -unused stack params, +regs storage, +1 for alignment
+-        addi    r7,r5,((112/8)-7+7+13+3+1)
+-        rldicr  r7,r7,3,59              # multiply by 8 and mask with ~15
+-        neg     r7,r7
+-        stdux   r1,r1,r7
+-
+-
+-        # Call invoke_copy_to_stack(uint64_t* gpregs, double* fpregs,
+-        #                           uint32_t paramCount, nsXPTCVariant* s, 
+-        #                           uint64_t* d))
+-
+-        # r5, r6 are passed through intact (paramCount, params)
+-        # r7 (d) has to be r1+112 -- where parameters are passed on the stack.
+-        # r3, r4 are above that, easier to address from r31 than from r1
+-
+-        subi    r3,r31,(23*8)           # r3 --> GPRS
+-        subi    r4,r31,(16*8)           # r4 --> FPRS
+-        addi    r7,r1,112               # r7 --> params
+-        bl      invoke_copy_to_stack
+-        nop
+-
+-        # Set up to invoke function
+-
+-        ld      r9,0(r29)               # vtable (r29 is 'that')
+-        mr      r3,r29                  # self is first arg, obviously
+-
+-        sldi    r30,r30,3               # Find function descriptor 
+-        add     r9,r9,r30
+-        ld      r9,0(r9)
+-
+-        ld      r0,0(r9)                # Actual address from fd.
+-        std     r2,40(r1)               # Save r2 (TOC pointer)
+-
+-        mtctr   0
+-        ld      r11,16(r9)              # Environment pointer from fd.
+-        ld      r2,8(r9)                # TOC pointer from fd.
+-
+-        # Load FP and GP registers as required
+-        ld      r4, -(23*8)(r31) 
+-        ld      r5, -(22*8)(r31) 
+-        ld      r6, -(21*8)(r31) 
+-        ld      r7, -(20*8)(r31) 
+-        ld      r8, -(19*8)(r31) 
+-        ld      r9, -(18*8)(r31) 
+-        ld      r10, -(17*8)(r31) 
+-
+-        lfd     f1, -(16*8)(r31)
+-        lfd     f2, -(15*8)(r31)
+-        lfd     f3, -(14*8)(r31)
+-        lfd     f4, -(13*8)(r31)
+-        lfd     f5, -(12*8)(r31)
+-        lfd     f6, -(11*8)(r31)
+-        lfd     f7, -(10*8)(r31)
+-        lfd     f8, -(9*8)(r31)
+-        lfd     f9, -(8*8)(r31)
+-        lfd     f10, -(7*8)(r31)
+-        lfd     f11, -(6*8)(r31)
+-        lfd     f12, -(5*8)(r31)
+-        lfd     f13, -(4*8)(r31)
+-
+-        bctrl                           # Do it
+-
+-        ld      r2,40(r1)               # Load our own TOC pointer
+-        ld      r1,0(r1)                # Revert stack frame
+-        ld      0,16(r1)                # Reload lr
+-        ld      29,-24(r1)              # Restore NVGPRS
+-        ld      30,-16(r1)
+-        ld      31,-8(r1)
+-        mtlr    0
+-        blr
+-
+-        .size   NS_InvokeByIndex,.-.NS_InvokeByIndex
+-
+-        # Magic indicating no need for an executable stack
+-        .section .note.GNU-stack, "", @progbits ; .previous
+Index: mozilla-release/xpcom/reflect/xptcall/src/md/unix/xptcinvoke_asm_ppc64_linux.S
+===================================================================
+--- /dev/null
++++ mozilla-release/xpcom/reflect/xptcall/src/md/unix/xptcinvoke_asm_ppc64_linux.S
+@@ -0,0 +1,167 @@
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++.set r0,0; .set r1,1; .set r2,2; .set r3,3; .set r4,4
++.set r5,5; .set r6,6; .set r7,7; .set r8,8; .set r9,9
++.set r10,10; .set r11,11; .set r12,12; .set r13,13; .set r14,14
++.set r15,15; .set r16,16; .set r17,17; .set r18,18; .set r19,19
++.set r20,20; .set r21,21; .set r22,22; .set r23,23; .set r24,24
++.set r25,25; .set r26,26; .set r27,27; .set r28,28; .set r29,29
++.set r30,30; .set r31,31
++.set f0,0; .set f1,1; .set f2,2; .set f3,3; .set f4,4
++.set f5,5; .set f6,6; .set f7,7; .set f8,8; .set f9,9
++.set f10,10; .set f11,11; .set f12,12; .set f13,13; .set f14,14
++.set f15,15; .set f16,16; .set f17,17; .set f18,18; .set f19,19
++.set f20,20; .set f21,21; .set f22,22; .set f23,23; .set f24,24
++.set f25,25; .set f26,26; .set f27,27; .set f28,28; .set f29,29
++.set f30,30; .set f31,31
++
 +# The ABI defines a fixed stack frame area of 4 doublewords (ELFv2)
 +# or 6 doublewords (ELFv1); the last of these doublewords is used
 +# as TOC pointer save area.  The fixed area is followed by a parameter
@@ -7939,12 +4649,12 @@ rename to xpcom/reflect/xptcall/src/md/unix/xptcinvoke_asm_ppc64_linux.S
 +#define STACK_TOC      40
 +#define STACK_PARAMS   112
 +#endif
- 
- #
- # NS_InvokeByIndex(nsISupports* that, uint32_t methodIndex,
- #                    uint32_t paramCount, nsXPTCVariant* params)
- #
- 
++
++#
++# NS_InvokeByIndex(nsISupports* that, uint32_t methodIndex,
++#                    uint32_t paramCount, nsXPTCVariant* params)
++#
++
 +#if _CALL_ELF == 2
 +        .section ".text"
 +        .type   NS_InvokeByIndex,@function
@@ -7955,100 +4665,126 @@ rename to xpcom/reflect/xptcall/src/md/unix/xptcinvoke_asm_ppc64_linux.S
 +        addi 2,2,(.TOC.-0b)@l
 +        .localentry NS_InvokeByIndex,.-NS_InvokeByIndex
 +#else
-         .section ".toc","aw"
-         .section ".text"
-         .align 2
-@@ -34,6 +60,7 @@ NS_InvokeByIndex:
-         .previous
-         .type   NS_InvokeByIndex,@function
- .NS_InvokeByIndex:
++        .section ".toc","aw"
++        .section ".text"
++        .align 2
++        .globl  NS_InvokeByIndex
++        .section ".opd","aw"
++        .align 3
++NS_InvokeByIndex:
++        .quad   .NS_InvokeByIndex,.TOC.@tocbase
++        .previous
++        .type   NS_InvokeByIndex,@function
++.NS_InvokeByIndex:
 +#endif
-         mflr    0
-         std     0,16(r1)
- 
-@@ -50,13 +77,12 @@ NS_InvokeByIndex:
-         # we don't actually need stack space for those. We must ensure
-         # that the stack remains 16-byte aligned.
-         #
--        #  | ..128-byte stack frame.. |     | 7 GP | 13 FP | 3 NV |
--        #  |               |(params)........| regs | regs  | regs |
--        # (r1)...........(+112)....(+128)
--        #                               (-23*8).(-16*8).(-3*8)..(r31)
++        mflr    0
++        std     0,16(r1)
++
++        std     r29,-24(r1)
++        std     r30,-16(r1)
++        std     r31,-8(r1)
++
++        mr      r29,r3                  # Save 'that' in r29
++        mr      r30,r4                  # Save 'methodIndex' in r30
++        mr      r31,r1                  # Save old frame
++
++        # Allocate stack frame with space for params. Since at least the
++        # first 7 parameters (not including 'that') will be in registers,
++        # we don't actually need stack space for those. We must ensure
++        # that the stack remains 16-byte aligned.
++        #
 +        #  | (fixed area + |                | 7 GP | 13 FP | 3 NV |
 +        #  |  param. save) |(params)........| regs | regs  | regs |
 +        # (r1)......(+STACK_PARAMS)...  (-23*8).(-16*8).(-3*8)..(r31)
- 
-         # +stack frame, -unused stack params, +regs storage, +1 for alignment
--        addi    r7,r5,((112/8)-7+7+13+3+1)
++
++        # +stack frame, -unused stack params, +regs storage, +1 for alignment
 +        addi    r7,r5,((STACK_PARAMS/8)-7+7+13+3+1)
-         rldicr  r7,r7,3,59              # multiply by 8 and mask with ~15
-         neg     r7,r7
-         stdux   r1,r1,r7
-@@ -67,12 +93,13 @@ NS_InvokeByIndex:
-         #                           uint64_t* d))
- 
-         # r5, r6 are passed through intact (paramCount, params)
--        # r7 (d) has to be r1+112 -- where parameters are passed on the stack.
++        rldicr  r7,r7,3,59              # multiply by 8 and mask with ~15
++        neg     r7,r7
++        stdux   r1,r1,r7
++
++
++        # Call invoke_copy_to_stack(uint64_t* gpregs, double* fpregs,
++        #                           uint32_t paramCount, nsXPTCVariant* s, 
++        #                           uint64_t* d))
++
++        # r5, r6 are passed through intact (paramCount, params)
 +        # r7 (d) has to be r1+STACK_PARAMS
 +        #        -- where parameters are passed on the stack.
-         # r3, r4 are above that, easier to address from r31 than from r1
- 
-         subi    r3,r31,(23*8)           # r3 --> GPRS
-         subi    r4,r31,(16*8)           # r4 --> FPRS
--        addi    r7,r1,112               # r7 --> params
++        # r3, r4 are above that, easier to address from r31 than from r1
++
++        subi    r3,r31,(23*8)           # r3 --> GPRS
++        subi    r4,r31,(16*8)           # r4 --> FPRS
 +        addi    r7,r1,STACK_PARAMS      # r7 --> params
-         bl      invoke_copy_to_stack
-         nop
- 
-@@ -83,14 +110,18 @@ NS_InvokeByIndex:
- 
-         sldi    r30,r30,3               # Find function descriptor 
-         add     r9,r9,r30
--        ld      r9,0(r9)
++        bl      invoke_copy_to_stack
++        nop
++
++        # Set up to invoke function
++
++        ld      r9,0(r29)               # vtable (r29 is 'that')
++        mr      r3,r29                  # self is first arg, obviously
++
++        sldi    r30,r30,3               # Find function descriptor 
++        add     r9,r9,r30
 +        ld      r12,0(r9)
- 
--        ld      r0,0(r9)                # Actual address from fd.
--        std     r2,40(r1)               # Save r2 (TOC pointer)
++
 +        std     r2,STACK_TOC(r1)        # Save r2 (TOC pointer)
- 
++
 +#if _CALL_ELF == 2
 +        mtctr   r12
 +#else
 +        ld      r0,0(r12)               # Actual address from fd.
-         mtctr   0
--        ld      r11,16(r9)              # Environment pointer from fd.
--        ld      r2,8(r9)                # TOC pointer from fd.
++        mtctr   0
 +        ld      r11,16(r12)             # Environment pointer from fd.
 +        ld      r2,8(r12)               # TOC pointer from fd.
 +#endif
- 
-         # Load FP and GP registers as required
-         ld      r4, -(23*8)(r31) 
-@@ -117,7 +148,7 @@ NS_InvokeByIndex:
- 
-         bctrl                           # Do it
- 
--        ld      r2,40(r1)               # Load our own TOC pointer
++
++        # Load FP and GP registers as required
++        ld      r4, -(23*8)(r31) 
++        ld      r5, -(22*8)(r31) 
++        ld      r6, -(21*8)(r31) 
++        ld      r7, -(20*8)(r31) 
++        ld      r8, -(19*8)(r31) 
++        ld      r9, -(18*8)(r31) 
++        ld      r10, -(17*8)(r31) 
++
++        lfd     f1, -(16*8)(r31)
++        lfd     f2, -(15*8)(r31)
++        lfd     f3, -(14*8)(r31)
++        lfd     f4, -(13*8)(r31)
++        lfd     f5, -(12*8)(r31)
++        lfd     f6, -(11*8)(r31)
++        lfd     f7, -(10*8)(r31)
++        lfd     f8, -(9*8)(r31)
++        lfd     f9, -(8*8)(r31)
++        lfd     f10, -(7*8)(r31)
++        lfd     f11, -(6*8)(r31)
++        lfd     f12, -(5*8)(r31)
++        lfd     f13, -(4*8)(r31)
++
++        bctrl                           # Do it
++
 +        ld      r2,STACK_TOC(r1)        # Load our own TOC pointer
-         ld      r1,0(r1)                # Revert stack frame
-         ld      0,16(r1)                # Reload lr
-         ld      29,-24(r1)              # Restore NVGPRS
-@@ -126,7 +157,11 @@ NS_InvokeByIndex:
-         mtlr    0
-         blr
- 
++        ld      r1,0(r1)                # Revert stack frame
++        ld      0,16(r1)                # Reload lr
++        ld      29,-24(r1)              # Restore NVGPRS
++        ld      30,-16(r1)
++        ld      31,-8(r1)
++        mtlr    0
++        blr
++
 +#if _CALL_ELF == 2
 +        .size   NS_InvokeByIndex,.-NS_InvokeByIndex
 +#else
-         .size   NS_InvokeByIndex,.-.NS_InvokeByIndex
++        .size   NS_InvokeByIndex,.-.NS_InvokeByIndex
 +#endif
- 
-         # Magic indicating no need for an executable stack
-         .section .note.GNU-stack, "", @progbits ; .previous
-Index: mozilla/xpcom/reflect/xptcall/src/md/unix/xptcinvoke_ppc64_linux.cpp
++
++        # Magic indicating no need for an executable stack
++        .section .note.GNU-stack, "", @progbits ; .previous
+Index: mozilla-release/xpcom/reflect/xptcall/src/md/unix/xptcinvoke_ppc64_linux.cpp
 ===================================================================
---- mozilla.orig/xpcom/reflect/xptcall/src/md/unix/xptcinvoke_ppc64_linux.cpp
-+++ mozilla/xpcom/reflect/xptcall/src/md/unix/xptcinvoke_ppc64_linux.cpp
+--- mozilla-release.orig/xpcom/reflect/xptcall/src/md/unix/xptcinvoke_ppc64_linux.cpp
++++ mozilla-release/xpcom/reflect/xptcall/src/md/unix/xptcinvoke_ppc64_linux.cpp
 @@ -74,7 +74,9 @@ invoke_copy_to_stack(uint64_t* gpregs,
                  fpregs[i]   = s->val.f; // if passed in registers, floats are promoted to doubles
              } else {
@@ -8059,15 +4795,116 @@ Index: mozilla/xpcom/reflect/xptcall/src/md/unix/xptcinvoke_ppc64_linux.cpp
                  *p = s->val.f;
              }
          }
-diff --git a/xpcom/reflect/xptcall/src/md/unix/xptcstubs_asm_ppc64_linux.s b/xpcom/reflect/xptcall/src/md/unix/xptcstubs_asm_ppc64_linux.S
-rename from xpcom/reflect/xptcall/src/md/unix/xptcstubs_asm_ppc64_linux.s
-rename to xpcom/reflect/xptcall/src/md/unix/xptcstubs_asm_ppc64_linux.S
---- a/xpcom/reflect/xptcall/src/md/unix/xptcstubs_asm_ppc64_linux.s
-+++ b/xpcom/reflect/xptcall/src/md/unix/xptcstubs_asm_ppc64_linux.S
-@@ -17,6 +17,27 @@
- .set f25,25; .set f26,26; .set f27,27; .set f28,28; .set f29,29
- .set f30,30; .set f31,31
- 
+Index: mozilla-release/xpcom/reflect/xptcall/src/md/unix/xptcstubs_asm_ppc64_linux.s
+===================================================================
+--- mozilla-release.orig/xpcom/reflect/xptcall/src/md/unix/xptcstubs_asm_ppc64_linux.s
++++ /dev/null
+@@ -1,81 +0,0 @@
+-# This Source Code Form is subject to the terms of the Mozilla Public
+-# License, v. 2.0. If a copy of the MPL was not distributed with this
+-# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+-
+-.set r0,0; .set r1,1; .set RTOC,2; .set r3,3; .set r4,4
+-.set r5,5; .set r6,6; .set r7,7; .set r8,8; .set r9,9
+-.set r10,10; .set r11,11; .set r12,12; .set r13,13; .set r14,14
+-.set r15,15; .set r16,16; .set r17,17; .set r18,18; .set r19,19
+-.set r20,20; .set r21,21; .set r22,22; .set r23,23; .set r24,24
+-.set r25,25; .set r26,26; .set r27,27; .set r28,28; .set r29,29
+-.set r30,30; .set r31,31
+-.set f0,0; .set f1,1; .set f2,2; .set f3,3; .set f4,4
+-.set f5,5; .set f6,6; .set f7,7; .set f8,8; .set f9,9
+-.set f10,10; .set f11,11; .set f12,12; .set f13,13; .set f14,14
+-.set f15,15; .set f16,16; .set f17,17; .set f18,18; .set f19,19
+-.set f20,20; .set f21,21; .set f22,22; .set f23,23; .set f24,24
+-.set f25,25; .set f26,26; .set f27,27; .set f28,28; .set f29,29
+-.set f30,30; .set f31,31
+-
+-        .section ".text"
+-        .align 2
+-        .globl SharedStub
+-        .section ".opd","aw"
+-        .align 3
+-
+-SharedStub:
+-        .quad   .SharedStub,.TOC.@tocbase
+-        .previous
+-        .type   SharedStub,@function
+-
+-.SharedStub:
+-        mflr    r0
+-
+-        std     r4, -56(r1)                     # Save all GPRS
+-        std     r5, -48(r1)
+-        std     r6, -40(r1)
+-        std     r7, -32(r1)
+-        std     r8, -24(r1)
+-        std     r9, -16(r1)
+-        std     r10, -8(r1)
+-
+-        stfd    f13, -64(r1)                    # ... and FPRS
+-        stfd    f12, -72(r1)
+-        stfd    f11, -80(r1)
+-        stfd    f10, -88(r1)
+-        stfd    f9, -96(r1)
+-        stfd    f8, -104(r1)
+-        stfd    f7, -112(r1)
+-        stfd    f6, -120(r1)
+-        stfd    f5, -128(r1)
+-        stfd    f4, -136(r1)
+-        stfd    f3, -144(r1)
+-        stfd    f2, -152(r1)
+-        stfd    f1, -160(r1)
+-
+-        subi    r6,r1,56                        # r6 --> gprData
+-        subi    r7,r1,160                       # r7 --> fprData
+-        addi    r5,r1,112                       # r5 --> extra stack args
+-
+-        std     r0, 16(r1)
+-	
+-        stdu    r1,-288(r1)
+-                                                # r3 has the 'self' pointer
+-                                                # already
+-
+-        mr      r4,r11                          # r4 is methodIndex selector,
+-                                                # passed via r11 in the
+-                                                # nsNSStubBase::StubXX() call
+-
+-        bl      PrepareAndDispatch
+-        nop
+-
+-        ld      1,0(r1)                         # restore stack
+-        ld      r0,16(r1)                       # restore LR
+-        mtlr    r0
+-        blr
+-
+-        .size   SharedStub,.-.SharedStub
+-
+-        # Magic indicating no need for an executable stack
+-        .section .note.GNU-stack, "", @progbits ; .previous
+Index: mozilla-release/xpcom/reflect/xptcall/src/md/unix/xptcstubs_asm_ppc64_linux.S
+===================================================================
+--- /dev/null
++++ mozilla-release/xpcom/reflect/xptcall/src/md/unix/xptcstubs_asm_ppc64_linux.S
+@@ -0,0 +1,107 @@
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++.set r0,0; .set r1,1; .set RTOC,2; .set r3,3; .set r4,4
++.set r5,5; .set r6,6; .set r7,7; .set r8,8; .set r9,9
++.set r10,10; .set r11,11; .set r12,12; .set r13,13; .set r14,14
++.set r15,15; .set r16,16; .set r17,17; .set r18,18; .set r19,19
++.set r20,20; .set r21,21; .set r22,22; .set r23,23; .set r24,24
++.set r25,25; .set r26,26; .set r27,27; .set r28,28; .set r29,29
++.set r30,30; .set r31,31
++.set f0,0; .set f1,1; .set f2,2; .set f3,3; .set f4,4
++.set f5,5; .set f6,6; .set f7,7; .set f8,8; .set f9,9
++.set f10,10; .set f11,11; .set f12,12; .set f13,13; .set f14,14
++.set f15,15; .set f16,16; .set f17,17; .set f18,18; .set f19,19
++.set f20,20; .set f21,21; .set f22,22; .set f23,23; .set f24,24
++.set f25,25; .set f26,26; .set f27,27; .set f28,28; .set f29,29
++.set f30,30; .set f31,31
++
 +#if _CALL_ELF == 2
 +#define STACK_PARAMS   96
 +#else
@@ -8089,42 +4926,77 @@ rename to xpcom/reflect/xptcall/src/md/unix/xptcstubs_asm_ppc64_linux.S
 +        addi 2,2,(.TOC.-0b)@l
 +        .localentry SharedStub,.-SharedStub
 +#else
-         .section ".text"
-         .align 2
-         .globl SharedStub
-@@ -29,6 +50,7 @@ SharedStub:
-         .type   SharedStub,@function
- 
- .SharedStub:
++        .section ".text"
++        .align 2
++        .globl SharedStub
++        .section ".opd","aw"
++        .align 3
++
++SharedStub:
++        .quad   .SharedStub,.TOC.@tocbase
++        .previous
++        .type   SharedStub,@function
++
++.SharedStub:
 +#endif
-         mflr    r0
- 
-         std     r4, -56(r1)                     # Save all GPRS
-@@ -55,7 +77,7 @@ SharedStub:
- 
-         subi    r6,r1,56                        # r6 --> gprData
-         subi    r7,r1,160                       # r7 --> fprData
--        addi    r5,r1,112                       # r5 --> extra stack args
++        mflr    r0
++
++        std     r4, -56(r1)                     # Save all GPRS
++        std     r5, -48(r1)
++        std     r6, -40(r1)
++        std     r7, -32(r1)
++        std     r8, -24(r1)
++        std     r9, -16(r1)
++        std     r10, -8(r1)
++
++        stfd    f13, -64(r1)                    # ... and FPRS
++        stfd    f12, -72(r1)
++        stfd    f11, -80(r1)
++        stfd    f10, -88(r1)
++        stfd    f9, -96(r1)
++        stfd    f8, -104(r1)
++        stfd    f7, -112(r1)
++        stfd    f6, -120(r1)
++        stfd    f5, -128(r1)
++        stfd    f4, -136(r1)
++        stfd    f3, -144(r1)
++        stfd    f2, -152(r1)
++        stfd    f1, -160(r1)
++
++        subi    r6,r1,56                        # r6 --> gprData
++        subi    r7,r1,160                       # r7 --> fprData
 +        addi    r5,r1,STACK_PARAMS              # r5 --> extra stack args
- 
-         std     r0, 16(r1)
- 	
-@@ -75,7 +97,11 @@ SharedStub:
-         mtlr    r0
-         blr
- 
++
++        std     r0, 16(r1)
++	
++        stdu    r1,-288(r1)
++                                                # r3 has the 'self' pointer
++                                                # already
++
++        mr      r4,r11                          # r4 is methodIndex selector,
++                                                # passed via r11 in the
++                                                # nsNSStubBase::StubXX() call
++
++        bl      PrepareAndDispatch
++        nop
++
++        ld      1,0(r1)                         # restore stack
++        ld      r0,16(r1)                       # restore LR
++        mtlr    r0
++        blr
++
 +#if _CALL_ELF == 2
 +        .size   SharedStub,.-SharedStub
 +#else
-         .size   SharedStub,.-.SharedStub
++        .size   SharedStub,.-.SharedStub
 +#endif
- 
-         # Magic indicating no need for an executable stack
-         .section .note.GNU-stack, "", @progbits ; .previous
-Index: mozilla/xpcom/reflect/xptcall/src/md/unix/xptcstubs_ppc64_linux.cpp
++
++        # Magic indicating no need for an executable stack
++        .section .note.GNU-stack, "", @progbits ; .previous
+Index: mozilla-release/xpcom/reflect/xptcall/src/md/unix/xptcstubs_ppc64_linux.cpp
 ===================================================================
---- mozilla.orig/xpcom/reflect/xptcall/src/md/unix/xptcstubs_ppc64_linux.cpp
-+++ mozilla/xpcom/reflect/xptcall/src/md/unix/xptcstubs_ppc64_linux.cpp
+--- mozilla-release.orig/xpcom/reflect/xptcall/src/md/unix/xptcstubs_ppc64_linux.cpp
++++ mozilla-release/xpcom/reflect/xptcall/src/md/unix/xptcstubs_ppc64_linux.cpp
 @@ -83,7 +83,9 @@ PrepareAndDispatch(nsXPTCStubBase* self,
                  dp->val.f = (float) fprData[i]; // in registers floats are passed as doubles
              else {
