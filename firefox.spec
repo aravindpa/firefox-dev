@@ -87,7 +87,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        29.0.1
-Release:        2%{?pre_tag}%{?dist}
+Release:        3%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -118,6 +118,12 @@ Patch216:        firefox-duckduckgo.patch
 
 # Upstream patches
 Patch300:        mozilla-ppc64le.patch
+# mbo 962488
+Patch301:        firefox-aarch64-double-convertsion.patch
+# mbo 963023
+Patch302:        firefox-aarch64-libevent.patch
+# mbo 963024
+Patch303:        firefox-aarch64-xpcom.patch
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -235,6 +241,9 @@ cd %{tarballdir}
 %patch300 -p1 -b .ppc64le
 %endif
 %endif
+%patch301 -p1 -b .aarch64-dbl
+%patch302 -p1 -b .aarch64-libevent
+%patch303 -p1 -b .aarch64-xpcom
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -348,6 +357,9 @@ esac
 
 cd %{tarballdir}
 
+# Update the various config.guess to upstream release for aarch64 support
+find ./ -name config.guess -exec cp /usr/lib/rpm/config.guess {} ';'
+
 # -fpermissive is needed to build with gcc 4.6+ which has become stricter
 # 
 # Mozilla builds with -Wall with exception of a few warnings which show up
@@ -364,7 +376,7 @@ MOZ_OPT_FLAGS=$(echo "$MOZ_OPT_FLAGS" | %{__sed} -e 's/-O2//')
 %ifarch s390
 MOZ_OPT_FLAGS=$(echo "$MOZ_OPT_FLAGS" | %{__sed} -e 's/-g/-g1/')
 %endif
-%ifarch s390 %{arm} ppc
+%ifarch s390 %{arm} ppc aarch64
 MOZ_LINK_FLAGS="-Wl,--no-keep-memory -Wl,--reduce-memory-overheads"
 %endif
 export CFLAGS=$MOZ_OPT_FLAGS
@@ -377,7 +389,7 @@ export LIBDIR='%{_libdir}'
 MOZ_SMP_FLAGS=-j1
 # On x86 architectures, Mozilla can build up to 4 jobs at once in parallel,
 # however builds tend to fail on other arches when building in parallel.
-%ifarch %{ix86} x86_64 ppc ppc64 ppc64le
+%ifarch %{ix86} x86_64 ppc ppc64 ppc64le aarch64
 [ -z "$RPM_BUILD_NCPUS" ] && \
      RPM_BUILD_NCPUS="`/usr/bin/getconf _NPROCESSORS_ONLN`"
 [ "$RPM_BUILD_NCPUS" -ge 2 ] && MOZ_SMP_FLAGS=-j2
@@ -635,6 +647,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Thu May 15 2014 Peter Robinson <pbrobinson@fedoraproject.org> 29.0.1-4
+- Add upstream patches for aarch64 support
+
 * Thu May 15 2014 Martin Stransky <stransky@redhat.com> - 29.0.1-2
 - Fixed rhbz#1098090 - Enable plugin-container for nspluginwrapper
 

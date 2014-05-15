@@ -1,0 +1,115 @@
+
+# HG changeset patch
+# User Marcin Juszkiewicz <mjuszkiewicz@redhat.com>
+# Date 1392217668 18000
+# Node ID 4e9b713f435ade266a68a8d7ba08aad65c3fa6c5
+# Parent  282b6e88f9d4c2367a72836f6f9efeab2aadaa58
+Bug 963023 - AArch64 support for libevent. r=froydnj
+
+diff --git a/ipc/chromium/src/third_party/libevent-use-non-deprecated-syscalls.patch b/ipc/chromium/src/third_party/libevent-use-non-deprecated-syscalls.patch
+new file mode 100644
+--- /dev/null
++++ b/ipc/chromium/src/third_party/libevent-use-non-deprecated-syscalls.patch
+@@ -0,0 +1,43 @@
++---
++ ipc/chromium/src/third_party/libevent/epoll_sub.c |   13 +++++++++++++
++ 1 file changed, 13 insertions(+)
++
++--- mozilla-central.orig/ipc/chromium/src/third_party/libevent/epoll_sub.c
+++++ mozilla-central/ipc/chromium/src/third_party/libevent/epoll_sub.c
++@@ -29,15 +29,24 @@
++ #include <sys/param.h>
++ #include <sys/types.h>
++ #include <sys/syscall.h>
++ #include <sys/epoll.h>
++ #include <unistd.h>
+++#include <errno.h>
++
++ int
++ epoll_create(int size)
++ {
+++#if !defined(__NR_epoll_create) && defined(__NR_epoll_create1)
+++	if (size <= 0) {
+++		errno = EINVAL;
+++		return -1;
+++	}
+++	return (syscall(__NR_epoll_create1, 0));
+++#else
++ 	return (syscall(__NR_epoll_create, size));
+++#endif
++ }
++
++ int
++ epoll_ctl(int epfd, int op, int fd, struct epoll_event *event)
++ {
++@@ -46,7 +55,11 @@ epoll_ctl(int epfd, int op, int fd, stru
++ }
++
++ int
++ epoll_wait(int epfd, struct epoll_event *events, int maxevents, int timeout)
++ {
+++#if !defined(__NR_epoll_wait) && defined(__NR_epoll_pwait)
+++	return (syscall(__NR_epoll_pwait, epfd, events, maxevents, timeout, NULL, 0));
+++#else
++ 	return (syscall(__NR_epoll_wait, epfd, events, maxevents, timeout));
+++#endif
++ }
+diff --git a/ipc/chromium/src/third_party/libevent/README.mozilla b/ipc/chromium/src/third_party/libevent/README.mozilla
+--- a/ipc/chromium/src/third_party/libevent/README.mozilla
++++ b/ipc/chromium/src/third_party/libevent/README.mozilla
+@@ -8,8 +8,10 @@ android/event2/event-config.h
+ 
+ These files are taken from libevent-2.0.21-stable built on the development environment indicated by the first path component. You have to run "./configure" and "make" to get all of the pre-processing done. The file can then be found in "include/event2/".
+ 
+ 2. This is ugly, prepare yourself. OS X has a weird problem with how the "TAILQ_END(head)" is used, causing a linking error. Just replace all use of the "TAILQ_END(head)" macro with "NULL".
+ 
+ 3. Apply "add mac-arc4random-buf.patch", which removes some bad OS X compatibility code. This will allow libevent to compile on all supported versions of OS X.
+ 
+ 4. Apply "openbsd-no-arc4random_addrandom.patch", which fixes the build on OpenBSD (which doesnt provide arc4random_addrandom anymore, see #931354)
++
++5. Apply "libevent-use-non-deprecated-syscalls.patch", which fixes the build on AArch64 architecture (which does not provide deprecated syscalls)
+diff --git a/ipc/chromium/src/third_party/libevent/epoll_sub.c b/ipc/chromium/src/third_party/libevent/epoll_sub.c
+--- a/ipc/chromium/src/third_party/libevent/epoll_sub.c
++++ b/ipc/chromium/src/third_party/libevent/epoll_sub.c
+@@ -26,27 +26,40 @@
+  */
+ #include <stdint.h>
+ 
+ #include <sys/param.h>
+ #include <sys/types.h>
+ #include <sys/syscall.h>
+ #include <sys/epoll.h>
+ #include <unistd.h>
++#include <errno.h>
+ 
+ int
+ epoll_create(int size)
+ {
++#if !defined(__NR_epoll_create) && defined(__NR_epoll_create1)
++	if (size <= 0) {
++		errno = EINVAL;
++		return -1;
++	}
++	return (syscall(__NR_epoll_create1, 0));
++#else
+ 	return (syscall(__NR_epoll_create, size));
++#endif
+ }
+ 
+ int
+ epoll_ctl(int epfd, int op, int fd, struct epoll_event *event)
+ {
+ 
+ 	return (syscall(__NR_epoll_ctl, epfd, op, fd, event));
+ }
+ 
+ int
+ epoll_wait(int epfd, struct epoll_event *events, int maxevents, int timeout)
+ {
++#if !defined(__NR_epoll_wait) && defined(__NR_epoll_pwait)
++	return (syscall(__NR_epoll_pwait, epfd, events, maxevents, timeout, NULL, 0));
++#else
+ 	return (syscall(__NR_epoll_wait, epfd, events, maxevents, timeout));
++#endif
+ }
+
