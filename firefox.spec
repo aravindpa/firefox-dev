@@ -87,7 +87,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        29.0.1
-Release:        4%{?pre_tag}%{?dist}
+Release:        5%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -124,6 +124,7 @@ Patch301:        firefox-aarch64-double-convertsion.patch
 Patch302:        firefox-aarch64-libevent.patch
 # mbo 963024
 Patch303:        firefox-aarch64-xpcom.patch
+Patch304:        mozilla-973977.patch
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -244,6 +245,9 @@ cd %{tarballdir}
 %patch301 -p1 -b .aarch64-dbl
 %patch302 -p1 -b .aarch64-libevent
 %patch303 -p1 -b .aarch64-xpcom
+%ifarch ppc64
+%patch304 -p1 -b .973977
+%endif
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -647,6 +651,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue May 23 2014 Martin Stransky <stransky@redhat.com> - 29.0.1-5
+- Added a build fix for ppc64 - rhbz#1100495
+
 * Tue May 20 2014 Martin Stransky <stransky@redhat.com> - 29.0.1-4
 - Enabled necko-wifi
 
