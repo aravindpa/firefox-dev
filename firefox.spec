@@ -651,7 +651,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
-* Tue May 23 2014 Martin Stransky <stransky@redhat.com> - 29.0.1-5
+* Fri May 23 2014 Martin Stransky <stransky@redhat.com> - 29.0.1-5
 - Added a build fix for ppc64 - rhbz#1100495
 
 * Tue May 20 2014 Martin Stransky <stransky@redhat.com> - 29.0.1-4
