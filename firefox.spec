@@ -86,14 +86,14 @@
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        29.0.1
-Release:        5%{?pre_tag}%{?dist}
+Version:        30.0
+Release:        1%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.bz2
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20140514.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20140604.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -117,14 +117,6 @@ Patch215:        firefox-15.0-enable-addons.patch
 Patch216:        firefox-duckduckgo.patch
 
 # Upstream patches
-Patch300:        mozilla-ppc64le.patch
-# mbo 962488
-Patch301:        firefox-aarch64-double-convertsion.patch
-# mbo 963023
-Patch302:        firefox-aarch64-libevent.patch
-# mbo 963024
-Patch303:        firefox-aarch64-xpcom.patch
-Patch304:        mozilla-973977.patch
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -237,17 +229,6 @@ cd %{tarballdir}
 %patch216 -p1 -b .duckduckgo
 
 # Upstream patches
-%ifarch ppc64le
-%if 0%{?fedora} > 20
-%patch300 -p1 -b .ppc64le
-%endif
-%endif
-%patch301 -p1 -b .aarch64-dbl
-%patch302 -p1 -b .aarch64-libevent
-%patch303 -p1 -b .aarch64-xpcom
-%ifarch ppc64
-%patch304 -p1 -b .973977
-%endif
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -651,6 +632,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Jun 4 2014 Martin Stransky <stransky@redhat.com> - 30.0-1
+- Update to 30.0 build 1
+
 * Fri May 23 2014 Martin Stransky <stransky@redhat.com> - 29.0.1-5
 - Added a build fix for ppc64 - rhbz#1100495
 
