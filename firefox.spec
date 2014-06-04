@@ -2,7 +2,7 @@
 %define system_nss        1
 
 # Use system sqlite?
-%if 0%{?fedora} < 19
+%if 0%{?fedora} < 20
 %define system_sqlite     0
 %define system_ffi        0
 %else
