@@ -87,7 +87,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        30.0
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -267,7 +267,7 @@ echo "ac_add_options --enable-system-ffi" >> .mozconfig
 %endif
 
 %if %{?enable_gstreamer}
-echo "ac_add_options --enable-gstreamer" >> .mozconfig
+echo "ac_add_options --enable-gstreamer=1.0" >> .mozconfig
 %else
 echo "ac_add_options --disable-gstreamer" >> .mozconfig
 %endif
@@ -632,6 +632,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Jun 5 2014 Martin Stransky <stransky@redhat.com> - 30.0-2
+- Enable gstreamer 1.0
+
 * Wed Jun 4 2014 Martin Stransky <stransky@redhat.com> - 30.0-1
 - Update to 30.0 build 1
 
