@@ -166,8 +166,8 @@ Requires:       nss >= %{nss_build_version}
 BuildRequires:  desktop-file-utils
 BuildRequires:  system-bookmarks
 %if %{?enable_gstreamer}
-BuildRequires:  gstreamer-devel
-BuildRequires:  gstreamer-plugins-base-devel
+BuildRequires:  gstreamer1-devel
+BuildRequires:  gstreamer1-plugins-base-devel
 %endif
 %if %{?system_sqlite}
 BuildRequires:  sqlite-devel >= %{sqlite_version}
