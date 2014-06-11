@@ -34,7 +34,7 @@
 %global libvpx_version 1.0.0
 
 %if %{?system_nss}
-%global nspr_version 4.10.3
+%global nspr_version 4.10.6
 %global nspr_build_version %(pkg-config --silence-errors --modversion nspr 2>/dev/null || echo 65536)
 %global nss_version 3.15.4
 %global nss_build_version %(pkg-config --silence-errors --modversion nss 2>/dev/null || echo 65536)
@@ -87,7 +87,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        30.0
-Release:        3%{?pre_tag}%{?dist}
+Release:        4%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -632,6 +632,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Jun 11 2014 Martin Stransky <stransky@redhat.com> - 30.0-4
+- Updated NSPR version
+
 * Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 30.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
