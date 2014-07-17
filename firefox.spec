@@ -86,14 +86,14 @@
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        30.0
-Release:        4%{?pre_tag}%{?dist}
+Version:        31.0
+Release:        1%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.bz2
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20140604.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20140717.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -632,6 +632,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Jul 17 2014 Martin Stransky <stransky@redhat.com> - 31.0-1
+- Update to 31.0 build 2
+
 * Wed Jun 11 2014 Martin Stransky <stransky@redhat.com> - 30.0-4
 - Updated NSPR version
 
