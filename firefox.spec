@@ -113,7 +113,7 @@ Patch19:        xulrunner-24.0-s390-inlines.patch
 # Fedora specific patches
 # Unable to install addons from https pages
 Patch204:        rhbz-966424.patch
-Patch215:        firefox-15.0-enable-addons.patch
+Patch215:        firefox-enable-addons.patch
 Patch216:        firefox-duckduckgo.patch
 
 # Upstream patches
