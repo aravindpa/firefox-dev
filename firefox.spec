@@ -87,7 +87,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        31.0
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -117,6 +117,7 @@ Patch215:        firefox-enable-addons.patch
 Patch216:        firefox-duckduckgo.patch
 
 # Upstream patches
+Patch300:        mozilla-858919.patch
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -229,6 +230,7 @@ cd %{tarballdir}
 %patch216 -p1 -b .duckduckgo
 
 # Upstream patches
+%patch300 -p1 -b .858919
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -632,6 +634,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Jul 30 2014 Martin Stransky <stransky@redhat.com> - 31.0-2
+- Added patch for mozbz#858919
+
 * Thu Jul 17 2014 Martin Stransky <stransky@redhat.com> - 31.0-1
 - Update to 31.0 build 2
 
