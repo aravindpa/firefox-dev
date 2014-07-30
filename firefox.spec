@@ -31,7 +31,7 @@
 %global cairo_version 1.10.2
 %global freetype_version 2.1.9
 %global libnotify_version 0.7.0
-%global libvpx_version 1.0.0
+%global libvpx_version 1.3.0
 
 %if %{?system_nss}
 %global nspr_version 4.10.6
@@ -41,7 +41,7 @@
 %endif
 
 %if %{?system_sqlite}
-%global sqlite_version 3.7.13
+%global sqlite_version 3.8.4.2
 # The actual sqlite version (see #480989):
 %global sqlite_build_version %(pkg-config --silence-errors --modversion sqlite3 2>/dev/null || echo 65536)
 %endif
