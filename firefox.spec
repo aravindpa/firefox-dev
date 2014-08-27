@@ -356,7 +356,9 @@ find ./ -name config.guess -exec cp /usr/lib/rpm/config.guess {} ';'
 #
 MOZ_OPT_FLAGS=$(echo "$RPM_OPT_FLAGS" | %{__sed} -e 's/-Wall//')
 #rhbz#1037063
-MOZ_OPT_FLAGS="$MOZ_OPT_FLAGS -Wformat-security -Wformat -Werror=format-security"
+# -Werror=format-security causes build failures when -Wno-format is explicitly given
+# for some sources
+MOZ_OPT_FLAGS="$MOZ_OPT_FLAGS -Wformat-security -Wformat"
 %if %{?debug_build}
 MOZ_OPT_FLAGS=$(echo "$MOZ_OPT_FLAGS" | %{__sed} -e 's/-O2//')
 %endif
