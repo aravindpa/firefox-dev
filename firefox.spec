@@ -104,6 +104,7 @@ Source23:       firefox.1
 
 #Build patches
 Patch0:         firefox-install-dir.patch
+Patch1:         firefox-build.patch
 Patch3:         mozilla-build-arm.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=814879#c3
 Patch18:        xulrunner-24.0-jemalloc-ppc.patch
@@ -215,6 +216,7 @@ cd %{tarballdir}
 # there is a compare of config and js/config directories and .orig suffix is 
 # ignored during this compare.
 %patch0 -p1
+%patch1 -p2 -b .build
 
 %ifarch %{arm}
 %patch3  -p2 -b .arm
@@ -358,7 +360,7 @@ MOZ_OPT_FLAGS=$(echo "$RPM_OPT_FLAGS" | %{__sed} -e 's/-Wall//')
 #rhbz#1037063
 # -Werror=format-security causes build failures when -Wno-format is explicitly given
 # for some sources
-MOZ_OPT_FLAGS="$MOZ_OPT_FLAGS -Wformat-security -Wformat"
+MOZ_OPT_FLAGS="$MOZ_OPT_FLAGS -Wformat-security -Wformat -Werror=format-security"
 %if %{?debug_build}
 MOZ_OPT_FLAGS=$(echo "$MOZ_OPT_FLAGS" | %{__sed} -e 's/-O2//')
 %endif
