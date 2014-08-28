@@ -301,8 +301,8 @@ echo "ac_add_options --with-arch=armv7-a" >> .mozconfig
 echo "ac_add_options --with-float-abi=hard" >> .mozconfig
 echo "ac_add_options --with-fpu=vfpv3-d16" >> .mozconfig
 echo "ac_add_options --disable-elf-hack" >> .mozconfig
-echo "ac_add_options --disable-ion" >> .mozconfig
-echo "ac_add_options --disable-yarr-jit" >> .mozconfig
+#echo "ac_add_options --disable-ion" >> .mozconfig
+#echo "ac_add_options --disable-yarr-jit" >> .mozconfig
 %endif
 %ifarch armv7hnl
 echo "ac_add_options --with-arch=armv7-a" >> .mozconfig
@@ -348,7 +348,7 @@ cd %{tarballdir}
 find ./ -name config.guess -exec cp /usr/lib/rpm/config.guess {} ';'
 
 # -fpermissive is needed to build with gcc 4.6+ which has become stricter
-# 
+#
 # Mozilla builds with -Wall with exception of a few warnings which show up
 # everywhere in the code; so, don't override that.
 #
