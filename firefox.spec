@@ -303,7 +303,7 @@ echo "ac_add_options --with-arch=armv7-a" >> .mozconfig
 echo "ac_add_options --with-float-abi=hard" >> .mozconfig
 echo "ac_add_options --with-fpu=vfpv3-d16" >> .mozconfig
 echo "ac_add_options --disable-elf-hack" >> .mozconfig
-#echo "ac_add_options --disable-ion" >> .mozconfig
+echo "ac_add_options --disable-ion" >> .mozconfig
 #echo "ac_add_options --disable-yarr-jit" >> .mozconfig
 %endif
 %ifarch armv7hnl
@@ -328,6 +328,11 @@ echo "ac_add_options --disable-webrtc" >> .mozconfig
 
 %if !%{enable_mozilla_crashreporter}
 echo "ac_add_options --disable-crashreporter" >> .mozconfig
+%endif
+
+# Workaround - installation crash
+%ifarch %{ix86}
+echo "ac_add_options --disable-ion" >> .mozconfig
 %endif
 
 #---------------------------------------------------------------------
