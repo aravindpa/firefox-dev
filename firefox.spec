@@ -646,7 +646,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
-* Wed Sep 10 2014 Jan Horak <jhorak@redhat.com> - 32.0-1
+* Wed Sep 10 2014 Jan Horak <jhorak@redhat.com> - 32.0-2
 - Fix for geolocation API (rhbz#1063739)
 
 * Tue Aug 26 2014 Martin Stransky <stransky@redhat.com> - 32.0-1
