@@ -18,3 +18,4 @@ pref("ui.SpellCheckerUnderlineStyle",       1);
 pref("startup.homepage_override_url",       "");
 pref("browser.startup.homepage",            "data:text/plain,browser.startup.homepage=about:newtab");
 pref("browser.newtabpage.pinned",           '[{"url":"http://start.fedoraproject.org/","title":"Fedora Project - Start Page"}]');
+pref("geo.wifi.uri", "https://location.services.mozilla.com/v1/geolocate?key=%MOZILLA_API_KEY%");

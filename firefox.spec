@@ -87,7 +87,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        32.0
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -101,6 +101,7 @@ Source12:       firefox-redhat-default-prefs.js
 Source20:       firefox.desktop
 Source21:       firefox.sh.in
 Source23:       firefox.1
+Source24:       mozilla-api-key
 
 #Build patches
 Patch0:         firefox-install-dir.patch
@@ -246,6 +247,8 @@ cd %{tarballdir}
 %if %{official_branding}
 %{__cat} %{SOURCE11} >> .mozconfig
 %endif
+%{__cp} %{SOURCE24} mozilla-api-key
+
 %if %{?system_nss}
 echo "ac_add_options --with-system-nspr" >> .mozconfig
 echo "ac_add_options --with-system-nss" >> .mozconfig
@@ -643,6 +646,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Sep 10 2014 Jan Horak <jhorak@redhat.com> - 32.0-1
+- Fix for geolocation API (rhbz#1063739)
+
 * Tue Aug 26 2014 Martin Stransky <stransky@redhat.com> - 32.0-1
 - Update to 32.0 build 1
 
