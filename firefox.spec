@@ -111,6 +111,8 @@ Patch3:         mozilla-build-arm.patch
 Patch18:        xulrunner-24.0-jemalloc-ppc.patch
 # workaround linking issue on s390 (JSContext::updateMallocCounter(size_t) not found)
 Patch19:        xulrunner-24.0-s390-inlines.patch
+# backport js/src/configure.in changes for secondary arches
+Patch20:        xulrunner-32.0-backport-js-src-configure-in.patch
 
 # Fedora specific patches
 # Unable to install addons from https pages
@@ -224,6 +226,7 @@ cd %{tarballdir}
 %endif
 %patch18 -p2 -b .jemalloc-ppc
 %patch19 -p2 -b .s390-inlines
+%patch20 -p2 -b .js-configure
 
 # For branding specific patches.
 
