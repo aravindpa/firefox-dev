@@ -87,7 +87,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        32.0.1
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -309,8 +309,6 @@ echo "ac_add_options --with-arch=armv7-a" >> .mozconfig
 echo "ac_add_options --with-float-abi=hard" >> .mozconfig
 echo "ac_add_options --with-fpu=vfpv3-d16" >> .mozconfig
 echo "ac_add_options --disable-elf-hack" >> .mozconfig
-#echo "ac_add_options --disable-ion" >> .mozconfig
-#echo "ac_add_options --disable-yarr-jit" >> .mozconfig
 %endif
 %ifarch armv7hnl
 echo "ac_add_options --with-arch=armv7-a" >> .mozconfig
@@ -336,9 +334,9 @@ echo "ac_add_options --disable-webrtc" >> .mozconfig
 echo "ac_add_options --disable-crashreporter" >> .mozconfig
 %endif
 
-# Workaround - installation crash
+# disable baseline JIT on i686 (rhbz#1047079)
 %ifarch %{ix86}
-echo "ac_add_options --disable-ion" >> .mozconfig
+echo 'pref("javascript.options.baselinejit", false);' >> %{SOURCE12}
 %endif
 
 #---------------------------------------------------------------------
@@ -649,6 +647,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Sep 16 2014 Martin Stransky <stransky@redhat.com> - 32.0.1-2
+- disable baseline JIT on i686 (rhbz#1047079)
+
 * Mon Sep 15 2014 Martin Stransky <stransky@redhat.com> - 32.0.1-1
 - Update to 32.0.1 build 2
 - Patch from rhbz#1140157
