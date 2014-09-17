@@ -119,6 +119,7 @@ Patch20:        xulrunner-32.0-backport-js-src-configure-in.patch
 Patch204:        rhbz-966424.patch
 Patch215:        firefox-enable-addons.patch
 Patch216:        firefox-duckduckgo.patch
+Patch217:        firefox-baseline-disable.patch
 
 # Upstream patches
 Patch300:        mozilla-858919.patch
@@ -234,6 +235,10 @@ cd %{tarballdir}
 %patch204 -p1 -b .966424
 %patch215 -p1 -b .addons
 %patch216 -p1 -b .duckduckgo
+# disable baseline JIT on i686 (rhbz#1047079)
+%ifarch %{ix86}
+%patch217 -p2 -b .baseline
+%endif
 
 # Upstream patches
 %patch300 -p1 -b .858919
@@ -332,11 +337,6 @@ echo "ac_add_options --disable-webrtc" >> .mozconfig
 
 %if !%{enable_mozilla_crashreporter}
 echo "ac_add_options --disable-crashreporter" >> .mozconfig
-%endif
-
-# disable baseline JIT on i686 (rhbz#1047079)
-%ifarch %{ix86}
-echo 'pref("javascript.options.baselinejit", false);' >> %{SOURCE12}
 %endif
 
 #---------------------------------------------------------------------
