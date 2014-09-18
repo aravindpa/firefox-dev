@@ -86,8 +86,8 @@
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        32.0.1
-Release:        2%{?pre_tag}%{?dist}
+Version:        32.0.2
+Release:        1%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -647,6 +647,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Sep 18 2014 Martin Stransky <stransky@redhat.com> - 32.0.2-1
+- Update to 32.0.2 build 1
+
 * Tue Sep 16 2014 Martin Stransky <stransky@redhat.com> - 32.0.1-2
 - disable baseline JIT on i686 (rhbz#1047079)
 
