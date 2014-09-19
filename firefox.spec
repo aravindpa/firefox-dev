@@ -22,6 +22,12 @@
 %define separated_plugins 0
 %endif
 
+%ifarch %{ix86} x86_64
+%define run_tests         1
+%else
+%define run_tests         0
+%endif
+
 # Build as a debug package?
 %define debug_build       0
 
@@ -87,7 +93,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        32.0.2
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -185,12 +191,18 @@ BuildRequires:  libffi-devel
 %endif
 
 Requires:       system-bookmarks
+
+%if %{?run_tests}
+BuildRequires:  xorg-x11-server-Xvfb
+%endif
+
 Obsoletes:      mozilla <= 37:1.7.13
 Provides:       webclient
 
 %description
 Mozilla Firefox is an open-source web browser, designed for standards
 compliance, performance and portability.
+
 %if %{enable_mozilla_crashreporter}
 %global moz_debug_prefix %{_prefix}/lib/debug
 %global moz_debug_dir %{moz_debug_prefix}%{mozappdir}
@@ -203,10 +215,22 @@ compliance, performance and portability.
 Summary: Debugging symbols used by Mozilla's crash reporter servers
 Group: Development/Debug
 %description -n %{crashreporter_pkg_name}
-This package provides debug information for XULRunner, for use by
+This package provides debug information for Firefox, for use by
 Mozilla's crash reporter servers.  If you are trying to locally
 debug %{name}, you want to install %{name}-debuginfo instead.
 %files -n %{crashreporter_pkg_name} -f debugcrashreporter.list
+%defattr(-,root,root)
+%endif
+
+%if %{run_tests}
+%global testsuite_pkg_name mozilla-%{name}-testresults
+%package -n %{testsuite_pkg_name}
+Summary: Results of testsuite
+Group: Development/Debug
+%description -n %{testsuite_pkg_name}
+This package contains results of tests executed during build.
+%files -n %{testsuite_pkg_name}
+/test_results
 %defattr(-,root,root)
 %endif
 
@@ -339,6 +363,10 @@ echo "ac_add_options --disable-webrtc" >> .mozconfig
 echo "ac_add_options --disable-crashreporter" >> .mozconfig
 %endif
 
+%if %{?run_tests}
+echo "ac_add_options --enable-tests" >> .mozconfig
+%endif
+
 #---------------------------------------------------------------------
 
 %build
@@ -406,6 +434,36 @@ make -f client.mk build STRIP="/bin/true" MOZ_MAKE_FLAGS="$MOZ_SMP_FLAGS" MOZ_SE
 make -C objdir buildsymbols
 %endif
 
+%if %{?run_tests}
+%if %{?system_nss}
+ln -s /usr/bin/certutil objdir/dist/bin/certutil
+ln -s /usr/bin/pk12util objdir/dist/bin/pk12util
+
+%endif
+mkdir test_results
+./mach --log-no-times check-spidermonkey &> test_results/check-spidermonkey || true
+./mach --log-no-times cppunittest &> test_results/cppunittest || true
+xvfb-run ./mach --log-no-times crashtest &> test_results/crashtest || true
+xvfb-run ./mach --log-no-times crashtest-ipc &> test_results/crashtest-ipc || true
+./mach --log-no-times gtest &> test_results/gtest || true
+xvfb-run ./mach --log-no-times jetpack-test &> test_results/jetpack-test || true
+./mach marionette-test &> test_results/marionette-test || true
+xvfb-run ./mach --log-no-times mochitest-a11y &> test_results/mochitest-a11y || true
+xvfb-run ./mach --log-no-times mochitest-browser &> test_results/mochitest-browser || true
+xvfb-run ./mach --log-no-times mochitest-chrome &> test_results/mochitest-chrome || true
+xvfb-run ./mach --log-no-times mochitest-devtools &> test_results/mochitest-devtools || true
+xvfb-run ./mach --log-no-times mochitest-plain &> test_results/mochitest-plain || true
+xvfb-run ./mach --log-no-times reftest &> test_results/reftest || true
+xvfb-run ./mach --log-no-times reftest-ipc &> test_results/reftest-ipc || true
+./mach --log-no-times webapprt-test-chrome &> test_results/webapprt-test-chrome || true
+./mach --log-no-times webapprt-test-content &> test_results/webapprt-test-content || true
+./mach --log-no-times webidl-parser-test &> test_results/webidl-parser-test || true
+xvfb-run ./mach --log-no-times xpcshell-test &> test_results/xpcshell-test || true
+%if %{?system_nss}
+rm -f  objdir/dist/bin/certutil
+%endif
+
+%endif
 #---------------------------------------------------------------------
 
 %install
@@ -532,6 +590,12 @@ sed -i -e "s/\[Crash Reporter\]/[Crash Reporter]\nEnabled=1/" $RPM_BUILD_ROOT/%{
 %{__cp} objdir/dist/%{symbols_file_name} $RPM_BUILD_ROOT/%{moz_debug_dir}
 %endif
 
+%if %{run_tests}
+# Add debuginfo for crash-stats.mozilla.com
+%{__mkdir_p} $RPM_BUILD_ROOT/test_results
+%{__cp} test_results/* $RPM_BUILD_ROOT/test_results
+%endif
+
 # Default 
 %{__cp} %{SOURCE12} ${RPM_BUILD_ROOT}%{mozappdir}/browser/defaults/preferences
 
@@ -647,6 +711,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Sep 19 2014 Jan Horak <jhorak@redhat.com> - 32.0.2-2
+- Added support for Mozilla tests
+
 * Thu Sep 18 2014 Martin Stransky <stransky@redhat.com> - 32.0.2-1
 - Update to 32.0.2 build 1
 
