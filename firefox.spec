@@ -23,7 +23,7 @@
 %endif
 
 %ifarch %{ix86} x86_64
-%define run_tests         1
+%define run_tests         0
 %else
 %define run_tests         0
 %endif
@@ -442,25 +442,25 @@ ln -s /usr/bin/pk12util objdir/dist/bin/pk12util
 %endif
 mkdir test_results
 ./mach --log-no-times check-spidermonkey &> test_results/check-spidermonkey || true
+./mach --log-no-times check-spidermonkey &> test_results/check-spidermonkey-2nd-run || true
 ./mach --log-no-times cppunittest &> test_results/cppunittest || true
 xvfb-run ./mach --log-no-times crashtest &> test_results/crashtest || true
-xvfb-run ./mach --log-no-times crashtest-ipc &> test_results/crashtest-ipc || true
 ./mach --log-no-times gtest &> test_results/gtest || true
 xvfb-run ./mach --log-no-times jetpack-test &> test_results/jetpack-test || true
-./mach marionette-test &> test_results/marionette-test || true
+# not working right now ./mach marionette-test &> test_results/marionette-test || true
 xvfb-run ./mach --log-no-times mochitest-a11y &> test_results/mochitest-a11y || true
 xvfb-run ./mach --log-no-times mochitest-browser &> test_results/mochitest-browser || true
 xvfb-run ./mach --log-no-times mochitest-chrome &> test_results/mochitest-chrome || true
 xvfb-run ./mach --log-no-times mochitest-devtools &> test_results/mochitest-devtools || true
 xvfb-run ./mach --log-no-times mochitest-plain &> test_results/mochitest-plain || true
 xvfb-run ./mach --log-no-times reftest &> test_results/reftest || true
-xvfb-run ./mach --log-no-times reftest-ipc &> test_results/reftest-ipc || true
-./mach --log-no-times webapprt-test-chrome &> test_results/webapprt-test-chrome || true
-./mach --log-no-times webapprt-test-content &> test_results/webapprt-test-content || true
+xvfb-run ./mach --log-no-times webapprt-test-chrome &> test_results/webapprt-test-chrome || true
+xvfb-run ./mach --log-no-times webapprt-test-content &> test_results/webapprt-test-content || true
 ./mach --log-no-times webidl-parser-test &> test_results/webidl-parser-test || true
 xvfb-run ./mach --log-no-times xpcshell-test &> test_results/xpcshell-test || true
 %if %{?system_nss}
 rm -f  objdir/dist/bin/certutil
+rm -f  objdir/dist/bin/pk12util
 %endif
 
 %endif
