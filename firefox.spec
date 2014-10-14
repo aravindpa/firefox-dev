@@ -92,14 +92,14 @@
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        32.0.2
-Release:        2%{?pre_tag}%{?dist}
+Version:        33.0
+Release:        1%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.bz2
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20140918.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20141014.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -117,8 +117,6 @@ Patch3:         mozilla-build-arm.patch
 Patch18:        xulrunner-24.0-jemalloc-ppc.patch
 # workaround linking issue on s390 (JSContext::updateMallocCounter(size_t) not found)
 Patch19:        xulrunner-24.0-s390-inlines.patch
-# backport js/src/configure.in changes for secondary arches
-Patch20:        xulrunner-32.0-backport-js-src-configure-in.patch
 
 # Fedora specific patches
 # Unable to install addons from https pages
@@ -251,12 +249,11 @@ cd %{tarballdir}
 %endif
 %patch18 -p2 -b .jemalloc-ppc
 %patch19 -p2 -b .s390-inlines
-%patch20 -p2 -b .js-configure
 
 # For branding specific patches.
 
 # Fedora patches
-%patch204 -p1 -b .966424
+%patch204 -p2 -b .966424
 %patch215 -p1 -b .addons
 %patch216 -p1 -b .duckduckgo
 # disable baseline JIT on i686 (rhbz#1047079)
@@ -711,6 +708,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Oct 14 2014 Martin Stransky <stransky@redhat.com> - 33.0-1
+- Update to 33.0 build 2
+
 * Fri Sep 19 2014 Jan Horak <jhorak@redhat.com> - 32.0.2-2
 - Added support for Mozilla tests
 
