@@ -93,7 +93,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        33.0
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -129,7 +129,9 @@ Patch217:        firefox-baseline-disable.patch
 
 # Upstream patches
 Patch300:        mozilla-858919.patch
-Patch301:        mozilla-1042889.patch
+Patch301:        mozilla-858919-2.patch
+Patch302:        mozilla-858919-3.patch
+Patch310:        mozilla-1042889.patch
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -269,7 +271,9 @@ cd %{tarballdir}
 
 # Upstream patches
 %patch300 -p1 -b .858919
-%patch301 -p1 -b .1042889
+%patch301 -p1 -b .858919
+%patch302 -p1 -b .858919
+%patch310 -p1 -b .1042889
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -715,6 +719,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Oct 15 2014 Martin Stransky <stransky@redhat.com> - 33.0-2
+- Added patches from mozbz#858919
+
 * Tue Oct 14 2014 Martin Stransky <stransky@redhat.com> - 33.0-1
 - Update to 33.0 build 2
 
