@@ -359,7 +359,7 @@ echo "ac_add_options --disable-ion" >> .mozconfig
 echo "ac_add_options --disable-yarr-jit" >> .mozconfig
 %endif
 
-%ifnarch %{ix86} x86_64 armv7hl armv7hnl
+%ifnarch %{ix86} x86_64
 echo "ac_add_options --disable-webrtc" >> .mozconfig
 %endif
 
