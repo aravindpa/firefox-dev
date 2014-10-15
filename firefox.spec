@@ -113,6 +113,7 @@ Source24:       mozilla-api-key
 Patch0:         firefox-install-dir.patch
 Patch1:         firefox-build.patch
 Patch3:         mozilla-build-arm.patch
+Patch4:         mozilla-build-arm-webrtc.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=814879#c3
 Patch18:        xulrunner-24.0-jemalloc-ppc.patch
 # workaround linking issue on s390 (JSContext::updateMallocCounter(size_t) not found)
@@ -248,7 +249,9 @@ cd %{tarballdir}
 
 %ifarch %{arm}
 %patch3  -p2 -b .arm
+%patch4  -p2 -b .arm
 %endif
+
 %patch18 -p2 -b .jemalloc-ppc
 %patch19 -p2 -b .s390-inlines
 %patch20 -p1 -b .prbool
