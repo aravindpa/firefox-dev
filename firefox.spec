@@ -10,8 +10,16 @@
 %define system_ffi        1
 %endif
 
+# Build for Gtk3?
+%define toolkit_gtk3      0
+
 # Use system cairo?
 %define system_cairo      0
+
+# Gtk3 needs system cairo
+%if %{toolkit_gtk3}
+%define system_cairo      1
+%endif
 
 %define enable_gstreamer  1
 
@@ -155,7 +163,11 @@ BuildRequires:  zip
 BuildRequires:  bzip2-devel
 BuildRequires:  zlib-devel
 BuildRequires:  libIDL-devel
+%if %{toolkit_gtk3}
+BuildRequires:  gtk3-devel
+%else
 BuildRequires:  gtk2-devel
+%endif
 BuildRequires:  krb5-devel
 BuildRequires:  pango-devel
 BuildRequires:  freetype-devel >= %{freetype_version}
@@ -288,6 +300,12 @@ cd %{tarballdir}
 %{__cat} %{SOURCE11} >> .mozconfig
 %endif
 %{__cp} %{SOURCE24} mozilla-api-key
+
+%if %{toolkit_gtk3}
+echo "ac_add_options --enable-default-toolkit=cairo-gtk3" >> .mozconfig
+%else
+echo "ac_add_options --enable-default-toolkit=cairo-gtk2" >> .mozconfig
+%endif
 
 %if %{?system_nss}
 echo "ac_add_options --with-system-nspr" >> .mozconfig
