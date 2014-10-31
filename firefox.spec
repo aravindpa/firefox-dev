@@ -42,7 +42,7 @@
 %define default_bookmarks_file %{_datadir}/bookmarks/default-bookmarks.html
 %define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 # Minimal required versions
-%global cairo_version 1.10.2
+%global cairo_version 1.13.1
 %global freetype_version 2.1.9
 %global libnotify_version 0.7.0
 %global libvpx_version 1.3.0
@@ -733,6 +733,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %exclude %{_includedir}
 %exclude %{_libdir}/firefox-devel-%{version}
 %exclude %{_datadir}/idl
+%if !%{?system_nss}
+%{mozappdir}/libfreebl3.chk
+%{mozappdir}/libnssdbm3.chk
+%{mozappdir}/libsoftokn3.chk
+%endif
 
 #---------------------------------------------------------------------
 
