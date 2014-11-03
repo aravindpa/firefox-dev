@@ -11,7 +11,11 @@
 %endif
 
 # Build for Gtk3?
+%if 0%{?fedora} <= 21
 %define toolkit_gtk3      0
+%else
+%define toolkit_gtk3      1
+%endif
 
 # Use system cairo?
 %define system_cairo      0
