@@ -101,7 +101,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        33.0
-Release:        2%{?pre_tag}%{?dist}
+Release:        3%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -127,6 +127,7 @@ Patch18:        xulrunner-24.0-jemalloc-ppc.patch
 # workaround linking issue on s390 (JSContext::updateMallocCounter(size_t) not found)
 Patch19:        xulrunner-24.0-s390-inlines.patch
 Patch20:        firefox-build-prbool.patch
+Patch21:        firefox-mozstub-build.patch
 
 # Fedora specific patches
 # Unable to install addons from https pages
@@ -140,6 +141,9 @@ Patch300:        mozilla-858919.patch
 Patch301:        mozilla-858919-2.patch
 Patch302:        mozilla-858919-3.patch
 Patch310:        mozilla-1042889.patch
+
+# Gtk3 upstream patches
+Patch402:        mozilla-gtk3-tab-size.patch
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -269,6 +273,7 @@ cd %{tarballdir}
 %patch18 -p2 -b .jemalloc-ppc
 %patch19 -p2 -b .s390-inlines
 %patch20 -p1 -b .prbool
+%patch21 -p2 -b .mozstub
 
 # For branding specific patches.
 
@@ -286,6 +291,10 @@ cd %{tarballdir}
 %patch301 -p1 -b .858919
 %patch302 -p1 -b .858919
 %patch310 -p1 -b .1042889
+
+%if %{toolkit_gtk3}
+%patch402 -p1 -b .gtk3-tab-size
+%endif
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -742,6 +751,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Nov 3 2014 Martin Stransky <stransky@redhat.com> - 33.0-3
+- Added Gtk3 support
+
 * Wed Oct 15 2014 Martin Stransky <stransky@redhat.com> - 33.0-2
 - Added patches from mozbz#858919
 
