@@ -105,7 +105,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        33.0
-Release:        3%{?pre_tag}%{?dist}
+Release:        4%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -403,6 +403,13 @@ echo "ac_add_options --disable-crashreporter" >> .mozconfig
 
 %if %{?run_tests}
 echo "ac_add_options --enable-tests" >> .mozconfig
+%endif
+
+# Hack - FF does not support new jpeg turbo library
+%if 0%{?fedora} > 21
+echo "ac_add_options --without-system-jpeg" >> .mozconfig
+%else
+echo "ac_add_options --with-system-jpeg" >> .mozconfig
 %endif
 
 #---------------------------------------------------------------------
@@ -754,6 +761,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Nov 4 2014 Martin Stransky <stransky@redhat.com> - 33.0-4
+- Do not use system libjpeg-turbo on rawhide
+
 * Mon Nov 3 2014 Martin Stransky <stransky@redhat.com> - 33.0-3
 - Added Gtk3 support
 
