@@ -173,9 +173,8 @@ BuildRequires:  zlib-devel
 BuildRequires:  libIDL-devel
 %if %{toolkit_gtk3}
 BuildRequires:  gtk3-devel
-%else
-BuildRequires:  gtk2-devel
 %endif
+BuildRequires:  gtk2-devel
 BuildRequires:  krb5-devel
 BuildRequires:  pango-devel
 BuildRequires:  freetype-devel >= %{freetype_version}
