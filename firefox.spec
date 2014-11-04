@@ -25,6 +25,14 @@
 %define system_cairo      1
 %endif
 
+# TODO Hack - FF does not support new jpeg turbo library
+# mozbz#1093615
+%if 0%{?fedora} > 21
+%define system_jpeg       0
+%else
+%define system_jpeg       1
+%endif
+
 %define enable_gstreamer  1
 
 # Separated plugins are supported on x86(64) only
@@ -190,6 +198,9 @@ BuildRequires:  libvpx-devel >= %{libvpx_version}
 BuildRequires:  autoconf213
 BuildRequires:  pulseaudio-libs-devel
 BuildRequires:  libicu-devel
+%if !%{?system_jpeg}
+BuildRequires:  yasm
+%endif
 
 Requires:       mozilla-filesystem
 %if %{?system_nss}
@@ -405,10 +416,8 @@ echo "ac_add_options --disable-crashreporter" >> .mozconfig
 echo "ac_add_options --enable-tests" >> .mozconfig
 %endif
 
-# TODO Hack - FF does not support new jpeg turbo library
-%if 0%{?fedora} > 21
+%if !%{?system_jpeg}
 echo "ac_add_options --without-system-jpeg" >> .mozconfig
-BuildRequires: yasm
 %else
 echo "ac_add_options --with-system-jpeg" >> .mozconfig
 %endif
