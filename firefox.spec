@@ -405,9 +405,10 @@ echo "ac_add_options --disable-crashreporter" >> .mozconfig
 echo "ac_add_options --enable-tests" >> .mozconfig
 %endif
 
-# Hack - FF does not support new jpeg turbo library
+# TODO Hack - FF does not support new jpeg turbo library
 %if 0%{?fedora} > 21
 echo "ac_add_options --without-system-jpeg" >> .mozconfig
+BuildRequires: yasm
 %else
 echo "ac_add_options --with-system-jpeg" >> .mozconfig
 %endif
