@@ -112,14 +112,14 @@
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        33.0
-Release:        5%{?pre_tag}%{?dist}
+Version:        33.1
+Release:        1%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.bz2
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20141014.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20141111.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -145,14 +145,12 @@ Patch21:        firefox-mozstub-build.patch
 # Unable to install addons from https pages
 Patch204:        rhbz-966424.patch
 Patch215:        firefox-enable-addons.patch
-Patch216:        firefox-duckduckgo.patch
 Patch217:        firefox-baseline-disable.patch
 
 # Upstream patches
 Patch300:        mozilla-858919.patch
 Patch301:        mozilla-858919-2.patch
 Patch302:        mozilla-858919-3.patch
-Patch310:        mozilla-1042889.patch
 
 # Gtk3 upstream patches
 Patch402:        mozilla-gtk3-tab-size.patch
@@ -294,7 +292,6 @@ cd %{tarballdir}
 # Fedora patches
 %patch204 -p2 -b .966424
 %patch215 -p1 -b .addons
-%patch216 -p1 -b .duckduckgo
 # disable baseline JIT on i686 (rhbz#1047079)
 %ifarch %{ix86}
 %patch217 -p2 -b .baseline
@@ -304,7 +301,6 @@ cd %{tarballdir}
 %patch300 -p1 -b .858919
 %patch301 -p1 -b .858919
 %patch302 -p1 -b .858919
-%patch310 -p1 -b .1042889
 
 %if %{toolkit_gtk3}
 %patch402 -p1 -b .gtk3-tab-size
@@ -771,6 +767,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Nov 11 2014 Martin Stransky <stransky@redhat.com> - 33.0-6
+- Update to 33.1 build 3
+
 * Mon Nov 10 2014 Martin Stransky <stransky@redhat.com> - 33.0-5
 - Fixed rhbz#1161110 - /usr/bin/firefox should not mess with TMPDIR
 
