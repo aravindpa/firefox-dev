@@ -113,7 +113,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        33.1
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -767,7 +767,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
-* Tue Nov 11 2014 Martin Stransky <stransky@redhat.com> - 33.0-6
+* Thu Nov 13 2014 Martin Stransky <stransky@redhat.com> - 33.1-2
+- Disabled downloads non-free OpenH264 blob on first start
+  (rhbz#1155499)
+
+* Tue Nov 11 2014 Martin Stransky <stransky@redhat.com> - 33.1-1
 - Update to 33.1 build 3
 
 * Mon Nov 10 2014 Martin Stransky <stransky@redhat.com> - 33.0-5
