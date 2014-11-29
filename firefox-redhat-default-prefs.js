@@ -20,3 +20,5 @@ pref("browser.startup.homepage",            "data:text/plain,browser.startup.hom
 pref("browser.newtabpage.pinned",           '[{"url":"http://start.fedoraproject.org/","title":"Fedora Project - Start Page"}]');
 pref("geo.wifi.uri", "https://location.services.mozilla.com/v1/geolocate?key=%MOZILLA_API_KEY%");
 pref("media.gmp-gmpopenh264.provider.enabled",false);
+pref("media.gmp-gmpopenh264.autoupdate",false);
+pref("media.gmp-gmpopenh264.enabled",false);
