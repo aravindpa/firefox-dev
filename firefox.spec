@@ -148,8 +148,6 @@ Patch217:        firefox-baseline-disable.patch
 
 # Upstream patches
 Patch300:        mozilla-858919.patch
-Patch301:        mozilla-858919-2.patch
-Patch302:        mozilla-858919-3.patch
 
 # Gtk3 upstream patches
 Patch402:        mozilla-gtk3-tab-size.patch
@@ -297,8 +295,6 @@ cd %{tarballdir}
 
 # Upstream patches
 %patch300 -p1 -b .858919
-%patch301 -p1 -b .858919
-%patch302 -p1 -b .858919
 
 %if %{toolkit_gtk3}
 %patch402 -p1 -b .gtk3-tab-size
