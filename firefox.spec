@@ -112,14 +112,14 @@
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        33.1
-Release:        2%{?pre_tag}%{?dist}
+Version:        34.0
+Release:        1%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.bz2
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20141111.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20141201.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -139,7 +139,6 @@ Patch18:        xulrunner-24.0-jemalloc-ppc.patch
 # workaround linking issue on s390 (JSContext::updateMallocCounter(size_t) not found)
 Patch19:        xulrunner-24.0-s390-inlines.patch
 Patch20:        firefox-build-prbool.patch
-Patch21:        firefox-mozstub-build.patch
 
 # Fedora specific patches
 # Unable to install addons from https pages
@@ -285,7 +284,6 @@ cd %{tarballdir}
 %patch18 -p2 -b .jemalloc-ppc
 %patch19 -p2 -b .s390-inlines
 %patch20 -p1 -b .prbool
-%patch21 -p2 -b .mozstub
 
 # For branding specific patches.
 
@@ -767,6 +765,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Dec 1 2014 Martin Stransky <stransky@redhat.com> - 34.0-1
+- Update to 34.0 build 2
+
 * Thu Nov 13 2014 Martin Stransky <stransky@redhat.com> - 33.1-2
 - Disabled downloads non-free OpenH264 blob on first start
   (rhbz#1155499)
