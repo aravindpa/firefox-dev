@@ -1,0 +1,127 @@
+# HG changeset patch
+# Parent 2c9781c3e9b5004d6070f62f3b14b517fc692150
+# User Jan Horak <jhorak@redhat.com>
+# Bug 1097550 - convert underscore in dictionary name to dash before calling nsStyleUtil::DashMatchCompare
+
+diff --git a/editor/composer/nsEditorSpellCheck.cpp b/editor/composer/nsEditorSpellCheck.cpp
+--- a/editor/composer/nsEditorSpellCheck.cpp
++++ b/editor/composer/nsEditorSpellCheck.cpp
+@@ -101,16 +101,33 @@ GetLoadContext(nsIEditor* aEditor)
+   nsCOMPtr<nsIDocument> doc = do_QueryInterface(domDoc);
+   NS_ENSURE_TRUE(doc, nullptr);
+ 
+   nsCOMPtr<nsILoadContext> loadContext = doc->GetLoadContext();
+   return loadContext.forget();
+ }
+ 
+ /**
++ * Helper function for converting underscore to dash in dictionary name,
++ * ie. en_CA to en-CA. This is required for some Linux distributions which
++ * use underscore as separator in system-wide installed dictionaries.
++ * We use it for nsStyleUtil::DashMatchCompare.
++ */
++static nsString
++GetDictNameWithDash(const nsAString& aDictName)
++{
++  nsString dictNameWithDash(aDictName);
++  int32_t underScore = dictNameWithDash.FindChar('_');
++  if (underScore != -1) {
++    dictNameWithDash.Replace(underScore, 1, '-');
++  }
++  return dictNameWithDash;
++}
++
++/**
+  * Fetches the dictionary stored in content prefs and maintains state during the
+  * fetch, which is asynchronous.
+  */
+ class DictionaryFetcher MOZ_FINAL : public nsIContentPrefCallback2
+ {
+ public:
+   NS_DECL_ISUPPORTS
+ 
+@@ -598,18 +615,18 @@ nsEditorSpellCheck::SetCurrentDictionary
+     nsDefaultStringComparator comparator;
+     nsAutoString langCode;
+     int32_t dashIdx = aDictionary.FindChar('-');
+     if (dashIdx != -1) {
+       langCode.Assign(Substring(aDictionary, 0, dashIdx));
+     } else {
+       langCode.Assign(aDictionary);
+     }
+-
+-    if (mPreferredLang.IsEmpty() || !nsStyleUtil::DashMatchCompare(mPreferredLang, langCode, comparator)) {
++    if (mPreferredLang.IsEmpty() ||
++        !nsStyleUtil::DashMatchCompare(GetDictNameWithDash(mPreferredLang), langCode, comparator)) {
+       // When user sets dictionary manually, we store this value associated
+       // with editor url.
+       StoreCurrentDictionary(mEditor, aDictionary);
+     } else {
+       // If user sets a dictionary matching (even partially), lang defined by
+       // document, we consider content pref has been canceled, and we clear it.
+       ClearCurrentDictionary(mEditor);
+     }
+@@ -745,22 +762,16 @@ nsEditorSpellCheck::DictionaryFetched(Di
+ 
+   // Then, try to use language computed from element
+   if (!mPreferredLang.IsEmpty()) {
+     dictName.Assign(mPreferredLang);
+   }
+ 
+   // otherwise, get language from preferences
+   nsAutoString preferedDict(Preferences::GetLocalizedString("spellchecker.dictionary"));
+-  // Replace '_' with '-' in case the user has an underscore stored in their
+-  // pref, see bug 992118 for how this could have happened.
+-  int32_t underScore = preferedDict.FindChar('_');
+-  if (underScore != -1) {
+-    preferedDict.Replace(underScore, 1, '-');
+-  }
+   if (dictName.IsEmpty()) {
+     dictName.Assign(preferedDict);
+   }
+ 
+   nsresult rv = NS_OK;
+   if (dictName.IsEmpty()) {
+     // Prefs didn't give us a dictionary name, so just get the current
+     // locale and use that as the default dictionary name!
+@@ -789,18 +800,18 @@ nsEditorSpellCheck::DictionaryFetched(Di
+       } else {
+         langCode.Assign(dictName);
+       }
+ 
+       nsDefaultStringComparator comparator;
+ 
+       // try dictionary.spellchecker preference if it starts with langCode (and
+       // if we haven't tried it already)
+-      if (!preferedDict.IsEmpty() && !dictName.Equals(preferedDict) && 
+-          nsStyleUtil::DashMatchCompare(preferedDict, langCode, comparator)) {
++      if (!preferedDict.IsEmpty() && !dictName.Equals(preferedDict) &&
++          nsStyleUtil::DashMatchCompare(GetDictNameWithDash(preferedDict), langCode, comparator)) {
+         rv = SetCurrentDictionary(preferedDict);
+       }
+ 
+       // Otherwise, try langCode (if we haven't tried it already)
+       if (NS_FAILED(rv)) {
+         if (!dictName.Equals(langCode) && !preferedDict.Equals(langCode)) {
+           rv = SetCurrentDictionary(langCode);
+         }
+@@ -818,18 +829,17 @@ nsEditorSpellCheck::DictionaryFetched(Di
+           nsAutoString dictStr(dictList.ElementAt(i));
+ 
+           if (dictStr.Equals(dictName) ||
+               dictStr.Equals(preferedDict) ||
+               dictStr.Equals(langCode)) {
+             // We have already tried it
+             continue;
+           }
+-
+-          if (nsStyleUtil::DashMatchCompare(dictStr, langCode, comparator) &&
++          if (nsStyleUtil::DashMatchCompare(GetDictNameWithDash(dictStr), langCode, comparator) &&
+               NS_SUCCEEDED(SetCurrentDictionary(dictStr))) {
+               break;
+           }
+         }
+       }
+     }
+   }
+ 
