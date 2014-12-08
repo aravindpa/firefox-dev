@@ -22,3 +22,4 @@ pref("geo.wifi.uri", "https://location.services.mozilla.com/v1/geolocate?key=%MO
 pref("media.gmp-gmpopenh264.provider.enabled",false);
 pref("media.gmp-gmpopenh264.autoupdate",false);
 pref("media.gmp-gmpopenh264.enabled",false);
+pref("media.gmp-gmpopenh264.enabled",false);

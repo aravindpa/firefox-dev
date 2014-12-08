@@ -113,7 +113,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        34.0
-Release:        2%{?pre_tag}%{?dist}
+Release:        3%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -152,6 +152,10 @@ Patch301:        mozilla-1097550-dict-fix.patch
 
 # Gtk3 upstream patches
 Patch402:        mozilla-gtk3-tab-size.patch
+Patch403:        mozilla-1051209.patch
+Patch404:        mozilla-1101582.patch
+Patch405:        mozilla-1073117-check.patch
+Patch406:        mozilla-1073117-color.patch
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -300,6 +304,10 @@ cd %{tarballdir}
 
 %if %{toolkit_gtk3}
 %patch402 -p1 -b .gtk3-tab-size
+%patch403 -p1 -b .1051209
+%patch404 -p1 -b .1101582
+%patch405 -p1 -b .1073117-check
+%patch406 -p1 -b .1073117-color
 %endif
 
 %if %{official_branding}
@@ -763,6 +771,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Dec 8 2014 Martin Stransky <stransky@redhat.com> - 34.0-3
+- Gtk3 flash plugin fix (rhbz#1171457)
+- Gtk3 theme fixes
+
 * Wed Dec  3 2014 Jan Horak <jhorak@redhat.com> - 34.0-2
 - Fix for mozbz#1097550 - wrong default dictionary
 
