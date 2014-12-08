@@ -1,0 +1,25 @@
+--- mozilla-release/toolkit/mozapps/plugins/content/pluginInstallerWizard.js
++++ mozilla-release/toolkit/mozapps/plugins/content/pluginInstallerWizard.js
+@@ -315,6 +315,11 @@
+                                                  xpiPlugins);
+   else
+     this.advancePage(null);
++}
++
++
++function endsWith(str, suffix) {
++    return str.indexOf(suffix, str.length - suffix.length) !== -1;
+ }
+ 
+ /*
+@@ -405,6 +410,9 @@
+ 
+   // manual install
+   if (aManualUrl) {
++    if (endsWith(aManualUrl, "use-java-plugin-to-view-interactive-content")) {
++     aManualUrl="http://icedtea.classpath.org/wiki/IcedTea-Web_On_Fedora_And_Rhel"
++    }
+     var myButton = document.createElement("button");
+ 
+     var manualInstallLabel = this.getString("pluginInstallationSummary.manualInstall.label");
+

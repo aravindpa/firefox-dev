@@ -113,7 +113,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        34.0
-Release:        3%{?pre_tag}%{?dist}
+Release:        4%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -145,6 +145,7 @@ Patch20:        firefox-build-prbool.patch
 Patch204:        rhbz-966424.patch
 Patch215:        firefox-enable-addons.patch
 Patch217:        firefox-baseline-disable.patch
+Patch218:        java-plugin-url.patch
 
 # Upstream patches
 Patch300:        mozilla-858919.patch
@@ -291,6 +292,7 @@ cd %{tarballdir}
 # For branding specific patches.
 
 # Fedora patches
+%patch218 -p1 -b .icedtea
 %patch204 -p2 -b .966424
 %patch215 -p1 -b .addons
 # disable baseline JIT on i686 (rhbz#1047079)
@@ -771,6 +773,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Dec 8 2014 Jiri Vanek  <jvanek@redhat.com> - 34.0-4
+- added and applied patch218, java-plugin-url.patch
+- fixed url for java plugin installation guide
+- resolves rhbz#979985
+
 * Mon Dec 8 2014 Martin Stransky <stransky@redhat.com> - 34.0-3
 - Gtk3 flash plugin fix (rhbz#1171457)
 - Gtk3 theme fixes
