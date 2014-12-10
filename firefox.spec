@@ -12,7 +12,7 @@
 
 # Build for Gtk3?
 %if 0%{?fedora} <= 21
-%define toolkit_gtk3      0
+%define toolkit_gtk3      1
 %else
 %define toolkit_gtk3      1
 %endif
@@ -113,7 +113,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        34.0
-Release:        4%{?pre_tag}%{?dist}
+Release:        5%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -773,7 +773,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
-* Fri Dec 8 2014 Jiri Vanek  <jvanek@redhat.com> - 34.0-4
+* Wed Dec 10 2014 Martin Stransky <stransky@redhat.com> - 34.0-5
+- Disabled flash plugin instllation pop-up (mozbz#1108645)
+
+* Mon Dec 8 2014 Jiri Vanek  <jvanek@redhat.com> - 34.0-4
 - added and applied patch218, java-plugin-url.patch
 - fixed url for java plugin installation guide
 - resolves rhbz#979985
