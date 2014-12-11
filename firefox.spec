@@ -12,7 +12,7 @@
 
 # Build for Gtk3?
 %if 0%{?fedora} <= 21
-%define toolkit_gtk3      1
+%define toolkit_gtk3      0
 %else
 %define toolkit_gtk3      1
 %endif
@@ -113,7 +113,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        34.0
-Release:        5%{?pre_tag}%{?dist}
+Release:        6%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -773,6 +773,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Dec 11 2014 Martin Stransky <stransky@redhat.com> - 34.0-6
+- Disabled Gtk3 on Fedora 21 and earlier (rhbz#1172926)
+
 * Wed Dec 10 2014 Martin Stransky <stransky@redhat.com> - 34.0-5
 - Disabled flash plugin instllation pop-up (mozbz#1108645)
 
