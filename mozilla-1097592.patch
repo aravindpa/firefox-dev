@@ -1,0 +1,56 @@
+# HG changeset patch
+# Parent 64206634959a2e84eefec40d1da0122c7a63bc20
+# User Martin Stransky <stransky@redhat.com>
+Bug 1097592 - Don't use PR_FindFunctionSymbolAndLibrary to avoid app freeze, r=?karlt
+
+diff --git a/widget/gtk/mozgtk/mozgtk.c b/widget/gtk/mozgtk/mozgtk.c
+--- a/widget/gtk/mozgtk/mozgtk.c
++++ b/widget/gtk/mozgtk/mozgtk.c
+@@ -116,16 +116,17 @@ STUB(gdk_x11_display_get_user_time)
+ STUB(gdk_x11_display_get_xdisplay)
+ STUB(gdk_x11_get_default_root_xwindow)
+ STUB(gdk_x11_get_default_xdisplay)
+ STUB(gdk_x11_get_xatom_by_name)
+ STUB(gdk_x11_lookup_xdisplay)
+ STUB(gdk_x11_screen_get_xscreen)
+ STUB(gdk_x11_visual_get_xvisual)
+ STUB(gdk_x11_window_lookup_for_display)
++STUB(gdk_x11_window_set_user_time)
+ STUB(gdk_x11_xatom_to_atom)
+ STUB(gtk_accel_label_new)
+ STUB(gtk_alignment_get_type)
+ STUB(gtk_alignment_new)
+ STUB(gtk_alignment_set_padding)
+ STUB(gtk_arrow_get_type)
+ STUB(gtk_arrow_new)
+ STUB(gtk_bindings_activate)
+diff --git a/widget/gtk/nsWindow.cpp b/widget/gtk/nsWindow.cpp
+--- a/widget/gtk/nsWindow.cpp
++++ b/widget/gtk/nsWindow.cpp
+@@ -1290,24 +1290,18 @@ SetUserTimeAndStartupIDForActivatedWindo
+         sn_launchee_context_new(snd, gdk_screen_get_number(screen),
+                                 desktopStartupID.get());
+     if (!ctx) {
+         sn_display_unref(snd);
+         return;
+     }
+ 
+     if (sn_launchee_context_get_id_has_timestamp(ctx)) {
+-        PRLibrary* gtkLibrary;
+-        SetUserTimeFunc setUserTimeFunc = (SetUserTimeFunc)
+-            PR_FindFunctionSymbolAndLibrary("gdk_x11_window_set_user_time", &gtkLibrary);
+-        if (setUserTimeFunc) {
+-            setUserTimeFunc(gdkWindow, sn_launchee_context_get_timestamp(ctx));
+-            PR_UnloadLibrary(gtkLibrary);
+-        }
+-    }
++        gdk_x11_window_set_user_time(gdkWindow, sn_launchee_context_get_timestamp(ctx));
++    }
+ 
+     sn_launchee_context_setup_window(ctx, gdk_x11_window_get_xid(gdkWindow));
+     sn_launchee_context_complete(ctx);
+ 
+     sn_launchee_context_unref(ctx);
+     sn_display_unref(snd);
+ #endif
+ 
