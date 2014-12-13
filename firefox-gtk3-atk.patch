@@ -1,0 +1,14 @@
+diff -up firefox-34.0/mozilla-release/accessible/atk/Platform.cpp.old firefox-34.0/mozilla-release/accessible/atk/Platform.cpp
+--- firefox-34.0/mozilla-release/accessible/atk/Platform.cpp.old	2014-11-26 03:17:05.000000000 +0100
++++ firefox-34.0/mozilla-release/accessible/atk/Platform.cpp	2014-12-13 17:40:29.414539391 +0100
+@@ -276,6 +276,9 @@ dbus_done:
+ bool
+ a11y::ShouldA11yBeEnabled()
+ {
++  // Temporary disable for Gtk3
++  return false;
++
+   static bool sChecked = false, sShouldEnable = false;
+   if (sChecked)
+     return sShouldEnable;
+diff -up firefox-34.0/mozilla-release/media/webrtc/trunk/Makefile.old firefox-34.0/mozilla-release/media/webrtc/trunk/Makefile
