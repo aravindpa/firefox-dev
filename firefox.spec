@@ -151,6 +151,7 @@ Patch219:        rhbz-1173156.patch
 # Upstream patches
 Patch300:        mozilla-858919.patch
 Patch301:        mozilla-1097550-dict-fix.patch
+Patch302:        mozilla-1050258.patch
 
 # Gtk3 upstream patches
 Patch402:        mozilla-gtk3-tab-size.patch
@@ -307,6 +308,7 @@ cd %{tarballdir}
 # Upstream patches
 %patch300 -p1 -b .858919
 %patch301 -p1 -b .1097550-dict-fix
+%patch302 -p1 -b .1050258
 
 %if %{toolkit_gtk3}
 %patch402 -p1 -b .gtk3-tab-size
@@ -782,6 +784,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 * Tue Dec 23 2014 Martin Stransky <stransky@redhat.com> - 34.0-9
 - Added fix for rhbz#1173156 - Native NTLM authentication
   on Linux unsupported
+- Added fix for rhbz#1170109 - data corruption bug on armhfp
 
 * Sat Dec 13 2014 Martin Stransky <stransky@redhat.com> - 34.0-8
 - Gtk3 - Workaround for Firefox freeze when accessibility is enabled
