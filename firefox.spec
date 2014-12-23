@@ -113,7 +113,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        34.0
-Release:        8%{?pre_tag}%{?dist}
+Release:        9%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -146,6 +146,7 @@ Patch204:        rhbz-966424.patch
 Patch215:        firefox-enable-addons.patch
 Patch217:        firefox-baseline-disable.patch
 Patch218:        java-plugin-url.patch
+Patch219:        rhbz-1173156.patch
 
 # Upstream patches
 Patch300:        mozilla-858919.patch
@@ -301,6 +302,7 @@ cd %{tarballdir}
 %ifarch %{ix86}
 %patch217 -p2 -b .baseline
 %endif
+%patch219 -p2 -b .rhbz-1173156
 
 # Upstream patches
 %patch300 -p1 -b .858919
@@ -777,6 +779,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Dec 23 2014 Martin Stransky <stransky@redhat.com> - 34.0-9
+- Added fix for rhbz#1173156 - Native NTLM authentication
+  on Linux unsupported
+
 * Sat Dec 13 2014 Martin Stransky <stransky@redhat.com> - 34.0-8
 - Gtk3 - Workaround for Firefox freeze when accessibility is enabled
 
