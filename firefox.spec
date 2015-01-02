@@ -113,7 +113,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        34.0
-Release:        9%{?pre_tag}%{?dist}
+Release:        10%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -160,7 +160,7 @@ Patch404:        mozilla-1101582.patch
 Patch405:        mozilla-1073117-check.patch
 Patch406:        mozilla-1073117-color.patch
 Patch407:        mozilla-1097592.patch
-Patch408:        firefox-gtk3-atk.patch
+Patch408:        mozilla-1110211.patch
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -317,7 +317,7 @@ cd %{tarballdir}
 %patch405 -p1 -b .1073117-check
 %patch406 -p1 -b .1073117-color
 %patch407 -p1 -b .1097592
-%patch408 -p2 -b .gtk3
+%patch408 -p2 -b .1110211
 %endif
 
 %if %{official_branding}
@@ -781,6 +781,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Jan 2 2014 Martin Stransky <stransky@redhat.com> - 34.0-10
+- Updated ATK patch for gtk3
+
 * Tue Dec 23 2014 Martin Stransky <stransky@redhat.com> - 34.0-9
 - Added fix for rhbz#1173156 - Native NTLM authentication
   on Linux unsupported

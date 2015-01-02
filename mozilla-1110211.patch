@@ -1,0 +1,95 @@
+diff -up firefox-34.0/mozilla-release/accessible/atk/Platform.cpp.gtk3 firefox-34.0/mozilla-release/accessible/atk/Platform.cpp
+--- firefox-34.0/mozilla-release/accessible/atk/Platform.cpp.gtk3	2014-11-26 03:17:05.000000000 +0100
++++ firefox-34.0/mozilla-release/accessible/atk/Platform.cpp	2015-01-02 15:28:48.948346742 +0100
+@@ -18,6 +18,9 @@
+ #include <dbus/dbus.h>
+ #endif
+ #include <gtk/gtk.h>
++#if (MOZ_WIDGET_GTK == 3)
++#include <atk-bridge.h>
++#endif
+ 
+ using namespace mozilla;
+ using namespace mozilla::a11y;
+@@ -43,6 +46,7 @@ static gulong sToplevel_hide_hook = 0;
+ 
+ GType g_atk_hyperlink_impl_type = G_TYPE_INVALID;
+ 
++#if (MOZ_WIDGET_GTK == 2)
+ struct GnomeAccessibilityModule
+ {
+     const char *libName;
+@@ -119,6 +123,7 @@ LoadGtkModule(GnomeAccessibilityModule&
+     }
+     return NS_OK;
+ }
++#endif // (MOZ_WIDGET_GTK == 2)
+ 
+ void
+ a11y::PlatformInit()
+@@ -158,20 +163,26 @@ a11y::PlatformInit()
+     }
+   }
+ 
++#if (MOZ_WIDGET_GTK == 2)
+   // Load and initialize gail library.
+   nsresult rv = LoadGtkModule(sGail);
+   if (NS_SUCCEEDED(rv))
+     (*sGail.init)();
++#endif
+ 
+   // Initialize the MAI Utility class, it will overwrite gail_util.
+   g_type_class_unref(g_type_class_ref(mai_util_get_type()));
+ 
+   // Init atk-bridge now
+   PR_SetEnv("NO_AT_BRIDGE=0");
++#if (MOZ_WIDGET_GTK == 2)
+   rv = LoadGtkModule(sAtkBridge);
+   if (NS_SUCCEEDED(rv)) {
+     (*sAtkBridge.init)();
+   }
++#else
++  atk_bridge_adaptor_init(nullptr, nullptr);
++#endif
+ 
+   if (!sToplevel_event_hook_added) {
+     sToplevel_event_hook_added = true;
+@@ -199,6 +210,7 @@ a11y::PlatformShutdown()
+                                     sToplevel_hide_hook);
+     }
+ 
++#if (MOZ_WIDGET_GTK == 2)
+     if (sAtkBridge.lib) {
+         // Do not shutdown/unload atk-bridge,
+         // an exit function registered will take care of it
+@@ -220,6 +232,7 @@ a11y::PlatformShutdown()
+         sGail.init = nullptr;
+         sGail.shutdown = nullptr;
+     }
++#endif
+     // if (sATKLib) {
+     //     PR_UnloadLibrary(sATKLib);
+     //     sATKLib = nullptr;
+diff -up firefox-34.0/mozilla-release/config/system-headers.gtk3 firefox-34.0/mozilla-release/config/system-headers
+--- firefox-34.0/mozilla-release/config/system-headers.gtk3	2014-11-26 03:17:09.000000000 +0100
++++ firefox-34.0/mozilla-release/config/system-headers	2015-01-02 15:28:48.948346742 +0100
+@@ -189,6 +189,7 @@ asm/signal.h
+ ASRegistry.h
+ assert.h
+ atk/atk.h
++atk-bridge.h
+ atlcom.h
+ atlconv.h
+ atlctl.cpp
+diff -up firefox-34.0/mozilla-release/configure.in.gtk3 firefox-34.0/mozilla-release/configure.in
+--- firefox-34.0/mozilla-release/configure.in.gtk3	2015-01-02 15:28:48.950346747 +0100
++++ firefox-34.0/mozilla-release/configure.in	2015-01-02 15:30:42.253625279 +0100
+@@ -4282,7 +4282,7 @@ fi
+ 
+ if test "$COMPILE_ENVIRONMENT"; then
+   if test "$MOZ_ENABLE_GTK3"; then
+-    PKG_CHECK_MODULES(MOZ_GTK3, gtk+-3.0 >= $GTK3_VERSION gtk+-unix-print-3.0 glib-2.0 gobject-2.0 $GDK_PACKAGES)
++    PKG_CHECK_MODULES(MOZ_GTK3, gtk+-3.0 >= $GTK3_VERSION gtk+-unix-print-3.0 glib-2.0 gobject-2.0 atk-bridge-2.0 $GDK_PACKAGES)
+     MOZ_GTK3_CFLAGS="-I${_topsrcdir}/widget/gtk/compat-gtk3 $MOZ_GTK3_CFLAGS"
+     TK_LIBS=$MOZ_GTK3_LIBS
+   fi
