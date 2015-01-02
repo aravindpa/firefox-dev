@@ -25,13 +25,7 @@
 %define system_cairo      1
 %endif
 
-# TODO Hack - FF does not support new jpeg turbo library
-# mozbz#1093615
-%if 0%{?fedora} > 21
-%define system_jpeg       0
-%else
 %define system_jpeg       1
-%endif
 
 %define enable_gstreamer  1
 
@@ -113,7 +107,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        34.0
-Release:        10%{?pre_tag}%{?dist}
+Release:        11%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -781,7 +775,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
-* Fri Jan 2 2015 Martin Stransky <stransky@redhat.com> - 34.0-10
+* Fri Jan 2 2015 Martin Stransky <stransky@redhat.com> - 34.0-11
+- Build with system jpeg on rawhide
 - Updated ATK patch for gtk3
 
 * Tue Dec 23 2014 Martin Stransky <stransky@redhat.com> - 34.0-9
