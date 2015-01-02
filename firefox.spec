@@ -781,7 +781,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
-* Fri Jan 2 2014 Martin Stransky <stransky@redhat.com> - 34.0-10
+* Fri Jan 2 2015 Martin Stransky <stransky@redhat.com> - 34.0-10
 - Updated ATK patch for gtk3
 
 * Tue Dec 23 2014 Martin Stransky <stransky@redhat.com> - 34.0-9
