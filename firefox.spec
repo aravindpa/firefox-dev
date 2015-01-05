@@ -107,7 +107,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        34.0
-Release:        11%{?pre_tag}%{?dist}
+Release:        12%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -141,6 +141,7 @@ Patch215:        firefox-enable-addons.patch
 Patch217:        firefox-baseline-disable.patch
 Patch218:        java-plugin-url.patch
 Patch219:        rhbz-1173156.patch
+Patch220:        rhbz-1014858.patch
 
 # Upstream patches
 Patch300:        mozilla-858919.patch
@@ -298,6 +299,7 @@ cd %{tarballdir}
 %patch217 -p2 -b .baseline
 %endif
 %patch219 -p2 -b .rhbz-1173156
+%patch220 -p1 -b .rhbz-1014858
 
 # Upstream patches
 %patch300 -p1 -b .858919
@@ -775,6 +777,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Jan 5 2015 Martin Stransky <stransky@redhat.com> - 34.0-12
+- Fixed rhbz#1014858 - GLib-CRITICAL **: g_slice_set_config:
+  assertion `sys_page_size == 0' failed
+
 * Fri Jan 2 2015 Martin Stransky <stransky@redhat.com> - 34.0-11
 - Build with system jpeg on rawhide
 - Updated ATK patch for gtk3
