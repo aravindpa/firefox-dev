@@ -1,6 +1,6 @@
-diff -up firefox-34.0/mozilla-release/accessible/atk/Platform.cpp.gtk3 firefox-34.0/mozilla-release/accessible/atk/Platform.cpp
---- firefox-34.0/mozilla-release/accessible/atk/Platform.cpp.gtk3	2014-11-26 03:17:05.000000000 +0100
-+++ firefox-34.0/mozilla-release/accessible/atk/Platform.cpp	2015-01-02 15:28:48.948346742 +0100
+diff -up firefox-35.0/mozilla-release/accessible/atk/Platform.cpp.1110211 firefox-35.0/mozilla-release/accessible/atk/Platform.cpp
+--- firefox-35.0/mozilla-release/accessible/atk/Platform.cpp.1110211	2015-01-06 06:11:41.000000000 +0100
++++ firefox-35.0/mozilla-release/accessible/atk/Platform.cpp	2015-01-06 12:24:02.508105586 +0100
 @@ -18,6 +18,9 @@
  #include <dbus/dbus.h>
  #endif
@@ -70,9 +70,9 @@ diff -up firefox-34.0/mozilla-release/accessible/atk/Platform.cpp.gtk3 firefox-3
      // if (sATKLib) {
      //     PR_UnloadLibrary(sATKLib);
      //     sATKLib = nullptr;
-diff -up firefox-34.0/mozilla-release/config/system-headers.gtk3 firefox-34.0/mozilla-release/config/system-headers
---- firefox-34.0/mozilla-release/config/system-headers.gtk3	2014-11-26 03:17:09.000000000 +0100
-+++ firefox-34.0/mozilla-release/config/system-headers	2015-01-02 15:28:48.948346742 +0100
+diff -up firefox-35.0/mozilla-release/config/system-headers.1110211 firefox-35.0/mozilla-release/config/system-headers
+--- firefox-35.0/mozilla-release/config/system-headers.1110211	2015-01-06 06:11:48.000000000 +0100
++++ firefox-35.0/mozilla-release/config/system-headers	2015-01-06 12:24:02.508105586 +0100
 @@ -189,6 +189,7 @@ asm/signal.h
  ASRegistry.h
  assert.h
@@ -81,15 +81,15 @@ diff -up firefox-34.0/mozilla-release/config/system-headers.gtk3 firefox-34.0/mo
  atlcom.h
  atlconv.h
  atlctl.cpp
-diff -up firefox-34.0/mozilla-release/configure.in.gtk3 firefox-34.0/mozilla-release/configure.in
---- firefox-34.0/mozilla-release/configure.in.gtk3	2015-01-02 15:28:48.950346747 +0100
-+++ firefox-34.0/mozilla-release/configure.in	2015-01-02 15:30:42.253625279 +0100
-@@ -4282,7 +4282,7 @@ fi
+diff -up firefox-35.0/mozilla-release/configure.in.1110211 firefox-35.0/mozilla-release/configure.in
+--- firefox-35.0/mozilla-release/configure.in.1110211	2015-01-06 12:24:02.509105590 +0100
++++ firefox-35.0/mozilla-release/configure.in	2015-01-06 12:24:49.419274706 +0100
+@@ -4364,7 +4364,7 @@ fi
  
  if test "$COMPILE_ENVIRONMENT"; then
    if test "$MOZ_ENABLE_GTK3"; then
 -    PKG_CHECK_MODULES(MOZ_GTK3, gtk+-3.0 >= $GTK3_VERSION gtk+-unix-print-3.0 glib-2.0 gobject-2.0 $GDK_PACKAGES)
 +    PKG_CHECK_MODULES(MOZ_GTK3, gtk+-3.0 >= $GTK3_VERSION gtk+-unix-print-3.0 glib-2.0 gobject-2.0 atk-bridge-2.0 $GDK_PACKAGES)
      MOZ_GTK3_CFLAGS="-I${_topsrcdir}/widget/gtk/compat-gtk3 $MOZ_GTK3_CFLAGS"
-     TK_LIBS=$MOZ_GTK3_LIBS
-   fi
+     dnl Contrary to MOZ_GTK2_LIBS, MOZ_GTK3_LIBS needs to be literally added to TK_LIBS instead
+     dnl of a make reference because of how TK_LIBS is mangled in toolkit/library/moz.build

@@ -106,14 +106,14 @@
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        34.0
-Release:        12%{?pre_tag}%{?dist}
+Version:        35.0
+Release:        1%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.bz2
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20141201.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20150106.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -138,19 +138,15 @@ Patch20:        firefox-build-prbool.patch
 # Unable to install addons from https pages
 Patch204:        rhbz-966424.patch
 Patch215:        firefox-enable-addons.patch
-Patch217:        firefox-baseline-disable.patch
-Patch218:        java-plugin-url.patch
+#Patch217:        firefox-baseline-disable.patch
 Patch219:        rhbz-1173156.patch
 Patch220:        rhbz-1014858.patch
 
 # Upstream patches
 Patch300:        mozilla-858919.patch
 Patch301:        mozilla-1097550-dict-fix.patch
-Patch302:        mozilla-1050258.patch
 
 # Gtk3 upstream patches
-Patch402:        mozilla-gtk3-tab-size.patch
-Patch403:        mozilla-1051209.patch
 Patch404:        mozilla-1101582.patch
 Patch405:        mozilla-1073117-check.patch
 Patch406:        mozilla-1073117-color.patch
@@ -291,24 +287,20 @@ cd %{tarballdir}
 # For branding specific patches.
 
 # Fedora patches
-%patch218 -p1 -b .icedtea
 %patch204 -p2 -b .966424
 %patch215 -p1 -b .addons
 # disable baseline JIT on i686 (rhbz#1047079)
-%ifarch %{ix86}
-%patch217 -p2 -b .baseline
-%endif
+#%ifarch %{ix86}
+#%patch217 -p2 -b .baseline
+#%endif
 %patch219 -p2 -b .rhbz-1173156
 %patch220 -p1 -b .rhbz-1014858
 
 # Upstream patches
 %patch300 -p1 -b .858919
 %patch301 -p1 -b .1097550-dict-fix
-%patch302 -p1 -b .1050258
 
 %if %{toolkit_gtk3}
-%patch402 -p1 -b .gtk3-tab-size
-%patch403 -p1 -b .1051209
 %patch404 -p1 -b .1101582
 %patch405 -p1 -b .1073117-check
 %patch406 -p1 -b .1073117-color
@@ -777,6 +769,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Jan 6 2015 Martin Stransky <stransky@redhat.com> - 35.0-1
+- Update to 35.0 Build 1
+
 * Mon Jan 5 2015 Martin Stransky <stransky@redhat.com> - 34.0-12
 - Fixed rhbz#1014858 - GLib-CRITICAL **: g_slice_set_config:
   assertion `sys_page_size == 0' failed
