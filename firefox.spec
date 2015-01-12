@@ -771,7 +771,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
-* Fri Jan96 2015 Martin Stransky <stransky@redhat.com> - 35.0-2
+* Fri Jan 12 2015 Martin Stransky <stransky@redhat.com> - 35.0-2
 - Update to 35.0 Build 3
 - Gtk3 - added fix for button/entry box sizes
 
