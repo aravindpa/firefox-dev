@@ -153,6 +153,7 @@ Patch406:        mozilla-1073117-color.patch
 Patch407:        mozilla-1097592.patch
 Patch408:        mozilla-1110211.patch
 Patch409:        mozilla-1073117-entry-button-size.patch
+Patch410:        mozilla-1073117-button-focus.patch
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -308,6 +309,7 @@ cd %{tarballdir}
 %patch407 -p1 -b .1097592
 %patch408 -p2 -b .1110211
 %patch409 -p1 -b .1073117-entry-button-size
+%patch410 -p1 -b .1073117-button-focus
 %endif
 
 %if %{official_branding}
@@ -774,6 +776,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 * Fri Jan 12 2015 Martin Stransky <stransky@redhat.com> - 35.0-2
 - Update to 35.0 Build 3
 - Gtk3 - added fix for button/entry box sizes
+- Gtk3 - added fix for button/entry focus sizes
 
 * Tue Jan 6 2015 Martin Stransky <stransky@redhat.com> - 35.0-1
 - Update to 35.0 Build 1
