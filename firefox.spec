@@ -767,6 +767,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %changelog
 * Wed Jan 14 2015 Martin Stransky <stransky@redhat.com> - 35.0-3
 - Gtk3 - replaced obsoleted focus properties
+- Make start.fedoraproject.org the homepage
 
 * Mon Jan 12 2015 Martin Stransky <stransky@redhat.com> - 35.0-2
 - Update to 35.0 Build 3
