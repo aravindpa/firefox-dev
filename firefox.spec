@@ -107,7 +107,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        35.0
-Release:        4%{?pre_tag}%{?dist}
+Release:        5%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -156,6 +156,7 @@ Patch409:        mozilla-1073117-entry-button-size.patch
 Patch410:        mozilla-1073117-button-focus.patch
 Patch411:        mozilla-1073117-focus-sizes.patch
 Patch412:        mozilla-1073117-no-gap-tab.patch
+Patch413:        mozilla-975919-gtk3-hidpi.patch
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -314,6 +315,7 @@ cd %{tarballdir}
 %patch410 -p1 -b .1073117-button-focus
 %patch411 -p1 -b .1073117-focus-sizes
 %patch412 -p1 -b .1073117-no-gap-tab
+%patch413 -p1 -b .975919-gtk3-hidpi
 %endif
 
 %if %{official_branding}
@@ -767,9 +769,12 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Jan 19 2015 Martin Stransky <stransky@redhat.com> - 35.0-5
+- Enable release build config
+- Gtk3 - added patch for HiDPI support (mozbz#975919)
+
 * Mon Jan 19 2015 Martin Stransky <stransky@redhat.com> - 35.0-4
 - Gtk3 - fixed tabs rendering
-- Enable release build config
 
 * Wed Jan 14 2015 Martin Stransky <stransky@redhat.com> - 35.0-3
 - Gtk3 - replaced obsoleted focus properties
