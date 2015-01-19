@@ -769,6 +769,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %changelog
 * Mon Jan 19 2015 Martin Stransky <stransky@redhat.com> - 35.0-4
 - Gtk3 - fixed tabs rendering
+- Enable release build config
 
 * Wed Jan 14 2015 Martin Stransky <stransky@redhat.com> - 35.0-3
 - Gtk3 - replaced obsoleted focus properties
