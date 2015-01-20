@@ -1,17 +1,7 @@
-# HG changeset patch
-# Parent 7b33ee7fd162d784f382250d3fa811e86a1b7348
-# User Andrew Comminos <andrew@morlunk.com>
-Bug 975919 - Added support for HiDPI on GTK 3.10+
-
-diff --git a/widget/gtk/nsGtkUtils.h b/widget/gtk/nsGtkUtils.h
---- a/widget/gtk/nsGtkUtils.h
-+++ b/widget/gtk/nsGtkUtils.h
-@@ -4,16 +4,17 @@
- /* This Source Code Form is subject to the terms of the Mozilla Public
-  * License, v. 2.0. If a copy of the MPL was not distributed with this
-  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
- 
- #ifndef nsGtkUtils_h__
+diff -up mozilla-release/widget/gtk/nsGtkUtils.h.975919-gtk3-hidpi mozilla-release/widget/gtk/nsGtkUtils.h
+--- mozilla-release/widget/gtk/nsGtkUtils.h.975919-gtk3-hidpi	2015-01-09 05:38:28.000000000 +0100
++++ mozilla-release/widget/gtk/nsGtkUtils.h	2015-01-19 18:43:30.101191071 +0100
+@@ -9,6 +9,7 @@
  #define nsGtkUtils_h__
  
  #include <glib.h>
@@ -19,20 +9,18 @@ diff --git a/widget/gtk/nsGtkUtils.h b/widget/gtk/nsGtkUtils.h
  
  // Some gobject functions expect functions for gpointer arguments.
  // gpointer is void* but C++ doesn't like casting functions to void*.
- template<class T> static inline gpointer
- FuncToGpointer(T aFunction)
- {
-     return reinterpret_cast<gpointer>
-         (reinterpret_cast<uintptr_t>
-diff --git a/widget/gtk/nsLookAndFeel.cpp b/widget/gtk/nsLookAndFeel.cpp
---- a/widget/gtk/nsLookAndFeel.cpp
-+++ b/widget/gtk/nsLookAndFeel.cpp
-@@ -728,16 +728,27 @@ GetSystemFontInfo(GtkWidget *aWidget,
+diff -up mozilla-release/widget/gtk/nsLookAndFeel.cpp.975919-gtk3-hidpi mozilla-release/widget/gtk/nsLookAndFeel.cpp
+--- mozilla-release/widget/gtk/nsLookAndFeel.cpp.975919-gtk3-hidpi	2015-01-19 18:43:30.081191055 +0100
++++ mozilla-release/widget/gtk/nsLookAndFeel.cpp	2015-01-20 13:16:48.005399364 +0100
+@@ -7,6 +7,7 @@
  
-     // |size| is now either pixels or pango-points (not Mozilla-points!)
+ // for strtod()
+ #include <stdlib.h>
++#include <dlfcn.h>
  
-     if (!pango_font_description_get_size_is_absolute(desc)) {
-         // |size| is in pango-points, so convert to pixels.
+ #include "nsLookAndFeel.h"
+ 
+@@ -733,6 +734,17 @@ GetSystemFontInfo(GtkWidget *aWidget,
          size *= float(gfxPlatformGtk::GetDPI()) / POINTS_PER_INCH_FLOAT;
      }
  
@@ -50,20 +38,10 @@ diff --git a/widget/gtk/nsLookAndFeel.cpp b/widget/gtk/nsLookAndFeel.cpp
      // |size| is now pixels
  
      aFontStyle->size = size;
- 
-     pango_font_description_free(desc);
- }
- 
- static void
-diff --git a/widget/gtk/nsScreenGtk.cpp b/widget/gtk/nsScreenGtk.cpp
---- a/widget/gtk/nsScreenGtk.cpp
-+++ b/widget/gtk/nsScreenGtk.cpp
-@@ -6,20 +6,20 @@
- #include "nsScreenGtk.h"
- 
- #include <gdk/gdk.h>
- #ifdef MOZ_X11
- #include <gdk/gdkx.h>
+diff -up mozilla-release/widget/gtk/nsScreenGtk.cpp.975919-gtk3-hidpi mozilla-release/widget/gtk/nsScreenGtk.cpp
+--- mozilla-release/widget/gtk/nsScreenGtk.cpp.975919-gtk3-hidpi	2015-01-09 05:38:28.000000000 +0100
++++ mozilla-release/widget/gtk/nsScreenGtk.cpp	2015-01-19 18:43:30.102191072 +0100
+@@ -11,10 +11,10 @@
  #include <X11/Xatom.h>
  #endif
  #include <gtk/gtk.h>
@@ -75,17 +53,7 @@ diff --git a/widget/gtk/nsScreenGtk.cpp b/widget/gtk/nsScreenGtk.cpp
  nsScreenGtk :: nsScreenGtk (  )
    : mScreenNum(0),
      mRect(0, 0, 0, 0),
-     mAvailRect(0, 0, 0, 0),
-     mId(++sScreenId)
- {
- }
- 
-@@ -35,37 +35,68 @@ nsScreenGtk :: GetId(uint32_t *aId)
-   *aId = mId;
-   return NS_OK;
- } // GetId
- 
- 
+@@ -40,6 +40,37 @@ nsScreenGtk :: GetId(uint32_t *aId)
  NS_IMETHODIMP
  nsScreenGtk :: GetRect(int32_t *outLeft, int32_t *outTop, int32_t *outWidth, int32_t *outHeight)
  {
@@ -123,7 +91,7 @@ diff --git a/widget/gtk/nsScreenGtk.cpp b/widget/gtk/nsScreenGtk.cpp
    *outLeft = mRect.x;
    *outTop = mRect.y;
    *outWidth = mRect.width;
-   *outHeight = mRect.height;
+@@ -47,11 +78,11 @@ nsScreenGtk :: GetRect(int32_t *outLeft,
  
    return NS_OK;
    
@@ -137,8 +105,7 @@ diff --git a/widget/gtk/nsScreenGtk.cpp b/widget/gtk/nsScreenGtk.cpp
  {
    *outLeft = mAvailRect.x;
    *outTop = mAvailRect.y;
-   *outWidth = mAvailRect.width;
-   *outHeight = mAvailRect.height;
+@@ -60,7 +91,7 @@ nsScreenGtk :: GetAvailRect(int32_t *out
  
    return NS_OK;
    
@@ -147,17 +114,7 @@ diff --git a/widget/gtk/nsScreenGtk.cpp b/widget/gtk/nsScreenGtk.cpp
  
  
  NS_IMETHODIMP 
- nsScreenGtk :: GetPixelDepth(int32_t *aPixelDepth)
- {
-   GdkVisual * visual = gdk_screen_get_system_visual(gdk_screen_get_default());
-   *aPixelDepth = gdk_visual_get_depth(visual);
- 
-@@ -77,16 +108,33 @@ nsScreenGtk :: GetPixelDepth(int32_t *aP
- NS_IMETHODIMP 
- nsScreenGtk :: GetColorDepth(int32_t *aColorDepth)
- {
-   return GetPixelDepth ( aColorDepth );
- 
+@@ -82,6 +113,23 @@ nsScreenGtk :: GetColorDepth(int32_t *aC
  } // GetColorDepth
  
  
@@ -181,20 +138,10 @@ diff --git a/widget/gtk/nsScreenGtk.cpp b/widget/gtk/nsScreenGtk.cpp
  void
  nsScreenGtk :: Init (GdkWindow *aRootWindow)
  {
-   // We listen for configure events on the root window to pick up
-   // changes to this rect.  We could listen for "size_changed" signals
-   // on the default screen to do this, except that doesn't work with
-   // versions of GDK predating the GdkScreen object.  See bug 256646.
-   mAvailRect = mRect = nsIntRect(0, 0, gdk_screen_width(), gdk_screen_height());
-diff --git a/widget/gtk/nsScreenGtk.h b/widget/gtk/nsScreenGtk.h
---- a/widget/gtk/nsScreenGtk.h
-+++ b/widget/gtk/nsScreenGtk.h
-@@ -28,18 +28,21 @@ class nsScreenGtk : public nsBaseScreen
- {
- public:
-   nsScreenGtk();
-   ~nsScreenGtk();
- 
+diff -up mozilla-release/widget/gtk/nsScreenGtk.h.975919-gtk3-hidpi mozilla-release/widget/gtk/nsScreenGtk.h
+--- mozilla-release/widget/gtk/nsScreenGtk.h.975919-gtk3-hidpi	2015-01-09 05:38:28.000000000 +0100
++++ mozilla-release/widget/gtk/nsScreenGtk.h	2015-01-19 18:43:30.102191072 +0100
+@@ -33,8 +33,11 @@ public:
    NS_IMETHOD GetId(uint32_t* aId);
    NS_IMETHOD GetRect(int32_t* aLeft, int32_t* aTop, int32_t* aWidth, int32_t* aHeight);
    NS_IMETHOD GetAvailRect(int32_t* aLeft, int32_t* aTop, int32_t* aWidth, int32_t* aHeight);
@@ -206,20 +153,10 @@ diff --git a/widget/gtk/nsScreenGtk.h b/widget/gtk/nsScreenGtk.h
  
    void Init(GdkWindow *aRootWindow);
  #ifdef MOZ_X11
-   void Init(XineramaScreenInfo *aScreenInfo);
- #endif /* MOZ_X11 */
- 
- private:
-   uint32_t mScreenNum;
-diff --git a/widget/gtk/nsWindow.cpp b/widget/gtk/nsWindow.cpp
---- a/widget/gtk/nsWindow.cpp
-+++ b/widget/gtk/nsWindow.cpp
-@@ -466,16 +466,19 @@ nsWindow::DispatchResized(int32_t aWidth
- 
- nsresult
- nsWindow::DispatchEvent(WidgetGUIEvent* aEvent, nsEventStatus& aStatus)
- {
- #ifdef DEBUG
+diff -up mozilla-release/widget/gtk/nsWindow.cpp.975919-gtk3-hidpi mozilla-release/widget/gtk/nsWindow.cpp
+--- mozilla-release/widget/gtk/nsWindow.cpp.975919-gtk3-hidpi	2015-01-19 18:43:30.084191057 +0100
++++ mozilla-release/widget/gtk/nsWindow.cpp	2015-01-19 18:43:30.104191074 +0100
+@@ -471,6 +471,9 @@ nsWindow::DispatchEvent(WidgetGUIEvent*
      debug_DumpEvent(stdout, aEvent->widget, aEvent,
                      nsAutoCString("something"), 0);
  #endif
@@ -229,17 +166,7 @@ diff --git a/widget/gtk/nsWindow.cpp b/widget/gtk/nsWindow.cpp
  
      aStatus = nsEventStatus_eIgnore;
      nsIWidgetListener* listener =
-         mAttachedWidgetListener ? mAttachedWidgetListener : mWidgetListener;
-     if (listener) {
-       aStatus = listener->HandleEvent(aEvent, mUseAttachedEvents);
-     }
- 
-@@ -724,16 +727,22 @@ nsWindow::GetDPI()
-     double heightInches = DisplayHeightMM(dpy, defaultScreen)/MM_PER_INCH_FLOAT;
-     if (heightInches < 0.25) {
-         // Something's broken, but we'd better not crash.
-         return 96.0f;
-     }
+@@ -729,6 +732,12 @@ nsWindow::GetDPI()
      return float(DisplayHeight(dpy, defaultScreen)/heightInches);
  }
  
@@ -252,17 +179,7 @@ diff --git a/widget/gtk/nsWindow.cpp b/widget/gtk/nsWindow.cpp
  NS_IMETHODIMP
  nsWindow::SetParent(nsIWidget *aNewParent)
  {
-     if (mContainer || !mGdkWindow) {
-         NS_NOTREACHED("nsWindow::SetParent called illegally");
-         return NS_ERROR_NOT_IMPLEMENTED;
-     }
- 
-@@ -822,18 +831,19 @@ nsWindow::ReparentNativeWidgetInternal(n
-             SetWidgetForHierarchy(mGdkWindow, aOldContainer, aNewContainer);
- 
-             if (aOldContainer == gInvisibleContainer) {
-                 CheckDestroyInvisibleContainer();
-             }
+@@ -827,8 +836,9 @@ nsWindow::ReparentNativeWidgetInternal(n
          }
  
          if (!mIsTopLevel) {
@@ -274,17 +191,7 @@ diff --git a/widget/gtk/nsWindow.cpp b/widget/gtk/nsWindow.cpp
          }
      }
  
-     nsWindow* newParent = static_cast<nsWindow*>(aNewParent);
-     bool parentHasMappedToplevel =
-         newParent && newParent->mHasMappedToplevel;
-     if (mHasMappedToplevel != parentHasMappedToplevel) {
-         SetHasMappedToplevel(parentHasMappedToplevel);
-@@ -858,52 +868,56 @@ nsWindow::IsVisible() const
- {
-     return mIsShown;
- }
- 
- NS_IMETHODIMP
+@@ -863,26 +873,26 @@ NS_IMETHODIMP
  nsWindow::ConstrainPosition(bool aAllowSlop, int32_t *aX, int32_t *aY)
  {
      if (mIsTopLevel && mShell) {
@@ -321,12 +228,7 @@ diff --git a/widget/gtk/nsWindow.cpp b/widget/gtk/nsWindow.cpp
          }
      }
      return NS_OK;
- }
- 
- void nsWindow::SetSizeConstraints(const SizeConstraints& aConstraints)
- {
-     mSizeConstraints.mMinSize = GetSafeWindowSize(aConstraints.mMinSize);
-     mSizeConstraints.mMaxSize = GetSafeWindowSize(aConstraints.mMaxSize);
+@@ -895,10 +905,14 @@ void nsWindow::SetSizeConstraints(const
  
      if (mShell) {
          GdkGeometry geometry;
@@ -345,17 +247,7 @@ diff --git a/widget/gtk/nsWindow.cpp b/widget/gtk/nsWindow.cpp
  
          uint32_t hints = GDK_HINT_MIN_SIZE | GDK_HINT_MAX_SIZE;
          gtk_window_set_geometry_hints(GTK_WINDOW(mShell), nullptr,
-                                       &geometry, GdkWindowHints(hints));
-     }
- }
- 
- NS_IMETHODIMP
-@@ -1156,21 +1170,23 @@ nsWindow::Move(double aX, double aY)
-     mBounds.x = x;
-     mBounds.y = y;
- 
-     if (!mCreated)
-         return NS_OK;
+@@ -1161,11 +1175,13 @@ nsWindow::Move(double aX, double aY)
  
      mNeedsMove = false;
  
@@ -371,17 +263,7 @@ diff --git a/widget/gtk/nsWindow.cpp b/widget/gtk/nsWindow.cpp
      }
  
      NotifyRollupGeometryChange();
-     return NS_OK;
- }
- 
- NS_IMETHODIMP
- nsWindow::PlaceBehind(nsTopLevelWidgetZPlacement  aPlacement,
-@@ -1427,17 +1443,17 @@ nsWindow::SetFocus(bool aRaise)
- 
- NS_IMETHODIMP
- nsWindow::GetScreenBounds(nsIntRect &aRect)
- {
-     if (mIsTopLevel && mContainer) {
+@@ -1432,7 +1448,7 @@ nsWindow::GetScreenBounds(nsIntRect &aRe
          // use the point including window decorations
          gint x, y;
          gdk_window_get_root_origin(gtk_widget_get_window(GTK_WIDGET(mContainer)), &x, &y);
@@ -390,17 +272,7 @@ diff --git a/widget/gtk/nsWindow.cpp b/widget/gtk/nsWindow.cpp
      }
      else {
          aRect.MoveTo(WidgetToScreenOffset());
-     }
-     // mBounds.Size() is the window bounds, not the window-manager frame
-     // bounds (bug 581863).  gdk_window_get_frame_extents would give the
-     // frame bounds, but mBounds.Size() is returned here for consistency
-     // with Resize.
-@@ -1597,27 +1613,22 @@ nsWindow::SetCursor(imgIContainer* aCurs
- }
- 
- NS_IMETHODIMP
- nsWindow::Invalidate(const nsIntRect &aRect)
- {
+@@ -1602,17 +1618,12 @@ nsWindow::Invalidate(const nsIntRect &aR
      if (!mGdkWindow)
          return NS_OK;
  
@@ -420,17 +292,7 @@ diff --git a/widget/gtk/nsWindow.cpp b/widget/gtk/nsWindow.cpp
      return NS_OK;
  }
  
- void*
- nsWindow::GetNativeData(uint32_t aDataType)
- {
-     switch (aDataType) {
-     case NS_NATIVE_WINDOW:
-@@ -1745,17 +1756,17 @@ nsIntPoint
- nsWindow::WidgetToScreenOffset()
- {
-     gint x = 0, y = 0;
- 
-     if (mGdkWindow) {
+@@ -1750,7 +1761,7 @@ nsWindow::WidgetToScreenOffset()
          gdk_window_get_origin(mGdkWindow, &x, &y);
      }
  
@@ -439,17 +301,7 @@ diff --git a/widget/gtk/nsWindow.cpp b/widget/gtk/nsWindow.cpp
  }
  
  NS_IMETHODIMP
- nsWindow::EnableDragDrop(bool aEnable)
- {
-     return NS_OK;
- }
- 
-@@ -2037,17 +2048,19 @@ nsWindow::OnExposeEvent(cairo_t *cr)
- #if (MOZ_WIDGET_GTK == 2)
-     if (!exposeRegion.Init(aEvent)) {
- #else
-     if (!exposeRegion.Init(cr)) {
- #endif
+@@ -2042,7 +2053,9 @@ nsWindow::OnExposeEvent(cairo_t *cr)
          return FALSE;
      }
  
@@ -460,17 +312,7 @@ diff --git a/widget/gtk/nsWindow.cpp b/widget/gtk/nsWindow.cpp
  
      ClientLayerManager *clientLayers =
          (GetLayerManager()->GetBackendType() == LayersBackend::LAYERS_CLIENT)
-         ? static_cast<ClientLayerManager*>(GetLayerManager())
-         : nullptr;
- 
-     if (clientLayers && mCompositorParent) {
-         // We need to paint to the screen even if nothing changed, since if we
-@@ -2377,31 +2390,34 @@ nsWindow::OnContainerUnrealize()
- 
- void
- nsWindow::OnSizeAllocate(GtkAllocation *aAllocation)
- {
-     LOG(("size_allocate [%p] %d %d %d %d\n",
+@@ -2382,21 +2395,24 @@ nsWindow::OnSizeAllocate(GtkAllocation *
           (void *)this, aAllocation->x, aAllocation->y,
           aAllocation->width, aAllocation->height));
  
@@ -500,17 +342,7 @@ diff --git a/widget/gtk/nsWindow.cpp b/widget/gtk/nsWindow.cpp
          gdk_window_invalidate_rect(mGdkWindow, &rect, FALSE);
      }
  
-     mBounds.SizeTo(size);
- 
-     if (!mGdkWindow)
-         return;
- 
-@@ -3843,67 +3859,75 @@ nsWindow::SetWindowClass(const nsAString
-   nsMemory::Free(res_name);
- 
-   return NS_OK;
- }
- 
+@@ -3848,14 +3864,17 @@ nsWindow::SetWindowClass(const nsAString
  void
  nsWindow::NativeResize(int32_t aWidth, int32_t aHeight, bool    aRepaint)
  {
@@ -530,7 +362,7 @@ diff --git a/widget/gtk/nsWindow.cpp b/widget/gtk/nsWindow.cpp
      }
      else if (mContainer) {
          GtkWidget *widget = GTK_WIDGET(mContainer);
-         GtkAllocation allocation, prev_allocation;
+@@ -3863,12 +3882,12 @@ nsWindow::NativeResize(int32_t aWidth, i
          gtk_widget_get_allocation(widget, &prev_allocation);
          allocation.x = prev_allocation.x;
          allocation.y = prev_allocation.y;
@@ -546,8 +378,7 @@ diff --git a/widget/gtk/nsWindow.cpp b/widget/gtk/nsWindow.cpp
      }
  }
  
- void
- nsWindow::NativeResize(int32_t aX, int32_t aY,
+@@ -3877,28 +3896,33 @@ nsWindow::NativeResize(int32_t aX, int32
                         int32_t aWidth, int32_t aHeight,
                         bool    aRepaint)
  {
@@ -590,17 +421,7 @@ diff --git a/widget/gtk/nsWindow.cpp b/widget/gtk/nsWindow.cpp
      }
  }
  
- void
- nsWindow::NativeShow(bool aAction)
- {
-     if (aAction) {
-         // unset our flag now that our window has been shown
-@@ -6178,18 +6202,18 @@ nsWindow::GetThebesSurface(cairo_t *cr)
- #if (MOZ_WIDGET_GTK == 2)
-     gdk_drawable_get_size(GDK_DRAWABLE(mGdkWindow), &width, &height);
- #else
-     width = gdk_window_get_width(mGdkWindow);
-     height = gdk_window_get_height(mGdkWindow);
+@@ -6109,8 +6133,8 @@ nsWindow::GetThebesSurface(cairo_t *cr)
  #endif
  
      // Owen Taylor says this is the right thing to do!
@@ -611,17 +432,7 @@ diff --git a/widget/gtk/nsWindow.cpp b/widget/gtk/nsWindow.cpp
      gfxIntSize size(width, height);
  
      GdkVisual *gdkVisual = gdk_window_get_visual(mGdkWindow);
-     Visual* visual = gdk_x11_visual_get_xvisual(gdkVisual);
- 
- #  ifdef MOZ_HAVE_SHMIMAGE
-     bool usingShm = false;
-     if (nsShmImage::UseShm()) {
-@@ -6204,18 +6228,27 @@ nsWindow::GetThebesSurface(cairo_t *cr)
-     }
-     if (!usingShm)
- #  endif  // MOZ_HAVE_SHMIMAGE
-     {
- #if (MOZ_WIDGET_GTK == 3)
+@@ -6135,8 +6159,17 @@ nsWindow::GetThebesSurface(cairo_t *cr)
  #if MOZ_TREE_CAIRO
  #error "cairo-gtk3 target must be built with --enable-system-cairo"
  #else    
@@ -639,17 +450,7 @@ diff --git a/widget/gtk/nsWindow.cpp b/widget/gtk/nsWindow.cpp
              if (cairo_surface_status(surf) != CAIRO_STATUS_SUCCESS) {
                NS_NOTREACHED("Missing cairo target?");
                return nullptr;
-             }
-             mThebesSurface = gfxASurface::Wrap(surf);
-         } else
- #endif
- #endif // (MOZ_WIDGET_GTK == 3)
-@@ -6286,16 +6319,18 @@ nsWindow::BeginMoveDrag(WidgetMouseEvent
- 
-     GdkWindow *gdk_window;
-     gint button, screenX, screenY;
-     if (!GetDragInfo(aEvent, &gdk_window, &button, &screenX, &screenY)) {
-         return NS_ERROR_FAILURE;
+@@ -6217,6 +6250,8 @@ nsWindow::BeginMoveDrag(WidgetMouseEvent
      }
  
      // tell the window manager to start the move
@@ -658,17 +459,7 @@ diff --git a/widget/gtk/nsWindow.cpp b/widget/gtk/nsWindow.cpp
      gdk_window_begin_move_drag(gdk_window, button, screenX, screenY,
                                 aEvent->time);
  
-     return NS_OK;
- }
- 
- NS_IMETHODIMP
- nsWindow::BeginResizeDrag(WidgetGUIEvent* aEvent,
-@@ -6377,16 +6412,80 @@ nsWindow::ClearCachedResources()
-     for (GList* list = children; list; list = list->next) {
-         nsWindow* window = get_window_for_gdk_window(GDK_WINDOW(list->data));
-         if (window) {
-             window->ClearCachedResources();
-         }
+@@ -6308,6 +6343,70 @@ nsWindow::ClearCachedResources()
      }
  }
  
@@ -739,20 +530,10 @@ diff --git a/widget/gtk/nsWindow.cpp b/widget/gtk/nsWindow.cpp
  nsresult
  nsWindow::SynthesizeNativeMouseEvent(nsIntPoint aPoint,
                                       uint32_t aNativeMessage,
-                                      uint32_t aModifierFlags)
- {
-   if (!mGdkWindow) {
-     return NS_OK;
-   }
-diff --git a/widget/gtk/nsWindow.h b/widget/gtk/nsWindow.h
---- a/widget/gtk/nsWindow.h
-+++ b/widget/gtk/nsWindow.h
-@@ -92,16 +92,17 @@ public:
-     NS_IMETHOD         Create(nsIWidget        *aParent,
-                               nsNativeWidget   aNativeParent,
-                               const nsIntRect  &aRect,
-                               nsDeviceContext *aContext,
-                               nsWidgetInitData *aInitData);
+diff -up mozilla-release/widget/gtk/nsWindow.h.975919-gtk3-hidpi mozilla-release/widget/gtk/nsWindow.h
+--- mozilla-release/widget/gtk/nsWindow.h.975919-gtk3-hidpi	2015-01-09 05:38:28.000000000 +0100
++++ mozilla-release/widget/gtk/nsWindow.h	2015-01-19 18:43:30.104191074 +0100
+@@ -97,6 +97,7 @@ public:
      NS_IMETHOD         Destroy(void);
      virtual nsIWidget *GetParent();
      virtual float      GetDPI();
@@ -760,17 +541,7 @@ diff --git a/widget/gtk/nsWindow.h b/widget/gtk/nsWindow.h
      virtual nsresult   SetParent(nsIWidget* aNewParent);
      NS_IMETHOD         SetModal(bool aModal);
      virtual bool       IsVisible() const;
-     NS_IMETHOD         ConstrainPosition(bool aAllowSlop,
-                                          int32_t *aX,
-                                          int32_t *aY);
-     virtual void       SetSizeConstraints(const SizeConstraints& aConstraints);
-     NS_IMETHOD         Move(double aX,
-@@ -468,16 +469,30 @@ private:
-      * The instance is created when the top level widget is created.  And when
-      * the widget is destroyed, it's released.  All child windows refer its
-      * ancestor widget's instance.  So, one set of IM contexts is created for
-      * all windows in a hierarchy.  If the children are released after the top
-      * level window is released, the children still have a valid pointer,
+@@ -467,6 +468,20 @@ private:
       * however, IME doesn't work at that time.
       */
      nsRefPtr<nsGtkIMModule> mIMModule;
@@ -791,8 +562,3 @@ diff --git a/widget/gtk/nsWindow.h b/widget/gtk/nsWindow.h
  };
  
  class nsChildWindow : public nsWindow {
- public:
-     nsChildWindow();
-     ~nsChildWindow();
- };
- 
