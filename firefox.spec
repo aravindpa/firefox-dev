@@ -107,7 +107,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        35.0
-Release:        5%{?pre_tag}%{?dist}
+Release:        6%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -138,9 +138,9 @@ Patch20:        firefox-build-prbool.patch
 # Unable to install addons from https pages
 Patch204:        rhbz-966424.patch
 Patch215:        firefox-enable-addons.patch
-#Patch217:        firefox-baseline-disable.patch
 Patch219:        rhbz-1173156.patch
 Patch220:        rhbz-1014858.patch
+Patch221:        firefox-35.0-flash-click-to-play.patch
 
 # Upstream patches
 Patch300:        mozilla-858919.patch
@@ -294,12 +294,9 @@ cd %{tarballdir}
 # Fedora patches
 %patch204 -p2 -b .966424
 %patch215 -p1 -b .addons
-# disable baseline JIT on i686 (rhbz#1047079)
-#%ifarch %{ix86}
-#%patch217 -p2 -b .baseline
-#%endif
 %patch219 -p2 -b .rhbz-1173156
 %patch220 -p1 -b .rhbz-1014858
+%patch221 -p2 -b .flash
 
 # Upstream patches
 %patch300 -p1 -b .858919
@@ -769,6 +766,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Jan 22 2015 Martin Stransky <stransky@redhat.com> - 35.0-6
+- Disabled flash by default because of 0day live flash exploit
+  (see https://isc.sans.edu/diary/Flash+0-Day+Exploit+Used+by+Angler+Exploit+Kit/19213)
+
 * Mon Jan 19 2015 Martin Stransky <stransky@redhat.com> - 35.0-5
 - Enable release build config
 - Gtk3 - added patch for HiDPI support (mozbz#975919)
