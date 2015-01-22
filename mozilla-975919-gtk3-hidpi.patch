@@ -1,162 +1,45 @@
-diff -up mozilla-release/widget/gtk/nsGtkUtils.h.975919-gtk3-hidpi mozilla-release/widget/gtk/nsGtkUtils.h
---- mozilla-release/widget/gtk/nsGtkUtils.h.975919-gtk3-hidpi	2015-01-09 05:38:28.000000000 +0100
-+++ mozilla-release/widget/gtk/nsGtkUtils.h	2015-01-19 18:43:30.101191071 +0100
-@@ -9,6 +9,7 @@
- #define nsGtkUtils_h__
- 
- #include <glib.h>
+diff -up firefox-35.0/mozilla-release/widget/gtk/nsLookAndFeel.cpp.975919-gtk3-hidpi firefox-35.0/mozilla-release/widget/gtk/nsLookAndFeel.cpp
+--- firefox-35.0/mozilla-release/widget/gtk/nsLookAndFeel.cpp.975919-gtk3-hidpi	2015-01-22 13:06:41.099114353 +0100
++++ firefox-35.0/mozilla-release/widget/gtk/nsLookAndFeel.cpp	2015-01-22 13:06:41.118114478 +0100
+@@ -22,6 +22,9 @@
+ #include "gtkdrawing.h"
+ #include "nsStyleConsts.h"
+ #include "gfxFontConstants.h"
++
 +#include <dlfcn.h>
++
+ #include "mozilla/gfx/2D.h"
  
- // Some gobject functions expect functions for gpointer arguments.
- // gpointer is void* but C++ doesn't like casting functions to void*.
-diff -up mozilla-release/widget/gtk/nsLookAndFeel.cpp.975919-gtk3-hidpi mozilla-release/widget/gtk/nsLookAndFeel.cpp
---- mozilla-release/widget/gtk/nsLookAndFeel.cpp.975919-gtk3-hidpi	2015-01-19 18:43:30.081191055 +0100
-+++ mozilla-release/widget/gtk/nsLookAndFeel.cpp	2015-01-20 13:16:48.005399364 +0100
-@@ -7,6 +7,7 @@
- 
- // for strtod()
- #include <stdlib.h>
-+#include <dlfcn.h>
- 
- #include "nsLookAndFeel.h"
- 
-@@ -733,6 +734,17 @@ GetSystemFontInfo(GtkWidget *aWidget,
+ using mozilla::LookAndFeel;
+@@ -733,6 +736,16 @@ GetSystemFontInfo(GtkWidget *aWidget,
          size *= float(gfxPlatformGtk::GetDPI()) / POINTS_PER_INCH_FLOAT;
      }
  
 +    // Scale fonts up on HiDPI displays.
 +    // This would be done automatically with cairo, but we manually manage
 +    // the display scale for platform consistency.
-+    static gint (*GdkScreenGetMonitorScaleFactorPtr)(GdkScreen*,gint) =
-+        (gint (*)(GdkScreen*,gint)) dlsym(RTLD_DEFAULT,
-+        "gdk_screen_get_monitor_scale_factor");
-+    if (GdkScreenGetMonitorScaleFactorPtr) {
++    static auto sGdkScreenGetMonitorScaleFactorPtr = (gint (*)(GdkScreen*,gint))
++        dlsym(RTLD_DEFAULT, "gdk_screen_get_monitor_scale_factor");
++    if (sGdkScreenGetMonitorScaleFactorPtr) {
 +        GdkScreen *screen = gdk_screen_get_default();
-+        size *= (*GdkScreenGetMonitorScaleFactorPtr)(screen, 0);
++        size *= (*sGdkScreenGetMonitorScaleFactorPtr)(screen, 0);
 +    }
 +
      // |size| is now pixels
  
      aFontStyle->size = size;
-diff -up mozilla-release/widget/gtk/nsScreenGtk.cpp.975919-gtk3-hidpi mozilla-release/widget/gtk/nsScreenGtk.cpp
---- mozilla-release/widget/gtk/nsScreenGtk.cpp.975919-gtk3-hidpi	2015-01-09 05:38:28.000000000 +0100
-+++ mozilla-release/widget/gtk/nsScreenGtk.cpp	2015-01-19 18:43:30.102191072 +0100
-@@ -11,10 +11,10 @@
- #include <X11/Xatom.h>
- #endif
- #include <gtk/gtk.h>
+diff -up firefox-35.0/mozilla-release/widget/gtk/nsWindow.cpp.975919-gtk3-hidpi firefox-35.0/mozilla-release/widget/gtk/nsWindow.cpp
+--- firefox-35.0/mozilla-release/widget/gtk/nsWindow.cpp.975919-gtk3-hidpi	2015-01-22 13:06:41.101114366 +0100
++++ firefox-35.0/mozilla-release/widget/gtk/nsWindow.cpp	2015-01-22 13:08:08.152683204 +0100
+@@ -10,6 +10,7 @@
+ #include "mozilla/MouseEvents.h"
+ #include "mozilla/TextEvents.h"
+ #include <algorithm>
 +#include <dlfcn.h>
  
- static uint32_t sScreenId = 0;
- 
--
- nsScreenGtk :: nsScreenGtk (  )
-   : mScreenNum(0),
-     mRect(0, 0, 0, 0),
-@@ -40,6 +40,37 @@ nsScreenGtk :: GetId(uint32_t *aId)
- NS_IMETHODIMP
- nsScreenGtk :: GetRect(int32_t *outLeft, int32_t *outTop, int32_t *outWidth, int32_t *outHeight)
- {
-+  double scale;
-+  GetContentsScaleFactor(&scale);
-+
-+  *outLeft = NSToIntRound(mRect.x * scale);
-+  *outTop = NSToIntRound(mRect.y * scale);
-+  *outWidth = NSToIntRound(mRect.width * scale);
-+  *outHeight = NSToIntRound(mRect.height * scale);
-+
-+  return NS_OK;
-+  
-+} // GetRect
-+
-+
-+NS_IMETHODIMP
-+nsScreenGtk :: GetAvailRect(int32_t *outLeft, int32_t *outTop, int32_t *outWidth, int32_t *outHeight)
-+{
-+  double scale;
-+  GetContentsScaleFactor(&scale);
-+
-+  *outLeft = NSToIntRound(mAvailRect.x * scale);
-+  *outTop = NSToIntRound(mAvailRect.y * scale);
-+  *outWidth = NSToIntRound(mAvailRect.width * scale);
-+  *outHeight = NSToIntRound(mAvailRect.height * scale);
-+
-+  return NS_OK;
-+  
-+} // GetAvailRect
-+
-+NS_IMETHODIMP
-+nsScreenGtk :: GetRectDisplayPix(int32_t *outLeft, int32_t *outTop, int32_t *outWidth, int32_t *outHeight)
-+{
-   *outLeft = mRect.x;
-   *outTop = mRect.y;
-   *outWidth = mRect.width;
-@@ -47,11 +78,11 @@ nsScreenGtk :: GetRect(int32_t *outLeft,
- 
-   return NS_OK;
-   
--} // GetRect
-+} // GetRectDisplayPix
- 
- 
- NS_IMETHODIMP
--nsScreenGtk :: GetAvailRect(int32_t *outLeft, int32_t *outTop, int32_t *outWidth, int32_t *outHeight)
-+nsScreenGtk :: GetAvailRectDisplayPix(int32_t *outLeft, int32_t *outTop, int32_t *outWidth, int32_t *outHeight)
- {
-   *outLeft = mAvailRect.x;
-   *outTop = mAvailRect.y;
-@@ -60,7 +91,7 @@ nsScreenGtk :: GetAvailRect(int32_t *out
- 
-   return NS_OK;
-   
--} // GetAvailRect
-+} // GetAvailRectDisplayPix
- 
- 
- NS_IMETHODIMP 
-@@ -82,6 +113,23 @@ nsScreenGtk :: GetColorDepth(int32_t *aC
- } // GetColorDepth
- 
- 
-+NS_IMETHODIMP
-+nsScreenGtk :: GetContentsScaleFactor(double* aContentsScaleFactor)
-+{
-+  static gint (*GdkScreenGetMonitorScaleFactorPtr)(GdkScreen*,gint) =
-+    (gint (*)(GdkScreen*,gint)) dlsym(RTLD_DEFAULT,
-+    "gdk_screen_get_monitor_scale_factor");
-+  if (GdkScreenGetMonitorScaleFactorPtr) {
-+    GdkScreen *screen = gdk_screen_get_default();
-+    *aContentsScaleFactor = (*GdkScreenGetMonitorScaleFactorPtr)
-+                            (screen, mScreenNum);
-+  } else {
-+    *aContentsScaleFactor = 1;
-+  }
-+  return NS_OK;
-+}
-+
-+
- void
- nsScreenGtk :: Init (GdkWindow *aRootWindow)
- {
-diff -up mozilla-release/widget/gtk/nsScreenGtk.h.975919-gtk3-hidpi mozilla-release/widget/gtk/nsScreenGtk.h
---- mozilla-release/widget/gtk/nsScreenGtk.h.975919-gtk3-hidpi	2015-01-09 05:38:28.000000000 +0100
-+++ mozilla-release/widget/gtk/nsScreenGtk.h	2015-01-19 18:43:30.102191072 +0100
-@@ -33,8 +33,11 @@ public:
-   NS_IMETHOD GetId(uint32_t* aId);
-   NS_IMETHOD GetRect(int32_t* aLeft, int32_t* aTop, int32_t* aWidth, int32_t* aHeight);
-   NS_IMETHOD GetAvailRect(int32_t* aLeft, int32_t* aTop, int32_t* aWidth, int32_t* aHeight);
-+  NS_IMETHOD GetRectDisplayPix(int32_t* aLeft, int32_t* aTop, int32_t* aWidth, int32_t* aHeight);
-+  NS_IMETHOD GetAvailRectDisplayPix(int32_t* aLeft, int32_t* aTop, int32_t* aWidth, int32_t* aHeight);
-   NS_IMETHOD GetPixelDepth(int32_t* aPixelDepth);
-   NS_IMETHOD GetColorDepth(int32_t* aColorDepth);
-+  NS_IMETHOD GetContentsScaleFactor(double* aContentsScaleFactor);
- 
-   void Init(GdkWindow *aRootWindow);
- #ifdef MOZ_X11
-diff -up mozilla-release/widget/gtk/nsWindow.cpp.975919-gtk3-hidpi mozilla-release/widget/gtk/nsWindow.cpp
---- mozilla-release/widget/gtk/nsWindow.cpp.975919-gtk3-hidpi	2015-01-19 18:43:30.084191057 +0100
-+++ mozilla-release/widget/gtk/nsWindow.cpp	2015-01-19 18:43:30.104191074 +0100
-@@ -471,6 +471,9 @@ nsWindow::DispatchEvent(WidgetGUIEvent*
+ #include "prlink.h"
+ #include "nsGTKToolkit.h"
+@@ -471,6 +472,9 @@ nsWindow::DispatchEvent(WidgetGUIEvent*
      debug_DumpEvent(stdout, aEvent->widget, aEvent,
                      nsAutoCString("something"), 0);
  #endif
@@ -166,7 +49,7 @@ diff -up mozilla-release/widget/gtk/nsWindow.cpp.975919-gtk3-hidpi mozilla-relea
  
      aStatus = nsEventStatus_eIgnore;
      nsIWidgetListener* listener =
-@@ -729,6 +732,12 @@ nsWindow::GetDPI()
+@@ -729,6 +733,12 @@ nsWindow::GetDPI()
      return float(DisplayHeight(dpy, defaultScreen)/heightInches);
  }
  
@@ -179,7 +62,7 @@ diff -up mozilla-release/widget/gtk/nsWindow.cpp.975919-gtk3-hidpi mozilla-relea
  NS_IMETHODIMP
  nsWindow::SetParent(nsIWidget *aNewParent)
  {
-@@ -827,8 +836,9 @@ nsWindow::ReparentNativeWidgetInternal(n
+@@ -827,8 +837,9 @@ nsWindow::ReparentNativeWidgetInternal(n
          }
  
          if (!mIsTopLevel) {
@@ -191,7 +74,7 @@ diff -up mozilla-release/widget/gtk/nsWindow.cpp.975919-gtk3-hidpi mozilla-relea
          }
      }
  
-@@ -863,26 +873,26 @@ NS_IMETHODIMP
+@@ -863,26 +874,26 @@ NS_IMETHODIMP
  nsWindow::ConstrainPosition(bool aAllowSlop, int32_t *aX, int32_t *aY)
  {
      if (mIsTopLevel && mShell) {
@@ -228,7 +111,7 @@ diff -up mozilla-release/widget/gtk/nsWindow.cpp.975919-gtk3-hidpi mozilla-relea
          }
      }
      return NS_OK;
-@@ -895,10 +905,14 @@ void nsWindow::SetSizeConstraints(const
+@@ -895,10 +906,14 @@ void nsWindow::SetSizeConstraints(const
  
      if (mShell) {
          GdkGeometry geometry;
@@ -240,14 +123,14 @@ diff -up mozilla-release/widget/gtk/nsWindow.cpp.975919-gtk3-hidpi mozilla-relea
 +                             mSizeConstraints.mMinSize.width);
 +        geometry.min_height = DevicePixelsToGdkCoordRoundUp(
 +                              mSizeConstraints.mMinSize.height);
-+        geometry.max_width = DevicePixelsToGdkCoordRoundUp(
++        geometry.max_width = DevicePixelsToGdkCoordRoundDown(
 +                             mSizeConstraints.mMaxSize.width);
-+        geometry.max_height = DevicePixelsToGdkCoordRoundUp(
++        geometry.max_height = DevicePixelsToGdkCoordRoundDown(
 +                              mSizeConstraints.mMaxSize.height);
  
          uint32_t hints = GDK_HINT_MIN_SIZE | GDK_HINT_MAX_SIZE;
          gtk_window_set_geometry_hints(GTK_WINDOW(mShell), nullptr,
-@@ -1161,11 +1175,13 @@ nsWindow::Move(double aX, double aY)
+@@ -1161,11 +1176,13 @@ nsWindow::Move(double aX, double aY)
  
      mNeedsMove = false;
  
@@ -263,7 +146,7 @@ diff -up mozilla-release/widget/gtk/nsWindow.cpp.975919-gtk3-hidpi mozilla-relea
      }
  
      NotifyRollupGeometryChange();
-@@ -1432,7 +1448,7 @@ nsWindow::GetScreenBounds(nsIntRect &aRe
+@@ -1432,7 +1449,7 @@ nsWindow::GetScreenBounds(nsIntRect &aRe
          // use the point including window decorations
          gint x, y;
          gdk_window_get_root_origin(gtk_widget_get_window(GTK_WIDGET(mContainer)), &x, &y);
@@ -272,7 +155,7 @@ diff -up mozilla-release/widget/gtk/nsWindow.cpp.975919-gtk3-hidpi mozilla-relea
      }
      else {
          aRect.MoveTo(WidgetToScreenOffset());
-@@ -1602,17 +1618,12 @@ nsWindow::Invalidate(const nsIntRect &aR
+@@ -1602,17 +1619,12 @@ nsWindow::Invalidate(const nsIntRect &aR
      if (!mGdkWindow)
          return NS_OK;
  
@@ -292,7 +175,7 @@ diff -up mozilla-release/widget/gtk/nsWindow.cpp.975919-gtk3-hidpi mozilla-relea
      return NS_OK;
  }
  
-@@ -1750,7 +1761,7 @@ nsWindow::WidgetToScreenOffset()
+@@ -1750,7 +1762,7 @@ nsWindow::WidgetToScreenOffset()
          gdk_window_get_origin(mGdkWindow, &x, &y);
      }
  
@@ -301,7 +184,7 @@ diff -up mozilla-release/widget/gtk/nsWindow.cpp.975919-gtk3-hidpi mozilla-relea
  }
  
  NS_IMETHODIMP
-@@ -2042,7 +2053,9 @@ nsWindow::OnExposeEvent(cairo_t *cr)
+@@ -2042,7 +2054,9 @@ nsWindow::OnExposeEvent(cairo_t *cr)
          return FALSE;
      }
  
@@ -312,7 +195,7 @@ diff -up mozilla-release/widget/gtk/nsWindow.cpp.975919-gtk3-hidpi mozilla-relea
  
      ClientLayerManager *clientLayers =
          (GetLayerManager()->GetBackendType() == LayersBackend::LAYERS_CLIENT)
-@@ -2382,21 +2395,24 @@ nsWindow::OnSizeAllocate(GtkAllocation *
+@@ -2382,21 +2396,24 @@ nsWindow::OnSizeAllocate(GtkAllocation *
           (void *)this, aAllocation->x, aAllocation->y,
           aAllocation->width, aAllocation->height));
  
@@ -342,7 +225,7 @@ diff -up mozilla-release/widget/gtk/nsWindow.cpp.975919-gtk3-hidpi mozilla-relea
          gdk_window_invalidate_rect(mGdkWindow, &rect, FALSE);
      }
  
-@@ -3848,14 +3864,17 @@ nsWindow::SetWindowClass(const nsAString
+@@ -3848,14 +3865,17 @@ nsWindow::SetWindowClass(const nsAString
  void
  nsWindow::NativeResize(int32_t aWidth, int32_t aHeight, bool    aRepaint)
  {
@@ -362,7 +245,7 @@ diff -up mozilla-release/widget/gtk/nsWindow.cpp.975919-gtk3-hidpi mozilla-relea
      }
      else if (mContainer) {
          GtkWidget *widget = GTK_WIDGET(mContainer);
-@@ -3863,12 +3882,12 @@ nsWindow::NativeResize(int32_t aWidth, i
+@@ -3863,12 +3883,12 @@ nsWindow::NativeResize(int32_t aWidth, i
          gtk_widget_get_allocation(widget, &prev_allocation);
          allocation.x = prev_allocation.x;
          allocation.y = prev_allocation.y;
@@ -378,7 +261,7 @@ diff -up mozilla-release/widget/gtk/nsWindow.cpp.975919-gtk3-hidpi mozilla-relea
      }
  }
  
-@@ -3877,28 +3896,33 @@ nsWindow::NativeResize(int32_t aX, int32
+@@ -3877,28 +3897,33 @@ nsWindow::NativeResize(int32_t aX, int32
                         int32_t aWidth, int32_t aHeight,
                         bool    aRepaint)
  {
@@ -421,36 +304,49 @@ diff -up mozilla-release/widget/gtk/nsWindow.cpp.975919-gtk3-hidpi mozilla-relea
      }
  }
  
-@@ -6109,8 +6133,8 @@ nsWindow::GetThebesSurface(cairo_t *cr)
+@@ -6104,8 +6129,8 @@ nsWindow::GetThebesSurface(cairo_t *cr)
+ #if (MOZ_WIDGET_GTK == 2)
+     gdk_drawable_get_size(GDK_DRAWABLE(mGdkWindow), &width, &height);
+ #else
+-    width = gdk_window_get_width(mGdkWindow);
+-    height = gdk_window_get_height(mGdkWindow);
++    width = GdkCoordToDevicePixels(gdk_window_get_width(mGdkWindow));
++    height = GdkCoordToDevicePixels(gdk_window_get_height(mGdkWindow));
  #endif
  
      // Owen Taylor says this is the right thing to do!
--    width = std::min(32767, width);
--    height = std::min(32767, height);
-+    width = std::min(32767, (int)std::ceil(GdkCoordToDevicePixels(width)));
-+    height = std::min(32767, (int)std::ceil(GdkCoordToDevicePixels(height)));
-     gfxIntSize size(width, height);
+@@ -6131,25 +6156,11 @@ nsWindow::GetThebesSurface(cairo_t *cr)
+     if (!usingShm)
+ #  endif  // MOZ_HAVE_SHMIMAGE
+     {
+-#if (MOZ_WIDGET_GTK == 3)
+-#if MOZ_TREE_CAIRO
+-#error "cairo-gtk3 target must be built with --enable-system-cairo"
+-#else    
+-        if (cr) {
+-            cairo_surface_t *surf = cairo_get_target(cr);
+-            if (cairo_surface_status(surf) != CAIRO_STATUS_SUCCESS) {
+-              NS_NOTREACHED("Missing cairo target?");
+-              return nullptr;
+-            }
+-            mThebesSurface = gfxASurface::Wrap(surf);
+-        } else
+-#endif
+-#endif // (MOZ_WIDGET_GTK == 3)
+-            mThebesSurface = new gfxXlibSurface
+-                (GDK_WINDOW_XDISPLAY(mGdkWindow),
+-                 gdk_x11_window_get_xid(mGdkWindow),
+-                 visual,
+-                 size);
++        mThebesSurface = new gfxXlibSurface
++            (GDK_WINDOW_XDISPLAY(mGdkWindow),
++             gdk_x11_window_get_xid(mGdkWindow),
++             visual,
++             size);
+     }
+ #endif // MOZ_X11
  
-     GdkVisual *gdkVisual = gdk_window_get_visual(mGdkWindow);
-@@ -6135,8 +6159,17 @@ nsWindow::GetThebesSurface(cairo_t *cr)
- #if MOZ_TREE_CAIRO
- #error "cairo-gtk3 target must be built with --enable-system-cairo"
- #else    
-+    // Available as of Cairo 1.14
-+    static void (*CairoSurfaceSetDeviceScalePtr) (cairo_surface_t*,double,double) =
-+        (void (*)(cairo_surface_t*,double,double)) dlsym(RTLD_DEFAULT,
-+        "cairo_surface_set_device_scale");
-+
-         if (cr) {
-             cairo_surface_t *surf = cairo_get_target(cr);
-+            if (GdkScaleFactor() > 1) {
-+                // Disable auto-scaling on HiDPI devices, let mozilla manage it.
-+                (*CairoSurfaceSetDeviceScalePtr)(surf, 1, 1);
-+            }
-             if (cairo_surface_status(surf) != CAIRO_STATUS_SUCCESS) {
-               NS_NOTREACHED("Missing cairo target?");
-               return nullptr;
-@@ -6217,6 +6250,8 @@ nsWindow::BeginMoveDrag(WidgetMouseEvent
+@@ -6217,6 +6228,8 @@ nsWindow::BeginMoveDrag(WidgetMouseEvent
      }
  
      // tell the window manager to start the move
@@ -459,7 +355,7 @@ diff -up mozilla-release/widget/gtk/nsWindow.cpp.975919-gtk3-hidpi mozilla-relea
      gdk_window_begin_move_drag(gdk_window, button, screenX, screenY,
                                 aEvent->time);
  
-@@ -6308,6 +6343,70 @@ nsWindow::ClearCachedResources()
+@@ -6308,6 +6321,69 @@ nsWindow::ClearCachedResources()
      }
  }
  
@@ -468,11 +364,10 @@ diff -up mozilla-release/widget/gtk/nsWindow.cpp.975919-gtk3-hidpi mozilla-relea
 +{
 +#if (MOZ_WIDGET_GTK >= 3)
 +    // Available as of GTK 3.10+
-+    static gint (*GdkWindowGetScaleFactorPtr) (GdkWindow*) =
-+        (gint (*)(GdkWindow*)) dlsym(RTLD_DEFAULT,
-+        "gdk_window_get_scale_factor");
-+    if (GdkWindowGetScaleFactorPtr)
-+        return (*GdkWindowGetScaleFactorPtr)(mGdkWindow);
++    static auto sGdkWindowGetScaleFactorPtr = (gint (*)(GdkWindow*))
++        dlsym(RTLD_DEFAULT, "gdk_window_get_scale_factor");
++    if (sGdkWindowGetScaleFactorPtr)
++        return (*sGdkWindowGetScaleFactorPtr)(mGdkWindow);
 +#endif
 +    return 1;
 +}
@@ -480,35 +375,35 @@ diff -up mozilla-release/widget/gtk/nsWindow.cpp.975919-gtk3-hidpi mozilla-relea
 +
 +gint
 +nsWindow::DevicePixelsToGdkCoordRoundUp(int pixels) {
-+    return NSToIntCeil(float(pixels)/float(GdkScaleFactor()));
++    gint scale = GdkScaleFactor();
++    return (pixels + scale - 1) / scale;
 +}
 +
 +gint
 +nsWindow::DevicePixelsToGdkCoordRoundDown(int pixels) {
-+    return NSToIntFloor(float(pixels)/float(GdkScaleFactor()));
++    gint scale = GdkScaleFactor();
++    return pixels / scale;
 +}
 +
 +GdkPoint
 +nsWindow::DevicePixelsToGdkPointRoundDown(nsIntPoint point) {
-+    float scale = GdkScaleFactor();
-+    return { NSToIntFloor(float(point.x)/scale),
-+             NSToIntFloor(float(point.y)/scale) };
++    gint scale = GdkScaleFactor();
++    return { point.x / scale, point.y / scale };
 +}
 +
 +GdkRectangle
 +nsWindow::DevicePixelsToGdkRectRoundOut(nsIntRect rect) {
 +    gint scale = GdkScaleFactor();
-+    nsIntRect scaledRect = rect;
-+    scaledRect.ScaleInverseRoundOut(scale);
-+    return { scaledRect.x,
-+             scaledRect.y,
-+             scaledRect.width,
-+             scaledRect.height };
++    int x = rect.x / scale;
++    int y = rect.y / scale;
++    int right = (rect.x + rect.width + scale - 1) / scale;
++    int bottom = (rect.y + rect.height + scale - 1) / scale;
++    return { x, y, right - x, bottom - y };
 +}
 +
 +int
-+nsWindow::GdkCoordToDevicePixels(gint coords) {
-+    return coords * GdkScaleFactor();
++nsWindow::GdkCoordToDevicePixels(gint coord) {
++    return coord * GdkScaleFactor();
 +}
 +
 +nsIntPoint
@@ -530,9 +425,9 @@ diff -up mozilla-release/widget/gtk/nsWindow.cpp.975919-gtk3-hidpi mozilla-relea
  nsresult
  nsWindow::SynthesizeNativeMouseEvent(nsIntPoint aPoint,
                                       uint32_t aNativeMessage,
-diff -up mozilla-release/widget/gtk/nsWindow.h.975919-gtk3-hidpi mozilla-release/widget/gtk/nsWindow.h
---- mozilla-release/widget/gtk/nsWindow.h.975919-gtk3-hidpi	2015-01-09 05:38:28.000000000 +0100
-+++ mozilla-release/widget/gtk/nsWindow.h	2015-01-19 18:43:30.104191074 +0100
+diff -up firefox-35.0/mozilla-release/widget/gtk/nsWindow.h.975919-gtk3-hidpi firefox-35.0/mozilla-release/widget/gtk/nsWindow.h
+--- firefox-35.0/mozilla-release/widget/gtk/nsWindow.h.975919-gtk3-hidpi	2015-01-09 05:38:28.000000000 +0100
++++ firefox-35.0/mozilla-release/widget/gtk/nsWindow.h	2015-01-22 13:07:51.064571540 +0100
 @@ -97,6 +97,7 @@ public:
      NS_IMETHOD         Destroy(void);
      virtual nsIWidget *GetParent();
@@ -556,7 +451,7 @@ diff -up mozilla-release/widget/gtk/nsWindow.h.975919-gtk3-hidpi mozilla-release
 +    GdkRectangle DevicePixelsToGdkRectRoundOut(nsIntRect rect);
 +
 +    // From GDK
-+    int GdkCoordToDevicePixels(gint coords);
++    int GdkCoordToDevicePixels(gint coord);
 +    nsIntPoint GdkPointToDevicePixels(GdkPoint point);
 +    nsIntRect GdkRectToDevicePixels(GdkRectangle rect);
  };

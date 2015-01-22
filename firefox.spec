@@ -107,7 +107,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        35.0
-Release:        6%{?pre_tag}%{?dist}
+Release:        7%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -312,7 +312,7 @@ cd %{tarballdir}
 %patch410 -p1 -b .1073117-button-focus
 %patch411 -p1 -b .1073117-focus-sizes
 %patch412 -p1 -b .1073117-no-gap-tab
-%patch413 -p1 -b .975919-gtk3-hidpi
+%patch413 -p2 -b .975919-gtk3-hidpi
 %endif
 
 %if %{official_branding}
@@ -766,6 +766,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Jan 22 2015 Martin Stransky <stransky@redhat.com> - 35.0-7
+- Updated hiDPI patch to upstream version (mozbz#975919)
+
 * Thu Jan 22 2015 Martin Stransky <stransky@redhat.com> - 35.0-6
 - Disabled flash by default because of 0day live flash exploit
   (see https://isc.sans.edu/diary/Flash+0-Day+Exploit+Used+by+Angler+Exploit+Kit/19213)
