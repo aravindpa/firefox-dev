@@ -107,7 +107,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        35.0.1
-Release:        2%{?pre_tag}%{?dist}
+Release:        3%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -140,7 +140,6 @@ Patch204:        rhbz-966424.patch
 Patch215:        firefox-enable-addons.patch
 Patch219:        rhbz-1173156.patch
 Patch220:        rhbz-1014858.patch
-Patch221:        firefox-35.0-flash-click-to-play.patch
 
 # Upstream patches
 Patch300:        mozilla-858919.patch
@@ -296,7 +295,6 @@ cd %{tarballdir}
 %patch215 -p1 -b .addons
 %patch219 -p2 -b .rhbz-1173156
 %patch220 -p1 -b .rhbz-1014858
-%patch221 -p2 -b .flash
 
 # Upstream patches
 %patch300 -p1 -b .858919
@@ -766,6 +764,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Jan 27 2015 Martin Stransky <stransky@redhat.com> - 35.0.1-3
+- Backed out the flash click-to-play setup
+
 * Mon Jan 26 2015 David Tardon <dtardon@redhat.com> - 35.0.1-2
 - rebuild for ICU 54.1
 
