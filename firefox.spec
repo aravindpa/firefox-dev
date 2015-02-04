@@ -107,7 +107,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        35.0.1
-Release:        3%{?pre_tag}%{?dist}
+Release:        4%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -764,6 +764,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Feb 04 2015 Petr Machata <pmachata@redhat.com> - 35.0.1-4
+- Bump for rebuild.
+
 * Tue Jan 27 2015 Martin Stransky <stransky@redhat.com> - 35.0.1-3
 - Backed out the flash click-to-play setup
 
