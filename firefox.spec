@@ -106,14 +106,14 @@
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        35.0.1
-Release:        5%{?pre_tag}%{?dist}
+Version:        36.0
+Release:        1%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.bz2
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20150123.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20150220.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -143,14 +143,12 @@ Patch220:        rhbz-1014858.patch
 Patch221:        firefox-fedora-ua.patch
 
 # Upstream patches
-Patch300:        mozilla-858919.patch
-Patch301:        mozilla-1097550-dict-fix.patch
+Patch301:        mozilla-1129859-dictfix2.patch
 
 # Gtk3 upstream patches
 Patch404:        mozilla-1101582.patch
 Patch405:        mozilla-1073117-check.patch
 Patch406:        mozilla-1073117-color.patch
-Patch407:        mozilla-1097592.patch
 Patch408:        mozilla-1110211.patch
 Patch409:        mozilla-1073117-entry-button-size.patch
 Patch410:        mozilla-1073117-button-focus.patch
@@ -299,14 +297,12 @@ cd %{tarballdir}
 %patch221 -p2 -b .fedora-ua
 
 # Upstream patches
-%patch300 -p1 -b .858919
-%patch301 -p1 -b .1097550-dict-fix
+%patch301 -p1 -b .dict-fix
 
 %if %{toolkit_gtk3}
 %patch404 -p1 -b .1101582
 %patch405 -p1 -b .1073117-check
 %patch406 -p1 -b .1073117-color
-%patch407 -p1 -b .1097592
 %patch408 -p2 -b .1110211
 %patch409 -p1 -b .1073117-entry-button-size
 %patch410 -p1 -b .1073117-button-focus
@@ -750,10 +746,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{mozappdir}/defaults/pref/channel-prefs.js
 %{mozappdir}/dependentlibs.list
 %{mozappdir}/dictionaries
-%{mozappdir}/mozilla-xremote-client
+#%{mozappdir}/mozilla-xremote-client
 %{mozappdir}/omni.ja
 %{mozappdir}/platform.ini
 %{mozappdir}/plugin-container
+%{mozappdir}/gmp-clearkey
 %exclude %{_includedir}
 %exclude %{_libdir}/firefox-devel-%{version}
 %exclude %{_datadir}/idl
@@ -766,6 +763,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Feb 20 2015 Jan Horak <jhorak@redhat.com> - 36.0-1
+- Update to 36.0
+
 * Mon Feb 9 2015 Martin Stransky <stransky@redhat.com> - 35.0.1-5
 - Fixed rhbz#1190774 - update usear agent string for Fedora
 
