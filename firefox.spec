@@ -278,10 +278,10 @@ cd %{tarballdir}
 %patch0 -p1
 %patch1 -p2 -b .build
 
-%ifarch %{arm}
-%patch3  -p2 -b .arm
+#%ifarch %{arm}
+%patch3  -p2 -b .arm-build
 %patch4  -p2 -b .arm
-%endif
+#%endif
 
 %patch18 -p2 -b .jemalloc-ppc
 %patch19 -p2 -b .s390-inlines
@@ -367,6 +367,7 @@ echo "ac_add_options --disable-ipc" >> .mozconfig
 
 %ifarch %{arm}
 echo "ac_add_options --disable-elf-hack" >> .mozconfig
+echo "ac_add_options --enable-skia" >> .mozconfig
 %endif
 
 %if %{?debug_build}
