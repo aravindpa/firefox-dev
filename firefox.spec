@@ -107,7 +107,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        36.0
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -367,7 +367,6 @@ echo "ac_add_options --disable-ipc" >> .mozconfig
 
 %ifarch %{arm}
 echo "ac_add_options --disable-elf-hack" >> .mozconfig
-echo "ac_add_options --enable-skia" >> .mozconfig
 %endif
 
 %if %{?debug_build}
@@ -764,6 +763,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Mar 3 2015 Martin Stransky <stransky@redhat.com> - 36.0-2
+- Enable Skia for all arches (rhbz#1197007)
+
 * Fri Feb 20 2015 Jan Horak <jhorak@redhat.com> - 36.0-1
 - Update to 36.0
 
