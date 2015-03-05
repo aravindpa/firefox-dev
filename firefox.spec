@@ -107,7 +107,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        36.0
-Release:        2%{?pre_tag}%{?dist}
+Release:        3%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -144,6 +144,7 @@ Patch221:        firefox-fedora-ua.patch
 
 # Upstream patches
 Patch301:        mozilla-1129859-dictfix2.patch
+Patch302:        mozilla-1080319.patch
 
 # Gtk3 upstream patches
 Patch404:        mozilla-1101582.patch
@@ -298,6 +299,7 @@ cd %{tarballdir}
 
 # Upstream patches
 %patch301 -p1 -b .dict-fix
+%patch302 -p1 -b .1080319
 
 %if %{toolkit_gtk3}
 %patch404 -p1 -b .1101582
@@ -763,6 +765,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Mar 5 2015 Martin Stransky <stransky@redhat.com> - 36.0-3
+- Added back the removed "-remote" option
+- Fixed rhbz#1198965 - mozilla-xremote-client has been removed,
+  langpack installation may be broken
+
 * Tue Mar 3 2015 Martin Stransky <stransky@redhat.com> - 36.0-2
 - Enable Skia for all arches (rhbz#1197007)
 
