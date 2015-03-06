@@ -1,0 +1,194 @@
+# HG changeset patch
+# Parent b7eb1ce0237d6125b75bc8ff1cb3afc328d6e78c
+# User Steve Singer <steve@ssinger.info>
+Bug 1005535 - Get skia GPU building on big endian.
+
+diff --git a/configure.in b/configure.in
+--- a/configure.in
++++ b/configure.in
+@@ -8231,21 +8231,21 @@ dnl Skia
+ dnl ========================================================
+ if test "$MOZ_ENABLE_SKIA"; then
+   AC_DEFINE(MOZ_ENABLE_SKIA)
+   AC_DEFINE(USE_SKIA)
+   if test "${MOZ_WIDGET_TOOLKIT}" = "android" -o x"$MOZ_WIDGET_TOOLKIT" = x"gonk"; then
+     AC_DEFINE(SK_BUILD_FOR_ANDROID_NDK)
+   fi
+ 
+-  if test "${CPU_ARCH}" != "ppc" -a "${CPU_ARCH}" != "ppc64" -a "${CPU_ARCH}" != "sparc" -a -z "$MOZ_DISABLE_SKIA_GPU" ; then
++#  if test "${CPU_ARCH}" != "ppc" -a "${CPU_ARCH}" != "ppc64" -a "${CPU_ARCH}" != "sparc" -a -z "$MOZ_DISABLE_SKIA_GPU" ; then
+     MOZ_ENABLE_SKIA_GPU=1
+     AC_DEFINE(USE_SKIA_GPU)
+     AC_SUBST(MOZ_ENABLE_SKIA_GPU)
+-  fi
++#  fi
+ fi
+ AC_SUBST(MOZ_ENABLE_SKIA)
+ 
+ dnl ========================================================
+ dnl disable xul
+ dnl ========================================================
+ MOZ_ARG_DISABLE_BOOL(xul,
+ [  --disable-xul           Disable XUL],
+diff --git a/gfx/skia/generate_mozbuild.py b/gfx/skia/generate_mozbuild.py
+--- a/gfx/skia/generate_mozbuild.py
++++ b/gfx/skia/generate_mozbuild.py
+@@ -236,17 +236,17 @@ def generate_separated_sources(platform_
+         return True
+ 
+     return False
+ 
+   separated = {
+     'common': {
+       #'trunk/src/effects/gradients/SkGradientTileProc.cpp',
+       'trunk/src/gpu/gl/GrGLCreateNativeInterface_none.cpp',
+-      'trunk/src/ports/SkDiscardableMemory_none.cpp',
++      #'trunk/src/ports/SkDiscardableMemory_none.cpp',
+       'trunk/src/ports/SkImageDecoder_empty.cpp',
+       'trunk/src/ports/SkMemory_mozalloc.cpp',
+       # 'trunk/src/images/SkImages.cpp',
+       # 'trunk/src/images/SkImageRef.cpp',
+       # 'trunk/src/images/SkImageRef_GlobalPool.cpp',
+       # 'trunk/src/images/SkImageRefPool.cpp',
+       # 'trunk/src/images/SkImageDecoder.cpp',
+       # 'trunk/src/images/SkImageDecoder_Factory.cpp',
+diff --git a/gfx/skia/moz.build b/gfx/skia/moz.build
+--- a/gfx/skia/moz.build
++++ b/gfx/skia/moz.build
+@@ -847,17 +847,16 @@ else:
+         'trunk/src/opts/SkBitmapProcState_opts_none.cpp',
+         'trunk/src/opts/SkBlitMask_opts_none.cpp',
+         'trunk/src/opts/SkBlitRow_opts_none.cpp',
+         'trunk/src/opts/SkBlurImage_opts_none.cpp',
+         'trunk/src/opts/SkMorphology_opts_none.cpp',
+         'trunk/src/opts/SkTextureCompression_opts_none.cpp',
+         'trunk/src/opts/SkUtils_opts_none.cpp',
+         'trunk/src/opts/SkXfermode_opts_none.cpp',
+-        'trunk/src/ports/SkDiscardableMemory_none.cpp',
+     ]
+ 
+ 
+ # can we find a better way of dealing with asm sources?
+ 
+ # left out of UNIFIED_SOURCES for now; that's not C++ anyway, nothing else to unify it with
+ if not CONFIG['INTEL_ARCHITECTURE'] and CONFIG['CPU_ARCH'] == 'arm' and CONFIG['GNU_CC']:
+     SOURCES += [
+diff --git a/gfx/skia/trunk/include/config/SkUserConfig.h b/gfx/skia/trunk/include/config/SkUserConfig.h
+--- a/gfx/skia/trunk/include/config/SkUserConfig.h
++++ b/gfx/skia/trunk/include/config/SkUserConfig.h
+@@ -192,16 +192,17 @@
+ 
+ #if defined(SK_CPU_ARM32) || defined(SK_CPU_ARM64)
+ #  define SK_BARRIERS_PLATFORM_H "skia/SkBarriers_arm.h"
+ #else
+ #  define SK_BARRIERS_PLATFORM_H "skia/SkBarriers_x86.h"
+ #endif
+ 
+ // On all platforms we have this byte order
++
+ #define SK_A32_SHIFT 24
+ #define SK_R32_SHIFT 16
+ #define SK_G32_SHIFT 8
+ #define SK_B32_SHIFT 0
+ 
+ #define SK_ALLOW_STATIC_GLOBAL_INITIALIZERS 0
+ 
+ #define SK_SUPPORT_LEGACY_GETDEVICE
+diff --git a/gfx/skia/trunk/include/core/SkColorPriv.h b/gfx/skia/trunk/include/core/SkColorPriv.h
+--- a/gfx/skia/trunk/include/core/SkColorPriv.h
++++ b/gfx/skia/trunk/include/core/SkColorPriv.h
+@@ -27,37 +27,27 @@
+  *  For easier compatibility with Skia's GPU backend, we further restrict these
+  *  to either (in memory-byte-order) RGBA or BGRA. Note that this "order" does
+  *  not directly correspond to the same shift-order, since we have to take endianess
+  *  into account.
+  *
+  *  Here we enforce this constraint.
+  */
+ 
+-#ifdef SK_CPU_BENDIAN
+-    #define SK_RGBA_R32_SHIFT   24
+-    #define SK_RGBA_G32_SHIFT   16
+-    #define SK_RGBA_B32_SHIFT   8
+-    #define SK_RGBA_A32_SHIFT   0
+ 
+-    #define SK_BGRA_B32_SHIFT   24
+-    #define SK_BGRA_G32_SHIFT   16
+-    #define SK_BGRA_R32_SHIFT   8
+-    #define SK_BGRA_A32_SHIFT   0
+-#else
+     #define SK_RGBA_R32_SHIFT   0
+     #define SK_RGBA_G32_SHIFT   8
+     #define SK_RGBA_B32_SHIFT   16
+     #define SK_RGBA_A32_SHIFT   24
+ 
+     #define SK_BGRA_B32_SHIFT   0
+     #define SK_BGRA_G32_SHIFT   8
+     #define SK_BGRA_R32_SHIFT   16
+     #define SK_BGRA_A32_SHIFT   24
+-#endif
++
+ 
+ #if defined(SK_PMCOLOR_IS_RGBA) && defined(SK_PMCOLOR_IS_BGRA)
+     #error "can't define PMCOLOR to be RGBA and BGRA"
+ #endif
+ 
+ #define LOCAL_PMCOLOR_SHIFTS_EQUIVALENT_TO_RGBA  \
+     (SK_A32_SHIFT == SK_RGBA_A32_SHIFT &&    \
+      SK_R32_SHIFT == SK_RGBA_R32_SHIFT &&    \
+diff --git a/gfx/skia/trunk/include/core/SkImageInfo.h b/gfx/skia/trunk/include/core/SkImageInfo.h
+--- a/gfx/skia/trunk/include/core/SkImageInfo.h
++++ b/gfx/skia/trunk/include/core/SkImageInfo.h
+@@ -83,19 +83,20 @@ enum SkColorType {
+ 
+     kLastEnum_SkColorType = kIndex_8_SkColorType,
+ 
+ #if SK_PMCOLOR_BYTE_ORDER(B,G,R,A)
+     kN32_SkColorType = kBGRA_8888_SkColorType,
+ #elif SK_PMCOLOR_BYTE_ORDER(R,G,B,A)
+     kN32_SkColorType = kRGBA_8888_SkColorType,
+ #else
+-#error "SK_*32_SHFIT values must correspond to BGRA or RGBA byte order"
++     kN32_SkColorType = kBGRA_8888_SkColorType
+ #endif
+ 
++
+ #ifdef SK_SUPPORT_LEGACY_N32_NAME
+     kPMColor_SkColorType = kN32_SkColorType
+ #endif
+ };
+ 
+ static int SkColorTypeBytesPerPixel(SkColorType ct) {
+     static const uint8_t gSize[] = {
+         0,  // Unknown
+diff --git a/gfx/skia/trunk/include/gpu/GrTypes.h b/gfx/skia/trunk/include/gpu/GrTypes.h
+--- a/gfx/skia/trunk/include/gpu/GrTypes.h
++++ b/gfx/skia/trunk/include/gpu/GrTypes.h
+@@ -304,25 +304,23 @@ enum GrPixelConfig {
+      * Byte order is r, g, b, a.  This color format is 32 bits per channel
+      */
+     kRGBA_float_GrPixelConfig,
+     kLast_GrPixelConfig = kRGBA_float_GrPixelConfig
+ };
+ static const int kGrPixelConfigCnt = kLast_GrPixelConfig + 1;
+ 
+ // Aliases for pixel configs that match skia's byte order.
+-#ifndef SK_CPU_LENDIAN
+-    #error "Skia gpu currently assumes little endian"
+-#endif
++
+ #if SK_PMCOLOR_BYTE_ORDER(B,G,R,A)
+     static const GrPixelConfig kSkia8888_GrPixelConfig = kBGRA_8888_GrPixelConfig;
+ #elif SK_PMCOLOR_BYTE_ORDER(R,G,B,A)
+     static const GrPixelConfig kSkia8888_GrPixelConfig = kRGBA_8888_GrPixelConfig;
+ #else
+-    #error "SK_*32_SHIFT values must correspond to GL_BGRA or GL_RGBA format."
++    static const GrPixelConfig kSkia8888_GrPixelConfig = kBGRA_8888_GrPixelConfig;
+ #endif
+ 
+ // Returns true if the pixel config is a GPU-specific compressed format
+ // representation.
+ static inline bool GrPixelConfigIsCompressed(GrPixelConfig config) {
+     switch (config) {
+         case kETC1_GrPixelConfig:
+         case kLATC_GrPixelConfig:
