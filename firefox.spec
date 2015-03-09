@@ -106,14 +106,14 @@
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        36.0
-Release:        4%{?pre_tag}%{?dist}
+Version:        36.0.1
+Release:        1%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.bz2
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20150220.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20150309.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -147,7 +147,6 @@ Patch221:        firefox-fedora-ua.patch
 
 # Upstream patches
 Patch301:        mozilla-1129859-dictfix2.patch
-Patch302:        mozilla-1080319.patch
 
 # Gtk3 upstream patches
 Patch404:        mozilla-1101582.patch
@@ -305,7 +304,6 @@ cd %{tarballdir}
 
 # Upstream patches
 %patch301 -p1 -b .dict-fix
-%patch302 -p1 -b .1080319
 
 %if %{toolkit_gtk3}
 %patch404 -p1 -b .1101582
@@ -771,6 +769,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Mar  9 2015 Jan Horak <jhorak@redhat.com> - 36.0.1-1
+- Update to 36.0.1
+
 * Fri Mar 6 2015 Martin Stransky <stransky@redhat.com> - 36.0-4
 - ppc64le build fix
 
