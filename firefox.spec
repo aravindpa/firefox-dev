@@ -107,7 +107,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        36.0.1
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -127,7 +127,6 @@ Source24:       mozilla-api-key
 Patch0:         firefox-install-dir.patch
 Patch1:         firefox-build.patch
 Patch3:         mozilla-build-arm.patch
-Patch4:         mozilla-build-arm-webrtc.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=814879#c3
 Patch18:        xulrunner-24.0-jemalloc-ppc.patch
 # workaround linking issue on s390 (JSContext::updateMallocCounter(size_t) not found)
@@ -281,10 +280,9 @@ cd %{tarballdir}
 %patch0 -p1
 %patch1 -p2 -b .build
 
-#%ifarch %{arm}
-%patch3  -p2 -b .arm-build
-%patch4  -p2 -b .arm
-#%endif
+%ifarch %{arm}
+%patch3  -p2 -b .arm
+%endif
 
 %patch18 -p2 -b .jemalloc-ppc
 %patch19 -p2 -b .s390-inlines
@@ -769,6 +767,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Mar 10 2015 Martin Stransky <stransky@redhat.com> - 36.0.1-2
+- Arm build fix
+
 * Mon Mar  9 2015 Jan Horak <jhorak@redhat.com> - 36.0.1-1
 - Update to 36.0.1
 

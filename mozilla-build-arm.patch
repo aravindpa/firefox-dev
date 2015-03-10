@@ -10,3 +10,56 @@ diff -up firefox-29.0/mozilla-release/gfx/ycbcr/moz.build.arm firefox-29.0/mozil
      SOURCES += [
          'yuv_row_arm.s',
      ]
+diff -up firefox-36.0.1/mozilla-release/gfx/skia/generate_mozbuild.py.arm firefox-36.0.1/mozilla-release/gfx/skia/generate_mozbuild.py
+--- firefox-36.0.1/mozilla-release/gfx/skia/generate_mozbuild.py.arm	2015-03-09 10:02:17.000000000 +0100
++++ firefox-36.0.1/mozilla-release/gfx/skia/generate_mozbuild.py	2015-03-10 09:16:18.532740641 +0100
+@@ -27,7 +27,7 @@ footer = """
+ # can we find a better way of dealing with asm sources?
+ 
+ # left out of UNIFIED_SOURCES for now; that's not C++ anyway, nothing else to unify it with
+-if not CONFIG['INTEL_ARCHITECTURE'] and CONFIG['CPU_ARCH'] == 'arm' and CONFIG['GNU_CC']:
++if not CONFIG['INTEL_ARCHITECTURE'] and CONFIG['GNU_CC']:
+     SOURCES += [
+         'trunk/src/opts/memset.arm.S',
+     ]
+@@ -123,7 +123,7 @@ if CONFIG['INTEL_ARCHITECTURE'] and CONF
+     SOURCES['trunk/src/opts/SkMorphology_opts_SSE2.cpp'].flags += CONFIG['SSE2_FLAGS']
+     SOURCES['trunk/src/opts/SkUtils_opts_SSE2.cpp'].flags += CONFIG['SSE2_FLAGS']
+     SOURCES['trunk/src/opts/SkXfermode_opts_SSE2.cpp'].flags += CONFIG['SSE2_FLAGS']
+-elif CONFIG['CPU_ARCH'] == 'arm' and CONFIG['GNU_CC'] and CONFIG['BUILD_ARM_NEON']:
++elif CONFIG['GNU_CC'] and CONFIG['BUILD_ARM_NEON']:
+     DEFINES['__ARM_HAVE_OPTIONAL_NEON_SUPPORT'] = 1
+     DEFINES['USE_ANDROID_NDK_CPU_FEATURES'] = 0
+ elif CONFIG['CLANG_CL']:
+@@ -440,7 +440,7 @@ def write_mozbuild(includes, sources):
+   f.write("if CONFIG['INTEL_ARCHITECTURE']:\n")
+   write_sources(f, sources['intel'], 4)
+ 
+-  f.write("elif CONFIG['CPU_ARCH'] == 'arm' and CONFIG['GNU_CC']:\n")
++  f.write("elif CONFIG['GNU_CC']:\n")
+   write_sources(f, sources['arm'], 4)
+ 
+   f.write("    if CONFIG['BUILD_ARM_NEON']:\n")
+diff -up firefox-36.0.1/mozilla-release/media/webrtc/trunk/webrtc/build/common.gypi.arm firefox-36.0.1/mozilla-release/media/webrtc/trunk/webrtc/build/common.gypi
+--- firefox-36.0.1/mozilla-release/media/webrtc/trunk/webrtc/build/common.gypi.arm	2015-03-05 11:28:19.000000000 +0100
++++ firefox-36.0.1/mozilla-release/media/webrtc/trunk/webrtc/build/common.gypi	2015-03-09 10:02:17.875243261 +0100
+@@ -235,19 +235,6 @@
+         'defines': [
+           'WEBRTC_ARCH_ARM',
+         ],
+-        'conditions': [
+-          ['arm_version==7', {
+-            'defines': ['WEBRTC_ARCH_ARM_V7',
+-                        'WEBRTC_BUILD_NEON_LIBS'],
+-            'conditions': [
+-              ['arm_neon==1', {
+-                'defines': ['WEBRTC_ARCH_ARM_NEON',],
+-              }, {
+-                'defines': ['WEBRTC_DETECT_ARM_NEON',],
+-              }],
+-            ],
+-          }],
+-        ],
+       }],
+       ['os_bsd==1', {
+         'defines': [
