@@ -1,0 +1,42 @@
+diff -up firefox-36.0.1/mozilla-release/gfx/skia/generate_mozbuild.py.aarch64 firefox-36.0.1/mozilla-release/gfx/skia/generate_mozbuild.py
+--- firefox-36.0.1/mozilla-release/gfx/skia/generate_mozbuild.py.aarch64	2015-03-10 16:51:22.000000000 +0100
++++ firefox-36.0.1/mozilla-release/gfx/skia/generate_mozbuild.py	2015-03-10 20:23:07.561891942 +0100
+@@ -27,7 +27,7 @@ footer = """
+ # can we find a better way of dealing with asm sources?
+ 
+ # left out of UNIFIED_SOURCES for now; that's not C++ anyway, nothing else to unify it with
+-if not CONFIG['INTEL_ARCHITECTURE'] and CONFIG['CPU_ARCH'] == 'arm' and CONFIG['GNU_CC']:
++if not CONFIG['INTEL_ARCHITECTURE'] and (CONFIG['CPU_ARCH'] == 'arm' or CONFIG['CPU_ARCH'] == 'aarch64') and CONFIG['GNU_CC']:
+     SOURCES += [
+         'trunk/src/opts/memset.arm.S',
+     ]
+@@ -123,7 +123,7 @@ if CONFIG['INTEL_ARCHITECTURE'] and CONF
+     SOURCES['trunk/src/opts/SkMorphology_opts_SSE2.cpp'].flags += CONFIG['SSE2_FLAGS']
+     SOURCES['trunk/src/opts/SkUtils_opts_SSE2.cpp'].flags += CONFIG['SSE2_FLAGS']
+     SOURCES['trunk/src/opts/SkXfermode_opts_SSE2.cpp'].flags += CONFIG['SSE2_FLAGS']
+-elif CONFIG['CPU_ARCH'] == 'arm' and CONFIG['GNU_CC'] and CONFIG['BUILD_ARM_NEON']:
++elif (CONFIG['CPU_ARCH'] == 'arm' or CONFIG['CPU_ARCH'] == 'aarch64') and CONFIG['GNU_CC'] and CONFIG['BUILD_ARM_NEON']:
+     DEFINES['__ARM_HAVE_OPTIONAL_NEON_SUPPORT'] = 1
+     DEFINES['USE_ANDROID_NDK_CPU_FEATURES'] = 0
+ elif CONFIG['CLANG_CL']:
+@@ -440,7 +440,7 @@ def write_mozbuild(includes, sources):
+   f.write("if CONFIG['INTEL_ARCHITECTURE']:\n")
+   write_sources(f, sources['intel'], 4)
+ 
+-  f.write("elif CONFIG['CPU_ARCH'] == 'arm' and CONFIG['GNU_CC']:\n")
++  f.write("elif (CONFIG['CPU_ARCH'] == 'arm' or CONFIG['CPU_ARCH'] == 'aarch64') and CONFIG['GNU_CC']:\n")
+   write_sources(f, sources['arm'], 4)
+ 
+   f.write("    if CONFIG['BUILD_ARM_NEON']:\n")
+diff -up firefox-36.0.1/mozilla-release/gfx/ycbcr/moz.build.aarch64 firefox-36.0.1/mozilla-release/gfx/ycbcr/moz.build
+--- firefox-36.0.1/mozilla-release/gfx/ycbcr/moz.build.aarch64	2015-03-05 11:28:10.000000000 +0100
++++ firefox-36.0.1/mozilla-release/gfx/ycbcr/moz.build	2015-03-10 16:54:47.009663193 +0100
+@@ -61,7 +61,7 @@ else:
+         'yuv_row_other.cpp',
+     ]
+ 
+-if CONFIG['CPU_ARCH'] == 'arm' and CONFIG['HAVE_ARM_NEON']:
++if (CONFIG['CPU_ARCH'] == 'arm' or CONFIG['CPU_ARCH'] == 'aarch64') and CONFIG['HAVE_ARM_NEON']:
+     SOURCES += [
+         'yuv_row_arm.s',
+     ]
