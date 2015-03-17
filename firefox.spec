@@ -107,7 +107,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        36.0.1
-Release:        5%{?pre_tag}%{?dist}
+Release:        6%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -157,6 +157,7 @@ Patch410:        mozilla-1073117-button-focus.patch
 Patch411:        mozilla-1073117-focus-sizes.patch
 Patch412:        mozilla-1073117-no-gap-tab.patch
 Patch413:        mozilla-975919-gtk3-hidpi.patch
+Patch414:        mozilla-1143686.patch
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -311,6 +312,7 @@ cd %{tarballdir}
 %patch411 -p1 -b .1073117-focus-sizes
 %patch412 -p1 -b .1073117-no-gap-tab
 %patch413 -p2 -b .975919-gtk3-hidpi
+%patch414 -p1 -b .1143686
 %endif
 
 %if %{official_branding}
@@ -765,6 +767,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Mar 17 2015 Martin Stransky <stransky@redhat.com> - 36.0.1-6
+- Fixed rhbz#1201527 - [GTK3] Scrollbars in Firefox
+  are not consistent with the rest of the desktop
+
 * Tue Mar 10 2015 Martin Stransky <stransky@redhat.com> - 36.0.1-5
 - Arm build fix
 
