@@ -107,7 +107,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        36.0.4
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -570,6 +570,46 @@ for s in 16 22 24 32 48 256; do
                $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/${s}x${s}/apps/firefox.png
 done
 
+# Register as an application to be visible in the software center
+#
+# NOTE: It would be *awesome* if this file was maintained by the upstream
+# project, translated and installed into the right place during `make install`.
+#
+# See http://www.freedesktop.org/software/appstream/docs/ for more details.
+#
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/appdata
+cat > $RPM_BUILD_ROOT%{_datadir}/appdata/%{name}.appdata.xml <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2014 Richard Hughes <richard@hughsie.com> -->
+<!--
+BugReportURL: https://bugzilla.mozilla.org/show_bug.cgi?id=1071061
+SentUpstream: 2014-09-22
+-->
+<application>
+  <id type="desktop">firefox.desktop</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <description>
+    <p>
+      Bringing together all kinds of awesomeness to make browsing better for you.
+      Get to your favorite sites quickly – even if you don’t remember the URLs.
+      Type your term into the location bar (aka the Awesome Bar) and the autocomplete
+      function will include possible matches from your browsing history, bookmarked
+      sites and open tabs.
+    </p>
+    <!-- FIXME: Needs another couple of paragraphs -->
+  </description>
+  <url type="homepage">http://www.mozilla.org/en-US/</url>
+  <screenshots>
+    <screenshot type="default">https://raw.githubusercontent.com/hughsie/fedora-appstream/master/screenshots-extra/firefox/a.png</screenshot>
+    <screenshot>https://raw.githubusercontent.com/hughsie/fedora-appstream/master/screenshots-extra/firefox/b.png</screenshot>
+    <screenshot>https://raw.githubusercontent.com/hughsie/fedora-appstream/master/screenshots-extra/firefox/c.png</screenshot>
+  </screenshots>
+  <!-- FIXME: change this to an upstream email address for spec updates
+  <updatecontact>someone_who_cares@upstream_project.org</updatecontact>
+   -->
+</application>
+EOF
+
 echo > ../%{name}.lang
 %if %{build_langpacks}
 # Extract langpacks, make any mods needed, repack the langpack, and install it.
@@ -707,6 +747,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %doc %{_mandir}/man1/*
 %dir %{_datadir}/mozilla/extensions/%{firefox_app_id}
 %dir %{_libdir}/mozilla/extensions/%{firefox_app_id}
+%{_datadir}/appdata/*.appdata.xml
 %{_datadir}/applications/*.desktop
 %dir %{mozappdir}
 %doc %{mozappdir}/LICENSE
@@ -767,6 +808,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Mar 26 2015 Richard Hughes <rhughes@redhat.com> - 36.0.4-2
+- Add an AppData file for the software center
+
 * Sat Mar 21 2015 Martin Stransky <stransky@redhat.com> - 36.0.4-1
 - Update to 36.0.4
 
