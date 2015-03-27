@@ -106,14 +106,14 @@
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        36.0.4
-Release:        2%{?pre_tag}%{?dist}
+Version:        37.0
+Release:        1%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.bz2
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20150321.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20150327.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -133,7 +133,6 @@ Patch18:        xulrunner-24.0-jemalloc-ppc.patch
 Patch19:        xulrunner-24.0-s390-inlines.patch
 Patch20:        firefox-build-prbool.patch
 Patch21:        firefox-ppc64le.patch
-Patch22:        mozilla-1108834.patch
 Patch23:        mozilla-1005535.patch
 
 # Fedora specific patches
@@ -148,13 +147,8 @@ Patch221:        firefox-fedora-ua.patch
 Patch301:        mozilla-1129859-dictfix2.patch
 
 # Gtk3 upstream patches
-Patch404:        mozilla-1101582.patch
-Patch405:        mozilla-1073117-check.patch
-Patch406:        mozilla-1073117-color.patch
-Patch408:        mozilla-1110211.patch
-Patch409:        mozilla-1073117-entry-button-size.patch
 Patch410:        mozilla-1073117-button-focus.patch
-Patch411:        mozilla-1073117-focus-sizes.patch
+Patch411:        mozilla-1073117-focus.patch
 Patch412:        mozilla-1073117-no-gap-tab.patch
 Patch413:        mozilla-975919-gtk3-hidpi.patch
 Patch414:        mozilla-1143686.patch
@@ -285,7 +279,6 @@ cd %{tarballdir}
 %patch19 -p2 -b .s390-inlines
 %patch20 -p1 -b .prbool
 %patch21 -p2 -b .ppc64le
-%patch22 -p2 -b .1108834
 %patch23 -p1 -b .1005535
 
 %patch3  -p2 -b .arm
@@ -303,13 +296,8 @@ cd %{tarballdir}
 %patch301 -p1 -b .dict-fix
 
 %if %{toolkit_gtk3}
-%patch404 -p1 -b .1101582
-%patch405 -p1 -b .1073117-check
-%patch406 -p1 -b .1073117-color
-%patch408 -p2 -b .1110211
-%patch409 -p1 -b .1073117-entry-button-size
 %patch410 -p1 -b .1073117-button-focus
-%patch411 -p1 -b .1073117-focus-sizes
+%patch411 -p1 -b .1073117-focus
 %patch412 -p1 -b .1073117-no-gap-tab
 %patch413 -p2 -b .975919-gtk3-hidpi
 %patch414 -p1 -b .1143686
@@ -808,6 +796,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Mar 27 2015 Martin Stransky <stransky@redhat.com> - 37.0-1
+- Update to 37.0 Build 2
+
 * Thu Mar 26 2015 Richard Hughes <rhughes@redhat.com> - 36.0.4-2
 - Add an AppData file for the software center
 
