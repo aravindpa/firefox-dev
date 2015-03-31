@@ -107,7 +107,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        37.0
-Release:        2%{?pre_tag}%{?dist}
+Release:        3%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -153,6 +153,9 @@ Patch412:        mozilla-1073117-no-gap-tab.patch
 Patch413:        mozilla-975919-gtk3-hidpi.patch
 Patch414:        mozilla-1143686.patch
 Patch415:        mozilla-1144643.patch
+
+# Fix Skia Neon stuff on AArch64
+Patch500:        aarch64-fix-skia.patch
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -304,6 +307,8 @@ cd %{tarballdir}
 %patch414 -p1 -b .1143686
 %patch415 -p1 -b .1144643
 %endif
+
+%patch500 -p1
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -798,6 +803,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Mar 31 2015 Marcin Juszkiewicz <mjuszkiewicz@redhat.com> - 37.0-3
+- Fix build on AArch64 (based on upstream skia changes)
+
 * Fri Mar 27 2015 Martin Stransky <stransky@redhat.com> - 37.0-2
 - Added tooltip patch (mozbz#1144643)
 
