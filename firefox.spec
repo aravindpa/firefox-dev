@@ -107,7 +107,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        37.0
-Release:        3%{?pre_tag}%{?dist}
+Release:        4%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -803,6 +803,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Apr  6 2015 Tom Callaway <spot@fedoraproject.org> - 37.0-4
+- rebuild for libvpx 1.4.0
+
 * Tue Mar 31 2015 Marcin Juszkiewicz <mjuszkiewicz@redhat.com> - 37.0-3
 - Fix build on AArch64 (based on upstream skia changes)
 
