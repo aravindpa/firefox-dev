@@ -107,7 +107,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        37.0.2
-Release:        2%{?pre_tag}%{?dist}
+Release:        3%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -805,6 +805,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Apr 22 2015 Martin Stransky <stransky@redhat.com> - 37.0.2-3
+- Fedora-bookmarks rebuild (rhbz#1210474)
+
 * Thu Apr 16 2015 Martin Stransky <stransky@redhat.com> - 37.0.2-2
 - Update to 37.0.2
 
