@@ -143,6 +143,7 @@ Patch215:        firefox-enable-addons.patch
 Patch219:        rhbz-1173156.patch
 Patch220:        rhbz-1014858.patch
 Patch221:        firefox-fedora-ua.patch
+Patch222:        firefox-nss-3.18.0.patch
 
 # Upstream patches
 
@@ -295,6 +296,7 @@ cd %{tarballdir}
 %patch219 -p2 -b .rhbz-1173156
 %patch220 -p1 -b .rhbz-1014858
 %patch221 -p2 -b .fedora-ua
+%patch222 -p1 -b .nss-3.18.0
 
 # Upstream patches
 %if %{toolkit_gtk3}
