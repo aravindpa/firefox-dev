@@ -106,14 +106,14 @@
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        37.0.2
-Release:        3%{?pre_tag}%{?dist}
+Version:        38.0
+Release:        1%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.bz2
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20150416.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20150505.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -145,13 +145,11 @@ Patch220:        rhbz-1014858.patch
 Patch221:        firefox-fedora-ua.patch
 
 # Upstream patches
-Patch301:        mozilla-1129859-dictfix2.patch
 
 # Gtk3 upstream patches
 Patch410:        mozilla-1073117-button-focus.patch
 Patch411:        mozilla-1073117-focus.patch
 Patch412:        mozilla-1073117-no-gap-tab.patch
-Patch413:        mozilla-975919-gtk3-hidpi.patch
 Patch414:        mozilla-1143686.patch
 Patch415:        mozilla-1144643.patch
 
@@ -299,13 +297,10 @@ cd %{tarballdir}
 %patch221 -p2 -b .fedora-ua
 
 # Upstream patches
-%patch301 -p1 -b .dict-fix
-
 %if %{toolkit_gtk3}
 %patch410 -p1 -b .1073117-button-focus
 %patch411 -p1 -b .1073117-focus
 %patch412 -p1 -b .1073117-no-gap-tab
-%patch413 -p2 -b .975919-gtk3-hidpi
 %patch414 -p1 -b .1143686
 %patch415 -p1 -b .1144643
 %endif
@@ -805,6 +800,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue May 5 2015 Martin Stransky <stransky@redhat.com> - 38.0-1
+- Update to 38.0 Build 2
+
 * Wed Apr 22 2015 Martin Stransky <stransky@redhat.com> - 37.0.2-3
 - Fedora-bookmarks rebuild (rhbz#1210474)
 
