@@ -107,7 +107,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        38.0
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -153,6 +153,7 @@ Patch411:        mozilla-1073117-focus.patch
 Patch412:        mozilla-1073117-no-gap-tab.patch
 Patch414:        mozilla-1143686.patch
 Patch415:        mozilla-1144643.patch
+Patch416:        mozilla-1161056.patch
 
 # Fix Skia Neon stuff on AArch64
 Patch500:        aarch64-fix-skia.patch
@@ -305,6 +306,7 @@ cd %{tarballdir}
 %patch412 -p1 -b .1073117-no-gap-tab
 %patch414 -p1 -b .1143686
 %patch415 -p1 -b .1144643
+%patch416 -p1 -b .1161056
 %endif
 
 %patch500 -p1
@@ -802,6 +804,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Wed May 6 2015 Martin Stransky <stransky@redhat.com> - 38.0-2
+- Added fix for mozbz#1161056 - combobox background color
+
 * Tue May 5 2015 Martin Stransky <stransky@redhat.com> - 38.0-1
 - Update to 38.0 Build 2
 
