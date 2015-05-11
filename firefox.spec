@@ -806,7 +806,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
-* MonMay 11 2015 Martin Stransky <stransky@redhat.com> - 38.0-3
+* Mon May 11 2015 Martin Stransky <stransky@redhat.com> - 38.0-3
 - Update to 38.0 Build 3
 
 * Wed May 6 2015 Martin Stransky <stransky@redhat.com> - 38.0-2
