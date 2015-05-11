@@ -107,7 +107,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        38.0
-Release:        3%{?pre_tag}%{?dist}
+Release:        4%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -287,7 +287,9 @@ cd %{tarballdir}
 %patch21 -p2 -b .ppc64le
 %patch23 -p1 -b .1005535
 %patch24 -p1 -b .debug
+%ifarch s390
 %patch25 -p1 -b .rhbz-1219542-s390
+%endif
 
 %patch3  -p2 -b .arm
 
@@ -806,8 +808,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
-* Mon May 11 2015 Martin Stransky <stransky@redhat.com> - 38.0-3
+* Mon May 11 2015 Martin Stransky <stransky@redhat.com> - 38.0-4
 - Update to 38.0 Build 3
+- Added fix for rhbz#1219542
 
 * Wed May 6 2015 Martin Stransky <stransky@redhat.com> - 38.0-2
 - Added fix for mozbz#1161056 - combobox background color
