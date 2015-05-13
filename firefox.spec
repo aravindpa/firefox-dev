@@ -107,7 +107,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        38.0
-Release:        4%{?pre_tag}%{?dist}
+Release:        5%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -155,6 +155,9 @@ Patch412:        mozilla-1073117-no-gap-tab.patch
 Patch414:        mozilla-1143686.patch
 Patch415:        mozilla-1144643.patch
 Patch416:        mozilla-1161056.patch
+Patch417:        mozilla-1144745-1.patch
+Patch418:        mozilla-1144745-2.patch
+Patch419:        mozilla-1144745-3.patch
 
 # Fix Skia Neon stuff on AArch64
 Patch500:        aarch64-fix-skia.patch
@@ -311,6 +314,9 @@ cd %{tarballdir}
 %patch414 -p1 -b .1143686
 %patch415 -p1 -b .1144643
 %patch416 -p1 -b .1161056
+%patch417 -p1 -b .1144745-1
+%patch418 -p1 -b .1144745-2
+%patch419 -p1 -b .1144745-3
 %endif
 
 %patch500 -p1
@@ -808,6 +814,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Wed May 13 2015 Martin Stransky <stransky@redhat.com> - 38.0-5
+- Added patch for mozilla#1144745 - HiDPI Gtk3 fixes
+
 * Mon May 11 2015 Martin Stransky <stransky@redhat.com> - 38.0-4
 - Update to 38.0 Build 3
 - Added fix for rhbz#1219542
