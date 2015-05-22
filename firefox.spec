@@ -107,7 +107,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        38.0.1
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -463,7 +463,9 @@ MOZ_OPT_FLAGS=$(echo "$RPM_OPT_FLAGS" | %{__sed} -e 's/-Wall//')
 #rhbz#1037063
 # -Werror=format-security causes build failures when -Wno-format is explicitly given
 # for some sources
-MOZ_OPT_FLAGS="$MOZ_OPT_FLAGS -Wformat-security -Wformat -Werror=format-security"
+# Explicitly force the hardening flags for Firefox so it passes the checksec test;
+# See also https://fedoraproject.org/wiki/Changes/Harden_All_Packages
+MOZ_OPT_FLAGS="$MOZ_OPT_FLAGS -Wformat-security -Wformat -Werror=format-security -fPIC -pie -Wl,-z,relro -Wl,-z,now"
 %if %{?debug_build}
 MOZ_OPT_FLAGS=$(echo "$MOZ_OPT_FLAGS" | %{__sed} -e 's/-O2//')
 %endif
@@ -814,6 +816,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Sat May 9 2015 Moez Roy <moez.roy@gmail.com> - 38.0.1-2
+- Rebuilt with hardening flags so it passes the checksec test;
+
+- See also https://fedoraproject.org/wiki/Changes/Harden_All_Packages
 * Mon May 18 2015 Martin Stransky <stransky@redhat.com> - 38.0.1-1
 - Update to 38.0.1
 
