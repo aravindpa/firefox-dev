@@ -279,7 +279,7 @@ This package contains results of tests executed during build.
 cd %{tarballdir}
 
 # Build patches, can't change backup suffix from default because during build
-# there is a compare of config and js/config directories and .orig suffix is 
+# there is a compare of config and js/config directories and .orig suffix is
 # ignored during this compare.
 %patch0 -p1
 %patch1 -p2 -b .build
@@ -695,11 +695,11 @@ sed -i -e "s/\[Crash Reporter\]/[Crash Reporter]\nEnabled=1/" $RPM_BUILD_ROOT/%{
 %{__cp} test_results/* $RPM_BUILD_ROOT/test_results
 %endif
 
-# Default 
+# Default
 %{__cp} %{SOURCE12} ${RPM_BUILD_ROOT}%{mozappdir}/browser/defaults/preferences
 
 # Remove copied libraries to speed up build
-rm -f ${RPM_BUILD_ROOT}%{mozappdirdev}/sdk/lib/libmozjs.so 
+rm -f ${RPM_BUILD_ROOT}%{mozappdirdev}/sdk/lib/libmozjs.so
 rm -f ${RPM_BUILD_ROOT}%{mozappdirdev}/sdk/lib/libmozalloc.so
 rm -f ${RPM_BUILD_ROOT}%{mozappdirdev}/sdk/lib/libxul.so
 #---------------------------------------------------------------------
@@ -712,7 +712,7 @@ if (posix.stat("%{mozappdir}/browser/defaults/preferences", "type") == "link") t
   posix.unlink("%{mozappdir}/browser/defaults/preferences")
   posix.mkdir("%{mozappdir}/browser/defaults/preferences")
   if (posix.stat("%{mozappdir}/defaults/preferences", "type") == "directory") then
-    for i,filename in pairs(posix.dir("%{mozappdir}/defaults/preferences")) do 
+    for i,filename in pairs(posix.dir("%{mozappdir}/defaults/preferences")) do
       os.rename("%{mozappdir}/defaults/preferences/"..filename, "%{mozappdir}/browser/defaults/preferences/"..filename)
     end
     f = io.open("%{mozappdir}/defaults/preferences/README","w")
@@ -1174,7 +1174,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 - Updated xulrunner check
 
 * Thu Apr 18 2013 Martin Stransky <stransky@redhat.com> - 20.0-3
-- Added a workaround for rhbz#907424 - textarea redrawn wrongly 
+- Added a workaround for rhbz#907424 - textarea redrawn wrongly
   during edit
 
 * Thu Apr 18 2013 Jan Horak <jhorak@redhat.com> - 20.0-2
