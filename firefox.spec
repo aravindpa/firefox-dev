@@ -816,7 +816,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
-* Sat May 9 2015 Moez Roy <moez.roy@gmail.com> - 38.0.1-2
+* Fri May 22 2015 Moez Roy <moez.roy@gmail.com> - 38.0.1-2
 - Rebuilt with hardening flags so it passes the checksec test;
 
 - See also https://fedoraproject.org/wiki/Changes/Harden_All_Packages
