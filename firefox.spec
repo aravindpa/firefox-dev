@@ -107,7 +107,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        38.0.1
-Release:        2%{?pre_tag}%{?dist}
+Release:        3%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -465,7 +465,11 @@ MOZ_OPT_FLAGS=$(echo "$RPM_OPT_FLAGS" | %{__sed} -e 's/-Wall//')
 # for some sources
 # Explicitly force the hardening flags for Firefox so it passes the checksec test;
 # See also https://fedoraproject.org/wiki/Changes/Harden_All_Packages
-MOZ_OPT_FLAGS="$MOZ_OPT_FLAGS -Wformat-security -Wformat -Werror=format-security -fPIC -pie -Wl,-z,relro -Wl,-z,now"
+MOZ_OPT_FLAGS="$MOZ_OPT_FLAGS -Wformat-security -Wformat -Werror=format-security"
+# Use hardened build?
+%if 0%{?fedora} > 22
+MOZ_OPT_FLAGS="$MOZ_OPT_FLAGS -fPIC -pie -Wl,-z,relro -Wl,-z,now"
+%endif
 %if %{?debug_build}
 MOZ_OPT_FLAGS=$(echo "$MOZ_OPT_FLAGS" | %{__sed} -e 's/-O2//')
 %endif
@@ -493,7 +497,6 @@ MOZ_SMP_FLAGS=-j1
 [ "$RPM_BUILD_NCPUS" -ge 8 ] && MOZ_SMP_FLAGS=-j8
 %endif
 
-#export LDFLAGS="-Wl,-rpath,%{mozappdir}"
 make -f client.mk build STRIP="/bin/true" MOZ_MAKE_FLAGS="$MOZ_SMP_FLAGS" MOZ_SERVICES_SYNC="1"
 
 # create debuginfo for crash-stats.mozilla.com
@@ -537,15 +540,6 @@ rm -f  objdir/dist/bin/pk12util
 %install
 cd %{tarballdir}
 
-# set up our prefs and add it to the package manifest file, so it gets pulled in
-# to omni.jar which gets created during make install
-%{__cp} %{SOURCE12} objdir/dist/bin/browser/defaults/preferences/all-redhat.js
-# This sed call "replaces" firefox.js with all-redhat.js, newline, and itself (&)
-# having the net effect of prepending all-redhat.js above firefox.js
-#%{__sed} -i -e\
-#    's|@BINPATH@/browser/@PREF_DIR@/firefox.js|@BINPATH@/browser/@PREF_DIR@/all-redhat.js\n&|' \
-#    browser/installer/package-manifest.in
-
 # set up our default bookmarks
 %{__cp} -p %{default_bookmarks_file} objdir/dist/bin/browser/defaults/profile/bookmarks.html
 
@@ -558,9 +552,7 @@ DESTDIR=$RPM_BUILD_ROOT make -C objdir install
 
 %{__mkdir_p} $RPM_BUILD_ROOT{%{_libdir},%{_bindir},%{_datadir}/applications}
 
-
 desktop-file-install --dir $RPM_BUILD_ROOT%{_datadir}/applications %{SOURCE20}
-
 
 # set up the firefox start script
 %{__rm} -rf $RPM_BUILD_ROOT%{_bindir}/firefox
@@ -816,10 +808,13 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue May 26 2015 Martin Stransky <stransky@redhat.com> - 38.0.1-3
+- spec clean up
+
 * Fri May 22 2015 Moez Roy <moez.roy@gmail.com> - 38.0.1-2
 - Rebuilt with hardening flags so it passes the checksec test;
-
 - See also https://fedoraproject.org/wiki/Changes/Harden_All_Packages
+
 * Mon May 18 2015 Martin Stransky <stransky@redhat.com> - 38.0.1-1
 - Update to 38.0.1
 
