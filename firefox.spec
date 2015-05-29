@@ -107,7 +107,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        38.0.1
-Release:        3%{?pre_tag}%{?dist}
+Release:        4%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -158,6 +158,7 @@ Patch416:        mozilla-1161056.patch
 Patch417:        mozilla-1144745-1.patch
 Patch418:        mozilla-1144745-2.patch
 Patch419:        mozilla-1144745-3.patch
+Patch420:        mozilla-1160154.patch
 
 # Fix Skia Neon stuff on AArch64
 Patch500:        aarch64-fix-skia.patch
@@ -317,6 +318,7 @@ cd %{tarballdir}
 %patch417 -p1 -b .1144745-1
 %patch418 -p1 -b .1144745-2
 %patch419 -p1 -b .1144745-3
+%patch420 -p1 -b .1160154
 %endif
 
 %patch500 -p1
@@ -808,6 +810,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Fri May 29 2015 Martin Stransky <stransky@redhat.com> - 38.0.1-4
+- Added patch for mozbz#1160154 - huge bookmark padding
+
 * Tue May 26 2015 Martin Stransky <stransky@redhat.com> - 38.0.1-3
 - spec clean up
 
