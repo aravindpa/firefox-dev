@@ -107,7 +107,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        38.0.1
-Release:        5%{?pre_tag}%{?dist}
+Release:        6%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -160,6 +160,7 @@ Patch418:        mozilla-1144745-2.patch
 Patch419:        mozilla-1144745-3.patch
 Patch420:        mozilla-1160154.patch
 Patch421:        mozilla-1169233.patch
+Patch422:        mozilla-1169232.patch
 
 # Fix Skia Neon stuff on AArch64
 Patch500:        aarch64-fix-skia.patch
@@ -321,6 +322,7 @@ cd %{tarballdir}
 %patch419 -p1 -b .1144745-3
 %patch420 -p1 -b .1160154
 %patch421 -p1 -b .1169233
+%patch422 -p1 -b .1169232
 %endif
 
 %patch500 -p1
@@ -812,6 +814,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Jun 1 2015 Martin Stransky <stransky@redhat.com> - 38.0.1-6
+- Added fix for rhbz#1226868 - [GTK3] regression: bad colors
+  make notifications unreadable
+
 * Fri May 29 2015 Martin Stransky <stransky@redhat.com> - 38.0.1-5
 - Added patch for mozbz#1169233 - Disabled menu items
   are not greyed out
