@@ -1,19 +1,7 @@
-# HG changeset patch
-# Parent 58c9d079f31811f3f325d4f439084a9ceb36764b
-# User Jan Horak <jhorak@redhat.com>
-# Bug 1129873 - Implementation of GtkAppChooserDialog wrapper for GTK3 to enable native application chooser in Linux
-# Parent  7d4ab4a9febdf66c18d752afd4bd241c41be921f
-try: -b do -p all -u all -t none
-
-diff --git a/toolkit/mozapps/downloads/nsHelperAppDlg.js b/toolkit/mozapps/downloads/nsHelperAppDlg.js
---- a/toolkit/mozapps/downloads/nsHelperAppDlg.js
-+++ b/toolkit/mozapps/downloads/nsHelperAppDlg.js
-@@ -999,16 +999,44 @@ nsUnknownContentTypeDialog.prototype = {
-       try {
-         return file.bundleDisplayName;
-       } catch (e) {}
-     }
- #endif
+diff -up mozilla-release/toolkit/mozapps/downloads/nsHelperAppDlg.js.1129873-apppicker mozilla-release/toolkit/mozapps/downloads/nsHelperAppDlg.js
+--- mozilla-release/toolkit/mozapps/downloads/nsHelperAppDlg.js.1129873-apppicker	2015-05-25 23:28:55.000000000 +0200
++++ mozilla-release/toolkit/mozapps/downloads/nsHelperAppDlg.js	2015-06-09 09:37:35.313305562 +0200
+@@ -1004,6 +1004,34 @@ nsUnknownContentTypeDialog.prototype = {
      return file.leafName;
    },
  
@@ -48,17 +36,7 @@ diff --git a/toolkit/mozapps/downloads/nsHelperAppDlg.js b/toolkit/mozapps/downl
    // chooseApp:  Open file picker and prompt user for application.
    chooseApp: function() {
  #ifdef XP_WIN
-     // Protect against the lack of an extension
-     var fileExtension = "";
-     try {
-       fileExtension = this.mLauncher.MIMEInfo.primaryExtension;
-     } catch(ex) {
-@@ -1042,17 +1070,33 @@ nsUnknownContentTypeDialog.prototype = {
-                             "chrome,modal,centerscreen,titlebar,dialog=yes",
-                             params);
- 
-     if (params.handlerApp &&
-         params.handlerApp.executable &&
+@@ -1047,7 +1075,23 @@ nsUnknownContentTypeDialog.prototype = {
          params.handlerApp.executable.isFile()) {
        // Remember the file they chose to run.
        this.chosenApp = params.handlerApp;
@@ -83,24 +61,12 @@ diff --git a/toolkit/mozapps/downloads/nsHelperAppDlg.js b/toolkit/mozapps/downl
  #else
      var nsIFilePicker = Components.interfaces.nsIFilePicker;
      var fp = Components.classes["@mozilla.org/filepicker;1"]
-                        .createInstance(nsIFilePicker);
-     fp.init(this.mDialog,
-             this.dialogElement("strings").getString("chooseAppFilePickerTitle"),
-             nsIFilePicker.modeOpen);
- 
-@@ -1060,39 +1104,21 @@ nsUnknownContentTypeDialog.prototype = {
- 
-     if (fp.show() == nsIFilePicker.returnOK && fp.file) {
-       // Remember the file they chose to run.
-       var localHandlerApp =
-         Components.classes["@mozilla.org/uriloader/local-handler-app;1"].
+@@ -1065,29 +1109,11 @@ nsUnknownContentTypeDialog.prototype = {
                     createInstance(Components.interfaces.nsILocalHandlerApp);
        localHandlerApp.executable = fp.file;
        this.chosenApp = localHandlerApp;
 -#endif
-+    }
-+#endif // MOZ_WIDGET_GTK3
- 
+-
 -      // Show the "handler" menulist since we have a (user-specified)
 -      // application now.
 -      this.dialogElement("modeDeck").setAttribute("selectedIndex", "0");
@@ -121,26 +87,18 @@ diff --git a/toolkit/mozapps/downloads/nsHelperAppDlg.js b/toolkit/mozapps/downl
 -      if (!lastSelectedID)
 -        lastSelectedID = "defaultHandler";
 -      openHandler.selectedItem = this.dialogElement(lastSelectedID);
--    }
+     }
++#endif // MOZ_WIDGET_GTK3
++
 +#endif // XP_WIN
 +    this.finishChooseApp();
    },
  
    // Turn this on to get debugging messages.
-   debug: false,
- 
-   // Dump text (if debug is on).
-   dump: function( text ) {
-     if ( this.debug ) {
-diff --git a/widget/gtk/moz.build b/widget/gtk/moz.build
---- a/widget/gtk/moz.build
-+++ b/widget/gtk/moz.build
-@@ -69,16 +69,17 @@ if CONFIG['ACCESSIBILITY']:
- 
- if CONFIG['MOZ_ENABLE_GTK2']:
-     UNIFIED_SOURCES += [
-         'gtk2drawing.c',
-     ]
+diff -up mozilla-release/widget/gtk/moz.build.1129873-apppicker mozilla-release/widget/gtk/moz.build
+--- mozilla-release/widget/gtk/moz.build.1129873-apppicker	2015-05-25 23:28:56.000000000 +0200
++++ mozilla-release/widget/gtk/moz.build	2015-06-09 09:37:35.313305562 +0200
+@@ -74,6 +74,7 @@ if CONFIG['MOZ_ENABLE_GTK2']:
  else:
      UNIFIED_SOURCES += [
          'gtk3drawing.c',
@@ -148,20 +106,10 @@ diff --git a/widget/gtk/moz.build b/widget/gtk/moz.build
      ]
  
  include('/ipc/chromium/chromium-config.mozbuild')
- 
- FINAL_LIBRARY = 'xul'
- 
- LOCAL_INCLUDES += [
-     '/layout/generic',
-diff --git a/widget/gtk/mozgtk/mozgtk.c b/widget/gtk/mozgtk/mozgtk.c
---- a/widget/gtk/mozgtk/mozgtk.c
-+++ b/widget/gtk/mozgtk/mozgtk.c
-@@ -535,16 +535,21 @@ STUB(gtk_style_context_save)
- STUB(gtk_style_context_set_path)
- STUB(gtk_style_context_set_state)
- STUB(gtk_tree_view_column_get_button)
- STUB(gtk_widget_get_preferred_size)
- STUB(gtk_widget_get_style_context)
+diff -up mozilla-release/widget/gtk/mozgtk/mozgtk.c.1129873-apppicker mozilla-release/widget/gtk/mozgtk/mozgtk.c
+--- mozilla-release/widget/gtk/mozgtk/mozgtk.c.1129873-apppicker	2015-05-25 23:28:56.000000000 +0200
++++ mozilla-release/widget/gtk/mozgtk/mozgtk.c	2015-06-09 09:37:35.313305562 +0200
+@@ -533,6 +533,11 @@ STUB(gtk_widget_get_style_context)
  STUB(gtk_widget_path_append_type)
  STUB(gtk_widget_path_new)
  STUB(gtk_widget_set_visual)
@@ -173,15 +121,9 @@ diff --git a/widget/gtk/mozgtk/mozgtk.c b/widget/gtk/mozgtk/mozgtk.c
  #endif
  
  #ifdef GTK2_SYMBOLS
- STUB(gdk_drawable_get_screen)
- STUB(gdk_rgb_get_colormap)
- STUB(gdk_rgb_get_visual)
- STUB(gdk_window_lookup)
- STUB(gdk_window_set_back_pixmap)
-diff --git a/widget/gtk/nsApplicationChooser.cpp b/widget/gtk/nsApplicationChooser.cpp
-new file mode 100644
---- /dev/null
-+++ b/widget/gtk/nsApplicationChooser.cpp
+diff -up mozilla-release/widget/gtk/nsApplicationChooser.cpp.1129873-apppicker mozilla-release/widget/gtk/nsApplicationChooser.cpp
+--- mozilla-release/widget/gtk/nsApplicationChooser.cpp.1129873-apppicker	2015-06-09 09:37:35.314305558 +0200
++++ mozilla-release/widget/gtk/nsApplicationChooser.cpp	2015-06-09 09:37:35.313305562 +0200
 @@ -0,0 +1,123 @@
 +/* -*- Mode: C++; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 +/* This Source Code Form is subject to the terms of the Mozilla Public
@@ -306,10 +248,9 @@ new file mode 100644
 +  NS_RELEASE_THIS();
 +}
 +
-diff --git a/widget/gtk/nsApplicationChooser.h b/widget/gtk/nsApplicationChooser.h
-new file mode 100644
---- /dev/null
-+++ b/widget/gtk/nsApplicationChooser.h
+diff -up mozilla-release/widget/gtk/nsApplicationChooser.h.1129873-apppicker mozilla-release/widget/gtk/nsApplicationChooser.h
+--- mozilla-release/widget/gtk/nsApplicationChooser.h.1129873-apppicker	2015-06-09 09:37:35.314305558 +0200
++++ mozilla-release/widget/gtk/nsApplicationChooser.h	2015-06-09 09:37:35.314305558 +0200
 @@ -0,0 +1,28 @@
 +/* -*- Mode: C++; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 +/* This Source Code Form is subject to the terms of the Mozilla Public
@@ -339,15 +280,10 @@ new file mode 100644
 +  static void OnDestroy(GtkWidget* chooser, gpointer user_data);
 +};
 +#endif
-diff --git a/widget/gtk/nsWidgetFactory.cpp b/widget/gtk/nsWidgetFactory.cpp
---- a/widget/gtk/nsWidgetFactory.cpp
-+++ b/widget/gtk/nsWidgetFactory.cpp
-@@ -16,16 +16,19 @@
- #include "nsWindow.h"
- #include "nsTransferable.h"
- #include "nsHTMLFormatConverter.h"
- #ifdef MOZ_X11
- #include "nsClipboardHelper.h"
+diff -up mozilla-release/widget/gtk/nsWidgetFactory.cpp.1129873-apppicker mozilla-release/widget/gtk/nsWidgetFactory.cpp
+--- mozilla-release/widget/gtk/nsWidgetFactory.cpp.1129873-apppicker	2015-05-25 23:28:56.000000000 +0200
++++ mozilla-release/widget/gtk/nsWidgetFactory.cpp	2015-06-09 09:37:35.314305558 +0200
+@@ -21,6 +21,9 @@
  #include "nsClipboard.h"
  #include "nsDragService.h"
  #endif
@@ -357,17 +293,7 @@ diff --git a/widget/gtk/nsWidgetFactory.cpp b/widget/gtk/nsWidgetFactory.cpp
  #include "nsColorPicker.h"
  #include "nsFilePicker.h"
  #include "nsSound.h"
- #include "nsBidiKeyboard.h"
- #include "nsScreenManagerGtk.h"
- #include "nsGTKToolkit.h"
- #include "WakeLockListener.h"
- 
-@@ -147,16 +150,35 @@ nsFilePickerConstructor(nsISupports *aOu
- 
-   if (!picker) {
-     return NS_ERROR_OUT_OF_MEMORY;
-   }
- 
+@@ -152,6 +155,25 @@ nsFilePickerConstructor(nsISupports *aOu
    return picker->QueryInterface(aIID, aResult);
  }
  
@@ -393,17 +319,7 @@ diff --git a/widget/gtk/nsWidgetFactory.cpp b/widget/gtk/nsWidgetFactory.cpp
  static nsresult
  nsColorPickerConstructor(nsISupports *aOuter, REFNSIID aIID,
                           void **aResult)
- {
-     *aResult = nullptr;
-     if (aOuter != nullptr) {
-         return NS_ERROR_NO_AGGREGATION;
-     }
-@@ -170,16 +192,19 @@ nsColorPickerConstructor(nsISupports *aO
-     return picker->QueryInterface(aIID, aResult);
- }
- 
- NS_DEFINE_NAMED_CID(NS_WINDOW_CID);
- NS_DEFINE_NAMED_CID(NS_CHILD_CID);
+@@ -175,6 +197,9 @@ NS_DEFINE_NAMED_CID(NS_CHILD_CID);
  NS_DEFINE_NAMED_CID(NS_APPSHELL_CID);
  NS_DEFINE_NAMED_CID(NS_COLORPICKER_CID);
  NS_DEFINE_NAMED_CID(NS_FILEPICKER_CID);
@@ -413,17 +329,7 @@ diff --git a/widget/gtk/nsWidgetFactory.cpp b/widget/gtk/nsWidgetFactory.cpp
  NS_DEFINE_NAMED_CID(NS_SOUND_CID);
  NS_DEFINE_NAMED_CID(NS_TRANSFERABLE_CID);
  #ifdef MOZ_X11
- NS_DEFINE_NAMED_CID(NS_CLIPBOARD_CID);
- NS_DEFINE_NAMED_CID(NS_CLIPBOARDHELPER_CID);
- NS_DEFINE_NAMED_CID(NS_DRAGSERVICE_CID);
- #endif
- NS_DEFINE_NAMED_CID(NS_HTMLFORMATCONVERTER_CID);
-@@ -201,16 +226,19 @@ NS_DEFINE_NAMED_CID(NS_GFXINFO_CID);
- 
- 
- static const mozilla::Module::CIDEntry kWidgetCIDs[] = {
-     { &kNS_WINDOW_CID, false, nullptr, nsWindowConstructor },
-     { &kNS_CHILD_CID, false, nullptr, nsChildWindowConstructor },
+@@ -206,6 +231,9 @@ static const mozilla::Module::CIDEntry k
      { &kNS_APPSHELL_CID, false, nullptr, nsAppShellConstructor },
      { &kNS_COLORPICKER_CID, false, nullptr, nsColorPickerConstructor, Module::MAIN_PROCESS_ONLY },
      { &kNS_FILEPICKER_CID, false, nullptr, nsFilePickerConstructor, Module::MAIN_PROCESS_ONLY },
@@ -433,17 +339,7 @@ diff --git a/widget/gtk/nsWidgetFactory.cpp b/widget/gtk/nsWidgetFactory.cpp
      { &kNS_SOUND_CID, false, nullptr, nsSoundConstructor, Module::MAIN_PROCESS_ONLY },
      { &kNS_TRANSFERABLE_CID, false, nullptr, nsTransferableConstructor },
  #ifdef MOZ_X11
-     { &kNS_CLIPBOARD_CID, false, nullptr, nsClipboardConstructor, Module::MAIN_PROCESS_ONLY },
-     { &kNS_CLIPBOARDHELPER_CID, false, nullptr, nsClipboardHelperConstructor },
-     { &kNS_DRAGSERVICE_CID, false, nullptr, nsDragServiceConstructor, Module::MAIN_PROCESS_ONLY },
- #endif
-     { &kNS_HTMLFORMATCONVERTER_CID, false, nullptr, nsHTMLFormatConverterConstructor },
-@@ -234,16 +262,19 @@ static const mozilla::Module::CIDEntry k
- };
- 
- static const mozilla::Module::ContractIDEntry kWidgetContracts[] = {
-     { "@mozilla.org/widget/window/gtk;1", &kNS_WINDOW_CID },
-     { "@mozilla.org/widgets/child_window/gtk;1", &kNS_CHILD_CID },
+@@ -239,6 +267,9 @@ static const mozilla::Module::ContractID
      { "@mozilla.org/widget/appshell/gtk;1", &kNS_APPSHELL_CID },
      { "@mozilla.org/colorpicker;1", &kNS_COLORPICKER_CID, Module::MAIN_PROCESS_ONLY },
      { "@mozilla.org/filepicker;1", &kNS_FILEPICKER_CID, Module::MAIN_PROCESS_ONLY },
@@ -453,20 +349,10 @@ diff --git a/widget/gtk/nsWidgetFactory.cpp b/widget/gtk/nsWidgetFactory.cpp
      { "@mozilla.org/sound;1", &kNS_SOUND_CID, Module::MAIN_PROCESS_ONLY },
      { "@mozilla.org/widget/transferable;1", &kNS_TRANSFERABLE_CID },
  #ifdef MOZ_X11
-     { "@mozilla.org/widget/clipboard;1", &kNS_CLIPBOARD_CID, Module::MAIN_PROCESS_ONLY },
-     { "@mozilla.org/widget/clipboardhelper;1", &kNS_CLIPBOARDHELPER_CID },
-     { "@mozilla.org/widget/dragservice;1", &kNS_DRAGSERVICE_CID, Module::MAIN_PROCESS_ONLY },
- #endif
-     { "@mozilla.org/widget/htmlformatconverter;1", &kNS_HTMLFORMATCONVERTER_CID },
-diff --git a/widget/moz.build b/widget/moz.build
---- a/widget/moz.build
-+++ b/widget/moz.build
-@@ -205,16 +205,20 @@ if toolkit in ('qt', 'gtk2', 'gtk3', 'co
-     UNIFIED_SOURCES += [
-         'nsBaseFilePicker.cpp',
-     ]
- 
- if toolkit in ('qt', 'gtk2', 'gtk3', 'windows', 'cocoa'):
+diff -up mozilla-release/widget/moz.build.1129873-apppicker mozilla-release/widget/moz.build
+--- mozilla-release/widget/moz.build.1129873-apppicker	2015-05-25 23:28:56.000000000 +0200
++++ mozilla-release/widget/moz.build	2015-06-09 09:36:01.000000000 +0200
+@@ -207,6 +207,10 @@ if toolkit in ('qt', 'gtk2', 'gtk3', 'wi
      UNIFIED_SOURCES += [
          'nsNativeTheme.cpp',
      ]
@@ -477,15 +363,9 @@ diff --git a/widget/moz.build b/widget/moz.build
  
  if not CONFIG['MOZ_B2G']:
      DEFINES['MOZ_CROSS_PROCESS_IME'] = True
- 
- FAIL_ON_WARNINGS = True
- 
- include('/ipc/chromium/chromium-config.mozbuild')
- 
-diff --git a/widget/nsIApplicationChooser.idl b/widget/nsIApplicationChooser.idl
-new file mode 100644
---- /dev/null
-+++ b/widget/nsIApplicationChooser.idl
+diff -up mozilla-release/widget/nsIApplicationChooser.idl.1129873-apppicker mozilla-release/widget/nsIApplicationChooser.idl
+--- mozilla-release/widget/nsIApplicationChooser.idl.1129873-apppicker	2015-06-09 09:37:35.314305558 +0200
++++ mozilla-release/widget/nsIApplicationChooser.idl	2015-06-09 09:37:35.314305558 +0200
 @@ -0,0 +1,39 @@
 +/* -*- Mode: C++; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*-
 + *
@@ -526,15 +406,10 @@ new file mode 100644
 +  void open(in ACString contentType, in nsIApplicationChooserFinishedCallback applicationChooserFinishedCallback);
 +};
 +
-diff --git a/widget/nsWidgetsCID.h b/widget/nsWidgetsCID.h
---- a/widget/nsWidgetsCID.h
-+++ b/widget/nsWidgetsCID.h
-@@ -19,16 +19,21 @@
- { 0xba7de611, 0x6088, 0x11d3,  \
-     { 0xa8, 0x3e, 0x0, 0x10, 0x5a, 0x18, 0x34, 0x19 } }
- 
- /* bd57cee8-1dd1-11b2-9fe7-95cf4709aea3 */
- #define NS_FILEPICKER_CID \
+diff -up mozilla-release/widget/nsWidgetsCID.h.1129873-apppicker mozilla-release/widget/nsWidgetsCID.h
+--- mozilla-release/widget/nsWidgetsCID.h.1129873-apppicker	2015-05-25 23:28:56.000000000 +0200
++++ mozilla-release/widget/nsWidgetsCID.h	2015-06-09 09:37:35.315305554 +0200
+@@ -24,6 +24,11 @@
  { 0xbd57cee8, 0x1dd1, 0x11b2, \
      {0x9f, 0xe7, 0x95, 0xcf, 0x47, 0x09, 0xae, 0xa3} }
  
@@ -546,8 +421,3 @@ diff --git a/widget/nsWidgetsCID.h b/widget/nsWidgetsCID.h
  /* 0f872c8c-3ee6-46bd-92a2-69652c6b474e */
  #define NS_COLORPICKER_CID \
  { 0x0f872c8c, 0x3ee6, 0x46bd, \
-   { 0x92, 0xa2, 0x69, 0x65, 0x2c, 0x6b, 0x47, 0x4e } }
- 
- /* 2d96b3df-c051-11d1-a827-0040959a28c9 */
- #define NS_APPSHELL_CID \
- { 0x2d96b3df, 0xc051, 0x11d1, \
