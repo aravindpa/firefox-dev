@@ -106,14 +106,14 @@
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        38.0.5
-Release:        4%{?pre_tag}%{?dist}
+Version:        39.0
+Release:        1%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.bz2
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20150603.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20150623.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -133,7 +133,6 @@ Patch18:        xulrunner-24.0-jemalloc-ppc.patch
 Patch19:        xulrunner-24.0-s390-inlines.patch
 Patch20:        firefox-build-prbool.patch
 Patch21:        firefox-ppc64le.patch
-Patch23:        mozilla-1005535.patch
 Patch24:        firefox-debug.patch
 Patch25:        rhbz-1219542-s390-build.patch
 
@@ -144,16 +143,11 @@ Patch215:        firefox-enable-addons.patch
 Patch219:        rhbz-1173156.patch
 Patch220:        rhbz-1014858.patch
 Patch221:        firefox-fedora-ua.patch
-Patch222:        firefox-nss-3.18.0.patch
 
 # Upstream patches
 
 # Gtk3 upstream patches
-Patch410:        mozilla-1073117-button-focus.patch
-Patch411:        mozilla-1073117-focus.patch
 Patch412:        mozilla-1073117-no-gap-tab.patch
-Patch414:        mozilla-1143686.patch
-Patch415:        mozilla-1144643.patch
 Patch416:        mozilla-1161056.patch
 Patch417:        mozilla-1144745-1.patch
 Patch418:        mozilla-1144745-2.patch
@@ -293,7 +287,6 @@ cd %{tarballdir}
 %patch19 -p2 -b .s390-inlines
 %patch20 -p1 -b .prbool
 %patch21 -p2 -b .ppc64le
-%patch23 -p1 -b .1005535
 %patch24 -p1 -b .debug
 %ifarch s390
 %patch25 -p1 -b .rhbz-1219542-s390
@@ -309,15 +302,10 @@ cd %{tarballdir}
 %patch219 -p2 -b .rhbz-1173156
 %patch220 -p1 -b .rhbz-1014858
 %patch221 -p2 -b .fedora-ua
-%patch222 -p1 -b .nss-3.18.0
 
 # Upstream patches
 %if %{toolkit_gtk3}
-%patch410 -p1 -b .1073117-button-focus
-%patch411 -p1 -b .1073117-focus
 %patch412 -p1 -b .1073117-no-gap-tab
-%patch414 -p1 -b .1143686
-%patch415 -p1 -b .1144643
 %patch416 -p1 -b .1161056
 %patch417 -p1 -b .1144745-1
 %patch418 -p1 -b .1144745-2
@@ -817,6 +805,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Jun 23 2015 Martin Stransky <stransky@redhat.com> - 39.0-1
+- Update to 39.0
+
 * Wed Jun 17 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 38.0.5-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
 

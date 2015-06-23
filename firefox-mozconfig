@@ -35,7 +35,6 @@ ac_add_options --enable-pulseaudio
 ac_add_options --with-system-icu
 ac_add_options --with-mozilla-api-keyfile=../mozilla-api-key
 ac_add_options --enable-release
-ac_add_options --enable-skia
 
 export BUILD_OFFICIAL=1
 export MOZILLA_OFFICIAL=1
