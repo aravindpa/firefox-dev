@@ -107,7 +107,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        39.0
-Release:        5%{?pre_tag}%{?dist}
+Release:        6%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -122,6 +122,7 @@ Source20:       firefox.desktop
 Source21:       firefox.sh.in
 Source23:       firefox.1
 Source24:       mozilla-api-key
+Source25:       firefox-symbolic.svg
 
 #Build patches
 Patch0:         firefox-install-dir.patch
@@ -567,6 +568,11 @@ for s in 16 22 24 32 48 256; do
                $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/${s}x${s}/apps/firefox.png
 done
 
+# Install hight contrast icon
+%{__mkdir_p} $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/symbolic/apps
+%{__cp} -p %{SOURCE25} \
+           $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/symbolic/apps
+
 # Register as an application to be visible in the software center
 #
 # NOTE: It would be *awesome* if this file was maintained by the upstream
@@ -772,6 +778,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/icons/hicolor/256x256/apps/firefox.png
 %{_datadir}/icons/hicolor/32x32/apps/firefox.png
 %{_datadir}/icons/hicolor/48x48/apps/firefox.png
+%{_datadir}/icons/hicolor/symbolic/apps/firefox-symbolic.svg
 %{mozappdir}/webapprt-stub
 %dir %{mozappdir}/webapprt
 %{mozappdir}/webapprt/omni.ja
@@ -805,6 +812,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Jul 02 2015 Martin Stransky <stransky@redhat.com> - 39.0-6
+- Added symbolic (high contrast) icon
+
 * Thu Jun 25 2015 Martin Stransky <stransky@redhat.com> - 39.0-5
 - Update to 39.0 Build 6
 - Update nss/nspr versions
