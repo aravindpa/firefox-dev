@@ -107,13 +107,13 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        39.0
-Release:        4%{?pre_tag}%{?dist}
+Release:        5%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.bz2
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20150630.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20150702.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -805,8 +805,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
-* Thu Jun 25 2015 Martin Stransky <stransky@redhat.com> - 39.0-4
-- Update to 39.0 Build 5
+* Thu Jun 25 2015 Martin Stransky <stransky@redhat.com> - 39.0-5
+- Update to 39.0 Build 6
 - Update nss/nspr versions
 
 * Wed Jun 17 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 38.0.5-4
