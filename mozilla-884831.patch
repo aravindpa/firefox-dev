@@ -1,0 +1,21 @@
+diff -up mozilla-release/toolkit/xre/nsAppRunner.cpp.884831 mozilla-release/toolkit/xre/nsAppRunner.cpp
+--- mozilla-release/toolkit/xre/nsAppRunner.cpp.884831	2015-07-06 14:36:32.583521873 +0200
++++ mozilla-release/toolkit/xre/nsAppRunner.cpp	2015-07-06 14:45:19.494258581 +0200
+@@ -2770,7 +2770,7 @@ static void MOZ_gdk_display_close(GdkDis
+     // shut down cairo first otherwise it may crash because of dangling
+     // references to Display objects (see bug 469831).
+     if (!theme_is_qt)
+-      gdk_display_close(display);
++      //gdk_display_close(display);
+   }
+ 
+   // Clean up PangoCairo's default fontmap.
+@@ -2807,7 +2807,7 @@ static void MOZ_gdk_display_close(GdkDis
+ 
+   if (buggyCairoShutdown) {
+     if (!theme_is_qt)
+-      gdk_display_close(display);
++      //gdk_display_close(display);
+   }
+ #else // not CLEANUP_MEMORY
+   // Don't do anything to avoid running into driver bugs under XCloseDisplay().

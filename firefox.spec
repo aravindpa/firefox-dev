@@ -107,7 +107,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        39.0
-Release:        6%{?pre_tag}%{?dist}
+Release:        7%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -161,6 +161,8 @@ Patch423:        mozilla-1129873-apppicker.patch
 # Fix Skia Neon stuff on AArch64
 Patch500:        aarch64-fix-skia.patch
 
+# Don't crash at end
+Patch510:        mozilla-884831.patch
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -318,6 +320,8 @@ cd %{tarballdir}
 %endif
 
 %patch500 -p1
+
+%patch510 -p1 -b .884831
 
 %if %{official_branding}
 # Required by Mozilla Corporation
@@ -816,6 +820,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Mon Jul 06 2015 Martin Stransky <stransky@redhat.com> - 39.0-7
+- Added a fix for rhbz#1240259 - Firefox 39 does not open
+  home page but "restore session"
+
 * Thu Jul 02 2015 Martin Stransky <stransky@redhat.com> - 39.0-6
 - Added symbolic (high contrast) icon
 
