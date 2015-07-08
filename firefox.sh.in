@@ -170,7 +170,7 @@ MOZILLA_DOWN=0
 if ! [ $MOZ_DISABLE_LANGPACKS ] || [ $MOZ_DISABLE_LANGPACKS -eq 0 ]; then
     if [ -x $MOZ_DIST_BIN/$MOZ_FIREFOX_FILE ]; then
         # Is firefox running?
-        $MOZ_DIST_BIN/$MOZ_FIREFOX_FILE -remote 'ping()' > /dev/null 2>&1
+        /usr/bin/pidof firefox > /dev/null 2>&1
         MOZILLA_DOWN=$?
     fi
 fi
