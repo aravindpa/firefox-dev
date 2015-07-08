@@ -161,9 +161,6 @@ Patch423:        mozilla-1129873-apppicker.patch
 # Fix Skia Neon stuff on AArch64
 Patch500:        aarch64-fix-skia.patch
 
-# Don't crash at end
-Patch510:        mozilla-884831.patch
-
 %if %{official_branding}
 # Required by Mozilla Corporation
 
@@ -320,8 +317,6 @@ cd %{tarballdir}
 %endif
 
 %patch500 -p1
-
-%patch510 -p1 -b .884831
 
 %if %{official_branding}
 # Required by Mozilla Corporation
