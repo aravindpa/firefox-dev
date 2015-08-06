@@ -798,7 +798,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{mozappdir}/defaults/pref/channel-prefs.js
 %{mozappdir}/dependentlibs.list
 %{mozappdir}/dictionaries
-#%{mozappdir}/mozilla-xremote-client
 %{mozappdir}/omni.ja
 %{mozappdir}/platform.ini
 %{mozappdir}/plugin-container
