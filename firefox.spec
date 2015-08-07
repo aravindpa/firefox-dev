@@ -107,7 +107,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        40.0
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -153,6 +153,7 @@ Patch420:        mozilla-1160154.patch
 Patch421:        mozilla-1169233.patch
 Patch422:        mozilla-1169232.patch
 Patch423:        mozilla-1129873-apppicker.patch
+Patch424:        mozilla-entry-padding.patch
 
 # Fix Skia Neon stuff on AArch64
 Patch500:        aarch64-fix-skia.patch
@@ -306,6 +307,7 @@ cd %{tarballdir}
 %patch421 -p1 -b .1169233
 %patch422 -p1 -b .1169232
 %patch423 -p1 -b .1129873-apppicker
+%patch424 -p2 -b .entry-padding
 %endif
 
 %patch500 -p1
@@ -805,6 +807,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Aug 07 2015 Martin Stransky <stransky@redhat.com> - 40.0-2
+- Patches updated (GtkEntry padding patch, toolbar button patch)
+
 * Fri Aug 07 2015 Martin Stransky <stransky@redhat.com> - 40.0-1
 - Update to 40.0 Build 4
 
