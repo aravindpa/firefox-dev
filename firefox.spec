@@ -46,7 +46,7 @@
 %define debug_build       0
 
 %define default_bookmarks_file %{_datadir}/bookmarks/default-bookmarks.html
-%define firefox_app_id \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
+%define firefox_app_id  \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 # Minimal required versions
 %global cairo_version 1.13.1
 %global freetype_version 2.1.9
@@ -106,14 +106,14 @@
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        39.0.3
+Version:        40.0
 Release:        1%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.bz2
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20150806.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20150807.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source11:       firefox-mozconfig-branded
@@ -148,10 +148,6 @@ Patch221:        firefox-fedora-ua.patch
 # Upstream patches
 
 # Gtk3 upstream patches
-Patch412:        mozilla-1073117-no-gap-tab.patch
-Patch416:        mozilla-1161056.patch
-Patch417:        mozilla-1144745-1.patch
-Patch418:        mozilla-1144745-2.patch
 Patch419:        mozilla-1144745-3.patch
 Patch420:        mozilla-1160154.patch
 Patch421:        mozilla-1169233.patch
@@ -305,10 +301,6 @@ cd %{tarballdir}
 
 # Upstream patches
 %if %{toolkit_gtk3}
-%patch412 -p1 -b .1073117-no-gap-tab
-%patch416 -p1 -b .1161056
-%patch417 -p1 -b .1144745-1
-%patch418 -p1 -b .1144745-2
 %patch419 -p1 -b .1144745-3
 %patch420 -p1 -b .1160154
 %patch421 -p1 -b .1169233
@@ -751,8 +743,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{mozappdir}/firefox
 %{mozappdir}/firefox-bin
 %doc %{_mandir}/man1/*
-%dir %{_datadir}/mozilla/extensions/%{firefox_app_id}
-%dir %{_libdir}/mozilla/extensions/%{firefox_app_id}
+%dir %{_datadir}/mozilla/extensions/*
+%dir %{_libdir}/mozilla/extensions/*
 %{_datadir}/appdata/*.appdata.xml
 %{_datadir}/applications/*.desktop
 %dir %{mozappdir}
@@ -765,13 +757,12 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{mozappdir}/browser/defaults/preferences/firefox-redhat-default-prefs.js
 %attr(644, root, root) %{mozappdir}/browser/blocklist.xml
 %dir %{mozappdir}/browser/extensions
-%{mozappdir}/browser/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}
+%{mozappdir}/browser/extensions/*
 %if %{build_langpacks}
 %dir %{langpackdir}
 %endif
 %{mozappdir}/browser/omni.ja
 %{mozappdir}/browser/icons
-%{mozappdir}/browser/searchplugins
 %{mozappdir}/run-mozilla.sh
 %{mozappdir}/application.ini
 %exclude %{mozappdir}/removed-files
@@ -814,6 +805,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Fri Aug 07 2015 Martin Stransky <stransky@redhat.com> - 40.0-1
+- Update to 40.0 Build 4
+
 * Thu Aug 06 2015 Martin Stransky <stransky@redhat.com> - 39.0.3-1
 - Updated to 39.0.3
 
