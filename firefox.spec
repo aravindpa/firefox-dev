@@ -807,6 +807,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Aug 12 2015 Jan Horak <jhorak@redhat.com> - 40.0-4
+- Workaround for reported crashes (layers.offmainthreadcomposition.enabled set to false)
+
 * Tue Aug 11 2015 Jan Horak <jhorak@redhat.com> - 40.0-3
 - Update to 40.0 Build 5
 
