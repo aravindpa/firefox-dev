@@ -71,7 +71,6 @@
 %global mozappdir     %{_libdir}/%{name}
 %global mozappdirdev  %{_libdir}/%{name}-devel-%{version}
 %global langpackdir   %{mozappdir}/langpacks
-%global tarballdir    %{name}-%{version}
 
 %define official_branding       1
 %define build_langpacks         1
@@ -81,18 +80,25 @@
 %ifarch %{ix86} x86_64
 %define enable_mozilla_crashreporter       1
 %endif
-%endif
 
-Summary:        Mozilla Firefox Web browser
-Name:           firefox
-Version:        43.0
-Release:        1%{?pre_tag}%{?dist}
-URL:            http://www.mozilla.org/projects/firefox/
+%define rev         8f7f9af27cb6
+%global tarballdir  mozilla-aurora-%{rev}
+
+
+Summary:        Developer Edition (Aurora release channel) of the Mozilla Firefox Web browser
+Name:           firefox-dev
+Version:        41.0a2
+Release:        %(date +%%Y%%m%%d)hg%{rev}%{?dist}
+URL:            https://www.mozilla.org/firefox/developer/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
-Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.xz
+                # Fetch source with
+                # curl -O "https://hg.mozilla.org/releases/mozilla-aurora/archive/$(basename `curl https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-aurora/firefox-41.0a2.en-US.linux-x86_64.txt | tail -n1`).tar.bz2"
+Source0:        mozilla-aurora-%{rev}.tar.bz2
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20151210.tar.xz
+                # Fetch/build with this lovely one-liner (remember to sub version numbers):
+                # export URL="https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-aurora-l10n/linux-x86_64/xpi/" && mkdir firefox-langpacks; cd firefox-langpacks && curl $URL | egrep -o '"firefox-41.0a2.*?\.xpi"' | sed 's/"//g' | awk "{print \"$URL\" \$0}" | xargs wget && for f in *; do; mv $f `echo $f | awk 'match($0, /firefox-.*?\.(.*?)\.langpack.xpi/, a){print a[1] ".xpi"}'`; done; cd .. && tar -cvf - firefox-langpacks | xz -zc - > firefox-langpacks-41.0a2.tar.xz && rm -rf firefox-langpacks
+Source1:        firefox-langpacks-%{version}.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source12:       firefox-redhat-default-prefs.js
@@ -166,6 +172,9 @@ BuildRequires:  pkgconfig(icu-i18n)
 BuildRequires:  pkgconfig(gconf-2.0)
 BuildRequires:  yasm
 
+BuildRequires:  ImageMagick
+BuildRequires:  GConf2-devel
+
 Requires:       mozilla-filesystem
 %if %{?system_nss}
 Requires:       nspr >= %{nspr_build_version}
@@ -193,6 +202,7 @@ Requires:       system-bookmarks
 BuildRequires:  xorg-x11-server-Xvfb
 %endif
 
+Obsoletes:      firefox <= %{version}
 Obsoletes:      mozilla <= 37:1.7.13
 Provides:       webclient
 
@@ -204,7 +214,7 @@ compliance, performance and portability.
 %global moz_debug_prefix %{_prefix}/lib/debug
 %global moz_debug_dir %{moz_debug_prefix}%{mozappdir}
 %global uname_m %(uname -m)
-%global symbols_file_name %{name}-%{version}.en-US.%{_os}-%{uname_m}.crashreporter-symbols.zip
+%global symbols_file_name firefox-%{version}.en-US.%{_os}-%{uname_m}.crashreporter-symbols.zip
 %global symbols_file_path %{moz_debug_dir}/%{symbols_file_name}
 %global _find_debuginfo_opts -p %{symbols_file_path} -o debugcrashreporter.list
 %global crashreporter_pkg_name mozilla-crashreporter-%{name}-debuginfo
@@ -269,6 +279,7 @@ cd %{tarballdir}
 %{__cp} %{SOURCE10} .mozconfig
 %if %{official_branding}
 echo "ac_add_options --enable-official-branding" >> .mozconfig
+echo "ac_add_options --with-branding=browser/branding/aurora" >> .mozconfig
 %endif
 %{__cp} %{SOURCE24} mozilla-api-key
 
@@ -505,11 +516,17 @@ desktop-file-install --dir $RPM_BUILD_ROOT%{_datadir}/applications %{SOURCE20}
 %{__rm} -f $RPM_BUILD_ROOT/%{mozappdir}/firefox-config
 %{__rm} -f $RPM_BUILD_ROOT/%{mozappdir}/update-settings.ini
 
-for s in 16 22 24 32 48 256; do
+for s in 16 32 48; do
     %{__mkdir_p} $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/${s}x${s}/apps
-    %{__cp} -p browser/branding/official/default${s}.png \
+    %{__cp} -p browser/branding/aurora/default${s}.png \
                $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/${s}x${s}/apps/firefox.png
 done
+%{__mkdir_p} $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/128x128/apps
+%{__cp} -p browser/branding/aurora/mozicon128.png \
+           $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/128x128/apps/firefox.png
+%{__mkdir_p} $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/256x256/apps
+convert browser/branding/aurora/content/about-logo@2x.png -adaptive-resize 256x256 \
+        $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/256x256/apps/firefox.png
 
 # Install hight contrast icon
 %{__mkdir_p} $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/symbolic/apps
@@ -714,9 +731,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{mozappdir}/run-mozilla.sh
 %{mozappdir}/application.ini
 %exclude %{mozappdir}/removed-files
+%{_datadir}/icons/hicolor/128x128/apps/firefox.png
 %{_datadir}/icons/hicolor/16x16/apps/firefox.png
-%{_datadir}/icons/hicolor/22x22/apps/firefox.png
-%{_datadir}/icons/hicolor/24x24/apps/firefox.png
 %{_datadir}/icons/hicolor/256x256/apps/firefox.png
 %{_datadir}/icons/hicolor/32x32/apps/firefox.png
 %{_datadir}/icons/hicolor/48x48/apps/firefox.png
@@ -745,7 +761,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{mozappdir}/plugin-container
 %{mozappdir}/gmp-clearkey
 %exclude %{_includedir}
-%exclude %{_libdir}/firefox-devel-%{version}
+%exclude %{mozappdirdev}
 %exclude %{_datadir}/idl
 %if !%{?system_nss}
 %{mozappdir}/libfreebl3.chk
