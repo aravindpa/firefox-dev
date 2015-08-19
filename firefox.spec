@@ -66,15 +66,6 @@
 %global sqlite_build_version %(pkg-config --silence-errors --modversion sqlite3 2>/dev/null || echo 65536)
 %endif
 
-# gecko_dir_ver should be set to the version in our directory names
-# alpha_version should be set to the alpha number if using an alpha, 0 otherwise
-# beta_version  should be set to the beta number if using a beta, 0 otherwise
-# rc_version    should be set to the RC number if using an RC, 0 otherwise
-%global gecko_dir_ver %{version}
-%global alpha_version 0
-%global beta_version  0
-%global rc_version    0
-
 %global mozappdir     %{_libdir}/%{name}
 %global mozappdirdev  %{_libdir}/%{name}-devel-%{version}
 %global langpackdir   %{mozappdir}/langpacks
@@ -82,32 +73,18 @@
 
 %define official_branding       1
 %define build_langpacks         1
+
+%define enable_mozilla_crashreporter       0
+%if !%{debug_build}
 %ifarch %{ix86} x86_64
 %define enable_mozilla_crashreporter       1
-%else
-%define enable_mozilla_crashreporter       0
 %endif
-
-%if %{alpha_version} > 0
-%global pre_version a%{alpha_version}
-%global tarballdir  mozilla-beta
 %endif
-%if %{beta_version} > 0
-%global pre_version b%{beta_version}
-%global pre_name    beta%{beta_version}
-%global tarballdir  mozilla-beta
-%endif
-%if %{rc_version} > 0
-%global pre_version rc%{rc_version}
-%global pre_name    rc%{rc_version}
-%global tarballdir  mozilla-release
-%endif
-
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        40.0
-Release:        4%{?pre_tag}%{?dist}
+Release:        5%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -116,7 +93,6 @@ Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_vers
 Source1:        firefox-langpacks-%{version}%{?pre_version}-20150811.tar.xz
 %endif
 Source10:       firefox-mozconfig
-Source11:       firefox-mozconfig-branded
 Source12:       firefox-redhat-default-prefs.js
 Source20:       firefox.desktop
 Source21:       firefox.sh.in
@@ -158,14 +134,6 @@ Patch424:        mozilla-entry-padding.patch
 # Fix Skia Neon stuff on AArch64
 Patch500:        aarch64-fix-skia.patch
 
-%if %{official_branding}
-# Required by Mozilla Corporation
-
-
-%else
-# Not yet approved by Mozillla Corporation
-
-%endif
 %if %{?system_nss}
 BuildRequires:  nspr-devel >= %{nspr_version}
 BuildRequires:  nss-devel >= %{nss_version}
@@ -312,17 +280,10 @@ cd %{tarballdir}
 
 %patch500 -p1
 
-%if %{official_branding}
-# Required by Mozilla Corporation
-
-%else
-# Not yet approved by Mozilla Corporation
-%endif
-
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE10} .mozconfig
 %if %{official_branding}
-%{__cat} %{SOURCE11} >> .mozconfig
+echo "ac_add_options --enable-official-branding" >> .mozconfig
 %endif
 %{__cp} %{SOURCE24} mozilla-api-key
 
@@ -807,6 +768,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Aug 19 2015 Martin Stransky <stransky@redhat.com> - 40.0-5
+- Disable async addons init - mozbz#1196000
+
 * Wed Aug 12 2015 Jan Horak <jhorak@redhat.com> - 40.0-4
 - Workaround for reported crashes (layers.offmainthreadcomposition.enabled set to false)
 
