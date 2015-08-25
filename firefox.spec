@@ -91,7 +91,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        40.0
-Release:        8%{?pre_tag}%{?dist}
+Release:        9%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -777,7 +777,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
-* Thu Aug 25 2015 Martin Stransky <stransky@redhat.com> - 40.0-8
+* Tue Aug 25 2015 Martin Stransky <stransky@redhat.com> - 40.0-9
 - Enabled hardened builds
 
 * Thu Aug 20 2015 Martin Stransky <stransky@redhat.com> - 40.0-7
