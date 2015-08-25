@@ -26,7 +26,7 @@
 %endif
 
 # Hardened build?
-%if 0%{?fedora} > 21
+%if 0%{?fedora} > 20
 %define hardened_build    1
 %else
 %define hardened_build    0
@@ -778,7 +778,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %changelog
 * Thu Aug 25 2015 Martin Stransky <stransky@redhat.com> - 40.0-8
-- Enabled hardened builds for Fedora 22
+- Enabled hardened builds
 
 * Thu Aug 20 2015 Martin Stransky <stransky@redhat.com> - 40.0-7
 - Enabled pie - rhbz#1246287
