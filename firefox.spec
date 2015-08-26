@@ -91,7 +91,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        40.0
-Release:        9%{?pre_tag}%{?dist}
+Release:        10%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -138,6 +138,7 @@ Patch422:        mozilla-1169232.patch
 Patch423:        mozilla-1129873-apppicker.patch
 Patch424:        mozilla-entry-padding.patch
 Patch425:        mozilla-1192243.patch
+Patch426:        mozilla-1127752.patch
 
 # Fix Skia Neon stuff on AArch64
 Patch500:        aarch64-fix-skia.patch
@@ -285,6 +286,7 @@ cd %{tarballdir}
 %patch423 -p1 -b .1129873-apppicker
 %patch424 -p2 -b .entry-padding
 %patch425 -p1 -b .1192243
+%patch426 -p2 -b .1127752
 %endif
 
 %patch500 -p1
@@ -777,6 +779,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Aug 26 2015 Martin Stransky <stransky@redhat.com> - 40.0-10
+- Added a fix for mozbz#1127752 (rhbz#1256875) - Gtk3&OMTC crashes
+
 * Tue Aug 25 2015 Martin Stransky <stransky@redhat.com> - 40.0-9
 - Enabled hardened builds
 
