@@ -90,14 +90,14 @@
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        40.0
-Release:        10%{?pre_tag}%{?dist}
+Version:        40.0.3
+Release:        1%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.bz2
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20150811.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20150827.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source12:       firefox-redhat-default-prefs.js
@@ -779,6 +779,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Aug 27 2015 Martin Stransky <stransky@redhat.com> - 40.0.3-1
+- Updated to latest upstream (40.0.3)
+
 * Wed Aug 26 2015 Martin Stransky <stransky@redhat.com> - 40.0-10
 - Added a fix for mozbz#1127752 (rhbz#1256875) - Gtk3&OMTC crashes
 
