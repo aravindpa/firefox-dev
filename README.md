@@ -25,7 +25,7 @@ This assumes an empty or absent `~/rpmbuild` directory.
 export VER="41.0a2"
 hub clone Bob131/firefox-dev && cd firefox-dev
 curl -O "https://hg.mozilla.org/releases/mozilla-aurora/archive/$(basename `curl https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-aurora/firefox-$VER.en-US.linux-x86_64.txt | tail -n1`).tar.bz2" && ls *.tar.bz2 | xargs -I {} mv {} mozilla-aurora-{}
-export URL="https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-aurora-l10n/linux-x86_64/xpi/" && mkdir firefox-langpacks; cd firefox-langpacks && curl $URL | egrep -o "\"firefox-$VER.*?\.xpi\"" | sed 's/"//g' | awk "{print \"$URL\" \$0}" | xargs wget && for f in *; do; mv $f `echo $f | awk 'match($0, /firefox-.*?\.(.*?)\.langpack.xpi/, a){print a[1] ".xpi"}'`; done; cd .. && tar -cvf - firefox-langpacks | xz -zc - > firefox-langpacks-$VER.tar.xz && rm -rf firefox-langpacks
+export URL="https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-aurora-l10n/linux-x86_64/xpi/" && mkdir firefox-langpacks; cd firefox-langpacks && curl $URL | egrep -o "\"firefox-$VER.*?\.xpi\"" | sed 's/"//g' | awk "{print \"$URL\" \$0}" | xargs wget && for f in *; do mv $f `echo $f | awk 'match($0, /firefox-.*?\.(.*?)\.langpack.xpi/, a){print a[1] ".xpi"}'`; done; cd .. && tar -cvf - firefox-langpacks | xz -zc - > firefox-langpacks-$VER.tar.xz && rm -rf firefox-langpacks
 mkdir ~/rpmbuild
 ln -s `pwd` ~/rpmbuild/SOURCES
 rpmbuild -ba firefox-dev.spec

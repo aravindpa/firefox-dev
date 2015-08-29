@@ -81,7 +81,7 @@
 %define enable_mozilla_crashreporter       1
 %endif
 
-%define rev         8f7f9af27cb6
+%define rev         %(find %{_sourcedir}/ | grep -Po "(?<=mozilla-aurora-)[[:xdigit:]]+(?=\.tar)")
 %global tarballdir  mozilla-aurora-%{rev}
 
 
