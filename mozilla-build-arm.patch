@@ -1,6 +1,6 @@
-diff -up firefox-36.0.1/mozilla-release/media/webrtc/trunk/webrtc/build/common.gypi.arm firefox-36.0.1/mozilla-release/media/webrtc/trunk/webrtc/build/common.gypi
---- firefox-36.0.1/mozilla-release/media/webrtc/trunk/webrtc/build/common.gypi.arm	2015-03-05 11:28:19.000000000 +0100
-+++ firefox-36.0.1/mozilla-release/media/webrtc/trunk/webrtc/build/common.gypi	2015-03-09 10:02:17.875243261 +0100
+diff -up mozilla-release/media/webrtc/trunk/webrtc/build/common.gypi.arm mozilla-release/media/webrtc/trunk/webrtc/build/common.gypi
+--- mozilla-release/media/webrtc/trunk/webrtc/build/common.gypi.arm	2015-03-05 11:28:19.000000000 +0100
++++ mozilla-release/media/webrtc/trunk/webrtc/build/common.gypi	2015-03-09 10:02:17.875243261 +0100
 @@ -235,19 +235,6 @@
          'defines': [
            'WEBRTC_ARCH_ARM',

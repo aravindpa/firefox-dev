@@ -1,6 +1,6 @@
-diff -up firefox-36.0/mozilla-release/gfx/skia/trunk/include/core/SkPreConfig.h.ppc64le firefox-36.0/mozilla-release/gfx/skia/trunk/include/core/SkPreConfig.h
---- firefox-36.0/mozilla-release/gfx/skia/skia/include/core/SkPreConfig.h.ppc64le	2015-02-20 03:01:40.000000000 +0100
-+++ firefox-36.0/mozilla-release/gfx/skia/skia/include/core/SkPreConfig.h	2015-03-06 15:52:58.298050379 +0100
+diff -up mozilla-release/gfx/skia/trunk/include/core/SkPreConfig.h.ppc64le mozilla-release/gfx/skia/trunk/include/core/SkPreConfig.h
+--- mozilla-release/gfx/skia/trunk/include/core/SkPreConfig.h.ppc64le	2015-02-20 03:01:40.000000000 +0100
++++ mozilla-release/gfx/skia/trunk/include/core/SkPreConfig.h	2015-03-06 15:52:58.298050379 +0100
 @@ -90,6 +90,13 @@
  #endif
  
