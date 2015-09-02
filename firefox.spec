@@ -91,7 +91,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        40.0.3
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -779,6 +779,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Sep 2 2015 Martin Stransky <stransky@redhat.com> - 40.0.3-2
+- ppc64le build fix
+
 * Thu Aug 27 2015 Martin Stransky <stransky@redhat.com> - 40.0.3-1
 - Updated to latest upstream (40.0.3)
 
