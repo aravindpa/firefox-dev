@@ -1,0 +1,27 @@
+# HG changeset patch
+# User Lee Salzman <lsalzman@mozilla.com>
+# Date 1432140511 14400
+#      Wed May 20 12:48:31 2015 -0400
+# Node ID 283e513fa1c3b2300efb359a8da1d5519c3f74f5
+# Parent  4fb7ff694bf5944b76c20b2240fb3abdc55f9a4e
+always export HelpersCairo.h
+
+diff -r 4fb7ff694bf5 -r 283e513fa1c3 gfx/2d/moz.build
+--- a/gfx/2d/moz.build	Tue May 19 11:58:45 2015 +0200
++++ b/gfx/2d/moz.build	Wed May 20 12:48:31 2015 -0400
+@@ -24,6 +24,7 @@
+     'DrawTargetTiled.h',
+     'Filters.h',
+     'Helpers.h',
++    'HelpersCairo.h',
+     'Logging.h',
+     'Matrix.h',
+     'NumericTools.h',
+@@ -79,7 +80,6 @@
+         'image_operations.cpp', # Uses _USE_MATH_DEFINES
+     ]
+     EXPORTS.mozilla.gfx += [
+-        'HelpersCairo.h',
+         'HelpersSkia.h',
+     ]
+ 

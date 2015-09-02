@@ -139,6 +139,7 @@ Patch423:        mozilla-1129873-apppicker.patch
 Patch424:        mozilla-entry-padding.patch
 Patch425:        mozilla-1192243.patch
 Patch426:        mozilla-1127752.patch
+Patch427:        mozilla-1166584.patch
 
 # Fix Skia Neon stuff on AArch64
 Patch500:        aarch64-fix-skia.patch
@@ -287,6 +288,7 @@ cd %{tarballdir}
 %patch424 -p2 -b .entry-padding
 %patch425 -p1 -b .1192243
 %patch426 -p2 -b .1127752
+%patch427 -p1 -b .1166584
 %endif
 
 %patch500 -p1
