@@ -90,14 +90,14 @@
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        40.0.3
-Release:        3%{?pre_tag}%{?dist}
+Version:        41.0
+Release:        1%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
-Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.bz2
+Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.xz
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20150827.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20150915.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source12:       firefox-redhat-default-prefs.js
@@ -131,15 +131,8 @@ Patch221:        firefox-fedora-ua.patch
 # Upstream patches
 
 # Gtk3 upstream patches
-Patch419:        mozilla-1144745-3.patch
 Patch420:        mozilla-1160154.patch
-Patch421:        mozilla-1169233.patch
-Patch422:        mozilla-1169232.patch
-Patch423:        mozilla-1129873-apppicker.patch
-Patch424:        mozilla-entry-padding.patch
 Patch425:        mozilla-1192243.patch
-Patch426:        mozilla-1127752.patch
-Patch427:        mozilla-1166584.patch
 
 # Fix Skia Neon stuff on AArch64
 Patch500:        aarch64-fix-skia.patch
@@ -280,15 +273,8 @@ cd %{tarballdir}
 
 # Upstream patches
 %if %{toolkit_gtk3}
-%patch419 -p1 -b .1144745-3
 %patch420 -p1 -b .1160154
-%patch421 -p1 -b .1169233
-%patch422 -p1 -b .1169232
-%patch423 -p1 -b .1129873-apppicker
-%patch424 -p2 -b .entry-padding
 %patch425 -p1 -b .1192243
-%patch426 -p2 -b .1127752
-%patch427 -p1 -b .1166584
 %endif
 
 %patch500 -p1
@@ -781,6 +767,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Sep 15 2015 Martin Stransky <stransky@redhat.com> - 41.0-1
+- Update to 40.0 Build 1
+
 * Thu Sep 3 2015 Martin Stransky <stransky@redhat.com> - 40.0.3-3
 - Removed the dom.ipc.plugins.asyncInit hack, it's already in tarball
 
