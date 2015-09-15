@@ -170,6 +170,7 @@ BuildRequires:  libvpx-devel >= %{libvpx_version}
 BuildRequires:  autoconf213
 BuildRequires:  pulseaudio-libs-devel
 BuildRequires:  libicu-devel
+BuildRequires:  GConf2-devel
 %if !%{?system_jpeg}
 BuildRequires:  yasm
 %endif
