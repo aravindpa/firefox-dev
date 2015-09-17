@@ -86,7 +86,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        41.0
-Release:        2%{?pre_tag}%{?dist}
+Release:        3%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -763,6 +763,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Sep 17 2015 Martin Stransky <stransky@redhat.com> - 41.0-3
+- Update to 40.0 Build 2
+
 * Tue Sep 15 2015 Martin Stransky <stransky@redhat.com> - 41.0-2
 - Enabled OMTC
 - Disabled system cairo
