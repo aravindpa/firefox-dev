@@ -92,7 +92,7 @@ License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.xz
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20150917.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20150918.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source12:       firefox-redhat-default-prefs.js
@@ -764,7 +764,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %changelog
 * Thu Sep 17 2015 Martin Stransky <stransky@redhat.com> - 41.0-3
-- Update to 40.0 Build 2
+- Update to 40.0 Build 3
 
 * Tue Sep 15 2015 Martin Stransky <stransky@redhat.com> - 41.0-2
 - Enabled OMTC
