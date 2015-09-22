@@ -86,7 +86,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        41.0
-Release:        3%{?pre_tag}%{?dist}
+Release:        4%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -128,6 +128,9 @@ Patch221:        firefox-fedora-ua.patch
 # Gtk3 upstream patches
 Patch420:        mozilla-1160154.patch
 Patch425:        mozilla-1192243.patch
+Patch426:        mozilla-1180971.patch
+Patch427:        mozilla-1190935.patch
+Patch428:        mozilla-1205045.patch
 
 # Fix Skia Neon stuff on AArch64
 Patch500:        aarch64-fix-skia.patch
@@ -271,6 +274,9 @@ cd %{tarballdir}
 %if %{toolkit_gtk3}
 %patch420 -p1 -b .1160154
 %patch425 -p1 -b .1192243
+%patch426 -p1 -b .1180971
+%patch427 -p1 -b .1190935
+%patch428 -p1 -b .1205045
 %endif
 
 %patch500 -p1
@@ -763,6 +769,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Sep 22 2015 Martin Stransky <stransky@redhat.com> - 41.0-4
+- Added OMTC stability patches
+  (mozbz#1180971, mozbz#1190935, mozbz#1205045)
+
 * Thu Sep 17 2015 Martin Stransky <stransky@redhat.com> - 41.0-3
 - Update to 40.0 Build 3
 
