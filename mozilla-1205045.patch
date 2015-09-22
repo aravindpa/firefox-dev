@@ -1,6 +1,6 @@
 diff -up mozilla-release/gfx/layers/basic/BasicCompositor.cpp.1205045 mozilla-release/gfx/layers/basic/BasicCompositor.cpp
 --- mozilla-release/gfx/layers/basic/BasicCompositor.cpp.1205045	2015-09-18 00:13:31.000000000 +0200
-+++ mozilla-release/gfx/layers/basic/BasicCompositor.cpp	2015-09-22 12:30:27.551051763 +0200
++++ mozilla-release/gfx/layers/basic/BasicCompositor.cpp	2015-09-22 12:57:51.047938671 +0200
 @@ -509,11 +509,11 @@ BasicCompositor::BeginFrame(const nsIntR
    }
  
@@ -17,8 +17,8 @@ diff -up mozilla-release/gfx/layers/basic/BasicCompositor.cpp.1205045 mozilla-re
    if (!mDrawTarget) {
      return;
 diff -up mozilla-release/widget/gtk/nsWindow.cpp.1205045 mozilla-release/widget/gtk/nsWindow.cpp
---- mozilla-release/widget/gtk/nsWindow.cpp.1205045	2015-09-22 12:30:27.547051758 +0200
-+++ mozilla-release/widget/gtk/nsWindow.cpp	2015-09-22 12:37:16.149573664 +0200
+--- mozilla-release/widget/gtk/nsWindow.cpp.1205045	2015-09-22 12:57:51.043938667 +0200
++++ mozilla-release/widget/gtk/nsWindow.cpp	2015-09-22 12:57:51.049938673 +0200
 @@ -351,6 +351,11 @@ nsWindow::nsWindow()
  
  #ifdef MOZ_X11
@@ -145,7 +145,7 @@ diff -up mozilla-release/widget/gtk/nsWindow.cpp.1205045 mozilla-release/widget/
 +  return dt.forget();
 +}
 +
-+already_AddRefed<DrawTarget>
++TemporaryRef<DrawTarget>
 +nsWindow::StartRemoteDrawingInRegion(nsIntRegion& aInvalidRegion)
 +{
 +  return GetDrawTarget(aInvalidRegion);
@@ -229,7 +229,7 @@ diff -up mozilla-release/widget/gtk/nsWindow.cpp.1205045 mozilla-release/widget/
  nsWindow::GetDragInfo(WidgetMouseEvent* aMouseEvent,
 diff -up mozilla-release/widget/gtk/nsWindow.h.1205045 mozilla-release/widget/gtk/nsWindow.h
 --- mozilla-release/widget/gtk/nsWindow.h.1205045	2015-09-18 00:13:31.000000000 +0200
-+++ mozilla-release/widget/gtk/nsWindow.h	2015-09-22 12:30:27.553051766 +0200
++++ mozilla-release/widget/gtk/nsWindow.h	2015-09-22 12:57:51.049938673 +0200
 @@ -195,7 +195,7 @@ public:
                                                 gpointer         aData);
  
@@ -244,7 +244,7 @@ diff -up mozilla-release/widget/gtk/nsWindow.h.1205045 mozilla-release/widget/gt
     nsresult            UpdateTranslucentWindowAlphaInternal(const nsIntRect& aRect,
                                                              uint8_t* aAlphas, int32_t aStride);
 -    virtual gfxASurface *GetThebesSurface();
-+    virtual already_AddRefed<mozilla::gfx::DrawTarget> GetDrawTarget(const nsIntRegion& aRegion);
++    virtual mozilla::TemporaryRef<mozilla::gfx::DrawTarget> GetDrawTarget(const nsIntRegion& aRegion);
  
  #if (MOZ_WIDGET_GTK == 2)
      static already_AddRefed<gfxASurface> GetSurfaceForGdkDrawable(GdkDrawable* aDrawable,
@@ -270,12 +270,12 @@ diff -up mozilla-release/widget/gtk/nsWindow.h.1205045 mozilla-release/widget/gt
      nsRefPtr<mozilla::a11y::Accessible> mRootAccessible;
 diff -up mozilla-release/widget/nsIWidget.h.1205045 mozilla-release/widget/nsIWidget.h
 --- mozilla-release/widget/nsIWidget.h.1205045	2015-09-18 00:13:31.000000000 +0200
-+++ mozilla-release/widget/nsIWidget.h	2015-09-22 12:30:27.554051767 +0200
++++ mozilla-release/widget/nsIWidget.h	2015-09-22 13:24:51.542447323 +0200
 @@ -1706,6 +1706,9 @@ class nsIWidget : public nsISupports {
       * before each composition.
       */
      virtual mozilla::TemporaryRef<mozilla::gfx::DrawTarget> StartRemoteDrawing() = 0;
-+    virtual already_AddRefed<mozilla::gfx::DrawTarget> StartRemoteDrawingInRegion(nsIntRegion& aInvalidRegion) {
++    virtual mozilla::TemporaryRef<mozilla::gfx::DrawTarget> StartRemoteDrawingInRegion(nsIntRegion& aInvalidRegion) {
 +       return StartRemoteDrawing();
 +    }
  
@@ -283,7 +283,7 @@ diff -up mozilla-release/widget/nsIWidget.h.1205045 mozilla-release/widget/nsIWi
       * Ensure that what was painted into the DrawTarget returned from
 diff -up mozilla-release/widget/nsShmImage.cpp.1205045 mozilla-release/widget/nsShmImage.cpp
 --- mozilla-release/widget/nsShmImage.cpp.1205045	2015-09-18 00:13:31.000000000 +0200
-+++ mozilla-release/widget/nsShmImage.cpp	2015-09-22 12:30:27.554051767 +0200
++++ mozilla-release/widget/nsShmImage.cpp	2015-09-22 12:57:51.050938674 +0200
 @@ -15,11 +15,11 @@
  #ifdef MOZ_WIDGET_GTK
  #include "gfxPlatformGtk.h"
@@ -496,7 +496,7 @@ diff -up mozilla-release/widget/nsShmImage.cpp.1205045 mozilla-release/widget/ns
  #endif  // defined(MOZ_X11) && defined(MOZ_HAVE_SHAREDMEMORYSYSV)
 diff -up mozilla-release/widget/nsShmImage.h.1205045 mozilla-release/widget/nsShmImage.h
 --- mozilla-release/widget/nsShmImage.h.1205045	2015-09-18 00:13:31.000000000 +0200
-+++ mozilla-release/widget/nsShmImage.h	2015-09-22 12:30:27.555051768 +0200
++++ mozilla-release/widget/nsShmImage.h	2015-09-22 12:57:51.051938675 +0200
 @@ -15,8 +15,8 @@
  
  #ifdef MOZ_HAVE_SHMIMAGE

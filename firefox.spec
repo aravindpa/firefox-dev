@@ -276,7 +276,7 @@ cd %{tarballdir}
 %patch425 -p1 -b .1192243
 %patch426 -p1 -b .1180971
 %patch427 -p1 -b .1190935
-%patch428 -p1 -b .1205045
+#%patch428 -p1 -b .1205045
 %endif
 
 %patch500 -p1
@@ -770,8 +770,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %changelog
 * Tue Sep 22 2015 Martin Stransky <stransky@redhat.com> - 41.0-4
-- Added OMTC stability patches
-  (mozbz#1180971, mozbz#1190935, mozbz#1205045)
+- Added OMTC stability patches (mozbz#1180971, mozbz#1190935)
 
 * Thu Sep 17 2015 Martin Stransky <stransky@redhat.com> - 41.0-3
 - Update to 40.0 Build 3
