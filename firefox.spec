@@ -769,7 +769,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
-* Tue Sep 24 2015 Martin Stransky <stransky@redhat.com> - 41.0-5
+* Thu Sep 24 2015 Martin Stransky <stransky@redhat.com> - 41.0-5
 - Explicitly add "layers.use-image-offscreen-surfaces" config key
   to allow to experiment with that.
 
