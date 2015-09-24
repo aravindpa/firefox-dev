@@ -86,7 +86,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        41.0
-Release:        4%{?pre_tag}%{?dist}
+Release:        5%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -769,6 +769,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Sep 24 2015 Martin Stransky <stransky@redhat.com> - 41.0-5
+- Explicitly add "layers.use-image-offscreen-surfaces" config key
+  to allow to experiment with that.
+
 * Tue Sep 22 2015 Martin Stransky <stransky@redhat.com> - 41.0-4
 - Added OMTC stability patches (mozbz#1180971, mozbz#1190935)
 
