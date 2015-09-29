@@ -86,7 +86,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        41.0
-Release:        6%{?pre_tag}%{?dist}
+Release:        7%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -769,6 +769,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Sep 29 2015 Martin Stransky <stransky@redhat.com> - 41.0-7
+- Enable Xinput2 (mozbz#1207973)
+
 * Fri Sep 25 2015 Martin Stransky <stransky@redhat.com> - 41.0-6
 - Rebuilt for old sqlite which is available in updates
 
