@@ -769,7 +769,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
-* Tue Sep 30 2015 Martin Stransky <stransky@redhat.com> - 41.0.1-2
+* Wed Sep 30 2015 Martin Stransky <stransky@redhat.com> - 41.0.1-2
 - Update to 41.0.1 Build 2
 - Enable Xinput2 (mozbz#1207973)
 
