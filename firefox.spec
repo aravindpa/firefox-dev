@@ -165,9 +165,7 @@ BuildRequires:  autoconf213
 BuildRequires:  pulseaudio-libs-devel
 BuildRequires:  libicu-devel
 BuildRequires:  GConf2-devel
-%if !%{?system_jpeg}
 BuildRequires:  yasm
-%endif
 
 Requires:       mozilla-filesystem
 %if %{?system_nss}
