@@ -56,7 +56,7 @@
 %global libvpx_version 1.3.0
 
 %if %{?system_nss}
-%global nspr_version 4.10.8
+%global nspr_version 4.10.10
 %global nspr_build_version %(pkg-config --silence-errors --modversion nspr 2>/dev/null || echo 65536)
 %global nss_version 3.19.2
 %global nss_build_version %(pkg-config --silence-errors --modversion nss 2>/dev/null || echo 65536)
@@ -92,7 +92,7 @@ License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.xz
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20151029.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20151030.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source12:       firefox-redhat-default-prefs.js
@@ -114,7 +114,6 @@ Patch20:        firefox-build-prbool.patch
 Patch21:        firefox-ppc64le.patch
 Patch24:        firefox-debug.patch
 Patch25:        rhbz-1219542-s390-build.patch
-Patch26:        firefox-nspr.patch
 
 # Fedora specific patches
 # Unable to install addons from https pages
@@ -250,12 +249,11 @@ cd %{tarballdir}
 %patch18 -p2 -b .jemalloc-ppc
 %patch19 -p2 -b .s390-inlines
 %patch20 -p1 -b .prbool
-#%patch21 -p2 -b .ppc64le
-#%patch24 -p1 -b .debug
+%patch21 -p2 -b .ppc64le
+%patch24 -p1 -b .debug
 %ifarch s390
 %patch25 -p1 -b .rhbz-1219542-s390
 %endif
-%patch26 -p2 -b .nspr
 
 %patch3  -p2 -b .arm
 
@@ -273,7 +271,7 @@ cd %{tarballdir}
 %patch425 -p1 -b .1192243
 %endif
 
-#%patch500 -p1
+%patch500 -p1
 
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE10} .mozconfig

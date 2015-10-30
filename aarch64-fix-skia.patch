@@ -2,8 +2,8 @@ Based on https://github.com/google/skia/commit/b79ff56de23fef680ae7187040f2d6a95
 
 Index: mozilla-release/gfx/skia/trunk/src/core/SkUtilsArm.h
 ===================================================================
---- mozilla-release.orig/gfx/skia/trunk/src/core/SkUtilsArm.h
-+++ mozilla-release/gfx/skia/trunk/src/core/SkUtilsArm.h
+--- mozilla-release/gfx/skia/skia/src/core/SkUtilsArm.h
++++ mozilla-release/gfx/skia/skia/src/core/SkUtilsArm.h
 @@ -21,9 +21,9 @@
  #define SK_ARM_NEON_MODE_ALWAYS   1
  #define SK_ARM_NEON_MODE_DYNAMIC  2
