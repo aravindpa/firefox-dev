@@ -86,7 +86,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        42.0
-Release:        1%{?pre_tag}%{?dist}
+Release:        2%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -738,7 +738,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{mozappdir}/browser/crashreporter-override.ini
 %endif
 %{mozappdir}/*.so
+%if %{toolkit_gtk3}
 %{mozappdir}/gtk2/*.so
+%endif
 %{mozappdir}/chrome.manifest
 %{mozappdir}/components
 %{mozappdir}/defaults/pref/channel-prefs.js
@@ -760,7 +762,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
-* Thu Oct 29 2015 Martin Stransky <stransky@redhat.com> - 42.0-1
+* Thu Oct 29 2015 Martin Stransky <stransky@redhat.com> - 42.0-2
 - Update to 42.0
 
 * Thu Oct 15 2015 Petr Jasicek <pjasicek@redhat.com> - 41.0.2-2
