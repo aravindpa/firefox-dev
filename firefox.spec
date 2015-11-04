@@ -86,7 +86,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        42.0
-Release:        2%{?pre_tag}%{?dist}
+Release:        3%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -132,39 +132,39 @@ Patch425:        mozilla-1192243.patch
 Patch500:        aarch64-fix-skia.patch
 
 %if %{?system_nss}
-BuildRequires:  nspr-devel >= %{nspr_version}
-BuildRequires:  nss-devel >= %{nss_version}
+BuildRequires:  pkgconfig(nspr) >= %{nspr_version}
+BuildRequires:  pkgconfig(nss) >= %{nss_version}
 BuildRequires:  nss-static >= %{nss_version}
 %endif
 %if %{?system_cairo}
-BuildRequires:  cairo-devel >= %{cairo_version}
+BuildRequires:  pkgconfig(cairo) >= %{cairo_version}
 %endif
-BuildRequires:  libpng-devel
+BuildRequires:  pkgconfig(libpng)
 BuildRequires:  libjpeg-devel
 BuildRequires:  zip
 BuildRequires:  bzip2-devel
-BuildRequires:  zlib-devel
-BuildRequires:  libIDL-devel
+BuildRequires:  pkgconfig(zlib)
+BuildRequires:  pkgconfig(libIDL-2.0)
 %if %{toolkit_gtk3}
-BuildRequires:  gtk3-devel
+BuildRequires:  pkgconfig(gtk+-3.0)
 %endif
-BuildRequires:  gtk2-devel
-BuildRequires:  krb5-devel
-BuildRequires:  pango-devel
-BuildRequires:  freetype-devel >= %{freetype_version}
-BuildRequires:  libXt-devel
-BuildRequires:  libXrender-devel
-BuildRequires:  hunspell-devel
-BuildRequires:  startup-notification-devel
-BuildRequires:  alsa-lib-devel
-BuildRequires:  libnotify-devel >= %{libnotify_version}
-BuildRequires:  mesa-libGL-devel
-BuildRequires:  libcurl-devel
-BuildRequires:  libvpx-devel >= %{libvpx_version}
+BuildRequires:  pkgconfig(gtk+-2.0)
+BuildRequires:  pkgconfig(krb5)
+BuildRequires:  pkgconfig(pango)
+BuildRequires:  pkgconfig(freetype2) >= %{freetype_version}
+BuildRequires:  pkgconfig(xt)
+BuildRequires:  pkgconfig(xrender)
+BuildRequires:  pkgconfig(hunspell)
+BuildRequires:  pkgconfig(libstartup-notification-1.0)
+BuildRequires:  pkgconfig(alsa)
+BuildRequires:  pkgconfig(libnotify) >= %{libnotify_version}
+BuildRequires:  pkgconfig(dri)
+BuildRequires:  pkgconfig(libcurl)
+BuildRequires:  pkgconfig(libvpx) >= %{libvpx_version}
 BuildRequires:  autoconf213
-BuildRequires:  pulseaudio-libs-devel
-BuildRequires:  libicu-devel
-BuildRequires:  GConf2-devel
+BuildRequires:  pkgconfig(libpulse)
+BuildRequires:  pkgconfig(icu-i18n)
+BuildRequires:  pkgconfig(gconf-2.0)
 BuildRequires:  yasm
 
 Requires:       mozilla-filesystem
@@ -176,16 +176,16 @@ Requires:       nss >= %{nss_build_version}
 BuildRequires:  desktop-file-utils
 BuildRequires:  system-bookmarks
 %if %{?enable_gstreamer}
-BuildRequires:  gstreamer1-devel
-BuildRequires:  gstreamer1-plugins-base-devel
+BuildRequires:  pkgconfig(gstreamer-1.0)
+BuildRequires:  pkgconfig(gstreamer-allocators-1.0)
 %endif
 %if %{?system_sqlite}
-BuildRequires:  sqlite-devel >= %{sqlite_version}
+BuildRequires:  pkgconfig(sqlite3) >= %{sqlite_version}
 Requires:       sqlite >= %{sqlite_build_version}
 %endif
 
 %if %{?system_ffi}
-BuildRequires:  libffi-devel
+BuildRequires:  pkgconfig(libffi)
 %endif
 
 Requires:       system-bookmarks
@@ -762,6 +762,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Wed Nov  4 2015 Thierry Vignaud <thierry.vignaud@gmail.com> - 42.0-3
+- Use pkgconfig for BuildRequires where possible
+
 * Thu Oct 29 2015 Martin Stransky <stransky@redhat.com> - 42.0-2
 - Update to 42.0
 
