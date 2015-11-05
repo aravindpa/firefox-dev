@@ -160,7 +160,7 @@ BuildRequires:  pkgconfig(alsa)
 BuildRequires:  pkgconfig(libnotify) >= %{libnotify_version}
 BuildRequires:  pkgconfig(dri)
 BuildRequires:  pkgconfig(libcurl)
-BuildRequires:  pkgconfig(libvpx) >= %{libvpx_version}
+BuildRequires:  libvpx-devel >= %{libvpx_version}
 BuildRequires:  autoconf213
 BuildRequires:  pkgconfig(libpulse)
 BuildRequires:  pkgconfig(icu-i18n)
