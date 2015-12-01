@@ -86,7 +86,7 @@
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
 Version:        42.0
-Release:        3%{?pre_tag}%{?dist}
+Release:        4%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
@@ -762,6 +762,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Tue Dec  1 2015 Tom Callaway <spot@fedoraproject.org> - 42.0-4
+- rebuild for libvpx 1.5.0
+
 * Wed Nov  4 2015 Thierry Vignaud <thierry.vignaud@gmail.com> - 42.0-3
 - Use pkgconfig for BuildRequires where possible
 
