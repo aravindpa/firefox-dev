@@ -85,14 +85,14 @@
 
 Summary:        Mozilla Firefox Web browser
 Name:           firefox
-Version:        42.0
-Release:        5%{?pre_tag}%{?dist}
+Version:        43.0
+Release:        1%{?pre_tag}%{?dist}
 URL:            http://www.mozilla.org/projects/firefox/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
 Source0:        ftp://ftp.mozilla.org/pub/firefox/releases/%{version}%{?pre_version}/source/firefox-%{version}%{?pre_version}.source.tar.xz
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}%{?pre_version}-20151030.tar.xz
+Source1:        firefox-langpacks-%{version}%{?pre_version}-20151210.tar.xz
 %endif
 Source10:       firefox-mozconfig
 Source12:       firefox-redhat-default-prefs.js
@@ -104,7 +104,7 @@ Source25:       firefox-symbolic.svg
 
 #Build patches
 Patch0:         firefox-install-dir.patch
-Patch1:         firefox-build.patch
+#Patch1:         firefox-build.patch
 Patch3:         mozilla-build-arm.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=814879#c3
 Patch18:        xulrunner-24.0-jemalloc-ppc.patch
@@ -126,7 +126,6 @@ Patch221:        firefox-fedora-ua.patch
 # Upstream patches
 
 # Gtk3 upstream patches
-Patch425:        mozilla-1192243.patch
 
 # Fix Skia Neon stuff on AArch64
 Patch500:        aarch64-fix-skia.patch
@@ -242,7 +241,7 @@ cd %{tarballdir}
 # there is a compare of config and js/config directories and .orig suffix is
 # ignored during this compare.
 %patch0 -p1
-%patch1 -p2 -b .build
+#%patch1 -p2 -b .build
 
 %patch18 -p2 -b .jemalloc-ppc
 %patch19 -p2 -b .s390-inlines
@@ -263,11 +262,6 @@ cd %{tarballdir}
 %patch219 -p2 -b .rhbz-1173156
 #%patch220 -p1 -b .rhbz-1014858
 %patch221 -p2 -b .fedora-ua
-
-# Upstream patches
-%if %{toolkit_gtk3}
-%patch425 -p1 -b .1192243
-%endif
 
 %patch500 -p1
 
@@ -762,6 +756,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 #---------------------------------------------------------------------
 
 %changelog
+* Thu Dec 10 2015 Martin Stransky <stransky@redhat.com> - 43.0-1
+- Update to 43.0
+
 * Mon Dec 7 2015 Martin Stransky <stransky@redhat.com> - 42.0-5
 - Removed nspluginwrapper support (rhbz#1289053)
 
