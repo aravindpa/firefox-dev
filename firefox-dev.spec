@@ -87,7 +87,7 @@
 
 Summary:        Developer Edition (Aurora release channel) of the Mozilla Firefox Web browser
 Name:           firefox-dev
-Version:        42.0a2
+Version:        44.0a2
 Release:        %(date +%%Y%%m%%d)hg%{rev}%{?dist}
 URL:            https://www.mozilla.org/firefox/developer/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
