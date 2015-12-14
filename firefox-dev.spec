@@ -80,6 +80,7 @@
 %ifarch %{ix86} x86_64
 %define enable_mozilla_crashreporter       1
 %endif
+%endif
 
 %define rev         %(find %{_sourcedir}/ | grep -Po "(?<=mozilla-aurora-)[[:xdigit:]]+(?=\.tar)")
 %global tarballdir  mozilla-aurora-%{rev}
@@ -97,7 +98,7 @@ Group:          Applications/Internet
 Source0:        mozilla-aurora-%{rev}.tar.bz2
 %if %{build_langpacks}
                 # Fetch/build with this lovely one-liner (remember to sub version numbers):
-                # export URL="https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-aurora-l10n/linux-x86_64/xpi/" && mkdir firefox-langpacks; cd firefox-langpacks && curl $URL | egrep -o '"firefox-41.0a2.*?\.xpi"' | sed 's/"//g' | awk "{print \"$URL\" \$0}" | xargs wget && for f in *; do; mv $f `echo $f | awk 'match($0, /firefox-.*?\.(.*?)\.langpack.xpi/, a){print a[1] ".xpi"}'`; done; cd .. && tar -cvf - firefox-langpacks | xz -zc - > firefox-langpacks-41.0a2.tar.xz && rm -rf firefox-langpacks
+                # export URL="https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-aurora-l10n/linux-x86_64/xpi/" && mkdir firefox-langpacks; cd firefox-langpacks && curl $URL | egrep -o "\".*?firefox-$VER.*?\.xpi\"" | sed 's/"//g' | awk "{print \"https://archive.mozilla.org\" \$0}" | xargs wget && for f in *; do mv $f `echo $f | awk 'match($0, /firefox-.*?\.(.*?)\.langpack.xpi/, a){print a[1] ".xpi"}'`; done; cd .. && tar -cvf - firefox-langpacks | xz -zc - > firefox-langpacks-$VER.tar.xz && rm -rf firefox-langpacks
 Source1:        firefox-langpacks-%{version}.tar.xz
 %endif
 Source10:       firefox-mozconfig
