@@ -88,19 +88,20 @@
 
 Summary:        Developer Edition (Aurora release channel) of the Mozilla Firefox Web browser
 Name:           firefox-dev
-Version:        44.0a2
-Release:        %(date +%%Y%%m%%d)hg%{rev}%{?dist}
+# You can see which is the latest version here:
+# https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-aurora/
+Version:        45.0a2
+Release:        %(date +%%Y.%%m.%%d)hg%{rev}%{?dist}
 URL:            https://www.mozilla.org/firefox/developer/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
-                # Fetch source with
-                # curl -O "https://hg.mozilla.org/releases/mozilla-aurora/archive/$(basename `curl https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-aurora/firefox-41.0a2.en-US.linux-x86_64.txt | tail -n1`).tar.bz2"
-Source0:        mozilla-aurora-%{rev}.tar.bz2
+
+Source0:        firefox-%{version}.tar.bz2
+
 %if %{build_langpacks}
-                # Fetch/build with this lovely one-liner (remember to sub version numbers):
-                # export URL="https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-aurora-l10n/linux-x86_64/xpi/" && mkdir firefox-langpacks; cd firefox-langpacks && curl $URL | egrep -o "\".*?firefox-$VER.*?\.xpi\"" | sed 's/"//g' | awk "{print \"https://archive.mozilla.org\" \$0}" | xargs wget && for f in *; do mv $f `echo $f | awk 'match($0, /firefox-.*?\.(.*?)\.langpack.xpi/, a){print a[1] ".xpi"}'`; done; cd .. && tar -cvf - firefox-langpacks | xz -zc - > firefox-langpacks-$VER.tar.xz && rm -rf firefox-langpacks
 Source1:        firefox-langpacks-%{version}.tar.xz
 %endif
+
 Source10:       firefox-mozconfig
 Source12:       firefox-redhat-default-prefs.js
 Source20:       firefox.desktop
@@ -154,6 +155,7 @@ BuildRequires:  pkgconfig(libIDL-2.0)
 %if %{toolkit_gtk3}
 BuildRequires:  pkgconfig(gtk+-3.0)
 %endif
+
 BuildRequires:  pkgconfig(gtk+-2.0)
 BuildRequires:  pkgconfig(krb5)
 BuildRequires:  pkgconfig(pango)
@@ -172,7 +174,6 @@ BuildRequires:  pkgconfig(libpulse)
 BuildRequires:  pkgconfig(icu-i18n)
 BuildRequires:  pkgconfig(gconf-2.0)
 BuildRequires:  yasm
-
 BuildRequires:  ImageMagick
 BuildRequires:  GConf2-devel
 
@@ -209,7 +210,7 @@ Provides:       webclient
 
 %description
 Mozilla Firefox is an open-source web browser, designed for standards
-compliance, performance and portability.
+compliance, performance, and portability.
 
 %if %{enable_mozilla_crashreporter}
 %global moz_debug_prefix %{_prefix}/lib/debug

@@ -1,40 +1,69 @@
 firefox-dev
 ===========
 
-This is a fork of http://pkgs.fedoraproject.org/cgit/firefox.git/
-tracking Mozilla's Aurora release channel, otherwise known as [Firefox
-Developer Edition](https://www.mozilla.org/firefox/developer/).
+This is a fork of
+[the Fedora packaging repo for mainline Firefox](http://pkgs.fedoraproject.org/cgit/firefox.git/),
+tracking Mozilla's Aurora release channel, otherwise known as
+[Firefox Developer Edition](https://www.mozilla.org/firefox/developer/).
 
-### Getting the goods
 
-Fetch it from Copr while it's hot!
 
-```
-dnf copr enable bob131/firefox-dev
-dnf install firefox-dev
-```
+## How to install
 
-Be warned: This package obsoletes the firefox package; both packages
+Those interested in helping test this build of Firefox Developer Edition can
+see the instructions below about building from spec. Otherwise, just add the
+Copr repository.
+
+Be warned, though: This package obsoletes the firefox package. Both packages
 can't be installed on the same system simultaneously.
+
+
+### Copr makes it easy
+
+``` bash
+sudo dnf copr enable bob131/firefox-dev
+sudo dnf install firefox-dev
+```
+
 
 ### Building from spec
 
-This assumes an empty or absent `~/rpmbuild` directory.
+First, a little setup: Obviously, you need a copy of this repository.
 
+``` bash
+git clone https://github.com/Bob131/firefox-dev.git
+cd firefox-dev
 ```
-hub clone Bob131/firefox-dev && cd firefox-dev
-export VER="`grep -P "^Version:" firefox-dev.spec | grep -Po "[0-9\.a]{6}"`"
-curl -O "https://hg.mozilla.org/releases/mozilla-aurora/archive/$(basename `curl https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-aurora/firefox-$VER.en-US.linux-x86_64.txt | tail -n1`).tar.bz2" && ls *.tar.bz2 | xargs -I {} mv {} mozilla-aurora-{}
-export URL="https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-aurora-l10n/linux-x86_64/xpi/" && mkdir firefox-langpacks; cd firefox-langpacks && curl $URL | egrep -o "\".*?firefox-$VER.*?\.xpi\"" | sed 's/"//g' | awk "{print \"https://archive.mozilla.org\" \$0}" | xargs wget && for f in *; do mv $f `echo $f | awk 'match($0, /firefox-.*?\.(.*?)\.langpack.xpi/, a){print a[1] ".xpi"}'`; done; cd .. && tar -cvf - firefox-langpacks | xz -zc - > firefox-langpacks-$VER.tar.xz && rm -rf firefox-langpacks
-mkdir ~/rpmbuild
-ln -s `pwd` ~/rpmbuild/SOURCES
-rpmbuild -ba firefox-dev.spec
+
+Then, to fetch the source code for the latest release of Firefox Developer
+Edition, we have a convenient script:
+
+``` bash
+./GET_SOURCE.bash
 ```
+
+And finally you can build the actual package.
+
+``` bash
+rpmbuild --define "%_sourcedir $(pwd)" -ba firefox-dev.spec
+```
+
+Getting updates for our packaging repo is easy:
+
+``` bash
+git pull origin master
+```
+
+And then if there's a new release, you download the latest Firefox source
+again.
+
+
 
 ## Frequently Asked Questions
 
 (also known as "questions that have never been asked but the author felt
 needed answering anyway")
+
 
 ### Aurora refuses to use my preexisting Firefox profile! What do?
 
@@ -44,11 +73,13 @@ This should do the trick:
 touch ~/.mozilla/firefox/ignore-dev-edition-profile
 ```
 
+
 ### Why the `-dev` suffix instead of the usual `-devel`?
 
 I'm far from an expert on these matters, but personally I would expect
 packages with the `-devel` suffix to contain actual library headers and
 whatnot. This package includes no such thing.
+
 
 ### What license is this repo under?
 
