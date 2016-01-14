@@ -82,8 +82,9 @@
 	%endif
 %endif
 
-%define rev         %(find %{_sourcedir}/ | grep -Po "(?<=mozilla-aurora-)[[:xdigit:]]+(?=\.tar)")
-%global tarballdir  mozilla-aurora-%{rev}
+%define revision        cb11e926ac330c7ab520c186362a5abff0ca90dd
+%define revision_short  cb11e92
+%global tarballdir      mozilla-aurora-%{revision}
 
 
 Summary:        Developer Edition (Aurora release channel) of the Mozilla Firefox Web browser
@@ -91,7 +92,7 @@ Name:           firefox-dev
 # You can see which is the latest version here:
 # https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-aurora/
 Version:        45.0a2
-Release:        %(date +%%Y.%%m.%%d)hg%{rev}%{?dist}
+Release:        1.%{revision_short}%{?dist}
 URL:            https://www.mozilla.org/firefox/developer/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Group:          Applications/Internet
