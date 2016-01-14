@@ -3,18 +3,18 @@
 
 # Use system sqlite?
 %if 0%{?fedora} < 20
-%define system_sqlite     0
-%define system_ffi        0
+	%define system_sqlite     0
+	%define system_ffi        0
 %else
-%define system_sqlite     1
-%define system_ffi        1
+	%define system_sqlite     1
+	%define system_ffi        1
 %endif
 
 # Build for Gtk3?
 %if 0%{?fedora} <= 21
-%define toolkit_gtk3      0
+	%define toolkit_gtk3      0
 %else
-%define toolkit_gtk3      1
+	%define toolkit_gtk3      1
 %endif
 
 # Use system cairo?
@@ -22,9 +22,9 @@
 
 # Hardened build?
 %if 0%{?fedora} > 20
-%define hardened_build    1
+	%define hardened_build    1
 %else
-%define hardened_build    0
+	%define hardened_build    0
 %endif
 
 %define system_jpeg       1
@@ -33,15 +33,15 @@
 
 # Separated plugins are supported on x86(64) only
 %ifarch %{ix86} x86_64
-%define separated_plugins 1
+	%define separated_plugins 1
 %else
-%define separated_plugins 0
+	%define separated_plugins 0
 %endif
 
 %ifarch %{ix86} x86_64
-%define run_tests         0
+	%define run_tests         0
 %else
-%define run_tests         0
+	%define run_tests         0
 %endif
 
 # Build as a debug package?
@@ -56,16 +56,16 @@
 %global libvpx_version 1.3.0
 
 %if %{?system_nss}
-%global nspr_version 4.10.10
-%global nspr_build_version %(pkg-config --silence-errors --modversion nspr 2>/dev/null || echo 65536)
-%global nss_version 3.19.2
-%global nss_build_version %(pkg-config --silence-errors --modversion nss 2>/dev/null || echo 65536)
+	%global nspr_version 4.10.10
+	%global nspr_build_version %(pkg-config --silence-errors --modversion nspr 2>/dev/null || echo 65536)
+	%global nss_version 3.19.2
+	%global nss_build_version %(pkg-config --silence-errors --modversion nss 2>/dev/null || echo 65536)
 %endif
 
 %if %{?system_sqlite}
-%global sqlite_version 3.8.4.2
-# The actual sqlite version (see #480989):
-%global sqlite_build_version %(pkg-config --silence-errors --modversion sqlite3 2>/dev/null || echo 65536)
+	%global sqlite_version 3.8.4.2
+	# The actual sqlite version (see #480989):
+	%global sqlite_build_version %(pkg-config --silence-errors --modversion sqlite3 2>/dev/null || echo 65536)
 %endif
 
 %global mozappdir     %{_libdir}/%{name}
@@ -77,9 +77,9 @@
 
 %define enable_mozilla_crashreporter       0
 %if !%{debug_build}
-%ifarch %{ix86} x86_64
-%define enable_mozilla_crashreporter       1
-%endif
+	%ifarch %{ix86} x86_64
+		%define enable_mozilla_crashreporter       1
+	%endif
 %endif
 
 %define rev         %(find %{_sourcedir}/ | grep -Po "(?<=mozilla-aurora-)[[:xdigit:]]+(?=\.tar)")
@@ -143,15 +143,18 @@ BuildRequires:  pkgconfig(nspr) >= %{nspr_version}
 BuildRequires:  pkgconfig(nss) >= %{nss_version}
 BuildRequires:  nss-static >= %{nss_version}
 %endif
+
 %if %{?system_cairo}
 BuildRequires:  pkgconfig(cairo) >= %{cairo_version}
 %endif
+
 BuildRequires:  pkgconfig(libpng)
 BuildRequires:  libjpeg-devel
 BuildRequires:  zip
 BuildRequires:  bzip2-devel
 BuildRequires:  pkgconfig(zlib)
 BuildRequires:  pkgconfig(libIDL-2.0)
+
 %if %{toolkit_gtk3}
 BuildRequires:  pkgconfig(gtk+-3.0)
 %endif
@@ -178,6 +181,7 @@ BuildRequires:  ImageMagick
 BuildRequires:  GConf2-devel
 
 Requires:       mozilla-filesystem
+
 %if %{?system_nss}
 Requires:       nspr >= %{nspr_build_version}
 Requires:       nss >= %{nss_build_version}
@@ -185,10 +189,12 @@ Requires:       nss >= %{nss_build_version}
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  system-bookmarks
+
 %if %{?enable_gstreamer}
 BuildRequires:  pkgconfig(gstreamer-1.0)
 BuildRequires:  pkgconfig(gstreamer-allocators-1.0)
 %endif
+
 %if %{?system_sqlite}
 BuildRequires:  pkgconfig(sqlite3) >= %{sqlite_version}
 Requires:       sqlite >= %{sqlite_build_version}
@@ -260,6 +266,7 @@ cd %{tarballdir}
 %patch20 -p1 -b .prbool
 %patch21 -p2 -b .ppc64le
 %patch24 -p1 -b .debug
+
 %ifarch s390
 %patch25 -p1 -b .rhbz-1219542-s390
 %endif
@@ -279,10 +286,12 @@ cd %{tarballdir}
 
 %{__rm} -f .mozconfig
 %{__cp} %{SOURCE10} .mozconfig
+
 %if %{official_branding}
 echo "ac_add_options --enable-official-branding" >> .mozconfig
 echo "ac_add_options --with-branding=browser/branding/aurora" >> .mozconfig
 %endif
+
 %{__cp} %{SOURCE24} mozilla-api-key
 
 %if %{toolkit_gtk3}
@@ -420,9 +429,11 @@ MOZ_OPT_FLAGS="$MOZ_OPT_FLAGS -Wformat-security -Wformat -Werror=format-security
 %if %{?hardened_build}
 MOZ_OPT_FLAGS="$MOZ_OPT_FLAGS -fPIC -Wl,-z,relro -Wl,-z,now"
 %endif
+
 %if %{?debug_build}
 MOZ_OPT_FLAGS=$(echo "$MOZ_OPT_FLAGS" | %{__sed} -e 's/-O2//')
 %endif
+
 %ifarch s390
 MOZ_OPT_FLAGS=$(echo "$MOZ_OPT_FLAGS" | %{__sed} -e 's/-g/-g1/')
 # If MOZ_DEBUG_FLAGS is empty, firefox's build will default it to "-g" which
@@ -430,9 +441,11 @@ MOZ_OPT_FLAGS=$(echo "$MOZ_OPT_FLAGS" | %{__sed} -e 's/-g/-g1/')
 # (OOM when linking, rhbz#1238225)
 export MOZ_DEBUG_FLAGS=" "
 %endif
+
 %ifarch s390 %{arm} ppc aarch64
 MOZ_LINK_FLAGS="-Wl,--no-keep-memory -Wl,--reduce-memory-overheads"
 %endif
+
 export CFLAGS=$MOZ_OPT_FLAGS
 export CXXFLAGS=$MOZ_OPT_FLAGS
 export LDFLAGS=$MOZ_LINK_FLAGS
@@ -441,6 +454,7 @@ export PREFIX='%{_prefix}'
 export LIBDIR='%{_libdir}'
 
 MOZ_SMP_FLAGS=-j1
+
 # On x86 architectures, Mozilla can build up to 4 jobs at once in parallel,
 # however builds tend to fail on other arches when building in parallel.
 %ifarch %{ix86} x86_64 ppc ppc64 ppc64le aarch64
@@ -463,7 +477,6 @@ make -C objdir buildsymbols
 %if %{?system_nss}
 ln -s /usr/bin/certutil objdir/dist/bin/certutil
 ln -s /usr/bin/pk12util objdir/dist/bin/pk12util
-
 %endif
 mkdir test_results
 ./mach --log-no-times check-spidermonkey &> test_results/check-spidermonkey || true
@@ -487,8 +500,8 @@ xvfb-run ./mach --log-no-times xpcshell-test &> test_results/xpcshell-test || tr
 rm -f  objdir/dist/bin/certutil
 rm -f  objdir/dist/bin/pk12util
 %endif
-
 %endif
+
 #---------------------------------------------------------------------
 
 %install
@@ -682,6 +695,7 @@ end
 
 
 %preun
+
 # is it a final removal?
 if [ $1 -eq 0 ]; then
   %{__rm} -rf %{mozappdir}/components
@@ -725,9 +739,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %attr(644, root, root) %{mozappdir}/browser/blocklist.xml
 %dir %{mozappdir}/browser/extensions
 %{mozappdir}/browser/extensions/*
+
 %if %{build_langpacks}
 %dir %{langpackdir}
 %endif
+
 %{mozappdir}/browser/omni.ja
 %{mozappdir}/browser/icons
 %{mozappdir}/run-mozilla.sh
@@ -743,16 +759,20 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %dir %{mozappdir}/webapprt
 %{mozappdir}/webapprt/omni.ja
 %{mozappdir}/webapprt/webapprt.ini
+
 %if %{enable_mozilla_crashreporter}
 %{mozappdir}/crashreporter
 %{mozappdir}/crashreporter.ini
 %{mozappdir}/Throbber-small.gif
 %{mozappdir}/browser/crashreporter-override.ini
 %endif
+
 %{mozappdir}/*.so
+
 %if %{toolkit_gtk3}
 %{mozappdir}/gtk2/*.so
 %endif
+
 %{mozappdir}/chrome.manifest
 %{mozappdir}/components
 %{mozappdir}/defaults/pref/channel-prefs.js
@@ -765,6 +785,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %exclude %{_includedir}
 %exclude %{mozappdirdev}
 %exclude %{_datadir}/idl
+
 %if !%{?system_nss}
 %{mozappdir}/libfreebl3.chk
 %{mozappdir}/libnssdbm3.chk
