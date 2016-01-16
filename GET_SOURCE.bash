@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Exit script if any commands return errors. Treat unset variables as an error.
+set -eu
+
 # Find the version number and commit hash of the latest Firefox Aurora release.
 echo "*** Looking up the latest release..."
 curl "https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-aurora/" -o index.html
