@@ -791,5 +791,5 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
-* Thu March 10, 2016 Andrew Toskin <andrew@tosk.in> - 46.0a2-1.2b63306
+* Thu Mar 10 2016 Andrew Toskin <andrew@tosk.in> - 46.0a2-1.2b63306
 - Begin work of making a Firefox Developer Edition package.
