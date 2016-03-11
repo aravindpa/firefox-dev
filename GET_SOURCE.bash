@@ -10,6 +10,7 @@ export VERSION=$(grep -E 'firefox-[[:digit:]]+\.[[:alnum:]]+' -m 1 -o index.html
 export LATEST_COMMIT=$(basename $(curl "https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-aurora/firefox-$VERSION.en-US.linux-x86_64.txt" | tail -n1))
 export SHORT_COMMIT=$(echo "$LATEST_COMMIT" | grep -Eo '^[[:alnum:]]{7}')
 rm index.html
+export DOWNLOAD_SOURCE_URL="https://hg.mozilla.org/releases/mozilla-aurora/archive/$LATEST_COMMIT.tar.bz2"
 
 # Update the spec file to use latest Firefox release.
 sed -i -r 's/^(Version:[[:space:]]+)[[:digit:]]+\.[[:alnum:]]+/\1'"$VERSION/" firefox-dev.spec
@@ -19,7 +20,7 @@ sed -i -r 's/^(%define revision_short[[:space:]]+)[[:alnum:]]+/\1'"$SHORT_COMMIT
 # Get the source code for the latest Firefox release.
 echo
 echo "*** Downloading latest release of Firefox Aurora..."
-curl "https://hg.mozilla.org/releases/mozilla-aurora/archive/$LATEST_COMMIT.tar.bz2" -o "firefox-$VERSION.tar.bz2"
+curl -O "$DOWNLOAD_SOURCE_URL"
 
 # Get the langpacks too.
 mkdir -p firefox-langpacks
