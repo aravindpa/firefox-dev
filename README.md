@@ -3,7 +3,7 @@ firefox-dev
 
 This is a fork of
 [the Fedora packaging repo for mainline Firefox](http://pkgs.fedoraproject.org/cgit/firefox.git/),
-tracking Mozilla's Aurora release channel, otherwise known as
+modified to track Mozilla's "Aurora" release channel, otherwise known as
 [Firefox Developer Edition](https://www.mozilla.org/firefox/developer/).
 
 
@@ -20,10 +20,8 @@ can't be installed on the same system simultaneously.
 
 ### Copr makes it easy
 
-``` bash
-sudo dnf copr enable bob131/firefox-dev
-sudo dnf install firefox-dev
-```
+...Or, it will, when there is a copr. This package does not yet build without
+errors, though. Keep an out for updates!
 
 
 ### Building from spec
@@ -31,7 +29,7 @@ sudo dnf install firefox-dev
 First, a little setup: Obviously, you need a copy of this repository.
 
 ``` bash
-git clone https://github.com/Bob131/firefox-dev.git
+git clone https://github.com/terrycloth/firefox-dev.git
 cd firefox-dev
 ```
 
