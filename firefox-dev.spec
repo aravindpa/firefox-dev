@@ -1,31 +1,3 @@
-# Use system nspr/nss?
-%define system_nss        1
-
-# Use system sqlite?
-%if 0%{?fedora} < 20
-	%define system_sqlite     0
-	%define system_ffi        0
-%else
-	%define system_sqlite     1
-	%define system_ffi        1
-%endif
-
-# Build for Gtk3?
-%if 0%{?fedora} <= 21
-	%define toolkit_gtk3      0
-%else
-	%define toolkit_gtk3      1
-%endif
-
-# Use system cairo?
-%define system_cairo      0
-
-%define hardened_build    1
-
-%define system_jpeg       1
-
-%define enable_gstreamer  1
-
 # Separated plugins are supported on x86(64) only
 %ifarch %{ix86} x86_64
 	%define separated_plugins 1
@@ -50,18 +22,14 @@
 %global libnotify_version 0.7.0
 %global libvpx_version 1.3.0
 
-%if %{?system_nss}
-	%global nspr_version 4.10.10
-	%global nspr_build_version %(pkg-config --silence-errors --modversion nspr 2>/dev/null || echo 65536)
-	%global nss_version 3.19.2
-	%global nss_build_version %(pkg-config --silence-errors --modversion nss 2>/dev/null || echo 65536)
-%endif
+%global nspr_version 4.10.10
+%global nspr_build_version %(pkg-config --silence-errors --modversion nspr 2>/dev/null || echo 65536)
+%global nss_version 3.19.2
+%global nss_build_version %(pkg-config --silence-errors --modversion nss 2>/dev/null || echo 65536)
 
-%if %{?system_sqlite}
-	%global sqlite_version 3.8.4.2
-	# The actual sqlite version (see #480989):
-	%global sqlite_build_version %(pkg-config --silence-errors --modversion sqlite3 2>/dev/null || echo 65536)
-%endif
+%global sqlite_version 3.8.4.2
+# The actual sqlite version (see #480989):
+%global sqlite_build_version %(pkg-config --silence-errors --modversion sqlite3 2>/dev/null || echo 65536)
 
 %global mozappdir     %{_libdir}/%{name}
 %global mozappdirdev  %{_libdir}/%{name}-devel-%{version}
@@ -136,15 +104,9 @@ Patch221:        firefox-fedora-ua.patch
 # Fix Skia Neon stuff on AArch64
 Patch500:        aarch64-fix-skia.patch
 
-%if %{?system_nss}
 BuildRequires:  pkgconfig(nspr) >= %{nspr_version}
 BuildRequires:  pkgconfig(nss) >= %{nss_version}
 BuildRequires:  nss-static >= %{nss_version}
-%endif
-
-%if %{?system_cairo}
-BuildRequires:  pkgconfig(cairo) >= %{cairo_version}
-%endif
 
 BuildRequires:  pkgconfig(libpng)
 BuildRequires:  libjpeg-devel
@@ -153,9 +115,7 @@ BuildRequires:  bzip2-devel
 BuildRequires:  pkgconfig(zlib)
 BuildRequires:  pkgconfig(libIDL-2.0)
 
-%if %{toolkit_gtk3}
 BuildRequires:  pkgconfig(gtk+-3.0)
-%endif
 
 BuildRequires:  pkgconfig(gtk+-2.0)
 BuildRequires:  pkgconfig(krb5)
@@ -180,27 +140,19 @@ BuildRequires:  GConf2-devel
 
 Requires:       mozilla-filesystem
 
-%if %{?system_nss}
 Requires:       nspr >= %{nspr_build_version}
 Requires:       nss >= %{nss_build_version}
-%endif
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  system-bookmarks
 
-%if %{?enable_gstreamer}
 BuildRequires:  pkgconfig(gstreamer-1.0)
 BuildRequires:  pkgconfig(gstreamer-allocators-1.0)
-%endif
 
-%if %{?system_sqlite}
 BuildRequires:  pkgconfig(sqlite3) >= %{sqlite_version}
 Requires:       sqlite >= %{sqlite_build_version}
-%endif
 
-%if %{?system_ffi}
 BuildRequires:  pkgconfig(libffi)
-%endif
 
 Requires:       system-bookmarks
 
@@ -288,41 +240,18 @@ echo "ac_add_options --with-branding=browser/branding/aurora" >> .mozconfig
 
 cp %{SOURCE24} mozilla-api-key
 
-%if %{toolkit_gtk3}
 echo "ac_add_options --enable-default-toolkit=cairo-gtk3" >> .mozconfig
-%else
-echo "ac_add_options --enable-default-toolkit=cairo-gtk2" >> .mozconfig
-%endif
 
-%if %{?system_nss}
 echo "ac_add_options --with-system-nspr" >> .mozconfig
 echo "ac_add_options --with-system-nss" >> .mozconfig
-%else
-echo "ac_add_options --without-system-nspr" >> .mozconfig
-echo "ac_add_options --without-system-nss" >> .mozconfig
-%endif
 
-%if %{?system_sqlite}
 echo "ac_add_options --enable-system-sqlite" >> .mozconfig
-%else
-echo "ac_add_options --disable-system-sqlite" >> .mozconfig
-%endif
 
-%if %{?system_cairo}
-echo "ac_add_options --enable-system-cairo" >> .mozconfig
-%else
 echo "ac_add_options --disable-system-cairo" >> .mozconfig
-%endif
 
-%if %{?system_ffi}
 echo "ac_add_options --enable-system-ffi" >> .mozconfig
-%endif
 
-%if %{?enable_gstreamer}
 echo "ac_add_options --enable-gstreamer=1.0" >> .mozconfig
-%else
-echo "ac_add_options --disable-gstreamer" >> .mozconfig
-%endif
 
 %if !%{?separated_plugins}
 echo "ac_add_options --disable-ipc" >> .mozconfig
@@ -380,16 +309,11 @@ echo "ac_add_options --disable-crashreporter" >> .mozconfig
 echo "ac_add_options --enable-tests" >> .mozconfig
 %endif
 
-%if !%{?system_jpeg}
-echo "ac_add_options --without-system-jpeg" >> .mozconfig
-%else
 echo "ac_add_options --with-system-jpeg" >> .mozconfig
-%endif
 
 #---------------------------------------------------------------------
 
 %build
-%if %{?system_sqlite}
 # Do not proceed with build if the sqlite require would be broken:
 # make sure the minimum requirement is non-empty, ...
 sqlite_version=$(expr "%{sqlite_version}" : '\([0-9]*\.\)[0-9]*\.') || exit 1
@@ -398,7 +322,6 @@ case "%{sqlite_build_version}" in
   "$sqlite_version"*) ;;
   *) exit 1 ;;
 esac
-%endif
 
 cd %{tarballdir}
 
@@ -419,10 +342,9 @@ MOZ_OPT_FLAGS=$(echo "$RPM_OPT_FLAGS" | sed -e 's/-Wall//')
 # Explicitly force the hardening flags for Firefox so it passes the checksec test;
 # See also https://fedoraproject.org/wiki/Changes/Harden_All_Packages
 MOZ_OPT_FLAGS="$MOZ_OPT_FLAGS -Wformat-security -Wformat -Werror=format-security"
-# Use hardened build?
-%if %{?hardened_build}
+
+# Use hardened build.
 MOZ_OPT_FLAGS="$MOZ_OPT_FLAGS -fPIC -Wl,-z,relro -Wl,-z,now"
-%endif
 
 %if %{?debug_build}
 MOZ_OPT_FLAGS=$(echo "$MOZ_OPT_FLAGS" | sed -e 's/-O2//')
@@ -468,10 +390,8 @@ make -C objdir buildsymbols
 %endif
 
 %if %{?run_tests}
-%if %{?system_nss}
 ln -s /usr/bin/certutil objdir/dist/bin/certutil
 ln -s /usr/bin/pk12util objdir/dist/bin/pk12util
-%endif
 mkdir test_results
 ./mach --log-no-times check-spidermonkey &> test_results/check-spidermonkey || true
 ./mach --log-no-times check-spidermonkey &> test_results/check-spidermonkey-2nd-run || true
@@ -490,10 +410,8 @@ xvfb-run -a ./mach --log-no-times webapprt-test-chrome &> test_results/webapprt-
 xvfb-run -a ./mach --log-no-times webapprt-test-content &> test_results/webapprt-test-content || true
 ./mach --log-no-times webidl-parser-test &> test_results/webidl-parser-test || true
 xvfb-run -a ./mach --log-no-times xpcshell-test &> test_results/xpcshell-test || true
-%if %{?system_nss}
 rm -f  objdir/dist/bin/certutil
 rm -f  objdir/dist/bin/pk12util
-%endif
 %endif
 
 #---------------------------------------------------------------------
@@ -763,9 +681,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %{mozappdir}/*.so
 
-%if %{toolkit_gtk3}
 %{mozappdir}/gtk2/*.so
-%endif
 
 %{mozappdir}/chrome.manifest
 %{mozappdir}/components
@@ -779,12 +695,6 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %exclude %{_includedir}
 %exclude %{mozappdirdev}
 %exclude %{_datadir}/idl
-
-%if !%{?system_nss}
-%{mozappdir}/libfreebl3.chk
-%{mozappdir}/libnssdbm3.chk
-%{mozappdir}/libsoftokn3.chk
-%endif
 
 
 
