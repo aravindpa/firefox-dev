@@ -89,8 +89,8 @@ Summary:        Developer Edition (Aurora release channel) of the Mozilla Firefo
 Name:           firefox-dev
 # You can see which is the latest version here:
 # https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-aurora/
-Version:        46.0a2
-Release:        1.%{revision_short}%{?dist}
+Version:        46.0a2.20160312
+Release:        1.%{?dist}
 URL:            https://www.mozilla.org/firefox/developer/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 
@@ -791,5 +791,5 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
-* Thu Mar 10 2016 Andrew Toskin <andrew@tosk.in> - 46.0a2-1.2b63306
+* Thu Mar 10 2016 Andrew Toskin <andrew@tosk.in> - 46.0a2.20160312
 - Begin work of making a Firefox Developer Edition package.
