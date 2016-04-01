@@ -1,18 +1,19 @@
-diff -up mozilla-release/media/webrtc/trunk/webrtc/build/common.gypi.arm mozilla-release/media/webrtc/trunk/webrtc/build/common.gypi
---- mozilla-release/media/webrtc/trunk/webrtc/build/common.gypi.arm	2015-03-05 11:28:19.000000000 +0100
-+++ mozilla-release/media/webrtc/trunk/webrtc/build/common.gypi	2015-03-09 10:02:17.875243261 +0100
-@@ -235,19 +235,6 @@
+diff -up media/webrtc/trunk/webrtc/build/common.gypi.arm media/webrtc/trunk/webrtc/build/common.gypi
+--- media/webrtc/trunk/webrtc/build/common.gypi.arm	2016-03-31 16:40:18.057797942 -0700
++++ media/webrtc/trunk/webrtc/build/common.gypi	2016-03-31 16:40:30.927480196 -0700
+@@ -312,20 +312,6 @@
          'defines': [
            'WEBRTC_ARCH_ARM',
          ],
 -        'conditions': [
--          ['arm_version==7', {
+-          ['arm_version>=7', {
 -            'defines': ['WEBRTC_ARCH_ARM_V7',
 -                        'WEBRTC_BUILD_NEON_LIBS'],
 -            'conditions': [
 -              ['arm_neon==1', {
 -                'defines': ['WEBRTC_ARCH_ARM_NEON',],
--              }, {
+-              }],
+-              ['arm_neon==0 and arm_neon_optional==1', {
 -                'defines': ['WEBRTC_DETECT_ARM_NEON',],
 -              }],
 -            ],

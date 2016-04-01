@@ -1,9 +1,9 @@
-diff -up mozilla-release/gfx/skia/trunk/include/core/SkPreConfig.h.ppc64le mozilla-release/gfx/skia/trunk/include/core/SkPreConfig.h
---- mozilla-release/gfx/skia/trunk/include/core/SkPreConfig.h.ppc64le	2015-02-20 03:01:40.000000000 +0100
-+++ mozilla-release/gfx/skia/trunk/include/core/SkPreConfig.h	2015-03-06 15:52:58.298050379 +0100
+diff -up gfx/skia/skia/include/core/SkPreConfig.h~ gfx/skia/skia/include/core/SkPreConfig.h
+--- gfx/skia/skia/include/core/SkPreConfig.h~	2015-02-20 03:01:40.000000000 +0100
++++ gfx/skia/skia/include/core/SkPreConfig.h	2015-03-06 15:52:58.298050379 +0100
 @@ -90,6 +90,13 @@
  #endif
- 
+
  //////////////////////////////////////////////////////////////////////
 +#if !defined(SK_CPU_BENDIAN) && !defined(SK_CPU_LENDIAN)
 +    #if defined(__BIG_ENDIAN__)
@@ -12,17 +12,17 @@ diff -up mozilla-release/gfx/skia/trunk/include/core/SkPreConfig.h.ppc64le mozil
 +        #define SK_CPU_LENDIAN
 +    #endif
 +#endif
- 
+
  #if !defined(SK_CPU_BENDIAN) && !defined(SK_CPU_LENDIAN)
      #if defined(__sparc) || defined(__sparc__) || \
 diff -up firefox-36.0/mozilla-release/js/src/jsdtoa.cpp.ppc64le firefox-36.0/mozilla-release/js/src/jsdtoa.cpp
---- firefox-36.0/mozilla-release/js/src/jsdtoa.cpp.ppc64le	2015-02-20 03:01:49.000000000 +0100
-+++ firefox-36.0/mozilla-release/js/src/jsdtoa.cpp	2015-03-06 15:54:38.348048226 +0100
+--- js/src/jsdtoa.cpp.ppc64le	2015-02-20 03:01:49.000000000 +0100
++++ js/src/jsdtoa.cpp	2015-03-06 15:54:38.348048226 +0100
 @@ -52,6 +52,7 @@ static inline void dtoa_free(void* p) {
  #define MALLOC dtoa_malloc
  #define FREE dtoa_free
  #include "dtoa.c"
 +#undef CONST
- 
+
  /* Mapping of JSDToStrMode -> js_dtoa mode */
  static const uint8_t dtoaModes[] = {

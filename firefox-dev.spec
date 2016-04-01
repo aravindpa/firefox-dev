@@ -46,19 +46,19 @@
 %endif
 
 # Short and long commit refs for the latest release of Firefox.
-%define revision        2b633069af6c966dc3689f1e726e84993bbec22c
-%define revision_short  2b63306
+%define revision        5c247ef4c02899a3ab3cf4626ae2eaf40868b493
+%define revision_short  5c247ef
 
 # Name of the directory contained inside the Firefox source tarball.
-%global tarballdir      mozilla-aurora-%{revision}
+%global tarballdir      %{_builddir}/%{name}-%{version}/mozilla-aurora-%{revision}
 
 
 Summary:        Developer Edition (Aurora release channel) of the Mozilla Firefox Web browser
 Name:           firefox-dev
 # You can see which is the latest version here:
 # https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-aurora/
-Version:        46.0a2.20160312
-Release:        1.%{?dist}
+Version:        47.0a2.20160323
+Release:        1%{?dist}
 URL:            https://www.mozilla.org/firefox/developer/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 
@@ -204,20 +204,20 @@ cd %{tarballdir}
 # Build patches, can't change backup suffix from default because during build
 # there is a compare of config and js/config directories and .orig suffix is
 # ignored during this compare.
-%patch0 -p1
-#%patch1 -p2 -b .build
+%patch0 -b "\~"
+#%patch1 -p2 -b "\~"
 
 %patch18 -p2 -b .jemalloc-ppc
 %patch19 -p2 -b .s390-inlines
 %patch20 -p1 -b .prbool
-%patch21 -p2 -b .ppc64le
+%patch21 -b "\~"
 %patch24 -p1 -b .debug
 
 %ifarch s390
 %patch25 -p1 -b .rhbz-1219542-s390
 %endif
 
-%patch3  -p2 -b .arm
+%patch3 -b "\~"
 
 # For branding specific patches.
 
