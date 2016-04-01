@@ -1,10 +1,17 @@
 firefox-dev
 ===========
 
-This is a fork of
-[the Fedora packaging repo for mainline Firefox](http://pkgs.fedoraproject.org/cgit/firefox.git/),
+This is a fork of the Fedora packaging repo for
+[mainline Firefox](http://pkgs.fedoraproject.org/cgit/firefox.git/),
 modified to track Mozilla's "Aurora" release channel, otherwise known as
 [Firefox Developer Edition](https://www.mozilla.org/firefox/developer/).
+If you think you've noticed a problem with this build, go ahead and let me know,
+but also remember that this is the pre-beta release. It should still be quite
+usable, but it won't be perfect. So be sure to check with Mozilla support and
+report any bugs you find with them too. Have fun!
+
+[Like the original repo](https://fedoraproject.org/wiki/Licensing:Main#License_of_Fedora_SPEC_Files)
+code specific to this RPM spec repository is published under the MIT license.
 
 
 
@@ -59,30 +66,14 @@ again.
 
 
 
-## Frequently Asked Questions
+## About this repo, and how to contribute
 
-(also known as "questions that have never been asked but the author felt
-needed answering anyway")
+I'll be adding to this section as I figure out *how this repo I've inherited
+works* :/
 
-
-### Aurora refuses to use my preexisting Firefox profile! What do?
-
-This should do the trick:
-
-```
-touch ~/.mozilla/firefox/ignore-dev-edition-profile
-```
-
-
-### Why the `-dev` suffix instead of the usual `-devel`?
-
-I'm far from an expert on these matters, but personally I would expect
-packages with the `-devel` suffix to contain actual library headers and
-whatnot. This package includes no such thing.
-
-
-### What license is this repo under?
-
-As per the [Fedora wiki](https://fedoraproject.org/wiki/Licensing:Main#License_of_Fedora_SPEC_Files),
-the original repo is under the MIT and as such so are my additional
-contributions.
+The spec file has a variable called `%tarballdir`, which describes where
+rpmbuild will unpack the Firefox source code files. It should look like this:
+`~/rpmbuild/BUILD/firefox-dev/mozilla-aurora-XXXXXX...` (with all the `X`s
+replaced with the mercurial commit for the latest update). The spec file changes
+into this directory before applying patches. So for every patch file, the paths
+in the header should be relative to this directory.
