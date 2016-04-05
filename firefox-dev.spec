@@ -91,18 +91,18 @@ Patch25:        rhbz-1219542-s390-build.patch
 
 # Fedora specific patches
 # Unable to install addons from https pages
-Patch204:        rhbz-966424.patch
-Patch215:        firefox-enable-addons.patch
-Patch219:        rhbz-1173156.patch
-Patch220:        rhbz-1014858.patch
-Patch221:        firefox-fedora-ua.patch
+Patch204:       rhbz-966424.patch
+Patch215:       firefox-enable-addons.patch
+Patch219:       rhbz-1173156.patch
+Patch220:       rhbz-1014858.patch
+Patch221:       firefox-fedora-ua.patch
 
 # Upstream patches
 
 # Gtk3 upstream patches
 
 # Fix Skia Neon stuff on AArch64
-Patch500:        aarch64-fix-skia.patch
+Patch500:       aarch64-fix-skia.patch
 
 BuildRequires:  pkgconfig(nspr) >= %{nspr_version}
 BuildRequires:  pkgconfig(nss) >= %{nss_version}
@@ -205,16 +205,16 @@ cd %{tarballdir}
 # there is a compare of config and js/config directories and .orig suffix is
 # ignored during this compare.
 %patch0 -b "\~"
-#%patch1 -p2 -b "\~"
+#%patch1 -b "\~"
 
-%patch18 -p2 -b .jemalloc-ppc
-%patch19 -p2 -b .s390-inlines
-%patch20 -p1 -b .prbool
+%patch18 -b "\~"
+%patch19 -b "\~"
+%patch20 -b "\~"
 %patch21 -b "\~"
-%patch24 -p1 -b .debug
+%patch24 -b "\~"
 
 %ifarch s390
-%patch25 -p1 -b .rhbz-1219542-s390
+%patch25 -b "\~"
 %endif
 
 %patch3 -b "\~"
@@ -222,13 +222,13 @@ cd %{tarballdir}
 # For branding specific patches.
 
 # Fedora patches
-%patch204 -p2 -b .966424
-%patch215 -p1 -b .addons
-%patch219 -p2 -b .rhbz-1173156
-#%patch220 -p1 -b .rhbz-1014858
-%patch221 -p2 -b .fedora-ua
+%patch204 -b "\~"
+#%patch215 -b "\~"
+%patch219 -b "\~"
+#%patch220 -b "\~"
+%patch221 -b "\~"
 
-%patch500 -p1
+#%patch500 -b "\~"
 
 rm -f .mozconfig
 cp %{SOURCE10} .mozconfig

@@ -1,6 +1,6 @@
-diff -up mozilla-release/js/src/configure.in.opt mozilla-release/js/src/configure.in
---- mozilla-release/js/src/configure.in.opt	2015-05-04 02:43:23.000000000 +0200
-+++ mozilla-release/js/src/configure.in	2015-05-07 14:21:07.685405039 +0200
+diff -up js/src/configure.in~ js/src/configure.in
+--- js/src/configure.in~	2015-05-04 02:43:23.000000000 +0200
++++ js/src/configure.in	2015-05-07 14:21:07.685405039 +0200
 @@ -1492,7 +1492,7 @@ case "$host" in
  *-linux*|*-kfreebsd*-gnu|*-gnu*)
      HOST_CFLAGS="$HOST_CFLAGS -DXP_UNIX"
@@ -8,7 +8,7 @@ diff -up mozilla-release/js/src/configure.in.opt mozilla-release/js/src/configur
 -    HOST_OPTIMIZE_FLAGS="${HOST_OPTIMIZE_FLAGS=-O3}"
 +    HOST_OPTIMIZE_FLAGS="${HOST_OPTIMIZE_FLAGS=-O1}"
      ;;
- 
+
  *)
 @@ -1674,8 +1674,8 @@ ia64*-hpux*)
          # while; Intel recommends against using it.

@@ -1,14 +1,14 @@
-diff -up mozilla-release/browser/app/profile/firefox.js.addons mozilla-release/browser/app/profile/firefox.js
---- mozilla-release/browser/app/profile/firefox.js.addons	2015-08-06 12:57:11.459795815 +0200
-+++ mozilla-release/browser/app/profile/firefox.js	2015-08-06 13:01:55.045869605 +0200
+diff -up browser/app/profile/firefox.js~ browser/app/profile/firefox.js
+--- browser/app/profile/firefox.js~	2015-08-06 12:57:11.459795815 +0200
++++ browser/app/profile/firefox.js	2015-08-06 13:01:55.045869605 +0200
 @@ -69,10 +69,11 @@ pref("extensions.hotfix.certs.2.sha1Fing
- 
+
  // Disable add-ons that are not installed by the user in all scopes by default.
  // See the SCOPE constants in AddonManager.jsm for values to use here.
 -pref("extensions.autoDisableScopes", 15);
 +pref("extensions.autoDisableScopes", 0);
 +pref("extensions.showMismatchUI", false);
- 
+
 -// Require signed add-ons by default
 -pref("xpinstall.signatures.required", true);
 +// Don't require signed add-ons by default
@@ -17,13 +17,13 @@ diff -up mozilla-release/browser/app/profile/firefox.js.addons mozilla-release/b
 
  // Dictionary download preference
 
-diff -up mozilla-release/toolkit/mozapps/extensions/internal/XPIProvider.jsm.addons mozilla-release/toolkit/mozapps/extensions/internal/XPIProvider.jsm
---- mozilla-release/toolkit/mozapps/extensions/internal/XPIProvider.jsm.addons	2015-08-04 22:24:47.000000000 +0200
-+++ mozilla-release/toolkit/mozapps/extensions/internal/XPIProvider.jsm	2015-08-06 12:57:11.461795823 +0200
+diff -up toolkit/mozapps/extensions/internal/XPIProvider.jsm~ toolkit/mozapps/extensions/internal/XPIProvider.jsm
+--- toolkit/mozapps/extensions/internal/XPIProvider.jsm~	2015-08-04 22:24:47.000000000 +0200
++++ toolkit/mozapps/extensions/internal/XPIProvider.jsm	2015-08-06 12:57:11.461795823 +0200
 @@ -2293,11 +2293,7 @@ this.XPIProvider = {
- 
+
        AddonManagerPrivate.markProviderSafe(this);
- 
+
 -      if (aAppChanged === undefined) {
 -        // For new profiles we will never need to show the add-on selection UI
 -        Services.prefs.setBoolPref(PREF_SHOWN_SELECTION_UI, true);
@@ -41,5 +41,5 @@ diff -up mozilla-release/toolkit/mozapps/extensions/internal/XPIProvider.jsm.add
 +        // For new profiles we will never need to show the add-on selection UI
 +        Services.prefs.setBoolPref(PREF_SHOWN_SELECTION_UI, true);
        }
- 
+
        if (flushCaches) {

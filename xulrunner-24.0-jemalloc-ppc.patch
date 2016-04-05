@@ -1,6 +1,6 @@
-diff -up xulrunner-24.0/mozilla-release/memory/mozjemalloc/jemalloc.c.jemalloc-ppc xulrunner-24.0/mozilla-release/memory/mozjemalloc/jemalloc.c
---- xulrunner-24.0/mozilla-release/memory/mozjemalloc/jemalloc.c.jemalloc-ppc	2013-09-11 01:15:18.000000000 +0200
-+++ xulrunner-24.0/mozilla-release/memory/mozjemalloc/jemalloc.c	2013-09-13 13:36:34.171680919 +0200
+diff -up memory/mozjemalloc/jemalloc.c~ memory/mozjemalloc/jemalloc.c
+--- memory/mozjemalloc/jemalloc.c~	2013-09-11 01:15:18.000000000 +0200
++++ memory/mozjemalloc/jemalloc.c	2013-09-13 13:36:34.171680919 +0200
 @@ -1104,7 +1104,7 @@ static unsigned		ncpus;
   * controlling the malloc behavior are defined as compile-time constants
   * for best performance and cannot be altered at runtime.
@@ -9,4 +9,3 @@ diff -up xulrunner-24.0/mozilla-release/memory/mozjemalloc/jemalloc.c.jemalloc-p
 +#if !defined(__ia64__) && !defined(__sparc__) && !defined(__mips__) && !(defined(__powerpc__))
  #define MALLOC_STATIC_SIZES 1
  #endif
- 
