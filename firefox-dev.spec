@@ -104,6 +104,11 @@ Patch221:       firefox-fedora-ua.patch
 # Fix Skia Neon stuff on AArch64
 Patch500:       aarch64-fix-skia.patch
 
+# Shebang line in %{unpacked_source}/objdir/config.status is too long. Since it
+# evokes a file deeper in the source directory tree, which is just a symbolic
+# link to Python2, we may as well call python2 more directly.
+Patch501:       replace-long-shebang-line-to-call-python2.patch
+
 BuildRequires:  pkgconfig(nspr) >= %{nspr_version}
 BuildRequires:  pkgconfig(nss) >= %{nss_version}
 BuildRequires:  nss-static >= %{nss_version}
@@ -229,6 +234,7 @@ cd %{tarballdir}
 %patch221 -b "\~"
 
 #%patch500 -b "\~"
+%patch501 -b "\~"
 
 rm -f .mozconfig
 cp %{SOURCE10} .mozconfig

@@ -1,0 +1,12 @@
+diff -up build/autoconf/config.status.m4~ build/autoconf/config.status.m4
+--- build/autoconf/config.status.m4~	2016-04-16 18:22:04.963192403 -0700
++++ build/autoconf/config.status.m4	2016-04-16 18:22:51.819789709 -0700
+@@ -110,7 +110,7 @@ echo creating $CONFIG_STATUS
+ extra_python_path=${COMM_BUILD:+"'mozilla', "}
+
+ cat > $CONFIG_STATUS <<EOF
+-#!${PYTHON}
++#!/usr/bin/env python2
+ # coding=$encoding
+
+ import os
