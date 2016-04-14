@@ -8,7 +8,7 @@ modified to track Mozilla's "Aurora" release channel, otherwise known as
 If you think you've noticed a problem with this build, go ahead and let me know,
 but also remember that this is the pre-beta release. It should still be quite
 usable, but it won't be perfect. So be sure to check with Mozilla support and
-report any bugs you find with them too. Have fun!
+report any bugs you find to them too. Have fun!
 
 [Like the original repo](https://fedoraproject.org/wiki/Licensing:Main#License_of_Fedora_SPEC_Files)
 code specific to this RPM spec repository is published under the MIT license.
@@ -28,14 +28,30 @@ can't be installed on the same system simultaneously.
 ### Copr makes it easy
 
 ...Or, it will, when there is a copr. This package does not yet build without
-errors, though. Keep an out for updates!
+errors, though. Watch this repo for updates!
 
 
 ### Building from spec
 
-First, a little setup: Obviously, you need a copy of this repository.
+[The Fedora Wiki](https://fedoraproject.org/wiki/How_to_create_an_RPM_package#Preparing_your_system)
+has a detailed guide on the basic setup required, which you should follow, with
+one possible exception: The Wiki suggests adding a new user account, and logging
+into that account whenever you build your packages. I'd rather just do it from a
+virtual machine with a clean installation of Fedora, as it's easier to keep
+track of any dependencies or configurations you might need to add on top of the
+base OS. But it's up to you. Adding whichever user account you choose to the
+`mock` group, as they recommend, may still be helpful, though.
 
 ``` bash
+sudo usermod -a -G mock YOUR_USERNAME
+```
+
+Once you have the RPM build tools installed, your user account set up, and the
+`rpmbuild` directory created, you obviously will also need a copy of this
+repository. I like to put it in `~/rpmbuild/SPECS/firefox-dev`
+
+``` bash
+cd ~/rpmbuild/SPECS
 git clone https://github.com/terrycloth/firefox-dev.git
 cd firefox-dev
 ```
@@ -47,6 +63,13 @@ always run this script to make sure you have the very latest source code.
 
 ``` bash
 ./GET_SOURCE.bash
+```
+
+Firefox Developer Edition has dependencies which you also need to install before
+building.
+
+``` bash
+sudo dnf install alsa-lib-devel autoconf213 bzip2-devel freetype-devel gcc-c++ GConf2-devel GConf2-devel gstreamer1-devel gstreamer1-plugins-base-devel gtk2-devel gtk3-devel hunspell-devel ImageMagick krb5-devel libcurl-devel libffi-devel libicu-devel libIDL-devel libjpeg-devel libnotify-devel libpng-devel libvpx-devel libXrender-devel libXt-devel mesa-libGL-devel nspr-devel nss-devel nss-static pango-devel pulseaudio-libs-devel sqlite-devel startup-notification-devel yasm zlib-devel
 ```
 
 And finally you can build the actual package.
