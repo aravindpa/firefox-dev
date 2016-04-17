@@ -78,6 +78,11 @@ And finally you can build the actual package.
 rpmbuild --define "%_sourcedir $(pwd)" -ba firefox-dev.spec
 ```
 
+You need that `--define` flag because rpmbuild normally searches for both the
+source tarball and the patches in `~/rpmbuild/SOURCES/`, but we keep the patch
+files all together in this repository, and it's easier to just download the
+tarball here too.
+
 Getting updates for our packaging repo is easy:
 
 ``` bash
