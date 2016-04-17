@@ -47,7 +47,6 @@
 
 # Short and long commit refs for the latest release of Firefox.
 %define revision        5c247ef4c02899a3ab3cf4626ae2eaf40868b493
-%define revision_short  5c247ef
 
 # Name of the directory contained inside the Firefox source tarball.
 %global tarball_directory  %{_builddir}/%{name}-%{version}/mozilla-aurora-%{revision}
