@@ -200,7 +200,11 @@ This package contains results of tests executed during build.
 /test_results
 %endif
 
-#---------------------------------------------------------------------
+
+
+
+
+# ========================= Preparation =========================
 
 %prep
 %setup -q -c
@@ -317,7 +321,11 @@ echo "ac_add_options --enable-tests" >> .mozconfig
 
 echo "ac_add_options --with-system-jpeg" >> .mozconfig
 
-#---------------------------------------------------------------------
+
+
+
+
+# ========================= Compile! =========================
 
 %build
 # Do not proceed with build if the sqlite require would be broken:
@@ -420,7 +428,11 @@ rm -f  objdir/dist/bin/certutil
 rm -f  objdir/dist/bin/pk12util
 %endif
 
-#---------------------------------------------------------------------
+
+
+
+
+# ========================= Install =========================
 
 %install
 cd %{tarballdir}
@@ -590,7 +602,12 @@ cp %{SOURCE12} ${RPM_BUILD_ROOT}%{mozappdir}/browser/defaults/preferences
 rm -f ${RPM_BUILD_ROOT}%{mozappdirdev}/sdk/lib/libmozjs.so
 rm -f ${RPM_BUILD_ROOT}%{mozappdirdev}/sdk/lib/libmozalloc.so
 rm -f ${RPM_BUILD_ROOT}%{mozappdirdev}/sdk/lib/libxul.so
-#---------------------------------------------------------------------
+
+
+
+
+
+# ========================= Preflight checks =========================
 
 # Moves defaults/preferences to browser/defaults/preferences
 %pretrans -p <lua>
@@ -705,6 +722,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 
+
+# ========================= Change log =========================
 
 %changelog
 * Thu Mar 10 2016 Andrew Toskin <andrew@tosk.in> - 46.0a2.20160312
