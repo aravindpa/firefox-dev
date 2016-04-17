@@ -50,7 +50,10 @@
 %define revision_short  5c247ef
 
 # Name of the directory contained inside the Firefox source tarball.
-%global tarballdir      %{_builddir}/%{name}-%{version}/mozilla-aurora-%{revision}
+%global tarball_directory  %{_builddir}/%{name}-%{version}/mozilla-aurora-%{revision}
+# A shorter, less cumbersome directory name for the unpacked source code.
+# tarball_directory moves here.
+%global unpacked_source    %{_builddir}/%{name}-%{version}/source
 
 
 Summary:        Developer Edition (Aurora release channel) of the Mozilla Firefox Web browser
@@ -97,17 +100,8 @@ Patch219:       rhbz-1173156.patch
 Patch220:       rhbz-1014858.patch
 Patch221:       firefox-fedora-ua.patch
 
-# Upstream patches
-
-# Gtk3 upstream patches
-
 # Fix Skia Neon stuff on AArch64
 Patch500:       aarch64-fix-skia.patch
-
-# Shebang line in %{unpacked_source}/objdir/config.status is too long. Since it
-# evokes a file deeper in the source directory tree, which is just a symbolic
-# link to Python2, we may as well call python2 more directly.
-Patch501:       replace-long-shebang-line-to-call-python2.patch
 
 BuildRequires:  pkgconfig(nspr) >= %{nspr_version}
 BuildRequires:  pkgconfig(nss) >= %{nss_version}
@@ -208,7 +202,10 @@ This package contains results of tests executed during build.
 
 %prep
 %setup -q -c
-cd %{tarballdir}
+
+# Rename unpacked source tarball directory, to a shorter, less unwieldy name.
+mv %{tarball_directory} %{unpacked_source}
+cd %{unpacked_source}
 
 # Build patches, can't change backup suffix from default because during build
 # there is a compare of config and js/config directories and .orig suffix is
@@ -238,7 +235,6 @@ cd %{tarballdir}
 %patch221 -b "\~"
 
 #%patch500 -b "\~"
-%patch501 -b "\~"
 
 rm -f .mozconfig
 cp %{SOURCE10} .mozconfig
@@ -337,7 +333,7 @@ case "%{sqlite_build_version}" in
   *) exit 1 ;;
 esac
 
-cd %{tarballdir}
+cd %{unpacked_source}
 
 # Update the various config.guess to upstream release for aarch64 support
 find ./ -name config.guess -exec cp /usr/lib/rpm/config.guess {} ';'
@@ -435,7 +431,7 @@ rm -f  objdir/dist/bin/pk12util
 # ========================= Install =========================
 
 %install
-cd %{tarballdir}
+cd %{unpacked_source}
 
 # set up our default bookmarks
 cp -p %{default_bookmarks_file} objdir/dist/bin/browser/defaults/profile/bookmarks.html
