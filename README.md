@@ -52,7 +52,7 @@ repository. I like to put it in `~/rpmbuild/SPECS/firefox-dev`
 
 ``` bash
 cd ~/rpmbuild/SPECS
-git clone https://github.com/terrycloth/firefox-dev.git
+git clone https://gitlab.com/terrycloth/firefox-dev.git
 cd firefox-dev
 ```
 
