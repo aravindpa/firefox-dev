@@ -602,7 +602,7 @@ rm -f ${RPM_BUILD_ROOT}%{mozappdirdev}/sdk/lib/libxul.so
 
 
 
-# ========================= Preflight checks =========================
+# ========================= Scriptlets, before and after (un)installing =========================
 
 # Moves defaults/preferences to browser/defaults/preferences
 %pretrans -p <lua>
@@ -624,8 +624,10 @@ if (posix.stat("%{mozappdir}/browser/defaults/preferences", "type") == "link") t
 end
 
 
-%preun
+%pre
 
+
+%preun
 # is it a final removal?
 if [ $1 -eq 0 ]; then
   rm -rf %{mozappdir}/components
@@ -634,9 +636,15 @@ if [ $1 -eq 0 ]; then
   rm -rf %{langpackdir}
 fi
 
+
+%posttrans
+gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+
+
 %post
 update-desktop-database &> /dev/null || :
 touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
+
 
 %postun
 update-desktop-database &> /dev/null || :
@@ -645,8 +653,11 @@ if [ $1 -eq 0 ] ; then
     gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 fi
 
-%posttrans
-gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+
+
+
+
+# ========================= Files owned by this package =========================
 
 %files -f %{name}.lang
 %defattr(-,root,root,-)
