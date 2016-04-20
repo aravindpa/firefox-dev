@@ -6,10 +6,12 @@ set -eu
 # Find the version number and commit hash of the latest Firefox Aurora release.
 echo "*** Looking up the latest release..."
 curl "https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-aurora/" -o index.html
-export VERSION=$(grep -E 'firefox-[[:digit:]]+\.[[:alnum:]]+' -m 1 -o index.html | grep -E -m 1 -o '[[:digit:]]+\.[[:alnum:]]+')
-export VERSION_DATE=$VERSION.$(date +%Y%m%d)
-export LATEST_COMMIT=$(basename $(curl "https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-aurora/firefox-$VERSION.en-US.linux-x86_64.txt" | tail -n1))
-rm index.html
+export VERSION_NUMBER=$(grep -Eo 'firefox-[[:digit:]]+\.[[:alnum:]]+' -m 1 index.html | grep -Eo '[[:digit:]]+\.[[:alnum:]]+' -m 1)
+curl "https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-aurora/firefox-$VERSION_NUMBER.en-US.linux-x86_64.txt" -o firefox-latest-info.txt
+export DATE=$(grep -Eo '[[:digit:]]{8}' -m 1 firefox-latest-info.txt)
+export VERSION_DATE=$VERSION_NUMBER.$DATE
+export LATEST_COMMIT=$(basename $(tail -n1 firefox-latest-info.txt))
+rm index.html firefox-latest-info.txt
 export DOWNLOAD_SOURCE_URL="https://hg.mozilla.org/releases/mozilla-aurora/archive/$LATEST_COMMIT.tar.bz2"
 
 # Update the spec file to use latest Firefox release.
@@ -27,7 +29,7 @@ cd firefox-langpacks
 curl "https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-aurora-l10n/linux-x86_64/xpi/" -o index.html
 echo
 echo "*** Downloading langpacks for Firefox..."
-grep -Eo "\".*?firefox-$VERSION.*?\.xpi\"" index.html | sed -r 's/"(.*)"/https:\/\/archive.mozilla.org\1/g' | xargs wget
+grep -Eo "\".*?firefox-$VERSION_NUMBER.*?\.xpi\"" index.html | sed -r 's/"(.*)"/https:\/\/archive.mozilla.org\1/g' | xargs wget
 rm index.html
 echo
 echo "*** Repacking language files..."
@@ -35,7 +37,7 @@ for f in *
 	do mv $f $(echo $f | awk 'match($0, /firefox-.*?\.(.*?)\.langpack.xpi/, a){print a[1] ".xpi"}')
 done
 cd ..
-tar -cvf - firefox-langpacks | xz -zc - > firefox-langpacks-$VERSION.tar.xz
+tar -cvf - firefox-langpacks | xz -zc - > firefox-langpacks-$VERSION_NUMBER.tar.xz
 rm -rf firefox-langpacks
 
 echo
