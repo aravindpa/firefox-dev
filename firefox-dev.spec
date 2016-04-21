@@ -78,9 +78,8 @@ Source23:       firefox.1
 Source24:       mozilla-api-key
 Source25:       firefox-symbolic.svg
 
-#Build patches
+# Build patches.
 Patch0:         firefox-install-dir.patch
-#Patch1:         firefox-build.patch
 Patch3:         mozilla-build-arm.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=814879#c3
 Patch18:        xulrunner-24.0-jemalloc-ppc.patch
@@ -91,15 +90,31 @@ Patch21:        firefox-ppc64le.patch
 Patch24:        firefox-debug.patch
 Patch25:        rhbz-1219542-s390-build.patch
 
-# Fedora specific patches
+# Fedora-specific patches.
 # Unable to install addons from https pages
 Patch204:       rhbz-966424.patch
 Patch215:       firefox-enable-addons.patch
 Patch219:       rhbz-1173156.patch
-Patch220:       rhbz-1014858.patch
 Patch221:       firefox-fedora-ua.patch
+Patch222:       firefox-gtk3-20.patch
+Patch223:       rhbz-1291190-appchooser-crash.patch
+Patch224:       mozilla-1170092.patch
+
+# Upstream patches.
+Patch301:       mozilla-1205199.patch
+Patch302:       mozilla-1228540.patch
+Patch303:       mozilla-1228540-1.patch
+Patch304:       mozilla-1253216.patch
+Patch305:       mozilla-1245076.patch
+Patch306:       mozilla-1245076-1.patch
+
+# Debian patches.
+Patch400:       Allow-unsigned-addons-in-usr-lib-share-mozilla-exten.patch
+Patch401:       mozilla-440908.patch
 
 # Fix Skia Neon stuff on AArch64
+# Update https://bugzilla.mozilla.org/show_bug.cgi?id=1142056
+# when removed
 Patch500:       aarch64-fix-skia.patch
 
 BuildRequires:  pkgconfig(nspr) >= %{nspr_version}
@@ -176,11 +191,13 @@ compliance, performance, and portability.
 %global crashreporter_pkg_name mozilla-crashreporter-%{name}-debuginfo
 %package -n %{crashreporter_pkg_name}
 Summary: Debugging symbols used by Mozilla's crash reporter servers
+Group: Development/Debug
 %description -n %{crashreporter_pkg_name}
 This package provides debug information for Firefox, for use by
 Mozilla's crash reporter servers.  If you are trying to locally
 debug %{name}, you want to install %{name}-debuginfo instead.
 %files -n %{crashreporter_pkg_name} -f debugcrashreporter.list
+%defattr(-,root,root)
 %endif
 
 %if %{run_tests}
@@ -206,12 +223,9 @@ This package contains results of tests executed during build.
 mv %{tarball_directory} %{unpacked_source}
 cd %{unpacked_source}
 
-# Build patches, can't change backup suffix from default because during build
-# there is a compare of config and js/config directories and .orig suffix is
-# ignored during this compare.
+# Build patches.
 %patch0 -b "\~"
 #%patch1 -b "\~"
-
 %patch18 -b "\~"
 %patch19 -b "\~"
 %patch20 -b "\~"
@@ -224,15 +238,29 @@ cd %{unpacked_source}
 
 %patch3 -b "\~"
 
-# For branding specific patches.
-
-# Fedora patches
+# Fedora-specific patches.
 %patch204 -b "\~"
 #%patch215 -b "\~"
 %patch219 -b "\~"
-#%patch220 -b "\~"
-%patch221 -b "\~"
+## THIS WASN'T COMMENTED WHEN I TRIED BUILDING YESTERDAY:
+#%patch221 -b "\~"
+#%patch222 -b "\~"
+%patch223 -b "\~"
+#%patch224 -b "\~"
 
+# Upstream patches.
+#%patch301 -b "\~"
+#%patch302 -b "\~"
+#%patch303 -b "\~"
+%patch304 -b "\~"
+%patch305 -b "\~"
+%patch306 -b "\~"
+
+# Debian extension patches.
+#%patch400 -b "\~"
+#%patch401 -b "\~"
+
+# Fix Skia Neon stuff on AArch64
 #%patch500 -b "\~"
 
 rm -f .mozconfig
@@ -351,7 +379,8 @@ MOZ_OPT_FLAGS=$(echo "$RPM_OPT_FLAGS" | sed -e 's/-Wall//')
 # Explicitly force the hardening flags for Firefox so it passes the checksec test;
 # See also https://fedoraproject.org/wiki/Changes/Harden_All_Packages
 MOZ_OPT_FLAGS="$MOZ_OPT_FLAGS -Wformat-security -Wformat -Werror=format-security"
-
+# Disable null pointer optimization in gcc6 (rhbz#1328045).
+MOZ_OPT_FLAGS="$MOZ_OPT_FLAGS -fno-delete-null-pointer-checks"
 # Use hardened build.
 MOZ_OPT_FLAGS="$MOZ_OPT_FLAGS -fPIC -Wl,-z,relro -Wl,-z,now"
 
@@ -565,6 +594,9 @@ create_default_langpack "zh-TW" "zh"
 
 mkdir -p $RPM_BUILD_ROOT/%{mozappdir}/browser/defaults/preferences
 
+# System config dir
+mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/%{name}/pref
+
 # System extensions
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/mozilla/extensions/%{firefox_app_id}
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/mozilla/extensions/%{firefox_app_id}
@@ -665,6 +697,7 @@ fi
 %{mozappdir}/firefox
 %{mozappdir}/firefox-bin
 %doc %{_mandir}/man1/*
+%dir %{_sysconfdir}/%{name}/*
 %dir %{_datadir}/mozilla/extensions/*
 %dir %{_libdir}/mozilla/extensions/*
 %{_datadir}/appdata/*.appdata.xml
@@ -677,6 +710,7 @@ fi
 %{mozappdir}/browser/components/*.so
 %{mozappdir}/browser/components/components.manifest
 %{mozappdir}/browser/defaults/preferences/firefox-redhat-default-prefs.js
+%{mozappdir}/browser/features/loop@mozilla.org.xpi
 %attr(644, root, root) %{mozappdir}/browser/blocklist.xml
 %dir %{mozappdir}/browser/extensions
 %{mozappdir}/browser/extensions/*
@@ -690,11 +724,11 @@ fi
 %{mozappdir}/run-mozilla.sh
 %{mozappdir}/application.ini
 %exclude %{mozappdir}/removed-files
-%{_datadir}/icons/hicolor/128x128/apps/firefox.png
 %{_datadir}/icons/hicolor/16x16/apps/firefox.png
-%{_datadir}/icons/hicolor/256x256/apps/firefox.png
 %{_datadir}/icons/hicolor/32x32/apps/firefox.png
 %{_datadir}/icons/hicolor/48x48/apps/firefox.png
+%{_datadir}/icons/hicolor/128x128/apps/firefox.png
+%{_datadir}/icons/hicolor/256x256/apps/firefox.png
 %{_datadir}/icons/hicolor/symbolic/apps/firefox-symbolic.svg
 %{mozappdir}/webapprt-stub
 %dir %{mozappdir}/webapprt
@@ -711,6 +745,7 @@ fi
 %{mozappdir}/*.so
 
 %{mozappdir}/gtk2/*.so
+%{mozappdir}/gtk3/*.so
 
 %{mozappdir}/chrome.manifest
 %{mozappdir}/components

@@ -1,5 +1,5 @@
-diff -up media/webrtc/trunk/webrtc/build/common.gypi.arm media/webrtc/trunk/webrtc/build/common.gypi
---- media/webrtc/trunk/webrtc/build/common.gypi.arm	2016-03-31 16:40:18.057797942 -0700
+diff -up media/webrtc/trunk/webrtc/build/common.gypi~ media/webrtc/trunk/webrtc/build/common.gypi
+--- media/webrtc/trunk/webrtc/build/common.gypi~	2016-03-31 16:40:18.057797942 -0700
 +++ media/webrtc/trunk/webrtc/build/common.gypi	2016-03-31 16:40:30.927480196 -0700
 @@ -312,20 +312,6 @@
          'defines': [

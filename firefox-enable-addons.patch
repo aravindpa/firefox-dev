@@ -17,6 +17,7 @@ diff -up browser/app/profile/firefox.js~ browser/app/profile/firefox.js
 
  // Dictionary download preference
 
+
 diff -up toolkit/mozapps/extensions/internal/XPIProvider.jsm~ toolkit/mozapps/extensions/internal/XPIProvider.jsm
 --- toolkit/mozapps/extensions/internal/XPIProvider.jsm~	2015-08-04 22:24:47.000000000 +0200
 +++ toolkit/mozapps/extensions/internal/XPIProvider.jsm	2015-08-06 12:57:11.461795823 +0200
