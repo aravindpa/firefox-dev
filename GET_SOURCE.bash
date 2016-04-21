@@ -14,6 +14,10 @@ export LATEST_COMMIT=$(basename $(tail -n1 firefox-latest-info.txt))
 rm index.html firefox-latest-info.txt
 export DOWNLOAD_SOURCE_URL="https://hg.mozilla.org/releases/mozilla-aurora/archive/$LATEST_COMMIT.tar.bz2"
 
+echo
+echo "Latest commit: $LATEST_COMMIT"
+echo "Version:       $VERSION_DATE"
+
 # Update the spec file to use latest Firefox release.
 sed -i -r "s/^(Version:[[:space:]]+)[[:digit:]]+\.[[:alnum:]]+\.[[:digit:]]+/\1$VERSION_DATE/" firefox-dev.spec
 sed -i -r "s/^(%define revision[[:space:]]+)[[:alnum:]]+/\1$LATEST_COMMIT/" firefox-dev.spec
