@@ -41,7 +41,7 @@ for f in *
 	do mv $f $(echo $f | awk 'match($0, /firefox-.*?\.(.*?)\.langpack.xpi/, a){print a[1] ".xpi"}')
 done
 cd ..
-tar -cvf - firefox-langpacks | xz -zc - > firefox-langpacks-$VERSION_NUMBER.tar.xz
+tar -cvf - firefox-langpacks | xz -zc - > firefox-langpacks-$VERSION_DATE.tar.xz
 rm -rf firefox-langpacks
 
 echo
