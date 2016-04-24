@@ -45,11 +45,13 @@
 	%endif
 %endif
 
-# Short and long commit refs for the latest release of Firefox.
-%define revision        5c247ef4c02899a3ab3cf4626ae2eaf40868b493
+# Commit ref for the latest release of Firefox Developer Edition.
+%define latest_commit  8210de2a2b4fdb1701d3dadf65184bda51d6fbe7
+# Short version of the version number (without the date of the latest commit).
+%define version_short  47.0a2
 
 # Name of the directory contained inside the Firefox source tarball.
-%global tarball_directory  %{_builddir}/%{name}-%{version}/mozilla-aurora-%{revision}
+%global tarball_directory  %{_builddir}/%{name}-%{version}/mozilla-aurora-%{latest_commit}
 # A shorter, less cumbersome directory name for the unpacked source code.
 # tarball_directory moves here.
 %global unpacked_source    %{_builddir}/%{name}-%{version}/source
@@ -59,12 +61,12 @@ Summary:        Developer Edition (Aurora release channel) of the Mozilla Firefo
 Name:           firefox-dev
 # You can see which is the latest version here:
 # https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-aurora/
-Version:        47.0a2.20160323
+Version:        47.0a2.20160420
 Release:        1%{?dist}
 URL:            https://www.mozilla.org/firefox/developer/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
 
-Source0:        https://hg.mozilla.org/releases/mozilla-aurora/archive/%{revision}.tar.bz2
+Source0:        https://hg.mozilla.org/releases/mozilla-aurora/archive/%{latest_commit}.tar.bz2
 
 %if %{build_langpacks}
 Source1:        firefox-langpacks-%{version}.tar.xz
@@ -185,7 +187,7 @@ compliance, performance, and portability.
 %global moz_debug_prefix %{_prefix}/lib/debug
 %global moz_debug_dir %{moz_debug_prefix}%{mozappdir}
 %global uname_m %(uname -m)
-%global symbols_file_name firefox-%{version}.en-US.%{_os}-%{uname_m}.crashreporter-symbols.zip
+%global symbols_file_name firefox-%{version_short}.en-US.%{_os}-%{uname_m}.crashreporter-symbols.zip
 %global symbols_file_path %{moz_debug_dir}/%{symbols_file_name}
 %global _find_debuginfo_opts -p %{symbols_file_path} -o debugcrashreporter.list
 %global crashreporter_pkg_name mozilla-crashreporter-%{name}-debuginfo
@@ -477,10 +479,10 @@ desktop-file-install --dir $RPM_BUILD_ROOT%{_datadir}/applications %{SOURCE20}
 
 # set up the firefox start script
 rm -rf $RPM_BUILD_ROOT%{_bindir}/firefox
-cat %{SOURCE21} > $RPM_BUILD_ROOT%{_bindir}/firefox
-chmod 755 $RPM_BUILD_ROOT%{_bindir}/firefox
+cat %{SOURCE21} > $RPM_BUILD_ROOT%{_bindir}/%{name}
+chmod 755 $RPM_BUILD_ROOT%{_bindir}/%{name}
 
-install -p -D -m 644 %{SOURCE23} $RPM_BUILD_ROOT%{_mandir}/man1/firefox.1
+install -p -D -m 644 %{SOURCE23} $RPM_BUILD_ROOT%{_mandir}/man1/%{name}.1
 
 rm -f $RPM_BUILD_ROOT/%{mozappdir}/firefox-config
 rm -f $RPM_BUILD_ROOT/%{mozappdir}/update-settings.ini
@@ -518,7 +520,7 @@ BugReportURL: https://bugzilla.mozilla.org/show_bug.cgi?id=1071061
 SentUpstream: 2014-09-22
 -->
 <application>
-  <id type="desktop">firefox.desktop</id>
+  <id type="desktop">%{name}.desktop</id>
   <metadata_license>CC0-1.0</metadata_license>
   <description>
     <p>
@@ -610,7 +612,11 @@ ln -s %{_datadir}/myspell ${RPM_BUILD_ROOT}%{mozappdir}/dictionaries
 
 # Enable crash reporter for Firefox application
 %if %{enable_mozilla_crashreporter}
-sed -i -e "s/\[Crash Reporter\]/[Crash Reporter]\nEnabled=1/" $RPM_BUILD_ROOT/%{mozappdir}/application.ini
+# The file being edited here seems to be in the wrong place, *and* already has
+# the "[Crash Reporter]" enabled. This spec expects files to wind up in
+# ~/rpmbuild/BUILDROOT/firefox-dev-47.0a2.20160422-1.fc24.x86_64/usr/lib64/firefox-dev/
+# but for some reason a lot of them are winding up in ...firefox/ instead.
+#sed -i -e "s/\[Crash Reporter\]/[Crash Reporter]\nEnabled=1/" $RPM_BUILD_ROOT/%{mozappdir}/application.ini
 # Add debuginfo for crash-stats.mozilla.com
 mkdir -p $RPM_BUILD_ROOT/%{moz_debug_dir}
 cp objdir/dist/%{symbols_file_name} $RPM_BUILD_ROOT/%{moz_debug_dir}
