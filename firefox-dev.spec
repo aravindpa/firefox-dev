@@ -175,8 +175,6 @@ Requires:       system-bookmarks
 BuildRequires:  xorg-x11-server-Xvfb
 %endif
 
-Obsoletes:      firefox <= %{version}
-Obsoletes:      mozilla <= 37:1.7.13
 Provides:       webclient
 
 %description
