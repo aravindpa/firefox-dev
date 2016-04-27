@@ -17,13 +17,13 @@
 # Copyright (C) 1998 Netscape Communications Corporation. All
 # Rights Reserved.
 #
-# Contributor(s): 
+# Contributor(s):
 #
 
-## 
+##
 ## Usage:
 ##
-## $ firefox
+## $ firefox-dev
 ##
 ## This script is meant to run a mozilla program from the mozilla
 ## rpm installation.
@@ -31,7 +31,13 @@
 ## The script will setup all the environment voodoo needed to make
 ## mozilla work.
 
-cmdname=`basename $0`
+# The proper name of the package, for this version of Firefox, Developer
+# Edition. This is also the name of this executable script, called from the
+# usual path, /usr/bin/.
+export PACKAGE_NAME=firefox-dev
+# The filename of the actual executable binary is still just "firefox", but it
+# lives in the firefox-dev libs directory.
+export MOZ_FIREFOX_FILE="firefox"
 
 ##
 ## Variables
@@ -48,30 +54,28 @@ case $MOZ_ARCH in
 		;;
 esac
 
-MOZ_FIREFOX_FILE="firefox"
-
-if [ ! -r $MOZ_LIB_DIR/firefox/$MOZ_FIREFOX_FILE ]; then
-    if [ ! -r $SECONDARY_LIB_DIR/firefox/$MOZ_FIREFOX_FILE ]; then
-	echo "Error: $MOZ_LIB_DIR/firefox/$MOZ_FIREFOX_FILE not found"
-	if [ -d $SECONDARY_LIB_DIR ]; then
-	    echo "       $SECONDARY_LIB_DIR/firefox/$MOZ_FIREFOX_FILE not found"
+if [ ! -r $MOZ_LIB_DIR/$PACKAGE_NAME/$MOZ_FIREFOX_FILE ]; then
+	if [ ! -r $SECONDARY_LIB_DIR/$PACKAGE_NAME/$MOZ_FIREFOX_FILE ]; then
+		echo "Error: $MOZ_LIB_DIR/$PACKAGE_NAME/$MOZ_FIREFOX_FILE not found"
+		if [ -d $SECONDARY_LIB_DIR ]; then
+			echo "       $SECONDARY_LIB_DIR/$PACKAGE_NAME/$MOZ_FIREFOX_FILE not found"
+		fi
+		exit 1
 	fi
-	exit 1
-    fi
-    MOZ_LIB_DIR="$SECONDARY_LIB_DIR"
+	MOZ_LIB_DIR="$SECONDARY_LIB_DIR"
 fi
-MOZ_DIST_BIN="$MOZ_LIB_DIR/firefox"
+MOZ_DIST_BIN="$MOZ_LIB_DIR/$PACKAGE_NAME"
 MOZ_LANGPACKS_DIR="$MOZ_DIST_BIN/langpacks"
 MOZ_EXTENSIONS_PROFILE_DIR="$HOME/.mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
 MOZ_PROGRAM="$MOZ_DIST_BIN/$MOZ_FIREFOX_FILE"
 MOZ_LAUNCHER="$MOZ_DIST_BIN/run-mozilla.sh"
- 
+
 ##
 ## Set MOZ_GRE_CONF
 ##
 MOZ_GRE_CONF=/etc/gre.d/gre.conf
 if [ "$MOZ_LIB_DIR" == "/usr/lib64" ]; then
-  MOZ_GRE_CONF=/etc/gre.d/gre64.conf
+	MOZ_GRE_CONF=/etc/gre.d/gre64.conf
 fi
 export MOZ_GRE_CONF
 
@@ -98,7 +102,7 @@ export MOZ_PLUGIN_PATH
 ##
 ## Set MOZ_APP_LAUNCHER for gnome-session
 ##
-export MOZ_APP_LAUNCHER="/usr/bin/firefox"
+export MOZ_APP_LAUNCHER="/usr/bin/$PACKAGE_NAME"
 
 ##
 ## Set FONTCONFIG_PATH for Xft/fontconfig
@@ -107,9 +111,9 @@ FONTCONFIG_PATH="/etc/fonts:${MOZILLA_FIVE_HOME}/res/Xft"
 export FONTCONFIG_PATH
 
 ##
-## In order to better support certain scripts (such as Indic and some CJK 
-## scripts), Fedora builds its Firefox, with permission from the Mozilla 
-## Corporation, with the Pango system as its text renderer.  This change 
+## In order to better support certain scripts (such as Indic and some CJK
+## scripts), Fedora builds its Firefox, with permission from the Mozilla
+## Corporation, with the Pango system as its text renderer.  This change
 ## may negatively impact performance on some pages.  To disable the use of
 ## Pango, set MOZ_DISABLE_PANGO=1 in your environment before launching
 ## Firefox.
@@ -158,12 +162,12 @@ MOZILLA_DOWN=0
 if ! [ $MOZ_DISABLE_LANGPACKS ] || [ $MOZ_DISABLE_LANGPACKS -eq 0 ]; then
     if [ -x $MOZ_DIST_BIN/$MOZ_FIREFOX_FILE ]; then
         # Is firefox running?
-        /usr/bin/pidof firefox > /dev/null 2>&1
+        /usr/bin/pidof $PACKAGE_NAME > /dev/null 2>&1
         MOZILLA_DOWN=$?
     fi
 fi
 
-# Modify language pack configuration only when firefox is not running 
+# Modify language pack configuration only when firefox is not running
 # and language packs are not disabled
 if [ $MOZILLA_DOWN -ne 0 ]; then
 
@@ -190,7 +194,7 @@ if [ $MOZILLA_DOWN -ne 0 ]; then
         local langpack=langpack-${language}@firefox.mozilla.org.xpi
         if [ -f $MOZ_LANGPACKS_DIR/$langpack ]; then
             rm -rf $MOZ_EXTENSIONS_PROFILE_DIR/$langpack
-            # If the target file is a symlink (the fallback langpack), 
+            # If the target file is a symlink (the fallback langpack),
             # install the original file instead of the fallback one
             if [ -h $MOZ_LANGPACKS_DIR/$langpack ]; then
                 langpack=`readlink $MOZ_LANGPACKS_DIR/$langpack`
