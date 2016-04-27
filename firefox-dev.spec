@@ -631,16 +631,32 @@ cp test_results/* $RPM_BUILD_ROOT/test_results
 # Default
 cp %{SOURCE12} ${RPM_BUILD_ROOT}%{mozappdir}/browser/defaults/preferences
 
-# Remove copied libraries to speed up build
-rm -f ${RPM_BUILD_ROOT}%{mozappdirdev}/sdk/lib/libmozjs.so
-rm -f ${RPM_BUILD_ROOT}%{mozappdirdev}/sdk/lib/libmozalloc.so
-rm -f ${RPM_BUILD_ROOT}%{mozappdirdev}/sdk/lib/libxul.so
+
+# === Move libraries to where they belong, under firefox-dev, not plain firefox! ===
+# firefox-dev creates a symlink from `dictionaries` to system hunspell library,
+# so we don't need this copy.
+rm -r %{buildroot}/%{_libdir}/firefox/dictionaries
+# `browser` directories conflict, so let's make a backup.
+mv %{buildroot}/%{_libdir}/%{name}/browser \
+	%{buildroot}/%{_libdir}/%{name}/browser.dev~
+# Move everything from firefox to firefox-dev.
+mv -f %{buildroot}/%{_libdir}/firefox/* \
+	%{buildroot}/%{_libdir}/%{name}
+# Merge backup of `browser` back in.
+mv -f %{buildroot}/%{_libdir}/%{name}/browser.dev~/* \
+	%{buildroot}/%{_libdir}/%{name}/browser/
+# Rename directories for the devel package.
+mv %{buildroot}/%{_libdir}/firefox-devel-%{version_short} \
+	%{buildroot}/%{mozappdirdev}
+# Clean up directories we don't need anymore.
+rmdir %{buildroot}/%{_libdir}/firefox
+rmdir %{buildroot}/%{_libdir}/%{name}/browser.dev~
 
 
 
 
 
-# ========================= Scriptlets, before and after (un)installing =========================
+# ========================= Pre/post-transaction Scriptlets =========================
 
 # Moves defaults/preferences to browser/defaults/preferences
 %pretrans -p <lua>
@@ -699,7 +715,7 @@ fi
 
 %files -f %{name}.lang
 %defattr(-,root,root,-)
-%{_bindir}/firefox
+%{_bindir}/%{name}
 %{mozappdir}/firefox
 %{mozappdir}/firefox-bin
 %doc %{_mandir}/man1/*
@@ -712,11 +728,9 @@ fi
 %doc %{mozappdir}/LICENSE
 %{mozappdir}/browser/chrome
 %{mozappdir}/browser/chrome.manifest
-%dir %{mozappdir}/browser/components
-%{mozappdir}/browser/components/*.so
-%{mozappdir}/browser/components/components.manifest
+%{mozappdir}/browser/components
 %{mozappdir}/browser/defaults/preferences/firefox-redhat-default-prefs.js
-%{mozappdir}/browser/features/loop@mozilla.org.xpi
+%{mozappdir}/browser/features
 %attr(644, root, root) %{mozappdir}/browser/blocklist.xml
 %dir %{mozappdir}/browser/extensions
 %{mozappdir}/browser/extensions/*
@@ -749,12 +763,7 @@ fi
 %endif
 
 %{mozappdir}/*.so
-
 %{mozappdir}/gtk2/*.so
-%{mozappdir}/gtk3/*.so
-
-%{mozappdir}/chrome.manifest
-%{mozappdir}/components
 %{mozappdir}/defaults/pref/channel-prefs.js
 %{mozappdir}/dependentlibs.list
 %{mozappdir}/dictionaries
@@ -773,5 +782,5 @@ fi
 # ========================= Change log =========================
 
 %changelog
-* Thu Mar 10 2016 Andrew Toskin <andrew@tosk.in> - 46.0a2.20160312
-- Begin work of making a Firefox Developer Edition package.
+* Wed Apr 27 2016 Andrew Toskin <andrew@tosk.in> - 47.0a2.20160426-1
+- First working build of Firefox Aurora / Developer Edition.
