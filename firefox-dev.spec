@@ -74,7 +74,7 @@ Source1:        firefox-langpacks-%{version}.tar.xz
 
 Source10:       firefox-mozconfig
 Source12:       firefox-redhat-default-prefs.js
-Source20:       firefox.desktop
+Source20:       firefox-dev.desktop
 Source21:       firefox.sh.in
 Source23:       firefox.1
 Source24:       mozilla-api-key

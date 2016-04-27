@@ -1,6 +1,6 @@
 [Desktop Entry]
 Version=1.0
-Name=Firefox Developer Edition
+Name=Firefox Developer Edition (Firefox Aurora)
 GenericName=Web Browser
 GenericName[ca]=Navegador web
 GenericName[cs]=Webový prohlížeč
@@ -42,7 +42,7 @@ Comment[pt]=Navegue na Internet
 Comment[pt_BR]=Navegue na Internet
 Comment[sk]=Prehliadanie internetu
 Comment[sv]=Surfa på webben
-Exec=firefox %u
+Exec=firefox-dev %u
 Icon=firefox
 Terminal=false
 Type=Application
@@ -54,9 +54,8 @@ Actions=new-window;new-private-window;
 
 [Desktop Action new-window]
 Name=Open a New Window
-Exec=firefox %u
+Exec=firefox-dev %u
 
 [Desktop Action new-private-window]
 Name=Open a New Private Window
-Exec=firefox --private-window %u
-
+Exec=firefox-dev --private-window %u
