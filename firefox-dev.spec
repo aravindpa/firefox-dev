@@ -488,14 +488,14 @@ rm -f $RPM_BUILD_ROOT/%{mozappdir}/update-settings.ini
 for s in 16 32 48; do
     mkdir -p $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/${s}x${s}/apps
     cp -p browser/branding/aurora/default${s}.png \
-               $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/${s}x${s}/apps/firefox.png
+               $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/${s}x${s}/apps/%{name}.png
 done
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/128x128/apps
 cp -p browser/branding/aurora/mozicon128.png \
-           $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/128x128/apps/firefox.png
+           $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/128x128/apps/%{name}.png
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/256x256/apps
 convert browser/branding/aurora/content/about-logo@2x.png -adaptive-resize 256x256 \
-        $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/256x256/apps/firefox.png
+        $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/256x256/apps/%{name}.png
 
 # Install hight contrast icon
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/symbolic/apps
