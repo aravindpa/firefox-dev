@@ -11,16 +11,7 @@
 # rights and limitations under the License.
 #
 # The Original Code is mozilla.org code.
-#
-# The Initial Developer of the Original Code is Netscape
-# Communications Corporation.  Portions created by Netscape are
-# Copyright (C) 1998 Netscape Communications Corporation. All
-# Rights Reserved.
-#
-# Contributor(s):
-#
 
-##
 ## Usage:
 ##
 ## $ firefox-dev
@@ -35,9 +26,8 @@
 # Edition. This is also the name of this executable script, called from the
 # usual path, /usr/bin/.
 export PACKAGE_NAME=firefox-dev
-# The filename of the actual executable binary is still just "firefox", but it
-# lives in the firefox-dev libs directory.
-export MOZ_FIREFOX_FILE="firefox"
+# The filename of the actual executable binary file.
+export MOZ_FIREFOX_FILE="firefox-dev"
 
 ##
 ## Variables

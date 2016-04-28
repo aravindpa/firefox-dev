@@ -68,16 +68,16 @@ License:        MPLv1.1 or GPLv2+ or LGPLv2+
 Source0:        https://hg.mozilla.org/releases/mozilla-aurora/archive/%{latest_commit}.tar.bz2
 
 %if %{build_langpacks}
-Source1:        firefox-langpacks-%{version}.tar.xz
+Source1:        firefox-dev-langpacks-%{version}.tar.xz
 %endif
 
 Source10:       firefox-mozconfig
 Source12:       firefox-redhat-default-prefs.js
 Source20:       firefox-dev.desktop
-Source21:       firefox.sh.in
-Source23:       firefox.1
+Source21:       firefox-dev-init.bash
+Source23:       firefox-dev.1
 Source24:       mozilla-api-key
-Source25:       firefox-symbolic.svg
+Source25:       firefox-dev-symbolic.svg
 
 # Build patches.
 Patch0:         firefox-install-dir.patch
@@ -610,11 +610,6 @@ ln -s %{_datadir}/myspell ${RPM_BUILD_ROOT}%{mozappdir}/dictionaries
 
 # Enable crash reporter for Firefox application
 %if %{enable_mozilla_crashreporter}
-# The file being edited here seems to be in the wrong place, *and* already has
-# the "[Crash Reporter]" enabled. This spec expects files to wind up in
-# ~/rpmbuild/BUILDROOT/firefox-dev-47.0a2.20160422-1.fc24.x86_64/usr/lib64/firefox-dev/
-# but for some reason a lot of them are winding up in ...firefox/ instead.
-#sed -i -e "s/\[Crash Reporter\]/[Crash Reporter]\nEnabled=1/" $RPM_BUILD_ROOT/%{mozappdir}/application.ini
 # Add debuginfo for crash-stats.mozilla.com
 mkdir -p $RPM_BUILD_ROOT/%{moz_debug_dir}
 cp objdir/dist/%{symbols_file_name} $RPM_BUILD_ROOT/%{moz_debug_dir}
@@ -646,6 +641,9 @@ mv -f %{buildroot}/%{_libdir}/%{name}/browser.dev~/* \
 # Rename directories for the devel package.
 mv %{buildroot}/%{_libdir}/firefox-devel-%{version_short} \
 	%{buildroot}/%{mozappdirdev}
+# Rename the actual binaries.
+mv %{buildroot}/%{mozappdir}/firefox      %{buildroot}/%{mozappdir}/%{name}
+mv %{buildroot}/%{mozappdir}/firefox-bin  %{buildroot}/%{mozappdir}/%{name}-bin
 # Clean up directories we don't need anymore.
 rmdir %{buildroot}/%{_libdir}/firefox
 rmdir %{buildroot}/%{_libdir}/%{name}/browser.dev~
@@ -714,8 +712,8 @@ fi
 %files -f %{name}.lang
 %defattr(-,root,root,-)
 %{_bindir}/%{name}
-%{mozappdir}/firefox
-%{mozappdir}/firefox-bin
+%{mozappdir}/%{name}
+%{mozappdir}/%{name}-bin
 %doc %{_mandir}/man1/*
 %dir %{_sysconfdir}/%{name}/*
 %dir %{_datadir}/mozilla/extensions/*
@@ -742,12 +740,12 @@ fi
 %{mozappdir}/run-mozilla.sh
 %{mozappdir}/application.ini
 %exclude %{mozappdir}/removed-files
-%{_datadir}/icons/hicolor/16x16/apps/firefox.png
-%{_datadir}/icons/hicolor/32x32/apps/firefox.png
-%{_datadir}/icons/hicolor/48x48/apps/firefox.png
-%{_datadir}/icons/hicolor/128x128/apps/firefox.png
-%{_datadir}/icons/hicolor/256x256/apps/firefox.png
-%{_datadir}/icons/hicolor/symbolic/apps/firefox-symbolic.svg
+%{_datadir}/icons/hicolor/16x16/apps/%{name}.png
+%{_datadir}/icons/hicolor/32x32/apps/%{name}.png
+%{_datadir}/icons/hicolor/48x48/apps/%{name}.png
+%{_datadir}/icons/hicolor/128x128/apps/%{name}.png
+%{_datadir}/icons/hicolor/256x256/apps/%{name}.png
+%{_datadir}/icons/hicolor/symbolic/apps/%{name}-symbolic.svg
 %{mozappdir}/webapprt-stub
 %dir %{mozappdir}/webapprt
 %{mozappdir}/webapprt/omni.ja
