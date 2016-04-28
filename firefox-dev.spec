@@ -1,54 +1,53 @@
 # Separated plugins are supported on x86(64) only
 %ifarch %{ix86} x86_64
-	%define separated_plugins 1
+	%global separated_plugins  1
 %else
-	%define separated_plugins 0
+	%global separated_plugins  0
 %endif
 
 %ifarch %{ix86} x86_64
-	%define run_tests         0
+	%global run_tests  0
 %else
-	%define run_tests         0
+	%global run_tests  0
 %endif
 
 # Build as a debug package?
-%define debug_build       0
+%global debug_build    0
 
-%define default_bookmarks_file %{_datadir}/bookmarks/default-bookmarks.html
-%define firefox_app_id  \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
+%global default_bookmarks_file  %{_datadir}/bookmarks/default-bookmarks.html
+%global firefox_app_id          \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
+
 # Minimal required versions
-%global cairo_version 1.13.1
-%global freetype_version 2.1.9
-%global libnotify_version 0.7.0
-%global libvpx_version 1.3.0
-
-%global nspr_version 4.10.10
-%global nspr_build_version %(pkg-config --silence-errors --modversion nspr 2>/dev/null || echo 65536)
-%global nss_version 3.19.2
-%global nss_build_version %(pkg-config --silence-errors --modversion nss 2>/dev/null || echo 65536)
-
-%global sqlite_version 3.8.4.2
+%global cairo_version         1.13.1
+%global freetype_version      2.1.9
+%global libnotify_version     0.7.0
+%global libvpx_version        1.3.0
+%global nspr_version          4.10.10
+%global nspr_build_version    %(pkg-config --silence-errors --modversion nspr 2>/dev/null || echo 65536)
+%global nss_version           3.19.2
+%global nss_build_version     %(pkg-config --silence-errors --modversion nss 2>/dev/null || echo 65536)
+%global sqlite_version        3.8.4.2
 # The actual sqlite version (see #480989):
-%global sqlite_build_version %(pkg-config --silence-errors --modversion sqlite3 2>/dev/null || echo 65536)
+%global sqlite_build_version  %(pkg-config --silence-errors --modversion sqlite3 2>/dev/null || echo 65536)
 
 %global mozappdir     %{_libdir}/%{name}
 %global mozappdirdev  %{_libdir}/%{name}-devel-%{version}
 %global langpackdir   %{mozappdir}/langpacks
 
-%define official_branding       1
-%define build_langpacks         1
+%global official_branding  1
+%global build_langpacks    1
 
-%define enable_mozilla_crashreporter       0
+%global enable_mozilla_crashreporter  0
 %if !%{debug_build}
 	%ifarch %{ix86} x86_64
-		%define enable_mozilla_crashreporter       1
+		%global enable_mozilla_crashreporter  1
 	%endif
 %endif
 
 # Commit ref for the latest release of Firefox Developer Edition.
-%define latest_commit  8210de2a2b4fdb1701d3dadf65184bda51d6fbe7
+%global latest_commit  8210de2a2b4fdb1701d3dadf65184bda51d6fbe7
 # Short version of the version number (without the date of the latest commit).
-%define version_short  47.0a2
+%global version_short  47.0a2
 
 # Name of the directory contained inside the Firefox source tarball.
 %global tarball_directory  %{_builddir}/%{name}-%{version}/mozilla-aurora-%{latest_commit}
@@ -181,14 +180,15 @@ Provides:       webclient
 Mozilla Firefox is an open-source web browser, designed for standards
 compliance, performance, and portability.
 
+
 %if %{enable_mozilla_crashreporter}
-%global moz_debug_prefix %{_prefix}/lib/debug
-%global moz_debug_dir %{moz_debug_prefix}%{mozappdir}
-%global uname_m %(uname -m)
-%global symbols_file_name firefox-%{version_short}.en-US.%{_os}-%{uname_m}.crashreporter-symbols.zip
-%global symbols_file_path %{moz_debug_dir}/%{symbols_file_name}
+%global moz_debug_prefix        %{_prefix}/lib/debug
+%global moz_debug_dir           %{moz_debug_prefix}%{mozappdir}
+%global uname_m                 %(uname -m)
+%global symbols_file_name       firefox-%{version_short}.en-US.%{_os}-%{uname_m}.crashreporter-symbols.zip
+%global symbols_file_path       %{moz_debug_dir}/%{symbols_file_name}
 %global _find_debuginfo_opts -p %{symbols_file_path} -o debugcrashreporter.list
-%global crashreporter_pkg_name mozilla-crashreporter-%{name}-debuginfo
+%global crashreporter_pkg_name  mozilla-crashreporter-%{name}-debuginfo
 %package -n %{crashreporter_pkg_name}
 Summary: Debugging symbols used by Mozilla's crash reporter servers
 Group: Development/Debug
@@ -201,7 +201,7 @@ debug %{name}, you want to install %{name}-debuginfo instead.
 %endif
 
 %if %{run_tests}
-%global testsuite_pkg_name mozilla-%{name}-testresults
+%global testsuite_pkg_name  mozilla-%{name}-testresults
 %package -n %{testsuite_pkg_name}
 Summary: Results of testsuite
 %description -n %{testsuite_pkg_name}
