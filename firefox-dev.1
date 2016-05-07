@@ -1,21 +1,50 @@
 .TH "FIREFOX DEVELOPER EDITION" 1 "May 6, 2016" firefox-dev "Linux User's Manual"
+
 .SH NAME
-firefox-dev \- Developer Edition of the Mozilla Firefox web browser
+Firefox Developer Edition (aka Firefox Aurora) is the pre-beta release of
+Mozilla's Web browser
+
+
 
 .SH SYNOPSIS
 .B firefox-dev
 [\fIOPTIONS\fR] [\fIURL\fR]
 
-.B firefox-dev-bin
-[\fIOPTIONS\fR] [\fIURL\fR]
+
 
 .SH DESCRIPTION
-\fBMozilla Firefox\fR is an open-source web browser, designed for
-standards compliance, performance and portability.
+This is a pre-beta release of Mozilla Firefox, intended for Web developers and
+enthusiasts who want early access to new features. It receives new updates
+(almost) daily, adding and refining support for the very latest Web standards
+that won't make it into the stable release of Firefox for some months. It also
+comes with some addons enabled by default, providing extra tools for Web
+developers.
+
+You may actually find that Firefox Developer Edition works just fine for normal
+everyday use: Some users set it as their default Web browser. You can sign in to
+your normal Firefox account and sync your preferences, extensions, and
+bookmarks, etc. Or you can keep the Firefox versions separate, and use different
+profiles, even different browser UI themes. Firefox Developer Edition can
+install alongside the stable release of Firefox, making it easy to switch back
+and forth between the two versions.
+
+That being said, a lot of the technology here is still experimental, and there
+will very likely be some bugs, so just remember that by using Developer Edition,
+you're helping Mozilla make Firefox the best Web browser they can. And have fun!
+
+Bugs related to Firefox Developer Edition should be reported directly to Mozilla -
+https://bugzilla.mozilla.org/
+
+Bugs related to this package should be reported at my GitLab project -
+https://gitlab.com/terrycloth/firefox-dev/
+
+
 
 .SH USAGE
 \fBfirefox-dev\fR is a simple shell script that will set up the
 environment for the actual executable, \fBfirefox-dev-bin\fR.
+
+
 
 .SH OPTIONS
 A summary of the options supported by \fBfirefox-dev\fR is included below.
@@ -117,22 +146,36 @@ Start with migration wizard.
 \fB\-new-instance\fR
 Open new instance, not a new window in running instance.
 
+
+
 .SH FILES
 \fI/usr/bin/firefox-dev\fR - shell script wrapping
 \fBfirefox-dev\fR
 .br
 \fI/usr/lib/mozilla/firefox-dev-bin\fR - \fBfirefox-dev\fR executable
 
+
+
 .SH VERSION
 1.0
+
+
 
 .SH BUGS
 To report a bug, please visit \fIhttp://bugzilla.mozilla.org/\fR
 
+
+
 .SH "SEE ALSO"
 .BR mozilla(1)
 
+
+
 .SH AUTHORS
 .TP
-.B The Mozilla Organization
+.B Mozilla
 .I http://www.mozilla.org/about.html
+
+.TP
+.B Andrew Toskin
+.I https://andrew.tosk.in

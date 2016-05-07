@@ -56,7 +56,7 @@
 %global unpacked_source    %{_builddir}/%{name}-%{version}/source
 
 
-Summary:        Developer Edition (Aurora release channel) of the Mozilla Firefox Web browser
+Summary:        Firefox Developer Edition (aka Firefox Aurora) is the pre-beta release of Mozilla's Web browser
 Name:           firefox-dev
 # You can see which is the latest version here:
 # https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-aurora/
@@ -177,8 +177,29 @@ BuildRequires:  xorg-x11-server-Xvfb
 Provides:       webclient
 
 %description
-Mozilla Firefox is an open-source web browser, designed for standards
-compliance, performance, and portability.
+This is a pre-beta release of Mozilla Firefox intended for Web developers and
+enthusiasts who want early access to new features. It receives new updates
+(almost) daily, adding and refining support for the very latest Web standards
+that won't make it into the stable release of Firefox for some months. It also
+comes with some addons for Web development enabled by default.
+
+You may actually find that Developer Edition works just fine for normal everyday
+use: Some users set it as their default Web browser. You can sign in to your
+normal Firefox account and sync your preferences, extensions, and bookmarks,
+etc. Or you can keep the Firefox versions separate, and use different profiles,
+even different browser UI themes. Firefox Developer Edition can install
+alongside the stable release of Firefox, making it easy to switch back and forth
+between the two versions.
+
+That being said, a lot of the technology here is still experimental, and there
+will very likely be some bugs, so just remember that by using Developer Edition,
+you're helping Mozilla make Firefox the best Web browser they can. And have fun!
+
+Bugs related to Firefox Developer Edition should be reported directly to Mozilla -
+https://bugzilla.mozilla.org/
+
+Bugs related to this package should be reported at my GitLab project -
+https://gitlab.com/terrycloth/firefox-dev/
 
 
 %if %{enable_mozilla_crashreporter}
