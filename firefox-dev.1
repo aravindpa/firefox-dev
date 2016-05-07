@@ -1,12 +1,12 @@
-.TH FIREFOX 1 "August 07, 2001" firefox "Linux User's Manual"
+.TH "FIREFOX DEVELOPER EDITION" 1 "May 6, 2016" firefox-dev "Linux User's Manual"
 .SH NAME
-firefox \- a Web browser for X11 derived from the Mozilla browser
+firefox-dev \- Developer Edition of the Mozilla Firefox web browser
 
 .SH SYNOPSIS
-.B firefox
+.B firefox-dev
 [\fIOPTIONS\fR] [\fIURL\fR]
 
-.B firefox-bin
+.B firefox-dev-bin
 [\fIOPTIONS\fR] [\fIURL\fR]
 
 .SH DESCRIPTION
@@ -14,11 +14,11 @@ firefox \- a Web browser for X11 derived from the Mozilla browser
 standards compliance, performance and portability.
 
 .SH USAGE
-\fBfirefox\fR is a simple shell script that will set up the
-environment for the actual executable, \fBfirefox-bin\fR.
+\fBfirefox-dev\fR is a simple shell script that will set up the
+environment for the actual executable, \fBfirefox-dev-bin\fR.
 
 .SH OPTIONS
-A summary of the options supported by \fBfirefox\fR is included below.
+A summary of the options supported by \fBfirefox-dev\fR is included below.
 
 .SS "GTK options"
 \fB\-\-gdk-debug=\fR\fIFLAGS\fR
@@ -54,13 +54,13 @@ Don't use X shared memory extension
 .B \-\-g-fatal-warnings
 Make all warnings fatal
 
-.SS "Firefox options"
+.SS "Firefox Developer Edition options"
 .TP
 .B \-h, \-help
 Show summary of options.
 .TP
 .B \-v, \-version
-Print \fB/usr/bin/firefox-bin\fR version.
+Print \fB/usr/bin/firefox-dev-bin\fR version.
 .TP
 \fB\-CreateProfile\fR \fIprofile\fR
 Create \fIprofile\fR.
@@ -72,8 +72,8 @@ Start with \fIprofile\fR.
 Start with profile manager.
 .TP
 \fB\-remote\fR \fIcommand\fR
-Execute \fIcommand\fR in an already running Firefox process.  For more info,
-see: \fIhttp://www.mozilla.org/unix/remote.html\fR
+Execute \fIcommand\fR in an already running Firefox Developer Edition process.
+For more info, see: \fIhttp://www.mozilla.org/unix/remote.html\fR
 .TP
 .B \-jsconsole
 Start with Javascript Console
@@ -82,12 +82,13 @@ Start with Javascript Console
 Load the specified chrome.
 .TP
 \fB\-no\-remote\fR
-Don't connect to any other running instances of \fBfirefox\fR. Use this if you want to run \fBfirefox\fR
-in an entirely new process. By default, \fBfirefox\fR will delegate a command to an already running instance.
+Don't connect to any other running instances of \fBfirefox-dev\fR. Use this if
+you want to run \fBfirefox-dev\fR in an entirely new process. By default,
+\fBfirefox-dev\fR will delegate a command to an already running instance.
 .TP
 \fB\-safe\-mode\fR
-Start \fBfirefox\fR in safe-mode. This disables all third-party extensions, and may be necessary if
-you are having problems with an extension you installed.
+Start \fBfirefox-dev\fR in safe-mode. This disables all third-party extensions,
+and may be necessary if you are having problems with an extension you installed.
 .TP
 \fB\-new\-tab\fR \fIurl\fR
 Open \fIurl\fR in a new tab.
@@ -99,13 +100,13 @@ Open \fIurl\fR in a new window.
 Open the preferences dialog.
 .TP
 \fB\-private\fR
-Start \fBfirefox\fR in private browsing mode.
+Start \fBfirefox-dev\fR in private browsing mode.
 .TP
 \fB\-private\-toggle\fR
 Toggle private browsing mode.
 .TP
 \fB\-setDefaultBrowser\fR
-Set \fBfirefox\fR as the default web browser.
+Set \fBfirefox-dev\fR as the default web browser.
 .TP
 \fB\-search\fR \fIterm\fR
 Search for \fIterm\fR with your default search engine.
@@ -117,11 +118,10 @@ Start with migration wizard.
 Open new instance, not a new window in running instance.
 
 .SH FILES
-\fI/usr/bin/firefox\fR - shell script wrapping
-\fBfirefox\fR
+\fI/usr/bin/firefox-dev\fR - shell script wrapping
+\fBfirefox-dev\fR
 .br
-\fI/usr/lib/mozilla/firefox-bin\fR - \fBfirefox\fR
-executable
+\fI/usr/lib/mozilla/firefox-dev-bin\fR - \fBfirefox-dev\fR executable
 
 .SH VERSION
 1.0
