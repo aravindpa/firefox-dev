@@ -56,7 +56,7 @@
 %global unpacked_source    %{_builddir}/%{name}-%{version}/source
 
 
-Summary:        Firefox Developer Edition (aka Firefox Aurora) is the pre-beta release of Mozilla's Web browser
+Summary:        Firefox Developer Edition (formerly "Aurora") pre-beta release of Mozilla's Web browser
 Name:           firefox-dev
 # You can see which is the latest version here:
 # https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-aurora/

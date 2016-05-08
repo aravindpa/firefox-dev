@@ -1,14 +1,18 @@
-.TH "FIREFOX DEVELOPER EDITION" 1 "May 6, 2016" firefox-dev "Linux User's Manual"
+.TH "FIREFOX DEVELOPER EDITION" 1 2016-05-07 firefox\-dev "Linux User's Manual"
 
 .SH NAME
-Firefox Developer Edition (aka Firefox Aurora) is the pre-beta release of
-Mozilla's Web browser
+\fBFirefox Developer Edition\fR (formerly Firefox Aurora) is the pre-beta release
+of Mozilla's Web browser.
 
 
 
 .SH SYNOPSIS
-.B firefox-dev
-[\fIOPTIONS\fR] [\fIURL\fR]
+.B firefox\-dev
+[\fIOPTIONS\fR] [\fIURL\fR ...]
+
+.PP
+You can open multiple URLs at once by listing them, with a space between each,
+at the end of the command.
 
 
 
@@ -20,6 +24,7 @@ that won't make it into the stable release of Firefox for some months. It also
 comes with some addons enabled by default, providing extra tools for Web
 developers.
 
+.PP
 You may actually find that Firefox Developer Edition works just fine for normal
 everyday use: Some users set it as their default Web browser. You can sign in to
 your normal Firefox account and sync your preferences, extensions, and
@@ -28,154 +33,226 @@ profiles, even different browser UI themes. Firefox Developer Edition can
 install alongside the stable release of Firefox, making it easy to switch back
 and forth between the two versions.
 
+.PP
 That being said, a lot of the technology here is still experimental, and there
 will very likely be some bugs, so just remember that by using Developer Edition,
 you're helping Mozilla make Firefox the best Web browser they can. And have fun!
 
-Bugs related to Firefox Developer Edition should be reported directly to Mozilla -
-https://bugzilla.mozilla.org/
+.PP
+Bugs related to Firefox Developer Edition should be reported directly to Mozilla:
+    <https://bugzilla.mozilla.org/>
 
-Bugs related to this package should be reported at my GitLab project -
-https://gitlab.com/terrycloth/firefox-dev/
-
-
-
-.SH USAGE
-\fBfirefox-dev\fR is a simple shell script that will set up the
-environment for the actual executable, \fBfirefox-dev-bin\fR.
+.PP
+Bugs related to this package should be reported at my GitLab project:
+    <https://gitlab.com/terrycloth/firefox\-dev/>
 
 
 
 .SH OPTIONS
-A summary of the options supported by \fBfirefox-dev\fR is included below.
+A summary of the options supported by \fBfirefox\-dev\fR is included below.
+
+.\ See <https://developer.mozilla.org/en-US/docs/Mozilla/Command_Line_Options>
+.\ to check for the latest information about commandline options.
 
 .SS "GTK options"
+.TP
 \fB\-\-gdk-debug=\fR\fIFLAGS\fR
 Gdk debugging flags to set
+
 .TP
 \fB\-\-gdk-no-debug=\fR\fIFLAGS\fR
 Gdk debugging flags to unset
+
 .TP
 \fB\-\-gtk-debug=\fR\fIFLAGS\fR
 Gtk+ debugging flags to set
+
 .TP
 \fB\-\-gtk-no-debug=\fR\fIFLAGS\fR
 Gtk+ debugging flags to unset
+
 .TP
 \fB\-\-gtk-module=\fR\fIMODULE\fR
 Load an additional Gtk module
+
 
 .SS "X11 options"
 .TP
 .BI \-\-display= DISPLAY
 X display to use
+
 .TP
-.B \--sync
+.B \-\-sync
 Make X calls synchronous
+
 .TP
 .B \-\-no-xshm
 Don't use X shared memory extension
+
 .TP
 .BI \-\-xim-preedit= STYLE
+
 .TP
 .BI \-\-xim-status= STYLE
+
 .TP
 .B \-\-g-fatal-warnings
 Make all warnings fatal
 
-.SS "Firefox Developer Edition options"
+
+.SS "Firefox general options"
+Note that the online documentation from Mozilla, and this manual page, show both
+the short and long version of the command line flags with a single hyphen (e.g.,
+\fB\-help\fR), but typing the options with the traditional GNU-style two
+hypens (e.g., \fB \-\-help\fR) will also work.
+
+.PP
+You can also do all the things described here from the graphical user interface.
+    See <https://support.mozilla.org/en-US/products/firefox>
+
 .TP
-.B \-h, \-help
-Show summary of options.
+\fB\-h\fR, \fB\-help\fR
+Show summary of command line options.
+
 .TP
-.B \-v, \-version
-Print \fB/usr/bin/firefox-dev-bin\fR version.
-.TP
-\fB\-CreateProfile\fR \fIprofile\fR
-Create \fIprofile\fR.
-.TP
-\fB\-P\fR \fIprofile\fR
-Start with \fIprofile\fR.
-.TP
-.B \-ProfileManager
-Start with profile manager.
-.TP
-\fB\-remote\fR \fIcommand\fR
-Execute \fIcommand\fR in an already running Firefox Developer Edition process.
-For more info, see: \fIhttp://www.mozilla.org/unix/remote.html\fR
-.TP
-.B \-jsconsole
-Start with Javascript Console
-.TP
-\fB\-chrome\fR \fIurl\fR
-Load the specified chrome.
-.TP
-\fB\-no\-remote\fR
-Don't connect to any other running instances of \fBfirefox-dev\fR. Use this if
-you want to run \fBfirefox-dev\fR in an entirely new process. By default,
-\fBfirefox-dev\fR will delegate a command to an already running instance.
-.TP
-\fB\-safe\-mode\fR
-Start \fBfirefox-dev\fR in safe-mode. This disables all third-party extensions,
-and may be necessary if you are having problems with an extension you installed.
+\fB\-v\fR, \fB\-version\fR
+Print \fBfirefox\-dev\fR version.
+
 .TP
 \fB\-new\-tab\fR \fIurl\fR
-Open \fIurl\fR in a new tab.
+Open \fIurl\fR in a new tab. If you don't provide a \fIURL\fR, it will instead
+open your home page in a new window.
+
 .TP
-\fB\-new\-window\fR \fIurl\fR
-Open \fIurl\fR in a new window.
-.TP
-\fB\-preferences\fR
-Open the preferences dialog.
-.TP
-\fB\-private\fR
-Start \fBfirefox-dev\fR in private browsing mode.
-.TP
-\fB\-private\-toggle\fR
-Toggle private browsing mode.
-.TP
-\fB\-setDefaultBrowser\fR
-Set \fBfirefox-dev\fR as the default web browser.
+\fB\-new\-window\fR [\fIurl\fR]
+Open \fIurl\fR in a new window, or open a new window with your home page.
+
 .TP
 \fB\-search\fR \fIterm\fR
-Search for \fIterm\fR with your default search engine.
+Search for \fIterm\fR with your default search engine. If your search term is
+multiple words, the complete phrase should be quoted.
+
+.TP
+\fB\-private\fR
+Launch \fBfirefox\-dev\fR in private browsing mode. This will only work if there
+are no running instances of \fBfirefox\-dev\fR when you run the command. Private
+mode persists until you end or restart the Firefox session.
+
+.TP
+\fB\-private\-window\fR [\fIURL\fR]
+Open a separate *window* in private mode. If no \fIURL\fR is specified, it will
+open a screen displaying information about private mode.
+
+.TP
+\fB\-no\-remote\fR, \fB\-new-instance\fR
+Launch a new instance, not a new window in running instance. Use this if you
+want to run \fBfirefox\-dev\fR in an entirely new process. Normally,
+\fBfirefox\-dev\fR will delegate a command to an already running instance.
+
 .TP
 \fB\-migration\fR
-Start with migration wizard.
+Launch with the migration wizard to import bookmarks and settings from other Web
+browsers installed on your system. This will only work if there are no running
+instances of \fBfirefox\-dev\fR when you run the command.
+
 .TP
-\fB\-new-instance\fR
-Open new instance, not a new window in running instance.
+\fB\-preferences\fR
+Open the preferences screen.
+
+.TP
+\fB\-setDefaultBrowser\fR
+Set \fBfirefox\-dev\fR as the default Web browser.
+
+.TP
+.B \-ProfileManager
+Launch with profile manager. This lets you easily switch between user profiles,
+if you have more than one. This will only work if you are starting a new
+instance of \fBfirefox\-dev\fR, either by adding the \fB\-new-instance\fR option,
+or because there are no other running instances when you run the command.
+
+.TP
+\fB\-CreateProfile\fR \fIprofile\fR
+Create a new profile in the default directory, but do not start application. The
+profile will be named \fIprofile\fR in the profile manager. \fIprofile\fR must
+not contain spaces. This will only work if you are starting a new instance of
+\fBfirefox\-dev\fR, either by adding the \fB\-new-instance\fR option, or because
+there are no other running instances when you run the command.
+
+.TP
+\fB\-P\fR \fIprofile\fR
+Launch application with the designated \fIprofile\fR. The directory containing
+the profile config files will be \fI~/.mozilla/firefox/XXXXX.profile\fR where
+\fIXXXXX\fR is a random hash and \fIprofile\fR is the profile name. You don't
+have to include the hash in the commandline argument, just the profile name
+after the period. If you don't specify a profile name, then Firefox will open
+the profile manager.
+
+.TP
+\fB\-safe\-mode\fR
+Start \fBfirefox\-dev\fR in "safe mode." This disables all third-party
+extensions, and is useful for troubleshooting performance issues: If disabling
+all extensions fixes the problem, then you know that the problem lies with one
+of the extensions, rather than Firefox itself. This will only work if there are
+no running instances of \fBfirefox\-dev\fR when you run the command.
+
+.TP
+\fB\-UILocale\fR \fIlocale\fR
+Start with the UI language set to \fIlocale\fR. This will only work if there are
+no running instances of \fBfirefox\-dev\fR when you run the command.
+
+
+.SS "Firefox options for developer tools"
+
+.TP
+\fB\-devtools\fR
+Launch with the developer tools panel open.
+
+.TP
+.B \-jsconsole
+Launch with the Browser Console open.
+.PP
+See <https://developer.mozilla.org/en-US/docs/Tools/Browser_Console>.
+
+.TP
+.B \-jsdebugger
+Launch with Browser Toolbox (formerly Browser Debugger) open, if enabled in the
+preferences for the developer tools panel.
+.PP
+See <https://developer.mozilla.org/en-US/docs/Tools/Browser_Toolbox>.
+
+.TP
+\fB\-chrome\fR \fIurl\fR
+Load the specified chrome. This is a special URL starting with \fIchrome://\fR
+and used for configuring an extension or internal Firefox component.
+
+.TP
+\fB\-start-debugger-server\fR [\fIport\fR]
+Start the debugger server on port number \fIport\fR (default is 6000). This will
+enable another instance of Firefox to connect the Firefox Developer Tools to
+this Firefox instance. See the article on remotely debugging Firefox Desktop:
+.PP
+<https://developer.mozilla.org/en-US/docs/Tools/Remote_Debugging/Debugging_Firefox_Desktop>
 
 
 
 .SH FILES
-\fI/usr/bin/firefox-dev\fR - shell script wrapping
-\fBfirefox-dev\fR
+\fI/usr/bin/firefox\-dev\fR \- shell script wrapping \fBfirefox\-dev\fR binary
 .br
-\fI/usr/lib/mozilla/firefox-dev-bin\fR - \fBfirefox-dev\fR executable
-
-
-
-.SH VERSION
-1.0
-
-
-
-.SH BUGS
-To report a bug, please visit \fIhttp://bugzilla.mozilla.org/\fR
+\fI/usr/lib64/mozilla/firefox\-dev-bin\fR \- \fBfirefox\-dev\fR executable
 
 
 
 .SH "SEE ALSO"
-.BR mozilla(1)
+.BR mozilla (1)
+.BR firefox (1)
 
 
 
 .SH AUTHORS
-.TP
-.B Mozilla
-.I http://www.mozilla.org/about.html
+.PP
+.B The Mozilla Foundation
+<https://www.mozilla.org/en-US/about/>
 
-.TP
+.PP
 .B Andrew Toskin
-.I https://andrew.tosk.in
+<https://andrew.tosk.in>
