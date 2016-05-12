@@ -179,7 +179,7 @@ Provides:       webclient
 %description
 This is a pre-beta release of Mozilla Firefox intended for Web developers and
 enthusiasts who want early access to new features. It receives new updates
-(almost) daily, adding and refining support for the very latest Web standards
+often, adding and refining support for the very latest Web standards
 that won't make it into the stable release of Firefox for some months. It also
 comes with some addons for Web development enabled by default.
 
