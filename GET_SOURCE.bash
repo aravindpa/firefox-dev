@@ -18,32 +18,36 @@ echo
 echo "Latest commit: $LATEST_COMMIT"
 echo "Version:       $VERSION_DATE"
 
-# Update the spec file to use latest Firefox release.
-sed -i -r "s/^(%global version_short[[:space:]]+)[[:digit:]]+\.[[:alnum:]]+/\1$VERSION_SHORT/" firefox-dev.spec
-sed -i -r "s/^(Version:[[:space:]]+)[[:digit:]]+\.[[:alnum:]]+\.[[:digit:]]+/\1$VERSION_DATE/" firefox-dev.spec
-sed -i -r "s/^(%global latest_commit[[:space:]]+)[[:alnum:]]+/\1$LATEST_COMMIT/" firefox-dev.spec
+if [ -f "$LATEST_COMMIT.tar.bz2" ]
+	then echo "Looks like you already have the latest source files."
+else
+	# Update the spec file to use latest Firefox release.
+	sed -i -r "s/^(%global version_short[[:space:]]+)[[:digit:]]+\.[[:alnum:]]+/\1$VERSION_SHORT/" firefox-dev.spec
+	sed -i -r "s/^(Version:[[:space:]]+)[[:digit:]]+\.[[:alnum:]]+\.[[:digit:]]+/\1$VERSION_DATE/" firefox-dev.spec
+	sed -i -r "s/^(%global latest_commit[[:space:]]+)[[:alnum:]]+/\1$LATEST_COMMIT/" firefox-dev.spec
 
-# Get the source code for the latest Firefox release.
-echo
-echo "*** Downloading latest release of Firefox Aurora..."
-curl -O "$DOWNLOAD_SOURCE_URL"
+	# Get the source code for the latest Firefox release.
+	echo
+	echo "*** Downloading latest release of Firefox Aurora..."
+	curl -O "$DOWNLOAD_SOURCE_URL"
 
-# Get the langpacks too.
-mkdir -p firefox-langpacks
-cd firefox-langpacks
-curl "https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-aurora-l10n/linux-x86_64/xpi/" -o index.html
-echo
-echo "*** Downloading langpacks for Firefox..."
-grep -Eo "\".*?firefox-$VERSION_SHORT.*?\.xpi\"" index.html | sed -r 's/"(.*)"/https:\/\/archive.mozilla.org\1/g' | xargs wget
-rm index.html
-echo
-echo "*** Repacking language files..."
-for f in *
-	do mv $f $(echo $f | awk 'match($0, /firefox-.*?\.(.*?)\.langpack.xpi/, a){print a[1] ".xpi"}')
-done
-cd ..
-tar -cvf - firefox-langpacks | xz -zc - > firefox-dev-langpacks-$VERSION_DATE.tar.xz
-rm -rf firefox-langpacks
+	# Get the langpacks too.
+	mkdir -p firefox-langpacks
+	cd firefox-langpacks
+	curl "https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-aurora-l10n/linux-x86_64/xpi/" -o index.html
+	echo
+	echo "*** Downloading langpacks for Firefox..."
+	grep -Eo "\".*?firefox-$VERSION_SHORT.*?\.xpi\"" index.html | sed -r 's/"(.*)"/https:\/\/archive.mozilla.org\1/g' | xargs wget
+	rm index.html
+	echo
+	echo "*** Repacking language files..."
+	for f in *
+		do mv $f $(echo $f | awk 'match($0, /firefox-.*?\.(.*?)\.langpack.xpi/, a){print a[1] ".xpi"}')
+	done
+	cd ..
+	tar -cvf - firefox-langpacks | xz -zc - > firefox-dev-langpacks-$VERSION_DATE.tar.xz
+	rm -rf firefox-langpacks
 
-echo
-echo "*** All finished!"
+	echo
+	echo "*** All finished!"
+fi
