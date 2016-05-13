@@ -61,7 +61,7 @@ Edition, we have a convenient script. It looks up information about the latest
 release, checks to see if you already have the latest source, and downloads the
 tarball if you don't. It also updates the version and release numbers in the
 spec file, and adds an entry to the spec file's changelog section. Mozilla
-releases updates pretty often, so always run this script to make sure you have
+releases updates (almost) daily, so always run this script to make sure you have
 the very latest source code.
 
 ``` bash

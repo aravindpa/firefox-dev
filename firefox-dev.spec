@@ -45,9 +45,9 @@
 %endif
 
 # Commit ref for the latest release of Firefox Developer Edition.
-%global latest_commit  98da47b4d83c576ce17d189942d2655df5a36dc1
+%global latest_commit  9a64ae897313031dbca1cf58d4ff6aff64eb3009
 # Short version of the version number (without the date of the latest commit).
-%global version_short  47.0a2
+%global version_short  48.0a2
 
 # Name of the directory contained inside the Firefox source tarball.
 %global tarball_directory  %{_builddir}/%{name}-%{version}/mozilla-aurora-%{latest_commit}
@@ -60,7 +60,7 @@ Summary:        Firefox Developer Edition (formerly "Aurora") pre-beta release o
 Name:           firefox-dev
 # You can see which is the latest version here:
 # https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-aurora/
-Version:        47.0a2.20160425
+Version:        48.0a2.20160511
 Release:        1%{?dist}
 URL:            https://www.mozilla.org/firefox/developer/
 License:        MPLv1.1 or GPLv2+ or LGPLv2+
@@ -179,7 +179,7 @@ Provides:       webclient
 %description
 This is a pre-beta release of Mozilla Firefox intended for Web developers and
 enthusiasts who want early access to new features. It receives new updates
-often, adding and refining support for the very latest Web standards
+(almost) daily, adding and refining support for the very latest Web standards
 that won't make it into the stable release of Firefox for some months. It also
 comes with some addons for Web development enabled by default.
 
@@ -799,5 +799,8 @@ fi
 # ========================= Change log =========================
 
 %changelog
+* Thu May 12 2016 Andrew Toskin <andrew@tosk.in> - 48.0a2.20160511-1
+- Updated to 48.0a2.20160511.
+
 * Thu May 12 2016 Andrew Toskin <andrew@tosk.in> - 47.0a2.20160425-1
 - First Copr build.

@@ -6,7 +6,7 @@ set -eu
 # Find the version number and commit hash of the latest Firefox Aurora release.
 echo "*** Looking up the latest release..."
 curl "https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-aurora/" -o index.html
-export version_short=$(grep -Eo 'firefox-[[:digit:]]+\.[[:alnum:]]+' -m 1 index.html | grep -Eo '[[:digit:]]+\.[[:alnum:]]+' -m 1)
+export version_short=$(grep -Eo 'firefox-[[:digit:]]+\.[[:alnum:]]+' index.html | tail -n1 | grep -Eo '[[:digit:]]+\.[[:alnum:]]+' -m 1)
 curl "https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-aurora/firefox-${version_short}.en-US.linux-x86_64.txt" -o firefox-latest-info.txt
 export date=$(grep -Eo '[[:digit:]]{8}' -m 1 firefox-latest-info.txt)
 export version_date=${version_short}.${date}
@@ -18,8 +18,8 @@ echo
 echo "Latest commit: ${latest_commit}"
 echo "Version:       ${version_date}"
 
-if [ -f "${latest_commit}.tar.bz2" ]
-	then echo
+if [ -f "${latest_commit}.tar.bz2" ]; then
+	echo
 	echo "** Looks like you already have the latest source files."
 else
 	# Update the spec file to use latest Firefox release.
@@ -29,7 +29,7 @@ else
 
 	# Add an entry to the change log.
 	echo
-	echo "Updating the packagechangelog..."
+	echo "** Updating the package changelog..."
 	echo "What's your name?"
 	read packager_name
 	echo "What's your email address?"
