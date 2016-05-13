@@ -65,7 +65,7 @@ releases updates pretty often, so always run this script to make sure you have
 the very latest source code.
 
 ``` bash
-./GET_SOURCE.bash
+./get-source.bash
 ```
 
 Firefox Developer Edition has dependencies which you also need to install before
