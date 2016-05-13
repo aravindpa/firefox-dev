@@ -56,7 +56,7 @@
 %global unpacked_source    %{_builddir}/%{name}-%{version}/source
 
 
-Summary:        Firefox Developer Edition (formerly "Aurora") pre-beta release of Mozilla's Web browser
+Summary:        Firefox Developer Edition (formerly "Aurora") pre-beta Web browser
 Name:           firefox-dev
 # You can see which is the latest version here:
 # https://archive.mozilla.org/pub/firefox/nightly/latest-mozilla-aurora/
@@ -195,11 +195,11 @@ That being said, a lot of the technology here is still experimental, and there
 will very likely be some bugs, so just remember that by using Developer Edition,
 you're helping Mozilla make Firefox the best Web browser they can. And have fun!
 
-Bugs related to Firefox Developer Edition should be reported directly to Mozilla -
-https://bugzilla.mozilla.org/
+Bugs related to Firefox Developer Edition should be reported directly to
+Mozilla: <https://bugzilla.mozilla.org/>
 
-Bugs related to this package should be reported at my GitLab project -
-https://gitlab.com/terrycloth/firefox-dev/
+Bugs related to this package should be reported at my GitLab project:
+<https://gitlab.com/terrycloth/firefox-dev/>
 
 
 %if %{enable_mozilla_crashreporter}
