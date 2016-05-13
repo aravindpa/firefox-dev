@@ -801,6 +801,7 @@ fi
 %changelog
 * Fri May 13 2016 Andrew Toskin <andrew@tosk.in> - 48.0a2.20160513-1
 - Updated to 48.0a2.20160513.
+- Add aarch64 to exluded architectures for MALLOC_STATIC_SIZES.
 
 * Thu May 12 2016 Andrew Toskin <andrew@tosk.in> - 47.0a2.20160425-1
 - First Copr build.
