@@ -19,12 +19,22 @@ echo "Latest commit: $LATEST_COMMIT"
 echo "Version:       $VERSION_DATE"
 
 if [ -f "$LATEST_COMMIT.tar.bz2" ]
-	then echo "Looks like you already have the latest source files."
+	then echo
+	echo "** Looks like you already have the latest source files."
 else
 	# Update the spec file to use latest Firefox release.
 	sed -i -r "s/^(%global version_short[[:space:]]+)[[:digit:]]+\.[[:alnum:]]+/\1$VERSION_SHORT/" firefox-dev.spec
 	sed -i -r "s/^(Version:[[:space:]]+)[[:digit:]]+\.[[:alnum:]]+\.[[:digit:]]+/\1$VERSION_DATE/" firefox-dev.spec
 	sed -i -r "s/^(%global latest_commit[[:space:]]+)[[:alnum:]]+/\1$LATEST_COMMIT/" firefox-dev.spec
+
+	# Add an entry to the change log.
+	echo
+	echo "Updating the packagechangelog..."
+	echo "What's your name?"
+	read PACKAGER_NAME
+	echo "What's your email address?"
+	read PACKAGER_EMAIL
+	sed -i -r "s/^(%changelog)$/\1\n* $(date '+%a %b %d %Y') $PACKAGER_NAME <$PACKAGER_EMAIL> - $VERSION_DATE-1\n- Updated to $VERSION_DATE.\n/" firefox-dev.spec
 
 	# Get the source code for the latest Firefox release.
 	echo

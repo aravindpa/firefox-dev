@@ -57,9 +57,12 @@ cd firefox-dev
 ```
 
 Then, to fetch the source code for the latest release of Firefox Developer
-Edition, we have a convenient script. It also updates the version and release
-numbers in the spec file. Mozilla releases updates just about every day, so
-always run this script to make sure you have the very latest source code.
+Edition, we have a convenient script. It looks up information about the latest
+release, checks to see if you already have the latest source, and downloads the
+tarball if you don't. It also updates the version and release numbers in the
+spec file, and adds an entry to the spec file's changelog section. Mozilla
+releases updates pretty often, so always run this script to make sure you have
+the very latest source code.
 
 ``` bash
 ./GET_SOURCE.bash
