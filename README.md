@@ -57,8 +57,8 @@ Then, to fetch the source code for the latest release of Firefox Developer
 Edition, we have a convenient script. It looks up information about the latest
 release, checks to see if you already have the latest source, and downloads the
 tarball if you don't. It also updates the version and release numbers in the
-spec file, and adds an entry to the spec file's changelog section. You will be
-prompted for your name and email, to add to the changelog, so enter those before
+spec file, and adds an entry to the spec file's change log section. You will be
+prompted for your name and email, to add to the change log, so enter those before
 you walk away and let the script download things. Mozilla releases updates
 (almost) daily, so always run this script to make sure you have the very latest
 source code.
