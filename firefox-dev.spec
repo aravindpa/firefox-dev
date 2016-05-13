@@ -203,7 +203,7 @@ https://gitlab.com/terrycloth/firefox-dev/
 
 
 %if %{enable_mozilla_crashreporter}
-%global moz_debug_prefix        %{_prefix}/lib/debug
+%global moz_debug_prefix        %{_libdir}/debug
 %global moz_debug_dir           %{moz_debug_prefix}%{mozappdir}
 %global uname_m                 %(uname -m)
 %global symbols_file_name       firefox-%{version_short}.en-US.%{_os}-%{uname_m}.crashreporter-symbols.zip
