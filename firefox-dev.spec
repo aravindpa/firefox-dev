@@ -102,12 +102,6 @@ Patch223:       rhbz-1291190-appchooser-crash.patch
 Patch224:       mozilla-1170092.patch
 
 # Upstream patches.
-Patch301:       mozilla-1205199.patch
-Patch302:       mozilla-1228540.patch
-Patch303:       mozilla-1228540-1.patch
-Patch304:       mozilla-1253216.patch
-Patch305:       mozilla-1245076.patch
-Patch306:       mozilla-1245076-1.patch
 
 # Debian patches.
 Patch400:       Allow-unsigned-addons-in-usr-lib-share-mozilla-exten.patch
@@ -263,19 +257,12 @@ cd %{unpacked_source}
 %patch204 -b "\~"
 #%patch215 -b "\~"
 %patch219 -b "\~"
-## THIS WASN'T COMMENTED WHEN I TRIED BUILDING YESTERDAY:
 #%patch221 -b "\~"
 #%patch222 -b "\~"
 %patch223 -b "\~"
 #%patch224 -b "\~"
 
 # Upstream patches.
-#%patch301 -b "\~"
-#%patch302 -b "\~"
-#%patch303 -b "\~"
-%patch304 -b "\~"
-%patch305 -b "\~"
-%patch306 -b "\~"
 
 # Debian extension patches.
 #%patch400 -b "\~"
@@ -802,6 +789,8 @@ fi
 * Fri May 13 2016 Andrew Toskin <andrew@tosk.in> - 48.0a2.20160513-1
 - Updated to 48.0a2.20160513.
 - Add aarch64 to exluded architectures for MALLOC_STATIC_SIZES.
+- Remove patch for resolved Mozilla Bugs 1205199, 1228540, 1228540, 1253216,
+  1245076, and 1245076.
 
 * Thu May 12 2016 Andrew Toskin <andrew@tosk.in> - 47.0a2.20160425-1
 - First Copr build.
